@@ -1,8 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { cn } from "@/lib/cn";
+
+// If a document stays in "processing" longer than this, offer a retry
+const PROCESSING_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
 interface DocumentMeta {
   _id: string;
@@ -132,8 +135,11 @@ export default function DocumentInsightsPage() {
   const [insights, setInsights] = useState<Insights | null>(null);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
+  const [retrying, setRetrying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabId>("summary");
+  // Track when processing started so we can offer a retry after timeout
+  const processingStartRef = useRef<number | null>(null);
 
   const fetchDocument = useCallback(async () => {
     try {
@@ -143,7 +149,17 @@ export default function DocumentInsightsPage() {
         setError(data.error || "Failed to load document");
         return;
       }
-      setDocument(data.document);
+      const doc: DocumentMeta = data.document;
+      setDocument(doc);
+      // Track when processing started
+      if (doc.ocrStatus === "processing") {
+        if (!processingStartRef.current) {
+          processingStartRef.current =
+            doc.createdAt ? new Date(doc.createdAt).getTime() : Date.now();
+        }
+      } else {
+        processingStartRef.current = null;
+      }
       if (data.insights) {
         setInsights(data.insights);
       }
@@ -188,6 +204,45 @@ export default function DocumentInsightsPage() {
       setGenerating(false);
     }
   };
+
+  const handleRetry = async () => {
+    setRetrying(true);
+    setError(null);
+    setDocument((prev) => prev ? { ...prev, ocrStatus: "processing" } : prev);
+    processingStartRef.current = Date.now();
+    try {
+      const res = await fetch("/api/documents/reprocess", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ documentId: docId }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Retry failed. Please try again.");
+        setDocument((prev) =>
+          prev ? { ...prev, ocrStatus: "failed", ocrError: data.error || "Retry failed" } : prev
+        );
+        processingStartRef.current = null;
+      } else if (data.ocrStatus === "completed") {
+        // Sync mode resolved immediately — refresh
+        await fetchDocument();
+      }
+      // If still processing, the poll interval picks it up
+    } catch {
+      setError("Retry failed. Please try again.");
+      setDocument((prev) =>
+        prev ? { ...prev, ocrStatus: "failed", ocrError: "Retry failed" } : prev
+      );
+      processingStartRef.current = null;
+    } finally {
+      setRetrying(false);
+    }
+  };
+
+  const isTimedOut =
+    document?.ocrStatus === "processing" &&
+    processingStartRef.current !== null &&
+    Date.now() - (processingStartRef.current ?? 0) > PROCESSING_TIMEOUT_MS;
 
   if (loading) {
     return (
@@ -288,26 +343,63 @@ export default function DocumentInsightsPage() {
           `}</style>
           <div className="w-16 h-16 rounded-2xl bg-[var(--accent-muted)] flex items-center justify-center mb-4 relative">
             <div className="absolute inset-0 rounded-2xl border-2 border-[var(--accent)] animate-ping opacity-25" />
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="animate-spin">
-              <line x1="12" y1="2" x2="12" y2="6" />
-              <line x1="12" y1="18" x2="12" y2="22" />
-              <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />
-              <line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
-              <line x1="2" y1="12" x2="6" y2="12" />
-              <line x1="18" y1="12" x2="22" y2="12" />
-              <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
-              <line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
-            </svg>
+            {isTimedOut ? (
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            ) : (
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="animate-spin">
+                <line x1="12" y1="2" x2="12" y2="6" />
+                <line x1="12" y1="18" x2="12" y2="22" />
+                <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />
+                <line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
+                <line x1="2" y1="12" x2="6" y2="12" />
+                <line x1="18" y1="12" x2="22" y2="12" />
+                <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
+                <line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
+              </svg>
+            )}
           </div>
-          <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
-            Reading your document...
-          </h2>
-          <p className="text-sm text-[var(--text-secondary)] text-center max-w-md mb-2">
-            We are currently reading and analyzing the content of this file.
-          </p>
-          <p className="text-xs text-[var(--text-muted)] text-center">
-            This will refresh automatically. Please do not close the window.
-          </p>
+          {isTimedOut ? (
+            <>
+              <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
+                This is taking longer than usual
+              </h2>
+              <p className="text-sm text-[var(--text-secondary)] text-center max-w-md mb-6">
+                The processing service may have been temporarily unavailable. You can retry
+                to re-trigger extraction.
+              </p>
+              <button
+                onClick={handleRetry}
+                disabled={retrying}
+                className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--accent)] text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-60"
+              >
+                {retrying ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="1 4 1 10 7 10" />
+                    <path d="M3.51 15a9 9 0 1 0 .49-4.49" />
+                  </svg>
+                )}
+                {retrying ? "Retrying..." : "Retry Processing"}
+              </button>
+            </>
+          ) : (
+            <>
+              <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
+                Reading your document...
+              </h2>
+              <p className="text-sm text-[var(--text-secondary)] text-center max-w-md mb-2">
+                We are currently reading and analyzing the content of this file.
+              </p>
+              <p className="text-xs text-[var(--text-muted)] text-center">
+                This will refresh automatically. Please do not close the window.
+              </p>
+            </>
+          )}
         </div>
       )}
 
@@ -327,12 +419,29 @@ export default function DocumentInsightsPage() {
           <p className="text-sm text-[var(--text-secondary)] text-center max-w-md mb-6">
             {document.ocrError || "An error occurred during text extraction."}
           </p>
-          <button
-            onClick={() => router.push("/dashboard/documents")}
-            className="px-6 py-2.5 rounded-xl border border-[var(--border)] text-sm font-medium hover:bg-[var(--bg-hover)] transition-colors"
-          >
-            Back to Documents
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleRetry}
+              disabled={retrying}
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--accent)] text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-60"
+            >
+              {retrying ? (
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="1 4 1 10 7 10" />
+                  <path d="M3.51 15a9 9 0 1 0 .49-4.49" />
+                </svg>
+              )}
+              {retrying ? "Retrying..." : "Retry Processing"}
+            </button>
+            <button
+              onClick={() => router.push("/dashboard/documents")}
+              className="px-6 py-2.5 rounded-xl border border-[var(--border)] text-sm font-medium hover:bg-[var(--bg-hover)] transition-colors"
+            >
+              Back to Documents
+            </button>
+          </div>
         </div>
       )}
 

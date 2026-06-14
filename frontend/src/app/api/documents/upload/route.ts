@@ -169,35 +169,89 @@ export async function POST(request: Request) {
     if (useMicroservice) {
       const microserviceUrl = process.env.OCR_MICROSERVICE_URL;
       const secret = process.env.OCR_MICROSERVICE_SECRET;
-      
-      console.log(`[Upload API] Triggering OCR microservice asynchronously for document: ${result.insertedId}`);
-      
-      // Fire-and-forget fetch to avoid blocking the API response
-      fetch(`${microserviceUrl}/process-document`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(secret ? { "Authorization": `Bearer ${secret}` } : {}),
-        },
-        body: JSON.stringify({ documentId: result.insertedId.toString() }),
-      }).then(async (res) => {
-        if (!res.ok) {
-          const text = await res.text();
-          console.error(`[Upload API] Microservice returned error: ${res.status} - ${text}`);
-          // Update status in DB to failed
-          await db.collection("documents").updateOne(
-            { _id: result.insertedId },
-            { $set: { ocrStatus: "failed", ocrError: `Microservice returned HTTP ${res.status}: ${text}` } }
+      const docId = result.insertedId;
+
+      console.log(`[Upload API] Triggering OCR microservice asynchronously for document: ${docId}`);
+
+      // Retry helper: attempt to contact the microservice up to maxAttempts times.
+      // The first attempt uses a short timeout so we detect cold-start quickly.
+      // On cold-start the Render free tier needs ~30s to wake up, so we retry
+      // with increasing delays rather than giving up immediately.
+      const triggerMicroservice = async () => {
+        const MAX_ATTEMPTS = 3;
+        const ATTEMPT_TIMEOUTS_MS = [10_000, 20_000, 30_000]; // per attempt
+        const RETRY_DELAYS_MS   = [5_000, 15_000];            // between attempts
+
+        for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(
+            () => controller.abort(),
+            ATTEMPT_TIMEOUTS_MS[attempt - 1]
           );
-        } else {
-          console.log(`[Upload API] Microservice successfully triggered for document ${result.insertedId}`);
+
+          try {
+            const res = await fetch(`${microserviceUrl}/process-document`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                ...(secret ? { "Authorization": `Bearer ${secret}` } : {}),
+              },
+              body: JSON.stringify({ documentId: docId.toString() }),
+              signal: controller.signal,
+            });
+
+            clearTimeout(timeoutId);
+
+            if (res.ok) {
+              console.log(`[Upload API] Microservice triggered successfully for document ${docId} (attempt ${attempt})`);
+              return; // success
+            }
+
+            const text = await res.text();
+            console.error(`[Upload API] Microservice returned HTTP ${res.status} on attempt ${attempt}: ${text}`);
+
+            // Non-retriable HTTP error — mark failed immediately
+            if (res.status >= 400 && res.status < 500) {
+              await db.collection("documents").updateOne(
+                { _id: docId },
+                { $set: { ocrStatus: "failed", ocrError: `Microservice returned HTTP ${res.status}: ${text}` } }
+              );
+              return;
+            }
+
+            // 5xx — fall through to retry
+          } catch (err: any) {
+            clearTimeout(timeoutId);
+            const isTimeout = err?.name === "AbortError";
+            console.warn(
+              `[Upload API] Microservice ${isTimeout ? "timed out" : "unreachable"} on attempt ${attempt}/${MAX_ATTEMPTS}:`,
+              err.message || err
+            );
+          }
+
+          // Wait before retrying (skip delay after last attempt)
+          if (attempt < MAX_ATTEMPTS) {
+            await new Promise((resolve) => setTimeout(resolve, RETRY_DELAYS_MS[attempt - 1]));
+          }
         }
-      }).catch(async (fetchErr) => {
-        console.error(`[Upload API] Failed to contact microservice:`, fetchErr);
+
+        // All attempts exhausted — mark as failed so the document doesn't spin forever
+        console.error(`[Upload API] All ${MAX_ATTEMPTS} microservice trigger attempts failed for document ${docId}. Marking as failed.`);
         await db.collection("documents").updateOne(
-          { _id: result.insertedId },
-          { $set: { ocrStatus: "failed", ocrError: fetchErr.message || String(fetchErr) } }
+          { _id: docId },
+          {
+            $set: {
+              ocrStatus: "failed",
+              ocrError:
+                "OCR service could not be reached after multiple attempts. Please use the Retry button to try again.",
+            },
+          }
         );
+      };
+
+      // Fire-and-forget — do not await so we can return the upload response immediately
+      triggerMicroservice().catch((err) => {
+        console.error(`[Upload API] Unhandled error in triggerMicroservice for ${docId}:`, err);
       });
     }
 

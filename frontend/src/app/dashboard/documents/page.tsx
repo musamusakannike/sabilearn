@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { DocumentUpload, type UploadedDoc } from "@/components/documents";
 import { FetchError } from "@/components/FetchError";
 import { cn } from "@/lib/cn";
+
+// If a document stays in "processing" for longer than this, show a retry button
+const PROCESSING_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -32,6 +35,9 @@ export default function DocumentsPage() {
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [retrying, setRetrying] = useState<string | null>(null);
+  // Track when each document entered "processing" so we can time out
+  const processingStartRef = useRef<Record<string, number>>({});
 
   const fetchDocuments = useCallback(async () => {
     setFetchError(false);
@@ -39,7 +45,20 @@ export default function DocumentsPage() {
       const res = await fetch("/api/documents");
       const data = await res.json();
       if (res.ok && data.success) {
-        setDocuments(data.documents || []);
+        const docs: UploadedDoc[] = data.documents || [];
+        // Record when newly-processing documents started so we can timeout
+        const now = Date.now();
+        docs.forEach((doc) => {
+          if (doc.ocrStatus === "processing" && !processingStartRef.current[doc._id]) {
+            // Use createdAt as the start time if available, else now
+            processingStartRef.current[doc._id] =
+              doc.createdAt ? new Date(doc.createdAt).getTime() : now;
+          }
+          if (doc.ocrStatus !== "processing") {
+            delete processingStartRef.current[doc._id];
+          }
+        });
+        setDocuments(docs);
       } else {
         setFetchError(true);
       }
@@ -73,6 +92,9 @@ export default function DocumentsPage() {
   }, [documents, fetchDocuments]);
 
   const handleUploadComplete = (doc: UploadedDoc) => {
+    if (doc.ocrStatus === "processing") {
+      processingStartRef.current[doc._id] = Date.now();
+    }
     setDocuments((prev) => [doc, ...prev]);
   };
 
@@ -81,6 +103,7 @@ export default function DocumentsPage() {
     try {
       const res = await fetch(`/api/documents?id=${id}`, { method: "DELETE" });
       if (res.ok) {
+        delete processingStartRef.current[id];
         setDocuments((prev) => prev.filter((d) => d._id !== id));
       }
     } catch {
@@ -88,6 +111,57 @@ export default function DocumentsPage() {
     } finally {
       setDeleting(null);
     }
+  };
+
+  const handleRetry = async (id: string) => {
+    setRetrying(id);
+    // Optimistically show processing state
+    setDocuments((prev) =>
+      prev.map((d) => (d._id === id ? { ...d, ocrStatus: "processing" as const } : d))
+    );
+    processingStartRef.current[id] = Date.now();
+    try {
+      const res = await fetch("/api/documents/reprocess", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ documentId: id }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        // Revert to failed with the error message
+        setDocuments((prev) =>
+          prev.map((d) =>
+            d._id === id
+              ? { ...d, ocrStatus: "failed" as const, ocrError: data.error || "Retry failed" }
+              : d
+          )
+        );
+        delete processingStartRef.current[id];
+      } else if (data.ocrStatus === "completed") {
+        // Sync mode resolved immediately — refresh the list
+        await fetchDocuments();
+      }
+      // If still processing, the poll interval will pick up the result
+    } catch {
+      setDocuments((prev) =>
+        prev.map((d) =>
+          d._id === id
+            ? { ...d, ocrStatus: "failed" as const, ocrError: "Retry failed" }
+            : d
+        )
+      );
+      delete processingStartRef.current[id];
+    } finally {
+      setRetrying(null);
+    }
+  };
+
+  // Determine if a processing document has timed out and needs a manual retry
+  const isTimedOut = (doc: UploadedDoc): boolean => {
+    if (doc.ocrStatus !== "processing") return false;
+    const startedAt = processingStartRef.current[doc._id];
+    if (!startedAt) return false;
+    return Date.now() - startedAt > PROCESSING_TIMEOUT_MS;
   };
 
   return (
@@ -147,9 +221,14 @@ export default function DocumentsPage() {
                   <p className="text-sm text-[var(--text-primary)] font-medium truncate group-hover:text-[var(--accent)] transition-colors">
                     {doc.fileName}
                   </p>
-                  {doc.ocrStatus === "processing" && (
+                  {doc.ocrStatus === "processing" && !isTimedOut(doc) && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[var(--accent-subtle)] text-[var(--accent)] border border-[var(--accent)]/10 animate-pulse shrink-0">
                       Reading file...
+                    </span>
+                  )}
+                  {doc.ocrStatus === "processing" && isTimedOut(doc) && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-400/10 text-amber-500 border border-amber-400/20 shrink-0">
+                      Taking too long
                     </span>
                   )}
                   {doc.ocrStatus === "failed" && (
@@ -166,6 +245,25 @@ export default function DocumentsPage() {
 
               {/* Actions */}
               <div className="flex items-center gap-1.5 shrink-0">
+                {/* Retry button — shown when processing timed out or failed */}
+                {(doc.ocrStatus === "failed" || isTimedOut(doc)) && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleRetry(doc._id); }}
+                    disabled={retrying === doc._id}
+                    className="h-8 px-3 rounded-lg flex items-center gap-1.5 text-xs font-medium text-amber-500 bg-amber-400/10 hover:bg-amber-400/20 transition-all disabled:opacity-50"
+                    title="Retry processing"
+                  >
+                    {retrying === doc._id ? (
+                      <div className="w-3.5 h-3.5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="1 4 1 10 7 10" />
+                        <path d="M3.51 15a9 9 0 1 0 .49-4.49" />
+                      </svg>
+                    )}
+                    <span className="hidden sm:inline">Retry</span>
+                  </button>
+                )}
                 <button
                   onClick={() => router.push(`/dashboard/documents/${doc._id}`)}
                   className="h-8 px-3 rounded-lg flex items-center gap-1.5 text-xs font-medium text-[var(--accent)] bg-[var(--accent-muted)] hover:bg-[var(--accent)]/20 transition-all"
