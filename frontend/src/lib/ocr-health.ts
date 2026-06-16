@@ -86,7 +86,7 @@ export async function checkOcrHealth(): Promise<OcrHealthStatus> {
  *
  * Gives up after `maxAttempts` retries so uploads don't block indefinitely
  * when the service is genuinely down. The document will be saved with
- * ocrStatus "processing" and the server-side watchdog cron will requeue it.
+ * ocrStatus "processing".
  *
  * @param intervalMs   How long to wait between retries (default 10 000 ms)
  * @param onAttempt    Called before each retry attempt with the attempt number (1-based)

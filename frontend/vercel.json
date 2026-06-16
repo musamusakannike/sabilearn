@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/cron/requeue-stuck-documents",
-      "schedule": "*/10 * * * *"
-    }
-  ]
-}
