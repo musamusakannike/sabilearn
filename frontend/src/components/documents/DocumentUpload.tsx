@@ -115,22 +115,29 @@ export function DocumentUpload({
       let currentStatus = await checkOcrHealth();
 
       if (currentStatus === "asleep") {
-        // Service is sleeping — wait, retrying every 10s, with live UI feedback
-        console.log("[DocumentUpload Component] OCR service is asleep. Waiting for it to wake up...");
+        // Service is sleeping — wait up to ~1 min (6 attempts × 10s), with live UI feedback.
+        // If it doesn't wake in time we still proceed: the document will be saved as
+        // "processing" and the server-side watchdog cron will requeue it automatically.
+        console.log("[DocumentUpload Component] OCR service is asleep. Waiting for it to wake up (max 6 attempts)...");
         const awake = await waitForOcrAwake(
           10_000,
           (attempt) => {
             console.log(`[DocumentUpload Component] OCR wake-up retry attempt ${attempt}`);
             setOcrRetryAttempt(attempt);
           },
-          abort.signal
+          abort.signal,
+          6
         ).catch(() => false);
 
-        if (!awake || abort.signal.aborted) {
+        if (abort.signal.aborted) {
           setUploading(false);
           setOcrRetryAttempt(0);
           abortRef.current = null;
           return;
+        }
+
+        if (!awake) {
+          console.warn("[DocumentUpload Component] OCR service did not wake up in time. Proceeding with upload anyway — the server watchdog will requeue processing.");
         }
       }
 

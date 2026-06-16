@@ -84,18 +84,24 @@ export async function checkOcrHealth(): Promise<OcrHealthStatus> {
 /**
  * Wait until the OCR service is confirmed awake, retrying every `intervalMs`.
  *
+ * Gives up after `maxAttempts` retries so uploads don't block indefinitely
+ * when the service is genuinely down. The document will be saved with
+ * ocrStatus "processing" and the server-side watchdog cron will requeue it.
+ *
  * @param intervalMs   How long to wait between retries (default 10 000 ms)
  * @param onAttempt    Called before each retry attempt with the attempt number (1-based)
  * @param signal       AbortSignal to cancel waiting
+ * @param maxAttempts  Maximum number of attempts before giving up (default 6 = ~1 min)
  */
 export async function waitForOcrAwake(
   intervalMs = 10_000,
   onAttempt?: (attempt: number) => void,
-  signal?: AbortSignal
+  signal?: AbortSignal,
+  maxAttempts = 6
 ): Promise<boolean> {
   let attempt = 0;
 
-  while (!signal?.aborted) {
+  while (!signal?.aborted && attempt < maxAttempts) {
     attempt++;
     onAttempt?.(attempt);
 
@@ -103,6 +109,8 @@ export async function waitForOcrAwake(
     _lastCheckTime = 0;
     const status = await checkOcrHealth();
     if (status === "awake") return true;
+
+    if (attempt >= maxAttempts) break;
 
     // Wait before retrying
     await new Promise<void>((resolve, reject) => {

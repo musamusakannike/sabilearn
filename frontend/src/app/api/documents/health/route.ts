@@ -1,19 +1,7 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { verifyJWT } from "@/lib/jwt";
 
 export async function GET() {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    const session = verifyJWT(token);
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     const microserviceUrl = process.env.OCR_MICROSERVICE_URL;
     if (!microserviceUrl) {
       return NextResponse.json({ status: "skipped", message: "OCR microservice URL not configured" });
