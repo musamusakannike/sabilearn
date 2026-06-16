@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/cron/ping-health",
-      "schedule": "*/14 * * * *"
-    }
-  ]
-}
