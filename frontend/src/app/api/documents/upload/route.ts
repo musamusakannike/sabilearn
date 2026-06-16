@@ -4,11 +4,23 @@ import { connectToDatabase } from "@/lib/db";
 import { verifyJWT } from "@/lib/jwt";
 import { uploadToR2, downloadFromR2, isR2Configured } from "@/lib/r2";
 import { extractTextFromBuffer, isSupportedMime } from "@/lib/document-extract";
+import pdf from "pdf-parse";
 
 // Allow up to 5 minutes for large scanned PDFs that require multi-batch OCR
 export const maxDuration = 300;
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20 MB
+const MAX_PDF_PAGES = 50;
+
+/** Returns the page count of a PDF buffer without extracting text. Returns 0 on failure. */
+async function getPdfPageCount(buffer: Buffer): Promise<number> {
+  try {
+    const meta = await pdf(buffer, { max: 0 });
+    return meta.numpages ?? 0;
+  } catch {
+    return 0;
+  }
+}
 
 // Helper to get user session from cookie or Authorization header (for mobile support)
 async function getSessionUser(request: Request) {
@@ -102,6 +114,25 @@ export async function POST(request: Request) {
         { error: `Unsupported file type: ${mimeType}. Supported: PDF, DOCX, PNG, JPEG, WebP, GIF, TXT, Markdown.` },
         { status: 400 }
       );
+    }
+
+    // PDF page count check — download buffer now for direct uploads so we can reuse it later
+    if (mimeType === "application/pdf") {
+      if (isDirectUpload && !buffer) {
+        console.log(`[Upload API] Downloading buffer from R2 to validate page count for: "${fileName}"`);
+        buffer = await downloadFromR2(r2Key);
+      }
+      if (buffer) {
+        const pageCount = await getPdfPageCount(buffer);
+        if (pageCount > MAX_PDF_PAGES) {
+          console.warn(`[Upload API] Failed: PDF "${fileName}" has ${pageCount} pages, exceeds limit of ${MAX_PDF_PAGES}`);
+          return NextResponse.json(
+            { error: `PDF too long. Maximum is ${MAX_PDF_PAGES} pages (this file has ${pageCount} pages).` },
+            { status: 400 }
+          );
+        }
+        console.log(`[Upload API] PDF page count OK: ${pageCount} pages for "${fileName}"`);
+      }
     }
 
     const useMicroservice = !!process.env.OCR_MICROSERVICE_URL;
