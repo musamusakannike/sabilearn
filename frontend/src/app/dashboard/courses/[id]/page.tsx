@@ -222,6 +222,17 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
           <div className="flex items-center gap-1.5 shrink-0">
             <ShareButton id={course._id} type="course" />
             <button
+              onClick={() => router.push(`/dashboard/courses/${course._id}/export`)}
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--accent)] hover:bg-[var(--accent-subtle)] transition-all"
+              title="Export to PDF"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+            </button>
+            <button
               onClick={() => setCourseToDelete(course)}
               className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--danger)] hover:bg-[var(--danger)]/10 transition-all"
               title="Delete course"

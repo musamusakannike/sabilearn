@@ -52,6 +52,36 @@ export async function GET(request: Request) {
       if (!course) {
         return NextResponse.json({ error: "Course not found" }, { status: 404 });
       }
+
+      const enrich = searchParams.get("enrich") === "true";
+      if (enrich) {
+        const lessons = await db
+          .collection("lessons")
+          .find({ courseId, userId })
+          .toArray();
+
+        const lessonMap = new Map(lessons.map((l) => [l._id.toString(), l]));
+
+        if (course.outline && course.outline.modules) {
+          course.outline.modules = course.outline.modules.map((mod: any) => ({
+            ...mod,
+            lessons: mod.lessons.map((lesson: any) => {
+              if (lesson.generatedLessonId) {
+                const fullLesson = lessonMap.get(lesson.generatedLessonId);
+                if (fullLesson) {
+                  return {
+                    ...lesson,
+                    content: fullLesson.content,
+                    summary: fullLesson.summary,
+                  };
+                }
+              }
+              return lesson;
+            }),
+          }));
+        }
+      }
+
       return NextResponse.json({ success: true, course });
     }
 
