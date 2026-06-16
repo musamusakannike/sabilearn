@@ -62,8 +62,11 @@ export function DocumentPicker({
       fetchDocuments();
       setSelected(new Set(selectedIds));
       // Ping the OCR microservice health endpoint to wake it up (cold start recovery)
-      fetch("/api/documents/health").catch((err) => {
-        console.warn("[OCR Health] Failed to ping health endpoint:", err);
+      // Uses the shared singleton so it doesn't double-fire if OcrWarmup already ran
+      import("@/lib/ocr-health").then(({ checkOcrHealth }) => {
+        checkOcrHealth().catch((err) => {
+          console.warn("[OCR Health] Failed to ping health endpoint:", err);
+        });
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

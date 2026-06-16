@@ -1,7 +1,13 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { cn } from "@/lib/cn";
+import {
+  checkOcrHealth,
+  waitForOcrAwake,
+  onOcrHealthChange,
+  type OcrHealthStatus,
+} from "@/lib/ocr-health";
 
 export interface UploadedDoc {
   _id: string;
@@ -61,7 +67,15 @@ export function DocumentUpload({
   const [progress, setProgress] = useState(0);
   const [dragOver, setDragOver] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [ocrStatus, setOcrStatus] = useState<OcrHealthStatus>("unknown");
+  const [ocrRetryAttempt, setOcrRetryAttempt] = useState(0);
+  const abortRef = useRef<AbortController | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Keep local OCR status in sync with the shared singleton
+  useEffect(() => {
+    return onOcrHealthChange((s) => setOcrStatus(s));
+  }, []);
 
   const uploadFile = useCallback(
     async (file: File) => {
@@ -88,8 +102,48 @@ export function DocumentUpload({
         }
       }
 
+      // 3. OCR health check — make sure the microservice is awake before uploading
+      //    so the document doesn't end up stuck in "processing" indefinitely.
       setUploading(true);
       setProgress(0);
+      setOcrRetryAttempt(0);
+
+      const abort = new AbortController();
+      abortRef.current = abort;
+
+      // Check once first (may use cached "awake" status from the warmup ping)
+      let currentStatus = await checkOcrHealth();
+
+      if (currentStatus === "asleep") {
+        // Service is sleeping — wait, retrying every 10s, with live UI feedback
+        console.log("[DocumentUpload Component] OCR service is asleep. Waiting for it to wake up...");
+        const awake = await waitForOcrAwake(
+          10_000,
+          (attempt) => {
+            console.log(`[DocumentUpload Component] OCR wake-up retry attempt ${attempt}`);
+            setOcrRetryAttempt(attempt);
+          },
+          abort.signal
+        ).catch(() => false);
+
+        if (!awake || abort.signal.aborted) {
+          setUploading(false);
+          setOcrRetryAttempt(0);
+          abortRef.current = null;
+          return;
+        }
+      }
+
+      // If abort was triggered while checking, bail
+      if (abort.signal.aborted) {
+        setUploading(false);
+        setOcrRetryAttempt(0);
+        abortRef.current = null;
+        return;
+      }
+
+      // Reset the retry UI now that we're proceeding
+      setOcrRetryAttempt(0);
 
       console.log(`[DocumentUpload Component] Starting upload process for file: "${file.name}" (Type: ${file.type}, Size: ${file.size} bytes)`);
 
@@ -183,6 +237,8 @@ export function DocumentUpload({
       } finally {
         setUploading(false);
         setProgress(0);
+        setOcrRetryAttempt(0);
+        abortRef.current = null;
         if (fileInputRef.current) fileInputRef.current.value = "";
       }
     },
@@ -231,7 +287,13 @@ export function DocumentUpload({
           {uploading ? (
             <>
               <div className="w-3.5 h-3.5 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
-              <span>{progress}%</span>
+              <span>
+                {ocrRetryAttempt > 0
+                  ? `Waking up… (retry ${ocrRetryAttempt})`
+                  : ocrStatus === "checking"
+                  ? "Checking service…"
+                  : `${progress}%`}
+              </span>
             </>
           ) : (
             <>
@@ -253,7 +315,7 @@ export function DocumentUpload({
             </>
           )}
         </button>
-        {uploading && (
+        {uploading && ocrRetryAttempt === 0 && (
           <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--border)] rounded-full overflow-hidden">
             <div
               className="h-full bg-[var(--accent)] transition-all duration-300"
@@ -294,15 +356,33 @@ export function DocumentUpload({
         {uploading ? (
           <>
             <div className="w-10 h-10 rounded-full border-3 border-[var(--accent)] border-t-transparent animate-spin" />
-            <p className="text-sm text-[var(--text-secondary)]">
-              Uploading... {progress}%
-            </p>
-            <div className="w-full max-w-xs h-1.5 bg-[var(--border)] rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[var(--accent)] rounded-full transition-all duration-300"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
+            {ocrRetryAttempt > 0 ? (
+              <>
+                <p className="text-sm text-[var(--text-secondary)] font-medium">
+                  Waking up document reader…
+                </p>
+                <p className="text-xs text-[var(--text-muted)] text-center max-w-xs">
+                  The reading service is starting up. Retrying automatically every 10 s
+                  <span className="text-[var(--accent)] font-medium"> (attempt {ocrRetryAttempt})</span>.
+                </p>
+              </>
+            ) : ocrStatus === "checking" ? (
+              <p className="text-sm text-[var(--text-secondary)]">
+                Checking document reader…
+              </p>
+            ) : (
+              <>
+                <p className="text-sm text-[var(--text-secondary)]">
+                  Uploading... {progress}%
+                </p>
+                <div className="w-full max-w-xs h-1.5 bg-[var(--border)] rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[var(--accent)] rounded-full transition-all duration-300"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </>
+            )}
           </>
         ) : (
           <>
