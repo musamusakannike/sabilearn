@@ -38,6 +38,19 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20 MB
+const MAX_PDF_PAGES = 50;
+
+async function getPdfPageCount(file: File): Promise<number> {
+  try {
+    const text = await file.text();
+    const matches = text.match(/\/Type\s*\/Page[^s]/g);
+    return matches ? matches.length : 0;
+  } catch {
+    return 0;
+  }
+}
+
 export function DocumentUpload({
   onUploadComplete,
   onError,
@@ -47,15 +60,32 @@ export function DocumentUpload({
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [dragOver, setDragOver] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadFile = useCallback(
     async (file: File) => {
-      // 1. Front-end size check (20MB limit)
-      if (file.size > 20 * 1024 * 1024) {
+      setValidationError(null);
+
+      // 1. Size check — hard limit: 20 MB
+      if (file.size > MAX_FILE_SIZE) {
+        const msg = `File too large. Maximum size is 20 MB (your file: ${formatFileSize(file.size)}).`;
         console.warn(`[DocumentUpload Component] File "${file.name}" is too large: ${file.size} bytes`);
-        onError?.("File too large. Maximum size is 20 MB.");
+        setValidationError(msg);
+        onError?.(msg);
         return;
+      }
+
+      // 2. Page count check — hard limit: 50 pages (PDFs only)
+      if (file.type === "application/pdf") {
+        const pageCount = await getPdfPageCount(file);
+        if (pageCount > MAX_PDF_PAGES) {
+          const msg = `Too many pages. Maximum is 50 pages (this PDF has ${pageCount} pages).`;
+          console.warn(`[DocumentUpload Component] File "${file.name}" has ${pageCount} pages, exceeds limit of ${MAX_PDF_PAGES}`);
+          setValidationError(msg);
+          onError?.(msg);
+          return;
+        }
       }
 
       setUploading(true);
@@ -161,13 +191,14 @@ export function DocumentUpload({
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) uploadFile(file);
+    if (file) { setValidationError(null); uploadFile(file); }
   };
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
       setDragOver(false);
+      setValidationError(null);
       const file = e.dataTransfer.files[0];
       if (file) uploadFile(file);
     },
@@ -181,8 +212,7 @@ export function DocumentUpload({
 
   const handleDragLeave = () => setDragOver(false);
 
-  if (compact) {
-    return (
+  if (compact) {    return (
       <div className={cn("relative", className)}>
         <input
           ref={fileInputRef}
@@ -236,19 +266,21 @@ export function DocumentUpload({
   }
 
   return (
-    <div
-      className={cn(
-        "relative rounded-xl border-2 border-dashed transition-all duration-200",
-        dragOver
-          ? "border-[var(--accent)] bg-[var(--accent-subtle)]"
-          : "border-[var(--border)] hover:border-[var(--text-muted)]",
-        uploading && "pointer-events-none opacity-70",
-        className
-      )}
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-    >
+    <div className={cn("space-y-2", className)}>
+      <div
+        className={cn(
+          "relative rounded-xl border-2 border-dashed transition-all duration-200",
+          dragOver
+            ? "border-[var(--accent)] bg-[var(--accent-subtle)]"
+            : validationError
+              ? "border-[var(--danger)]/40 hover:border-[var(--danger)]/60"
+              : "border-[var(--border)] hover:border-[var(--text-muted)]",
+          uploading && "pointer-events-none opacity-70",
+        )}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+      >
       <input
         ref={fileInputRef}
         type="file"
@@ -304,11 +336,27 @@ export function DocumentUpload({
               </span>
             </div>
             <p className="text-xs text-[var(--text-muted)]">
-              PDF, DOCX, images (PNG, JPEG, WebP), TXT — up to 20 MB
+              PDF, DOCX, images (PNG, JPEG, WebP), TXT — up to{" "}
+              <span className="text-[var(--accent)] font-semibold">20 MB</span>
+              {" "}·{" "}
+              <span className="text-[var(--accent)] font-semibold">50 pages</span>{" "}max
             </p>
           </>
         )}
       </div>
+    </div>
+
+      {/* Validation error banner */}
+      {validationError && (
+        <div className="flex items-start gap-2 px-3 py-2.5 rounded-lg bg-[var(--danger)]/8 border border-[var(--danger)]/20 text-xs text-[var(--danger)]">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 mt-px">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          <span>{validationError}</span>
+        </div>
+      )}
     </div>
   );
 }

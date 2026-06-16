@@ -11,6 +11,7 @@ import {
   Clock,
   FileImage,
   File,
+  Info,
 } from 'lucide-react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { useRouter } from 'expo-router';
@@ -215,10 +216,30 @@ export default function DocumentsScreen() {
     if (result.canceled || !result.assets?.length) return;
     const asset = result.assets[0];
 
-    // File size check (20MB limit)
-    if (asset.size && asset.size > 20 * 1024 * 1024) {
-      toast.error('File too large. Maximum size is 20 MB.');
+    // File size check — hard limit: 20 MB
+    const MAX_BYTES = 20 * 1024 * 1024;
+    if (asset.size && asset.size > MAX_BYTES) {
+      haptics.error();
+      toast.error('File too large', `Maximum upload size is 20 MB. Your file is ${formatBytes(asset.size)}.`);
       return;
+    }
+
+    // Page count check — hard limit: 50 pages (PDF only)
+    if (asset.mimeType === 'application/pdf') {
+      try {
+        const fileRes = await fetch(asset.uri);
+        const text = await fileRes.text();
+        // Count unique /Page dictionary entries; each real page has a /Type /Page entry
+        const pageMatches = text.match(/\/Type\s*\/Page[^s]/g);
+        const pageCount = pageMatches ? pageMatches.length : 0;
+        if (pageCount > 50) {
+          haptics.error();
+          toast.error('Too many pages', `Maximum is 50 pages. This PDF has ${pageCount} pages.`);
+          return;
+        }
+      } catch {
+        // If we can't read the file at all, let the server validate
+      }
     }
 
     haptics.medium();
@@ -246,6 +267,18 @@ export default function DocumentsScreen() {
         </Button>
       </View>
 
+      {/* Upload limits hint */}
+      <View style={[styles.limitBanner, { backgroundColor: `${c.accent}10`, borderColor: `${c.accent}25` }]}>
+        <Info size={12} color={c.accent} strokeWidth={2} />
+        <Text style={[styles.limitText, { color: c.textMuted, fontFamily: typography.body.regular }]}>
+          Max{' '}
+          <Text style={{ color: c.accent, fontFamily: typography.body.semiBold }}>20 MB</Text>
+          {' '}· up to{' '}
+          <Text style={{ color: c.accent, fontFamily: typography.body.semiBold }}>50 pages</Text>
+          {' '}· PDF, DOCX, TXT, images
+        </Text>
+      </View>
+
       {isLoading ? (
         <View style={styles.skeletons}>
           {Array.from({ length: 3 }).map((_, i) => <CardSkeleton key={i} />)}
@@ -263,7 +296,7 @@ export default function DocumentsScreen() {
               <EmptyState
                 icon={<FileText size={24} color={c.accent} strokeWidth={1.5} />}
                 title="No documents"
-                message="Upload PDFs or text files to use as context for AI answers."
+                message="Upload PDFs, DOCX, or text files as AI context. Max 20 MB · 50 pages."
                 actionLabel="Upload document"
                 onAction={handlePick}
               />
@@ -355,4 +388,20 @@ const styles = StyleSheet.create({
   },
   metaText: { fontSize: fontSize['2xs'] },
   dot: { fontSize: fontSize.xs },
+  limitBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.md,
+    marginBottom: spacing.xs,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.md,
+    borderWidth: 1,
+  },
+  limitText: {
+    fontSize: fontSize['2xs'],
+    lineHeight: 16,
+  },
 });

@@ -436,17 +436,6 @@ export default function HomeScreen() {
             })}
           </View>
 
-          {/* Mode Subtitle Info */}
-          <Text style={{ fontSize: 9, color: c.textMuted, fontFamily: typography.body.regular, marginHorizontal: spacing.xl, marginBottom: spacing.xs }}>
-            {activeMode === 'course'
-              ? '📚 Course: Generates a full structured learning course.'
-              : activeMode === 'quiz'
-              ? '📝 Quiz: Generates a 5-question practice quiz to test recall.'
-              : activeMode === 'video'
-              ? '🎥 Video: Generates a voiceover summary slideshow.'
-              : '✨ Ask AI: Ask academic questions or summarize text.'}
-          </Text>
-
           {/* Input Row */}
           <View style={styles.inputRow}>
             <Pressable
