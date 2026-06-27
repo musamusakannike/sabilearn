@@ -13,7 +13,7 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { KeyboardStickyView } from 'react-native-keyboard-controller';
+
 import Animated, {
   FadeInDown,
   FadeInUp,
@@ -302,6 +302,11 @@ export default function HomeScreen() {
   };
 
   return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+    >
     <SafeAreaView style={[styles.container, { backgroundColor: c.bgPrimary }]}>
       {/* Header */}
       <View style={[styles.header]}>
@@ -378,7 +383,7 @@ export default function HomeScreen() {
       </ScrollView>
 
       {/* Input Bar */}
-      <KeyboardStickyView offset={{ closed: 0, opened: 0 }}>
+      <View>
         <View style={{ backgroundColor: c.bgPrimary, borderTopWidth: 1, borderTopColor: c.borderSubtle, paddingTop: spacing.sm, paddingBottom: Platform.OS === 'ios' ? spacing.sm : spacing.xs }}>
           {/* Segment Bar */}
           <View
@@ -486,8 +491,9 @@ export default function HomeScreen() {
             </AnimatedPressable>
           </View>
         </View>
-      </KeyboardStickyView>
+      </View>
     </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -665,6 +671,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     maxHeight: 120,
     minHeight: 40,
+    textAlignVertical: 'top',
   },
   sendBtn: {
     width: 40,

@@ -39,6 +39,11 @@ function DashboardContent() {
   const [uploadError, setUploadError] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
+  // Quiz question count (matches the sidebar quizzes page options)
+  const [numQuestions, setNumQuestions] = useState(5);
+  const [showQuizUpsell, setShowQuizUpsell] = useState(false);
+  const isPremium = (user as any)?.premium ?? false;
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -234,7 +239,7 @@ function DashboardContent() {
           body: JSON.stringify({
             topic: userInput,
             documentIds: docIds,
-            numQuestions: 5,
+            numQuestions,
           }),
         });
         const data = await res.json();
@@ -246,7 +251,7 @@ function DashboardContent() {
             data.quiz?.title || userInput || "your new quiz";
           addMessage(
             "assistant",
-            `✅ **Quiz created:** "${quizTitle}"\n\nYour quiz with 5 questions is ready. Test your knowledge now.`,
+            `✅ **Quiz created:** "${quizTitle}"\n\nYour quiz with ${numQuestions} questions is ready. Test your knowledge now.`,
             "quiz-created",
             { id: quizId, title: quizTitle }
           );
@@ -672,6 +677,72 @@ function DashboardContent() {
                 ? "Video Mode (Beta): Transforms concepts into voiceover slides. Best for visual learners."
                 : "Ask AI: Clarify concepts, ask academic questions, or search summaries."}
             </p>
+          )}
+
+          {/* Quiz question count selector — only shown when Quiz mode is active */}
+          {activeMode === "quiz" && (
+            <div className="mb-3 px-1">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2">
+                Number of Questions
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {[5, 10, 15].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => setNumQuestions(num)}
+                    disabled={loading}
+                    className={cn(
+                      "px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border",
+                      numQuestions === num
+                        ? "bg-[var(--accent)] text-[var(--bg-primary)] border-[var(--accent)] shadow-sm"
+                        : "bg-[var(--bg-secondary)] text-[var(--text-secondary)] border-[var(--border)] hover:border-[var(--text-muted)]"
+                    )}
+                  >
+                    {num}Q
+                  </button>
+                ))}
+                {[30, 50, 100].map((num) => {
+                  const isLocked = !isPremium;
+                  return (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => {
+                        if (isLocked) {
+                          setShowQuizUpsell(true);
+                        } else {
+                          setNumQuestions(num);
+                        }
+                      }}
+                      disabled={loading}
+                      className={cn(
+                        "px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border relative",
+                        numQuestions === num
+                          ? "bg-[var(--accent)] text-[var(--bg-primary)] border-[var(--accent)] shadow-sm"
+                          : isLocked
+                          ? "bg-[var(--bg-secondary)]/50 text-[var(--text-muted)] border-[var(--border)] hover:border-[var(--accent)]/40"
+                          : "bg-[var(--bg-secondary)] text-[var(--text-secondary)] border-[var(--border)] hover:border-[var(--text-muted)]"
+                      )}
+                    >
+                      {num}Q
+                      {isLocked && (
+                        <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[var(--accent)] rounded-full flex items-center justify-center">
+                          <svg className="w-2.5 h-2.5 text-[var(--bg-primary)]" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                          </svg>
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+              {showQuizUpsell && (
+                <p className="text-[10px] text-[var(--accent)] mt-1.5 px-0.5">
+                  🔒 Upgrade to Premium to generate up to 100 questions per quiz.
+                </p>
+              )}
+            </div>
           )}
 
           {/* Attached docs */}

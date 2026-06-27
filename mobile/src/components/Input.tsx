@@ -37,6 +37,7 @@ export function Input({
   iconRight,
   containerStyle,
   secureTextEntry,
+  multiline,
   ...props
 }: InputProps) {
   const { c } = useTheme();
@@ -93,6 +94,7 @@ export function Input({
         <TextInput
           ref={inputRef}
           {...props}
+          multiline={multiline}
           secureTextEntry={isPassword && !showPassword}
           onFocus={handleFocus}
           onBlur={handleBlur}
@@ -103,6 +105,7 @@ export function Input({
               color: c.textPrimary,
               fontFamily: typography.body.regular,
             },
+            multiline && { textAlignVertical: 'top', paddingTop: spacing.md },
             iconLeft && { paddingLeft: 0 },
             (iconRight || isPassword) && { paddingRight: 0 },
           ]}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -8,6 +8,8 @@ import { useAuth } from "@/lib/auth-context";
 import { cn } from "@/lib/cn";
 import { useTheme } from "@/components/ThemeProvider";
 import { BetaBadge } from "@/components/BetaBadge";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
 
 const primaryNavItems = [
   {
@@ -108,42 +110,26 @@ export function DashboardSidebar() {
     (item) => pathname === item.href || pathname.startsWith(item.href + "/")
   );
   const [moreOpen, setMoreOpen] = useState(isOnSecondaryRoute);
+  
+  const sidebarWidth = 300;
 
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  return (
+  const handleDragEnd = (event: any, info: any) => {
+    const threshold = sidebarWidth / 2;
+    const isSwipeLeft = info.velocity.x < -300;
+    const isSwipeRight = info.velocity.x > 300;
+    
+    // Sidebar slides in from the right, so dragging LEFT = closing
+    if (isSwipeLeft || info.offset.x < -threshold) {
+      setMobileOpen(false);
+    }
+  };
+
+  const navContent = (
     <>
-      {/* Mobile toggle */}
-      <button
-        onClick={() => setMobileOpen(true)}
-        className="fixed top-4 right-4 z-50 md:hidden w-10 h-10 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border)] flex items-center justify-center animate-pulse-border"
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="18" x2="21" y2="18" />
-        </svg>
-      </button>
-
-      {/* Mobile overlay */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
-
-      <aside
-        className={cn(
-          "h-full flex flex-col border-r border-[var(--border-subtle)] bg-[var(--bg-secondary)] transition-all duration-200",
-          "fixed md:relative z-50 md:z-auto",
-          "md:translate-x-0",
-          mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
-          collapsed ? "w-16" : "w-60"
-        )}
-      >
       {/* Logo */}
       <div className="flex items-center gap-2 px-4 py-5 border-b border-[var(--border-subtle)]">
         <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0">
@@ -156,33 +142,39 @@ export function DashboardSidebar() {
             className="object-contain w-full h-full"
           />
         </div>
-        {!collapsed && (
+        {(!collapsed || (typeof window !== 'undefined' && window.innerWidth < 768)) && (
           <span className="font-[family-name:var(--font-display)] text-sm font-bold">Sabi Learn</span>
         )}
       </div>
 
       {/* Nav */}
       <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto">
-        {primaryNavItems.map((item) => {
+        {primaryNavItems.map((item, idx) => {
           const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href));
           return (
-            <Link
+            <motion.div
               key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all",
-                isActive
-                  ? "bg-[var(--accent-muted)] text-[var(--accent)]"
-                  : "text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
-              )}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: idx * 0.05 }}
             >
-              <span className="flex-shrink-0">{item.icon}</span>
-              {!collapsed && (
-                <span className="font-medium flex items-center gap-2">
-                  {item.label}
-                </span>
-              )}
-            </Link>
+              <Link
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all",
+                  isActive
+                    ? "bg-[var(--accent-muted)] text-[var(--accent)]"
+                    : "text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
+                )}
+              >
+                <span className="flex-shrink-0">{item.icon}</span>
+                {(!collapsed || (typeof window !== 'undefined' && window.innerWidth < 768)) && (
+                  <span className="font-medium flex items-center gap-2">
+                    {item.label}
+                  </span>
+                )}
+              </Link>
+            </motion.div>
           );
         })}
 
@@ -203,7 +195,7 @@ export function DashboardSidebar() {
               <circle cx="5" cy="12" r="1" />
             </svg>
           </span>
-          {!collapsed && (
+          {(!collapsed || (typeof window !== 'undefined' && window.innerWidth < 768)) && (
             <span className="font-medium flex-1 text-left flex items-center justify-between">
               More
               <svg
@@ -224,28 +216,34 @@ export function DashboardSidebar() {
         </button>
 
         {/* Secondary nav items */}
-        {moreOpen && secondaryNavItems.map((item) => {
+        {moreOpen && secondaryNavItems.map((item, idx) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
           return (
-            <Link
+            <motion.div
               key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all",
-                !collapsed && "pl-6",
-                isActive
-                  ? "bg-[var(--accent-muted)] text-[var(--accent)]"
-                  : "text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
-              )}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: (idx + primaryNavItems.length) * 0.05 }}
             >
-              <span className="flex-shrink-0">{item.icon}</span>
-              {!collapsed && (
-                <span className="font-medium flex items-center gap-2">
-                  {item.label}
-                  {item.label === "Videos" && <BetaBadge />}
-                </span>
-              )}
-            </Link>
+              <Link
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all",
+                  (!collapsed || (typeof window !== 'undefined' && window.innerWidth < 768)) && "pl-6",
+                  isActive
+                    ? "bg-[var(--accent-muted)] text-[var(--accent)]"
+                    : "text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
+                )}
+              >
+                <span className="flex-shrink-0">{item.icon}</span>
+                {(!collapsed || (typeof window !== 'undefined' && window.innerWidth < 768)) && (
+                  <span className="font-medium flex items-center gap-2">
+                    {item.label}
+                    {item.label === "Videos" && <BetaBadge />}
+                  </span>
+                )}
+              </Link>
+            </motion.div>
           );
         })}
       </nav>
@@ -279,7 +277,7 @@ export function DashboardSidebar() {
               </svg>
             )}
           </span>
-          {!collapsed && (
+          {(!collapsed || (typeof window !== 'undefined' && window.innerWidth < 768)) && (
             <span className="font-medium">
               {theme === "dark" ? "Light Mode" : "Dark Mode"}
             </span>
@@ -293,14 +291,14 @@ export function DashboardSidebar() {
           <div className="w-8 h-8 rounded-full bg-[var(--bg-elevated)] flex items-center justify-center flex-shrink-0 text-xs font-bold text-[var(--accent)]">
             {user?.name?.charAt(0)?.toUpperCase() || "U"}
           </div>
-          {!collapsed && (
+          {(!collapsed || (typeof window !== 'undefined' && window.innerWidth < 768)) && (
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium truncate">{user?.name}</p>
               <p className="text-xs text-[var(--text-muted)] truncate">{user?.premium ? "Premium" : "Free plan"}</p>
             </div>
           )}
         </div>
-        {!collapsed && (
+        {(!collapsed || (typeof window !== 'undefined' && window.innerWidth < 768)) && (
           <button
             onClick={logout}
             className="mt-3 w-full text-left text-xs text-[var(--text-muted)] hover:text-[var(--danger)] transition-colors px-1"
@@ -309,7 +307,111 @@ export function DashboardSidebar() {
           </button>
         )}
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Invisible screen edge listener for swipe to pull sidebar open (right to left) */}
+      {!mobileOpen && (
+        <div 
+          className="fixed top-0 right-0 w-6 h-full z-50 md:hidden"
+          style={{ pointerEvents: "auto" }}
+          onTouchStart={(e) => {
+            const touchStartX = e.touches[0].clientX;
+            const handleTouchMove = (moveEvent: TouchEvent) => {
+              const deltaX = moveEvent.touches[0].clientX - touchStartX;
+              if (deltaX < -50) {
+                setMobileOpen(true);
+                document.removeEventListener("touchmove", handleTouchMove);
+              }
+            };
+            document.addEventListener("touchmove", handleTouchMove);
+            document.addEventListener("touchend", () => {
+              document.removeEventListener("touchmove", handleTouchMove);
+            }, { once: true });
+          }}
+        />
+      )}
+
+      {/* Mobile capsule toggle button */}
+      <button
+        onClick={() => setMobileOpen(!mobileOpen)}
+        className="fixed top-6 right-6 z-50 md:hidden flex items-center gap-2 rounded-full py-2 px-4 bg-[var(--bg-secondary)]/80 backdrop-blur-md border border-[var(--border)] shadow-[0_0_15px_rgba(232,168,56,0.15)] transition-all active:scale-95"
+      >
+        <div className="relative w-12 h-3.5 overflow-hidden flex items-center justify-end">
+          <AnimatePresence mode="wait">
+            {mobileOpen ? (
+              <motion.span
+                key="close"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="text-[10px] font-mono tracking-widest text-[var(--text-secondary)] absolute right-0"
+              >
+                CLOSE
+              </motion.span>
+            ) : (
+              <motion.span
+                key="menu"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="text-[10px] font-mono tracking-widest text-[var(--text-secondary)] absolute right-0"
+              >
+                MENU
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </div>
+        {mobileOpen ? (
+          <X className="w-4 h-4 text-[var(--text-primary)]" />
+        ) : (
+          <Menu className="w-4 h-4 text-[var(--text-primary)]" />
+        )}
+      </button>
+
+      {/* Mobile drawer overlay */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 bg-black md:hidden"
+            onClick={() => setMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Slide-out Sidebar Panel */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.aside
+            drag="x"
+            dragConstraints={{ left: 0, right: sidebarWidth }}
+            dragElastic={0.1}
+            onDragEnd={handleDragEnd}
+            initial={{ x: sidebarWidth }}
+            animate={{ x: 0 }}
+            exit={{ x: sidebarWidth }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed top-0 right-0 h-full w-[300px] sm:w-[400px] z-40 flex flex-col bg-[var(--bg-primary)] border-l border-[var(--border-subtle)] shadow-2xl md:hidden"
+          >
+            {navContent}
+          </motion.aside>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop static left sidebar */}
+      <aside
+        className={cn(
+          "h-full hidden md:flex flex-col border-r border-[var(--border-subtle)] bg-[var(--bg-secondary)] transition-all duration-200 flex-shrink-0",
+          collapsed ? "w-16" : "w-60"
+        )}
+      >
+        {navContent}
+      </aside>
     </>
   );
 }

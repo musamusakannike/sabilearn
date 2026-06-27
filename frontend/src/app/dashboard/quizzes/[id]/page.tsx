@@ -4,6 +4,7 @@ import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { ShareButton } from "@/components/ShareButton";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Question {
   question: string;
@@ -21,6 +22,148 @@ interface Quiz {
 }
 
 type FeedbackMode = "traditional" | "immediate";
+
+// ─── 3D Flippable Flashcard Component ──────────────────────────────────────────
+interface FlashCardProps {
+  question: string;
+  correctAnswer: string;
+  userAnswer: string;
+  explanation: string;
+  isCorrect: boolean;
+  isBookmarked: boolean;
+  bookmarkBusy: boolean;
+  onToggleBookmark: () => void;
+}
+
+function FlashCard({
+  question,
+  correctAnswer,
+  userAnswer,
+  explanation,
+  isCorrect,
+  isBookmarked,
+  bookmarkBusy,
+  onToggleBookmark,
+}: FlashCardProps) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleDragEnd = (event: any, info: any) => {
+    const swipeThreshold = 80;
+    const velocityThreshold = 400;
+    if (Math.abs(info.offset.x) > swipeThreshold || Math.abs(info.velocity.x) > velocityThreshold) {
+      setIsFlipped((f) => !f);
+    }
+  };
+
+  return (
+    <div className="w-full">
+      {/* Your answer label */}
+      <div className={cn(
+        "flex items-center justify-between gap-3 mb-3 px-1",
+      )}>
+        <div className="flex items-center gap-2">
+          <div className={cn(
+            "w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0",
+            isCorrect ? "bg-[var(--success)]/15" : "bg-[var(--danger)]/15"
+          )}>
+            {isCorrect ? (
+              <svg className="w-3 h-3 text-[var(--success)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+              </svg>
+            ) : (
+              <svg className="w-3 h-3 text-[var(--danger)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            )}
+          </div>
+          <span className="text-xs text-[var(--text-muted)]">
+            Your answer: <span className={cn("font-semibold", isCorrect ? "text-[var(--success)]" : "text-[var(--danger)]")}>{userAnswer}</span>
+          </span>
+        </div>
+        {!isCorrect && (
+          <button
+            onClick={onToggleBookmark}
+            disabled={bookmarkBusy}
+            aria-label={isBookmarked ? "Remove bookmark" : "Bookmark question"}
+            className={cn(
+              "p-1.5 rounded-lg transition-colors disabled:opacity-50",
+              isBookmarked
+                ? "text-[var(--accent)]"
+                : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+            )}
+          >
+            <svg className="w-4 h-4" fill={isBookmarked ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+          </button>
+        )}
+      </div>
+
+      {/* 3D Flashcard */}
+      <div
+        className="relative w-full max-w-lg mx-auto cursor-pointer select-none"
+        style={{ perspective: "1000px", height: "200px" }}
+        onClick={() => setIsFlipped((f) => !f)}
+      >
+        <motion.div
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.3}
+          onDragEnd={handleDragEnd}
+          className="relative w-full h-full"
+          style={{ transformStyle: "preserve-3d" }}
+          animate={{ rotateY: isFlipped ? 180 : 0 }}
+          transition={{ type: "spring", damping: 20, stiffness: 180 }}
+          whileHover={{ scale: 1.01 }}
+        >
+          {/* Front — Question */}
+          <div
+            className={cn(
+              "absolute inset-0 flex flex-col items-center justify-center p-6 text-center rounded-2xl border",
+              "bg-[var(--bg-secondary)] border-[var(--border)]"
+            )}
+            style={{ backfaceVisibility: "hidden" }}
+          >
+            <p className="text-base sm:text-lg font-medium tracking-tight text-[var(--text-primary)] leading-snug">
+              {question}
+            </p>
+            <p className="text-xs font-mono tracking-wide text-[var(--text-muted)] mt-4 opacity-75">
+              touch to see the answer
+            </p>
+          </div>
+
+          {/* Back — Correct Answer */}
+          <div
+            className={cn(
+              "absolute inset-0 flex flex-col items-center justify-center p-6 text-center rounded-2xl border",
+              isCorrect
+                ? "bg-[var(--success)]/8 border-[var(--success)]/30"
+                : "bg-[var(--accent-subtle)] border-[var(--accent)]/20"
+            )}
+            style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+          >
+            <p className="text-[10px] font-mono tracking-widest text-[var(--text-muted)] mb-2 uppercase opacity-70">
+              Correct Answer
+            </p>
+            <p className="text-lg sm:text-xl font-medium tracking-tight leading-snug" style={{ color: isCorrect ? "var(--success)" : "var(--accent)" }}>
+              {correctAnswer}
+            </p>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Explanation — below card */}
+      {explanation && (
+        <div className="mt-3 px-1">
+          <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+            <span className="font-semibold text-[var(--text-muted)] uppercase tracking-wide text-[10px]">Explanation </span>
+            {explanation}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function QuizTakePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -368,37 +511,22 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
             </p>
           )}
 
-          {/* Review */}
-          <div className="text-left space-y-4 mt-4">
+          {/* Review — 3D Flippable Flashcards */}
+          <div className="text-left space-y-6 mt-4">
             {quiz.questions.map((q, i) => {
               const isCorrect = answers[i]?.toLowerCase().trim() === q.answer.toLowerCase().trim();
               return (
-                <div key={i} className={cn("p-4 rounded-xl border", isCorrect ? "border-[var(--success)]/30 bg-[var(--success)]/5" : "border-[var(--danger)]/30 bg-[var(--danger)]/5")}>
-                  <div className="flex items-start justify-between gap-3">
-                    <p className="text-sm font-medium mb-1">{q.question}</p>
-                    {!isCorrect && (
-                      <button
-                        onClick={() => toggleBookmark(i)}
-                        disabled={bookmarkBusy === i}
-                        aria-label={bookmarked[i] ? "Remove bookmark" : "Bookmark question"}
-                        className={cn(
-                          "flex-shrink-0 p-1.5 rounded-lg transition-colors disabled:opacity-50",
-                          bookmarked[i]
-                            ? "text-[var(--accent)]"
-                            : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
-                        )}
-                      >
-                        <svg className="w-4 h-4" fill={bookmarked[i] ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                        </svg>
-                      </button>
-                    )}
-                  </div>
-                  <p className="text-xs text-[var(--text-muted)]">
-                    Your answer: {answers[i] || "(none)"} • Correct: {q.answer}
-                  </p>
-                  <p className="text-xs text-[var(--text-secondary)] mt-2">{q.explanation}</p>
-                </div>
+                <FlashCard
+                  key={i}
+                  question={q.question}
+                  correctAnswer={q.answer}
+                  userAnswer={answers[i] || "(none)"}
+                  explanation={q.explanation}
+                  isCorrect={isCorrect}
+                  isBookmarked={!!bookmarked[i]}
+                  bookmarkBusy={bookmarkBusy === i}
+                  onToggleBookmark={() => toggleBookmark(i)}
+                />
               );
             })}
           </div>
