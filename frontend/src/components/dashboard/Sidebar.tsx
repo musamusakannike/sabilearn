@@ -8,7 +8,7 @@ import { useAuth } from "@/lib/auth-context";
 import { cn } from "@/lib/cn";
 import { useTheme } from "@/components/ThemeProvider";
 import { BetaBadge } from "@/components/BetaBadge";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 
 const primaryNavItems = [
