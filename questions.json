@@ -1,0 +1,1089 @@
+[
+  {
+    "question": "What is the primary function of a machine shop?",
+    "type": "multiple-choice",
+    "options": [
+      "Pouring molten metal into moulds to produce metal components",
+      "Plastically deforming metal into a predetermined shape using compressive forces",
+      "Shaping, cutting, drilling, and finishing raw materials to produce precise mechanical components",
+      "Joining materials permanently through the application of heat and pressure"
+    ],
+    "answer": "Shaping, cutting, drilling, and finishing raw materials to produce precise mechanical components",
+    "explanation": "A machine shop is a specialised facility where raw materials are shaped, cut, drilled, milled, ground, and finished to produce precise mechanical components."
+  },
+  {
+    "question": "A fitting shop primarily focuses on shaping and machining raw metal stock into initial geometries.",
+    "type": "true-false",
+    "answer": "false",
+    "explanation": "Unlike a machine shop, a fitting shop deals with the final adjustment and assembly of already machined, forged, or cast components into functional units."
+  },
+  {
+    "question": "_____ is defined as the process of plastically deforming a metal into a predetermined shape by applying compressive forces without the removal of material.",
+    "type": "fill-in-the-blank",
+    "answer": "Forging",
+    "explanation": "Forging shapes metal by hammering, pressing, bending, or drawing operations using compressive forces, without removing material like in machining."
+  },
+  {
+    "question": "Which type of forging is performed below the material's recrystallisation temperature to produce a smooth surface finish and close tolerances?",
+    "type": "multiple-choice",
+    "options": ["Hot forging", "Cold forging", "Drop forging", "Press forging"],
+    "answer": "Cold forging",
+    "explanation": "Cold forging is performed below the recrystallisation temperature (generally at room temperature) and is suitable for small parts requiring a smooth finish and close tolerances."
+  },
+  {
+    "question": "Foundry work is capable of producing complex and intricate shapes with internal cavities.",
+    "type": "true-false",
+    "answer": "true",
+    "explanation": "The advantages of foundry work include its capability to produce complex and intricate shapes, including hollow sections and internal cavities, using cores and moulds."
+  },
+  {
+    "question": "Which of the following is an example of a solid-state welding process (welding without melting)?",
+    "type": "multiple-choice",
+    "options": [
+      "Shielded metal arc welding",
+      "Friction stir welding",
+      "Diffusion bonding",
+      "Oxy-acetylene welding"
+    ],
+    "answer": "Diffusion bonding",
+    "explanation": "According to the document, solid-state welding processes, which occur without melting the base materials, include diffusion bonding, cold welding, and explosion welding."
+  },
+  {
+    "question": "How is a 'trivial accident' defined in the context of workshop safety?",
+    "type": "multiple-choice",
+    "options": [
+      "An incident in which no injury occurs but could have under slightly different circumstances",
+      "An accident that causes severe injury requiring immediate medical attention",
+      "An accident that causes minor injury to a worker or minimal damage to equipment",
+      "An accident that results in very severe injury or permanent disability"
+    ],
+    "answer": "An accident that causes minor injury to a worker or minimal damage to equipment",
+    "explanation": "The document defines a trivial accident as one that causes minor injury to a worker or minimal damage to equipment, distinguishing it from near-miss, minor, serious, and fatal accidents."
+  },
+  {
+    "question": "_____ involves the use of specialised computer software to create detailed 2D drawings and 3D models of components and assemblies.",
+    "type": "fill-in-the-blank",
+    "answer": "CAD",
+    "explanation": "Computer-Aided Design (CAD) uses software to create accurate 2D and 3D representations that provide precise geometrical data and material specifications for engineering products."
+  },
+  {
+    "question": "What is a potential consequence of exposure to long-term noise in a workshop, and which of the following is a device used to prevent it?",
+    "type": "multiple-choice",
+    "options": [
+      "Loss of sight; welding goggles",
+      "Respiratory issues; dust mask",
+      "Hearing impairment; earmuffs",
+      "Skin burns; cotton gloves"
+    ],
+    "answer": "Hearing impairment; earmuffs",
+    "explanation": "Exposure to long-term noise could result in hearing impairment or complete hearing loss, and earmuffs are a common type of ear protector used to reduce noise intensity[cite: 382, 383]."
+  },
+  {
+    "question": "It is acceptable to remove or bypass machine guards if it speeds up the production process.",
+    "type": "true-false",
+    "answer": "false",
+    "explanation": "According to the essential workshop safety rules, workers must keep guards in place and never remove or bypass machine guards[cite: 453]."
+  },
+  {
+    "question": "The three essentials for combustion, often represented in a triangle, are fuel, air, and _____.",
+    "type": "fill-in-the-blank",
+    "answer": "Heat",
+    "explanation": "The triangle of fire illustrates that the essentials for combustion comprise fuel, air, and heat (the means of ignition)[cite: 479, 480, 481, 482]."
+  },
+  {
+    "question": "Which type of fire involves energised electrical equipment such as motors, transformers, and appliances?",
+    "type": "multiple-choice",
+    "options": ["Class A fire", "Class B fire", "Class C fire", "Class D fire"],
+    "answer": "Class C fire",
+    "explanation": "A Class C fire is a fire type that involves energised electrical equipment such as motors, transformers and appliances[cite: 505]."
+  },
+  {
+    "question": "Water and foam fire extinguishers are highly effective and recommended for putting out fires involving energised electrical equipment.",
+    "type": "true-false",
+    "answer": "false",
+    "explanation": "Water and foam extinguishers should not be used on Class C fires (energised electrical equipment) because the water could create a shock hazard, posing a serious risk to the operator[cite: 516]."
+  },
+  {
+    "question": "Which type of fire extinguisher is specifically designed for Class K fires involving cooking oils and fats?",
+    "type": "multiple-choice",
+    "options": [
+      "Carbon Dioxide Fire Extinguishers",
+      "Wet Chemical Fire Extinguishers",
+      "Dry Powder Fire Extinguishers",
+      "Halogenated Fire Extinguishers"
+    ],
+    "answer": "Wet Chemical Fire Extinguishers",
+    "explanation": "Wet chemical extinguishers are specifically designed for Class K fires, which involve cooking oils and fats commonly found in modern, high-efficiency deep-fat fryers[cite: 530]."
+  },
+  {
+    "question": "Dry powder fire extinguishers are specifically designed for Class _____ fires, which involve combustible metals like magnesium, aluminium, and titanium.",
+    "type": "fill-in-the-blank",
+    "answer": "D",
+    "explanation": "Dry powder extinguishers are specifically designed for Class D fires, which involve combustible metals such as magnesium, aluminium, and titanium[cite: 540]."
+  },
+  {
+    "question": "When an injury occurs in the workshop, what is the recommended timeframe for an accident investigation to take place?",
+    "type": "multiple-choice",
+    "options": [
+      "Within one week of occurrence",
+      "Only after the worker has fully recovered",
+      "As soon as possible, most times within 24 hours of occurrence",
+      "At the end of the fiscal year"
+    ],
+    "answer": "As soon as possible, most times within 24 hours of occurrence",
+    "explanation": "It is advisable that when injuries occur, they are investigated as soon as possible, which is most times within 24 hours of occurrence[cite: 606]."
+  },
+  {
+    "question": "What is the primary function of a bench work in an engineering workshop?",
+    "type": "multiple-choice",
+    "options": [
+      "To completely replace machining operations for all components",
+      "To manufacture components strictly using automated machine tools",
+      "To produce the final accuracy of mating surfaces manually, complementing machining operations",
+      "To rapidly produce large quantities of components from raw materials"
+    ],
+    "answer": "To produce the final accuracy of mating surfaces manually, complementing machining operations",
+    "explanation": "Bench work acts as a complementary process to machining, ensuring final accuracy and proper fit when machine operations alone cannot deliver the required precision."
+  },
+  {
+    "question": "Primary shaping processes are characterized by the significant removal of material to achieve the final shape.",
+    "type": "true-false",
+    "answer": "false",
+    "explanation": "Primary shaping processes convert raw materials into semi-finished or finished products with minimal residues and negligible loss of material volume."
+  },
+  {
+    "question": "In metal forming, _____ is the principle where the applied stress exceeds the elastic limit, causing the metal to undergo permanent change without fracture.",
+    "type": "fill-in-the-blank",
+    "answer": "Plastic deformation",
+    "explanation": "Plastic deformation in metal forming is based on the principle of plasticity; when stress exceeds the elastic limit, the metal deforms permanently without fracturing."
+  },
+  {
+    "question": "Which of the following is a characteristic of hot working in metal forming?",
+    "type": "multiple-choice",
+    "options": [
+      "It is carried out below the re-crystallisation temperature.",
+      "It provides a smooth surface finish with good dimensional accuracy.",
+      "It requires higher forces and power compared to cold working.",
+      "It allows for large deformations to be achieved without fracture."
+    ],
+    "answer": "It allows for large deformations to be achieved without fracture.",
+    "explanation": "Hot worked metals have high ductility, low resistance to deformation, and allow for large deformations without fracture."
+  },
+  {
+    "question": "Temporary joints can be assembled and dismantled repeatedly without causing damage to the components or the joining device.",
+    "type": "true-false",
+    "answer": "true",
+    "explanation": "A temporary joint is defined as a type of joint that can be assembled and dismantled repeatedly without causing damage to either the components or the joining device."
+  },
+  {
+    "question": "Which type of threaded fastener is best suited for soft or low-strength materials and general-purpose fabrication?",
+    "type": "multiple-choice",
+    "options": [
+      "Fine-threaded fasteners",
+      "Coarse-threaded fasteners",
+      "Self-tapping screws",
+      "Taper pins"
+    ],
+    "answer": "Coarse-threaded fasteners",
+    "explanation": "Coarse-threaded fasteners are stronger, less likely to strip, and are used with soft or low-strength materials (e.g., aluminium, plastic) and for general-purpose fabrication."
+  },
+  {
+    "question": "Frictional locking devices, such as _____ washers, generate additional tension between the bolt and nut threads when compressed to resist loosening.",
+    "type": "fill-in-the-blank",
+    "answer": "Spring",
+    "explanation": "Spring washers generate additional tension between the bolt and nut threads when compressed, which enhances locking friction and prevents loosening."
+  },
+  {
+    "question": "What happens when a permanent joint, such as a riveted joint, needs to be dismantled?",
+    "type": "multiple-choice",
+    "options": [
+      "The joint can be unscrewed and reused later.",
+      "The joining device (like a rivet) must be removed, drilled out, or destroyed.",
+      "The parts can be pulled apart with minimal force.",
+      "The joining material is melted away cleanly."
+    ],
+    "answer": "The joining device (like a rivet) must be removed, drilled out, or destroyed.",
+    "explanation": "Permanent joints cannot be dismantled without damaging the components or the joining device. To separate riveted components, the rivet head must be cut off or drilled out, destroying the rivet."
+  },
+  {
+    "question": "Self-secure joints are commonly used for thin sheets of metal that are less than _____ thick.",
+    "type": "fill-in-the-blank",
+    "answer": "1.6 mm",
+    "explanation": "Self-secure joints are commonly used for thin sheets of metal that are less than 1.6 mm thick[cite: 27]."
+  },
+  {
+    "question": "In the brazing process, the base metals are melted to form a strong joint.",
+    "type": "true-false",
+    "answer": "false",
+    "explanation": "In brazing, the base metals are not melted; instead, a filler metal is melted and drawn into the joint[cite: 116]."
+  },
+  {
+    "question": "What is the typical temperature range for a soft soldering process?",
+    "type": "multiple-choice",
+    "options": [
+      "Above 450°C",
+      "Below 450°C",
+      "Exactly 3,200°C",
+      "Above 1000°C"
+    ],
+    "answer": "Below 450°C",
+    "explanation": "Soldering is a soft-permanent joint formed by a low-temperature process (below 450°C)[cite: 56]."
+  },
+  {
+    "question": "Which gas combination is most widely used in gas welding due to its ability to reach temperatures of about 3,200°C?",
+    "type": "multiple-choice",
+    "options": [
+      "Oxygen and propane",
+      "Acetylene and oxygen",
+      "Nitrogen and oxygen",
+      "Hydrogen and acetylene"
+    ],
+    "answer": "Acetylene and oxygen",
+    "explanation": "The most widely used gas combination is acetylene and oxygen, which produces a high-temperature flame capable of reaching temperatures of about 3,200°C[cite: 153]."
+  },
+  {
+    "question": "Very small scratches on a metal surface can actually promote the spreading of molten solder.",
+    "type": "true-false",
+    "answer": "true",
+    "explanation": "In practice, it has been found that very small scratches on a metal surface actually promote the spreading of the molten solder[cite: 103]."
+  },
+  {
+    "question": "In brazing, the filler metal is drawn into the joint between close-fitting parts by _____ action.",
+    "type": "fill-in-the-blank",
+    "answer": "capillary",
+    "explanation": "In brazing, a filler metal is melted and drawn into the joint between close-fitting parts by capillary action[cite: 116]."
+  },
+  {
+    "question": "Which of the following is NOT a type of self-secured joint mentioned in the text?",
+    "type": "multiple-choice",
+    "options": [
+      "Paned-down joint",
+      "Grooved-seam joint",
+      "Knocked-up joint",
+      "Butt-weld joint"
+    ],
+    "answer": "Butt-weld joint",
+    "explanation": "The most widely used self-secured joints include paned-down joints, grooved-seam joints, and knocked-up joints[cite: 28]."
+  },
+  {
+    "question": "According to the text, what is the composition of \"tinman's or tinsmith's solder\" (BS solder K)?",
+    "type": "multiple-choice",
+    "options": [
+      "65% Tin / 34.4% Lead",
+      "60% Tin / 40% Lead",
+      "50% Tin / 50% Lead",
+      "30% Tin / 69.7% Lead"
+    ],
+    "answer": "60% Tin / 40% Lead",
+    "explanation": "BS solder K, known as tinman's or tinsmith's solder, is composed of 60% Tin and 40% Lead[cite: 84]."
+  },
+  {
+    "question": "Which electrode angle has a significant influence on weld penetration and slag behavior?",
+    "type": "multiple-choice",
+    "options": [
+      "Tilt angle",
+      "Slope angle",
+      "Vertical angle",
+      "Horizontal angle"
+    ],
+    "answer": "Slope angle",
+    "explanation": "The slope angle has a significant influence on weld penetration and slag behaviour. [cite: 235]"
+  },
+  {
+    "question": "______, a sub-type of mechanical polishing, employs a cloth wheel coated with fine abrasive compounds to produce a bright, reflective finish.",
+    "type": "fill-in-the-blank",
+    "answer": "Buffing",
+    "explanation": "Buffing is a finishing process where a cloth wheel coated with fine abrasive compounds is employed to produce a bright, reflective finish. [cite: 366]"
+  },
+  {
+    "question": "Anodising is a surface treatment process that is highly suitable and commonly applied to steels.",
+    "type": "true-false",
+    "answer": "false",
+    "explanation": "Its limitations are primarily to aluminium and a few reactive metals, and it is not suitable for steels. [cite: 461]"
+  },
+  {
+    "question": "Which galvanising method involves heating steel components in a closed drum with zinc dust at 380°C - 500°C?",
+    "type": "multiple-choice",
+    "options": [
+      "Hot-dip galvanising",
+      "Electro-galvanising",
+      "Sherardising",
+      "Mechanical plating"
+    ],
+    "answer": "Sherardising",
+    "explanation": "Sherardising (vapour galvanising) is a method in which steel components are heated in a closed drum with zinc dust at 380°C - 500°C to produce a diffusion-bonded zinc-iron alloy layer. [cite: 469]"
+  },
+  {
+    "question": "In painting, which coat is applied directly to the substrate and often contains corrosion inhibitors?",
+    "type": "multiple-choice",
+    "options": ["Topcoat", "Intermediate coat", "Primer coat", "Finish coat"],
+    "answer": "Primer coat",
+    "explanation": "The primer coat is often a first layer applied directly to the substrate to ensure adhesion and often contains corrosion inhibitors. [cite: 482, 483]"
+  },
+  {
+    "question": "The ______ process is a case hardening method that uses ammonia gas to diffuse nitrogen into the steel surface without the need for quenching.",
+    "type": "fill-in-the-blank",
+    "answer": "nitriding",
+    "explanation": "The nitriding is a thermochemical surface treatment process in which nitrogen is diffused into the steel surface (using ammonia gas) to produce hard nitrides without quenching. [cite: 523]"
+  },
+  {
+    "question": "Cladding creates a permanent composite structure by relying solely on mechanical adhesion between the base metal and the cladding layer.",
+    "type": "true-false",
+    "answer": "false",
+    "explanation": "The bond is achieved through the application of heat, pressure, or both, resulting in metallurgical fusion rather than just mechanical adhesion. [cite: 389]"
+  },
+  {
+    "question": "What is a key characteristic of electroless plating compared to electroplating?",
+    "type": "multiple-choice",
+    "options": [
+      "It requires an external electrical power supply",
+      "It relies on autocatalytic chemical reactions without external electricity",
+      "It only works on highly conductive metals",
+      "It acts as a reverse plating process"
+    ],
+    "answer": "It relies on autocatalytic chemical reactions without external electricity",
+    "explanation": "Electroless plating is a chemical deposition process that relies on autocatalytic reactions rather than an external power supply. [cite: 331]"
+  },
+  {
+    "question": "________ is a chemical conversion treatment that involves immersing steel or iron components in a phosphoric acid solution containing zinc, manganese, or iron salts.",
+    "type": "fill-in-the-blank",
+    "answer": "Phosphating",
+    "explanation": "Phosphating involves the immersion of steel or iron components in a phosphoric acid solution containing phosphate salts to form a fine-grained crystalline phosphate layer on the surface[cite: 569]."
+  },
+  {
+    "question": "Property-modification processes primarily focus on significantly altering the shape and dimensions of manufactured components.",
+    "type": "true-false",
+    "answer": "false",
+    "explanation": "Property-modification processes alter material properties without significantly changing their shape or dimensions; they focus on improving performance to meet specific service requirements such as strength or hardness[cite: 583, 586]."
+  },
+  {
+    "question": "Which heat treatment process is specifically used to refine grain size and improve both strength and toughness?",
+    "type": "multiple-choice",
+    "options": ["Annealing", "Normalising", "Hardening", "Tempering"],
+    "answer": "Normalising",
+    "explanation": "Normalising is a heat treatment process used to refine grain size, which in turn improves strength and toughness[cite: 591]."
+  },
+  {
+    "question": "Which type of lathe lacks a feed gearbox, lead screw, or conventional carriage mechanism?",
+    "type": "multiple-choice",
+    "options": [
+      "Centre lathe",
+      "Tool room lathe",
+      "Speed lathe",
+      "Automatic lathe"
+    ],
+    "answer": "Speed lathe",
+    "explanation": "Unlike the centre lathe, the speed lathe is the simplest type in construction and does not have a feed gearbox, lead screw, or conventional carriage mechanism[cite: 687, 694]."
+  },
+  {
+    "question": "The key distinguishing feature of a semi-automatic lathe is the hexagonal ______ mounted on the machine in place of the tailstock.",
+    "type": "fill-in-the-blank",
+    "answer": "turret",
+    "explanation": "A distinguishing feature of a semi-automatic lathe is the hexagonal turret mounted on the machine in place of the tailstock, which allows multiple tools to be fitted simultaneously[cite: 775, 776]."
+  },
+  {
+    "question": "A gap bed lathe features a removable section of the bed adjacent to the tailstock to accommodate long workpieces.",
+    "type": "true-false",
+    "answer": "false",
+    "explanation": "A gap bed lathe features a removable section of the bed adjacent to the headstock, not the tailstock, to allow the machining of extra-large diameter workpieces[cite: 796, 797]."
+  },
+  {
+    "question": "What material is usually used to make the bed of a lathe to provide a massive and rigid foundation?",
+    "type": "multiple-choice",
+    "options": [
+      "Aluminium alloy",
+      "Grey cast iron",
+      "High-carbon steel",
+      "Copper alloy"
+    ],
+    "answer": "Grey cast iron",
+    "explanation": "The bed of a lathe is a massive, rigid, single-piece casting that is usually made of grey cast iron[cite: 807]."
+  },
+  {
+    "question": "What is the purpose of the back gear arrangement in a lathe's headstock?",
+    "type": "multiple-choice",
+    "options": [
+      "To rapidly reverse the spindle rotation",
+      "To obtain faster spindle speeds for finishing",
+      "To automatically feed the carriage along the bed",
+      "To obtain slower spindle speeds for heavy cutting or threading"
+    ],
+    "answer": "To obtain slower spindle speeds for heavy cutting or threading",
+    "explanation": "The back gear arrangement in a headstock is employed to obtain slower spindle speeds, which is particularly useful during heavy cutting or threading operations[cite: 824]."
+  },
+  {
+    "question": "What is the primary purpose of tuning operations as described in the document?",
+    "type": "multiple-choice",
+    "options": [
+      "To add material to the surface of a workpiece",
+      "To remove material from the central or internal surface of a rotating workpiece",
+      "To polish the external surface of a stationary workpiece",
+      "To measure the diameter of a rotating workpiece"
+    ],
+    "answer": "To remove material from the central or internal surface of a rotating workpiece",
+    "explanation": "The document states that tuning is a process in which material is removed from the central or internal surface of a rotating workpiece using a traversing single-point cutting tool."
+  },
+  {
+    "question": "What type of cutting tool is used in tuning operations?",
+    "type": "fill-in-the-blank",
+    "answer": "single-point cutting tool",
+    "explanation": "The document specifies that a traversing single-point cutting tool is used in the tuning process."
+  },
+  {
+    "question": "Is tuning performed on a rotating workpiece?",
+    "type": "true-false",
+    "answer": "true",
+    "explanation": "The document describes tuning as removing material from a rotating workpiece."
+  },
+  {
+    "question": "What is the page number where the tuning operation is described?",
+    "type": "multiple-choice",
+    "options": ["Page 5", "Page 8", "Page 2", "Page 9"],
+    "answer": "Page 8",
+    "explanation": "The tuning operation is described on page 8 of the document, under section 4.2.4.1."
+  },
+  {
+    "question": "Does the document mention that tuning removes material from the external surface of the workpiece?",
+    "type": "true-false",
+    "answer": "false",
+    "explanation": "The document specifically says material is removed from the 'central or internal surface,' not the external surface."
+  },
+  {
+    "question": "How is the cutting tool moved during tuning?",
+    "type": "fill-in-the-blank",
+    "answer": "traversing",
+    "explanation": "The document describes the cutting tool as traversing, meaning it moves across the workpiece during the process."
+  },
+  {
+    "question": "Which section of the document covers the tuning operation?",
+    "type": "multiple-choice",
+    "options": ["4.2.4", "4.2.4.1", "4.2.3", "4.2.5"],
+    "answer": "4.2.4.1",
+    "explanation": "The tuning operation is covered under section 4.2.4.1, as shown on page 8."
+  },
+  {
+    "question": "Is tuning also referred to as a 'boring' operation?",
+    "type": "true-false",
+    "answer": "false",
+    "explanation": "The document does not refer to tuning as boring; it defines tuning as a specific material removal process on internal surfaces."
+  },
+  {
+    "question": "What is the primary purpose of a drill press?",
+    "type": "multiple-choice",
+    "options": [
+      "To cut external threads",
+      "To drill holes and perform related operations",
+      "To grind surfaces to a fine finish",
+      "To turn cylindrical workpieces"
+    ],
+    "answer": "To drill holes and perform related operations",
+    "explanation": "The document states that a drill press is a stationary machine tool designed primarily for drilling holes and is one of the most important and versatile machines in a workshop."
+  },
+  {
+    "question": "What type of cutting tool is used in drilling operations?",
+    "type": "fill-in-the-blank",
+    "answer": "drill",
+    "explanation": "The document specifies that drilling is performed using a tool known as a drill, which is a multi-point rotary cutting tool."
+  },
+  {
+    "question": "A typical drill has two cutting edges inclined at an angle to its longitudinal axis.",
+    "type": "true-false",
+    "answer": "true",
+    "explanation": "The document explicitly states that a typical drill has two cutting edges inclined at an angle to its longitudinal axis."
+  },
+  {
+    "question": "Which of the following is NOT mentioned as an operation that can be performed on a drill press?",
+    "type": "multiple-choice",
+    "options": ["Counterboring", "Countersinking", "Thread cutting", "Reaming"],
+    "answer": "Thread cutting",
+    "explanation": "The document lists counterboring, countersinking, reaming, honing, and lapping as operations that can be performed on a drill press, but does not mention thread cutting."
+  },
+  {
+    "question": "What component of the drill press contains the electric motor and V-pulleys?",
+    "type": "fill-in-the-blank",
+    "answer": "head",
+    "explanation": "According to the document, the head of a typical drill press contains the electric motor and a system of V-pulleys with a V-belt."
+  },
+  {
+    "question": "The spindle of a drill press rotates and moves vertically through a rack and pinion mechanism.",
+    "type": "true-false",
+    "answer": "true",
+    "explanation": "The document states that the spindle rotates and moves vertically within a sleeve through a rack and pinion mechanism, allowing the drill to be fed into or withdrawn from the workpiece."
+  },
+  {
+    "question": "What is the maximum hole diameter a radial drill press is typically capable of drilling?",
+    "type": "multiple-choice",
+    "options": ["25 mm", "50 mm", "75 mm", "100 mm"],
+    "answer": "50 mm",
+    "explanation": "The document mentions that a radial drill press is typically capable of drilling holes up to about 50 mm in diameter."
+  },
+  {
+    "question": "Which type of radial drill press allows the drill head to swing about a horizontal axis in addition to vertical and horizontal movements?",
+    "type": "fill-in-the-blank",
+    "answer": "semi-universal",
+    "explanation": "The document explains that the semi-universal type of radial drill press adds the ability for the drill head to swing about a horizontal axis, in addition to vertical movement of the arm and horizontal movement of the drill head."
+  },
+  {
+    "question": "What is the primary advantage of using a gang drill press?",
+    "type": "multiple-choice",
+    "options": [
+      "It can drill multiple holes simultaneously",
+      "It allows multiple operations without resetting the workpiece",
+      "It has a higher drilling speed than other presses",
+      "It is portable and easy to move"
+    ],
+    "answer": "It allows multiple operations without resetting the workpiece",
+    "explanation": "The document states that a gang drill press allows multiple operations to be performed sequentially by moving the workpiece from one spindle to another without resetting it, primarily for production work where efficiency is essential."
+  },
+  {
+    "question": "What is the most commonly used type of drill today due to its efficiency and versatility?",
+    "type": "fill-in-the-blank",
+    "answer": "twist drill",
+    "explanation": "The document specifically mentions that the twist drill is the most commonly used type today due to its efficiency and versatility."
+  },
+  {
+    "question": "In the British imperial system, which drill size number is the smallest?",
+    "type": "multiple-choice",
+    "options": ["No. 1", "No. 60", "No. 80", "No. 100"],
+    "answer": "No. 80",
+    "explanation": "The document indicates that drill sizes range from No. 80 (smallest, 0.0135 inches) to No. 1 (largest, 0.228 inches) in the imperial system."
+  },
+  {
+    "question": "A multi-spindle drill press operates with several spindles simultaneously to drill multiple holes in a workpiece.",
+    "type": "true-false",
+    "answer": "true",
+    "explanation": "The document confirms that a multi-spindle drill press is equipped with several spindles, each holding a drill, which operate simultaneously to drill multiple holes."
+  },
+  {
+    "question": "What are the three main parts of a twist drill?",
+    "type": "fill-in-the-blank",
+    "answer": "drill point, body and shank",
+    "explanation": "The document states that a twist drill is composed of three main parts: the drill point, body, and shank."
+  },
+  {
+    "question": "Which material is primarily used for twist drills due to its excellent hardness and wear resistance?",
+    "type": "multiple-choice",
+    "options": [
+      "Carbon steel",
+      "High-speed steel (HSS)",
+      "Ceramic",
+      "Tungsten carbide"
+    ],
+    "answer": "High-speed steel (HSS)",
+    "explanation": "The document explains that twist drills are primarily made from high-speed steel (HSS), which provides excellent hardness, toughness, and wear resistance at elevated temperatures."
+  },
+  {
+    "question": "A flat drill has a major disadvantage: its diameter reduces each time it is reground.",
+    "type": "true-false",
+    "answer": "true",
+    "explanation": "The document explicitly states that a major disadvantage of the flat drill is that its diameter reduces each time it is reground."
+  },
+  {
+    "question": "What operation is performed to size and finish an existing hole, producing a smooth and accurately dimensioned bore?",
+    "type": "fill-in-the-blank",
+    "answer": "reaming",
+    "explanation": "The document describes reaming as a machining operation used to size and finish an existing hole, producing a smooth, straight, and accurately dimensioned bore using a reamer."
+  },
+  {
+    "question": "What is a primary characteristic of a player-type milling machine?",
+    "type": "multiple-choice",
+    "options": [
+      "It is a lightweight machine for small parts",
+      "It is a heavy-duty machine with high rigidity and exceptional metal removability",
+      "It is designed only for cutting plastic materials",
+      "It operates with low power and speed"
+    ],
+    "answer": "It is a heavy-duty machine with high rigidity and exceptional metal removability",
+    "explanation": "According to the document, a player-type machine is a heavy-duty machine similar in construction to a designer for large-scale production work, offering high rigidity and exceptional removability, making it suitable for machining large and heavy parts."
+  },
+  {
+    "question": "The document shows a figure of a vertical column and knee-type milling machine.",
+    "type": "true-false",
+    "options": [],
+    "answer": "true",
+    "explanation": "Page 3 of the document contains Figure 4.3.1, which is titled 'A vertical column and knee-type milling machine'."
+  },
+  {
+    "question": "What is the purpose of a saw-milling operation as described in the document?",
+    "type": "multiple-choice",
+    "options": [
+      "To polish metal surfaces",
+      "To cut materials into sections while maintaining dimensional accuracy",
+      "To weld components together",
+      "To drill holes in large parts"
+    ],
+    "answer": "To cut materials into sections while maintaining dimensional accuracy",
+    "explanation": "The document states that saw milling (also called sky milling) is a machining operation in which a slitting saw is used to cut materials into sections or for separation while maintaining dimensional accuracy."
+  },
+  {
+    "question": "The document includes multiple figures related to saw-milling operations.",
+    "type": "true-false",
+    "options": [],
+    "answer": "true",
+    "explanation": "Page 9 lists Figures 4.4.1, 4.4.2, and 4.4.3, all showing saw-milling operations."
+  },
+  {
+    "question": "What type of milling operation is used to cut a keyway?",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "Keyway milling",
+    "explanation": "The document states: 'Keywork milling is a machining operation employed to cut a keyway.' It also mentions that a slot and a railline are key-milling operations."
+  },
+  {
+    "question": "According to the document, which of the following is an example of a key-milling operation?",
+    "type": "multiple-choice",
+    "options": [
+      "Gear cutting",
+      "T-slot milling",
+      "Slot and railline milling",
+      "Helical turning"
+    ],
+    "answer": "Slot and railline milling",
+    "explanation": "The document says: 'Keywork milling is a machining operation employed to cut a keyway. A slot and a railline are key-milling operations.'"
+  },
+  {
+    "question": "The document shows a figure for a T-slot-milling operation.",
+    "type": "true-false",
+    "options": [],
+    "answer": "true",
+    "explanation": "Page 9 mentions: 'Figure 4.4.4 illustrates a T-slot-milling operation.'"
+  },
+  {
+    "question": "Which operation is illustrated in Figure 4.4.7 according to the document?",
+    "type": "multiple-choice",
+    "options": [
+      "A gear-clamping milling operation",
+      "A helical-turning operation",
+      "A profile-milling operation",
+      "A long-ramling operation"
+    ],
+    "answer": "A helical-turning operation",
+    "explanation": "Page 10 shows Figure 4.4.7 with the caption 'A helical-turning operation'."
+  },
+  {
+    "question": "What is the main purpose of differential indexing in milling operations?",
+    "type": "multiple-choice",
+    "options": [
+      "To increase the cutting speed",
+      "To achieve divisions that cannot be obtained by simple indexing",
+      "To reduce the number of gear teeth",
+      "To eliminate the need for a dividing head"
+    ],
+    "answer": "To achieve divisions that cannot be obtained by simple indexing",
+    "explanation": "According to the document, differential indexing is used when the required number of divisions cannot be achieved by simple indexing."
+  },
+  {
+    "question": "The document mentions that universal drill heads can only be operated in simple mode.",
+    "type": "true-false",
+    "options": [],
+    "answer": "false",
+    "explanation": "The document states that universal drill heads can be operated in different modes to suit various drilling requirements, including simple, complex, and special drill heads."
+  },
+  {
+    "question": "What type of milling operation is listed alongside straddle milling and vertical milling in the document?",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "Horizontal milling",
+    "explanation": "The document lists several milling operations including straddle milling, vertical milling, and horizontal milling under section 4.5.1."
+  },
+  {
+    "question": "Which operation is illustrated in Figure 4.49?",
+    "type": "multiple-choice",
+    "options": [
+      "A universal drilling head",
+      "A simple indexing operation",
+      "A differential indexing operation",
+      "A straddle milling operation"
+    ],
+    "answer": "A universal drilling head",
+    "explanation": "The document shows Figure 4.49 with the caption 'A universal drilling head'."
+  },
+  {
+    "question": "In simple indexing, the index crank produces 1/4 of a revolution of the workpiece.",
+    "type": "true-false",
+    "options": [],
+    "answer": "true",
+    "explanation": "The document states that with a standard worm gear, the index crank produces 1/4 of a revolution of the workpiece."
+  },
+  {
+    "question": "Which indexing method is mentioned as being illustrated in Figure 4.5.6?",
+    "type": "multiple-choice",
+    "options": [
+      "Differential indexing",
+      "Simple indexing",
+      "Compound indexing",
+      "Direct indexing"
+    ],
+    "answer": "Simple indexing",
+    "explanation": "Page 4 shows Figure 4.5.6 with the caption 'A simple indexing'."
+  },
+  {
+    "question": "What is the purpose of differential indexing when the required number of divisions cannot be achieved by simple indexing?",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "To achieve the required divisions",
+    "explanation": "The document explains that differential indexing is used when the required number of divisions cannot be obtained by simple indexing, providing an alternative method to achieve the needed spacing."
+  },
+  {
+    "question": "The document shows Figure 4.50 to illustrate a standard worm gear operation.",
+    "type": "true-false",
+    "options": [],
+    "answer": "true",
+    "explanation": "Page 3 references Figure 4.50 in the context of using a standard worm gear, where the workpiece is turned on the workpiece."
+  },
+  {
+    "question": "What is the unit of displacement for a ball screw with a lead of 5 mm/rev and a motor generating 2,000 pulses per revolution?",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "0.0025 mm",
+    "explanation": "The document states that the unit of displacement is calculated as 5/2,000 = 0.0025 mm, which equals 2.5 μm per pulse."
+  },
+  {
+    "question": "A smaller unit of displacement in CNC systems results in higher resolution and finer control.",
+    "type": "true-false",
+    "options": [],
+    "answer": "true",
+    "explanation": "According to the document, a smaller unit of displacement indicates higher resolution and finer control, which enhances machining precision, especially in contouring operations and complex geometries."
+  },
+  {
+    "question": "What is a part program in CNC machining?",
+    "type": "multiple-choice",
+    "options": [
+      "A mechanical blueprint of the workpiece",
+      "A structured set of coded instructions that defines the sequence of machining operations",
+      "A list of tool specifications",
+      "A maintenance schedule for the machine"
+    ],
+    "answer": "A structured set of coded instructions that defines the sequence of machining operations",
+    "explanation": "The document defines a part program as 'a structured set of coded instructions that defines the sequence of machining operations to be executed by a CNC machine tool.'"
+  },
+  {
+    "question": "Which of the following is NOT mentioned as a component of a part program block?",
+    "type": "multiple-choice",
+    "options": [
+      "Coordinate and motion commands",
+      "Machining parameters",
+      "Material hardness values",
+      "Auxiliary function codes"
+    ],
+    "answer": "Material hardness values",
+    "explanation": "The document lists coordinate and motion commands, machining parameters, auxiliary function codes, program execution control codes, and subsystem configuration statements as components of a part program block. Material hardness values are not mentioned."
+  },
+  {
+    "question": "What do auxiliary function codes (M-codes) govern in CNC machining?",
+    "type": "multiple-choice",
+    "options": [
+      "The speed of the cutting tool",
+      "Machine tool operations such as spindle start/stop, coolant on/off, and tool change",
+      "The coordinate system of the machine",
+      "The interpolation type for motion"
+    ],
+    "answer": "Machine tool operations such as spindle start/stop, coolant on/off, and tool change",
+    "explanation": "The document states that auxiliary function codes (M-codes) govern machine tool operations such as spindle start/stop, coolant on/off, tool change, and optional program stops."
+  },
+  {
+    "question": "A hand tool is defined as a tool that is manually operated with the assistance of an external power source.",
+    "type": "true-false",
+    "options": [],
+    "answer": "false",
+    "explanation": "The document explicitly defines a hand tool as 'a tool that is manually operated without the assistance of an external power source.'"
+  },
+  {
+    "question": "What are the five main categories of hand tools mentioned in the document?",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "Measuring and marking tools, holding and supporting tools, cutting tools, finishing tools, and miscellaneous tools",
+    "explanation": "The document lists these five categories: measuring and marking tools, holding and supporting tools, cutting tools, finishing tools, and miscellaneous tools."
+  },
+  {
+    "question": "What is the preliminary stage in most engineering workshop operations according to the document?",
+    "type": "multiple-choice",
+    "options": [
+      "Cutting the workpiece",
+      "Measuring and marking out",
+      "Assembling components",
+      "Finishing the surface"
+    ],
+    "answer": "Measuring and marking out",
+    "explanation": "The document states that 'measuring and marking out constitute the preliminary stage in most engineering workshop operations,' involving laying out outlines, centres, and dimensions before cutting or forming operations."
+  },
+  {
+    "question": "What is the typical least count of a metric vernier calliper?",
+    "type": "multiple-choice",
+    "options": ["0.001 mm", "0.02 mm or 0.05 mm", "0.1 mm", "0.5 mm"],
+    "answer": "0.02 mm or 0.05 mm",
+    "explanation": "The document states that in the metric system, the typical least count of a vernier calliper is 0.02 mm or 0.05 mm, while in the imperial system it is commonly 0.001 inch."
+  },
+  {
+    "question": "A micrometre provides greater accuracy than a vernier calliper but is typically limited to measuring within a smaller range of dimensions.",
+    "type": "true-false",
+    "options": [],
+    "answer": "true",
+    "explanation": "According to the document, a micrometre provides greater accuracy than a vernier calliper, although it is typically limited to measuring within a smaller range of dimensions."
+  },
+  {
+    "question": "What is used to ensure uniform measuring pressure and prevent damage to the component when using a micrometre?",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "ratchet stop",
+    "explanation": "The document states that the ratchet stop is used to apply a consistent force, ensuring uniform measuring pressure and preventing damage to the component."
+  },
+  {
+    "question": "Which of the following is NOT a type of micrometre mentioned in the document?",
+    "type": "multiple-choice",
+    "options": [
+      "Outside micrometre",
+      "Inside micrometre",
+      "Digital micrometre",
+      "Depth micrometre"
+    ],
+    "answer": "Digital micrometre",
+    "explanation": "The document classifies micrometres into three main types based on their applications: outside, inside, and depth micrometres. Digital micrometre is not mentioned as a main type."
+  },
+  {
+    "question": "What is the function of a surface plate in engineering workshops?",
+    "type": "multiple-choice",
+    "options": [
+      "To cut materials into sections",
+      "To provide a flat reference surface for marking and inspection",
+      "To hold cylindrical workpieces securely",
+      "To measure the depth of holes"
+    ],
+    "answer": "To provide a flat reference surface for marking and inspection",
+    "explanation": "The document mentions a surface plate in the context of marking and measuring tools, indicating it serves as a flat reference surface for layout and inspection work."
+  },
+  {
+    "question": "Spring dividers are used for scribing arcs and circles on the surface of a workpiece.",
+    "type": "true-false",
+    "options": [],
+    "answer": "true",
+    "explanation": "The document states that spring dividers are commonly used in engineering workshops for scribing arcs and circles on the surface of a workpiece, as well as for transferring measurements and dividing lines."
+  },
+  {
+    "question": "What is the primary purpose of a scriber in engineering workshops?",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "Marking lines on the surface of a workpiece",
+    "explanation": "The document describes a scriber as a slender hand tool commonly used in engineering workshops for marking lines on the surface of a workpiece, with its tip ground to a sharp point for producing fine layout lines."
+  },
+  {
+    "question": "Which work-holding device is specifically designed to support cylindrical workpieces securely?",
+    "type": "multiple-choice",
+    "options": ["Bench vice", "Surface plate", "Vee block", "C-clamp"],
+    "answer": "Vee block",
+    "explanation": "The document states that a vee block is a work-holding device used to support and hold cylindrical or round workpieces during measuring, marking, or machining operations, with a V-shaped groove that allows cylindrical components to rest securely without rolling."
+  },
+  {
+    "question": "What is the primary function of a C-clamp in engineering workshops?",
+    "type": "multiple-choice",
+    "options": [
+      "To cut metal materials",
+      "To secure a workpiece against a surface during machining or assembly",
+      "To measure the thickness of components",
+      "To mark lines on a workpiece"
+    ],
+    "answer": "To secure a workpiece against a surface during machining or assembly",
+    "explanation": "The document states that a C-clamp is a versatile work-holding device used to secure a workpiece against a surface such as an angle plate, vee block, or workbench during machining, assembly, or gluing operations."
+  },
+  {
+    "question": "Angle plates are machined and ground so that their two flat surfaces are positioned at 90° to each other.",
+    "type": "true-false",
+    "options": [],
+    "answer": "true",
+    "explanation": "The document states that angle plates are carefully machined and ground so that their two flat surfaces are positioned at right angles (90°) to each other."
+  },
+  {
+    "question": "What is the purpose of the zig-zag pattern (set) on hacksaw blades?",
+    "type": "multiple-choice",
+    "options": [
+      "To increase the cutting speed",
+      "To make the cut slightly wider than the blade thickness, preventing jamming",
+      "To reduce the weight of the blade",
+      "To improve the blade's flexibility"
+    ],
+    "answer": "To make the cut slightly wider than the blade thickness, preventing jamming",
+    "explanation": "The document explains that the teeth of the hacksaw blade are arranged in a zig-zag pattern (set) so that the cut produced is slightly wider than the blade thickness, thereby preventing the blade from rubbing against the sides of the cut and reducing the possibility of jamming."
+  },
+  {
+    "question": "According to tooth pitch, hacksaw blades with 24-32 teeth per inch are classified as __________.",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "fine",
+    "explanation": "The document classifies hacksaw blades based on tooth pitch: coarse (8-14 teeth per inch), medium (16-20 teeth per inch), and fine (24-32 teeth per inch)."
+  },
+  {
+    "question": "What is the main function of the flutes on a twist drill?",
+    "type": "multiple-choice",
+    "options": [
+      "To hold the drill in the chuck",
+      "To remove metal chips and provide cutting edges",
+      "To cool the drill during operation",
+      "To increase the drill's weight"
+    ],
+    "answer": "To remove metal chips and provide cutting edges",
+    "explanation": "The document states that the spiral flutes on a twist drill serve two main purposes: they remove metal chips produced during drilling and provide the necessary cutting edges along their leading sides."
+  },
+  {
+    "question": "A chisel is a hand-cutting tool with a bevelled cutting edge at one end and a striking head at the other end.",
+    "type": "true-false",
+    "options": [],
+    "answer": "true",
+    "explanation": "The document defines a chisel as 'a hand-cutting long-bladed hardened steel tool with a bevelled cutting edge at one end and a striking head at the other end, for cutting, shaping, or removing material such as wood, stone, or metal.'"
+  },
+  {
+    "question": "Which shank type is typically used in drill presses and other machine tools?",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "tapered shank",
+    "explanation": "The document states that the tapered shank is typically used in drill presses and other machine tools, while straight shanks are used in hand drills and square shanks fit into a carpenter's brace."
+  },
+  {
+    "question": "What is the typical size range of C-clamps mentioned in the document?",
+    "type": "multiple-choice",
+    "options": [
+      "10 mm to 50 mm",
+      "70 mm to 800 mm",
+      "100 mm to 500 mm",
+      "50 mm to 300 mm"
+    ],
+    "answer": "70 mm to 800 mm",
+    "explanation": "The document states that C-clamps are available in a wide range of sizes, typically from 70 mm to 800 mm, to accommodate different workpiece dimensions."
+  },
+  {
+    "question": "What is the primary function of a diode in an electronic circuit?",
+    "type": "multiple-choice",
+    "options": [
+      "To amplify weak signals",
+      "To permit current flow in one direction while restricting it in the opposite direction",
+      "To store electrical charge",
+      "To convert DC to AC"
+    ],
+    "answer": "To permit current flow in one direction while restricting it in the opposite direction",
+    "explanation": "A diode is a semiconductor device that permits current flow primarily in one direction due to its p-n junction, which restricts flow in the opposite direction."
+  },
+  {
+    "question": "Active components require an external power source to operate.",
+    "type": "true-false",
+    "options": ["true", "false"],
+    "answer": "true",
+    "explanation": "Active components, such as diodes, transistors, and integrated circuits, require an external power source to supply energy to a circuit and control current flow."
+  },
+  {
+    "question": "What are the three terminals of a bipolar junction transistor (BJT) called?",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "Base, Emitter, and Collector",
+    "explanation": "A BJT has three terminals: the base (control terminal), emitter (emits charge carriers), and collector (collects charge carriers and delivers output current)."
+  },
+  {
+    "question": "What type of diode is specifically used for voltage regulation?",
+    "type": "multiple-choice",
+    "options": [
+      "Light-emitting diode (LED)",
+      "Photodiode",
+      "Zener diode",
+      "p-n junction diode"
+    ],
+    "answer": "Zener diode",
+    "explanation": "Zener diodes are designed for voltage regulation, unlike p-n junction diodes (general rectification), LEDs (illumination), and photodiodes (light detection)."
+  },
+  {
+    "question": "Operational amplifiers are characterized by high input impedance, low output impedance, and very high voltage gain.",
+    "type": "true-false",
+    "options": ["true", "false"],
+    "answer": "true",
+    "explanation": "Op-amps are high-gain differential amplifiers with high input impedance, low output impedance, and very high voltage gain, making them suitable for precise signal processing."
+  },
+  {
+    "question": "What are the two broad classifications of integrated circuits (ICs) based on their mode of operation?",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "Analogue and digital",
+    "explanation": "ICs are classified into analogue (linear) ICs, which produce continuously varying output signals, and digital ICs, which operate using discrete binary signal levels."
+  },
+  {
+    "question": "Which of the following is NOT a category of basic electrical and electronic components as mentioned in the document?",
+    "type": "multiple-choice",
+    "options": [
+      "Active components",
+      "Passive components",
+      "Electromechanical components",
+      "Semiconductor components"
+    ],
+    "answer": "Semiconductor components",
+    "explanation": "The document classifies electrical and electronic components into three main categories: active, passive, and electromechanical components. Semiconductor components fall under active components."
+  },
+  {
+    "question": "Transistors can function as both amplifiers and switches in electronic circuits.",
+    "type": "true-false",
+    "options": ["true", "false"],
+    "answer": "true",
+    "explanation": "Transistors are versatile devices that can operate as amplifiers to enhance weak signals or as switches to turn signals on and off, as stated in the document."
+  },
+  {
+    "question": "What is the primary operating principle of a liquid crystal display (LCD)?",
+    "type": "multiple-choice",
+    "options": [
+      "Emitting light through electron-hole recombination",
+      "Modulating light using liquid crystal materials between polarising filters",
+      "Directing a beam of electrons onto a phosphorescent screen",
+      "Using a vacuum tube to accelerate electrons"
+    ],
+    "answer": "Modulating light using liquid crystal materials between polarising filters",
+    "explanation": "An LCD operates by modulating light using liquid crystal materials placed between two polarising filters, with the alignment of molecules controlled by an electric field to permit or block light transmission."
+  },
+  {
+    "question": "A microcontroller integrates a processor core with on-chip memory and peripheral interfaces on a single integrated circuit.",
+    "type": "true-false",
+    "options": ["true", "false"],
+    "answer": "true",
+    "explanation": "A microcontroller is a compact embedded computing device implemented on a single IC, integrating a processor core with on-chip memory (RAM, ROM/flash) and peripheral interfaces for dedicated control tasks."
+  },
+  {
+    "question": "What are the three primary types of passive components mentioned in the document?",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "Resistors, capacitors, and inductors",
+    "explanation": "The document states that the primary types of passive components include resistors, capacitors, and inductors, each serving distinct roles in controlling electrical parameters."
+  },
+  {
+    "question": "Which electromechanical device is designed to automatically interrupt current flow under abnormal conditions like overloads or short circuits?",
+    "type": "multiple-choice",
+    "options": ["Relay", "Switch", "Circuit breaker", "Transformer"],
+    "answer": "Circuit breaker",
+    "explanation": "A circuit breaker is an electromechanical protective device that automatically interrupts current flow under abnormal conditions such as overloads or short circuits to prevent damage and ensure safety."
+  },
+  {
+    "question": "Inductors resist sudden changes in current and store energy in a magnetic field.",
+    "type": "true-false",
+    "options": ["true", "false"],
+    "answer": "true",
+    "explanation": "An inductor stores energy in a magnetic field when current flows through it and resists sudden changes in current, as governed by Faraday's law of electromagnetic induction."
+  },
+  {
+    "question": "What is the main function of a transformer in an electrical system?",
+    "type": "multiple-choice",
+    "options": [
+      "To convert electrical energy into mechanical motion",
+      "To transfer electrical energy between circuits through mutual induction without changing frequency",
+      "To open or close a circuit manually",
+      "To amplify weak electrical signals"
+    ],
+    "answer": "To transfer electrical energy between circuits through mutual induction without changing frequency",
+    "explanation": "A transformer is a static electromagnetic device that transfers electrical energy between circuits through mutual induction, used to step up or step down voltage levels without changing frequency."
+  },
+  {
+    "question": "Name the two main types of multimeters available for measuring electrical parameters.",
+    "type": "fill-in-the-blank",
+    "options": [],
+    "answer": "Analogue and digital",
+    "explanation": "Multimeters are available in two main types: analogue (displaying measurements with a moving pointer) and digital (providing numerical readings with higher accuracy and resolution)."
+  },
+  {
+    "question": "A relay is an electromechanical device that allows a low-power signal to control a high-power circuit.",
+    "type": "true-false",
+    "options": ["true", "false"],
+    "answer": "true",
+    "explanation": "A relay is an electromechanical switching device that enables a low-power electrical signal to control a high-power circuit through electromagnetic induction, using a coil to actuate contacts."
+  }
+]

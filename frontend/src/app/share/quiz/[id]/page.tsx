@@ -91,7 +91,7 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
   const getOptionStyle = (opt: string) => {
     const isSelected = answers[currentQ] === opt;
     const hasAnswered = !!answers[currentQ];
-    const isCorrectAnswer = question.answer === opt;
+    const isCorrectAnswer = question.answer.toLowerCase().trim() === opt.toLowerCase().trim();
 
     if (feedbackMode === "immediate" && hasAnswered) {
       if (isCorrectAnswer) {
@@ -346,8 +346,15 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
               </div>
             ) : (
               <div className="space-y-3">
-                {(question.options || []).map((opt) => {
-                  const isCorrectAnswer = question.answer === opt;
+                {(question.type === "true-false"
+                  ? (question.options && question.options.length > 0
+                      ? question.options
+                      : (question.answer === "true" || question.answer === "false"
+                          ? ["true", "false"]
+                          : ["True", "False"]))
+                  : (question.options || [])
+                ).map((opt) => {
+                  const isCorrectAnswer = question.answer.toLowerCase().trim() === opt.toLowerCase().trim();
                   const isSelected = answers[currentQ] === opt;
                   const showCorrectIcon = feedbackMode === "immediate" && hasAnsweredCurrent && isCorrectAnswer;
                   const showIncorrectIcon = feedbackMode === "immediate" && hasAnsweredCurrent && isSelected && !isCorrectAnswer;
