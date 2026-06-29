@@ -36,6 +36,12 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
   const [showModeSelector, setShowModeSelector] = useState(true);
   const [fillBlankInput, setFillBlankInput] = useState<string>("");
   const [error, setError] = useState("");
+  const [savedProgressData, setSavedProgressData] = useState<{
+    currentQ: number;
+    answers: Record<number, string>;
+    feedbackMode: FeedbackMode;
+  } | null>(null);
+  const [showResumePrompt, setShowResumePrompt] = useState(false);
 
   const [prevCurrentQ, setPrevCurrentQ] = useState(currentQ);
   if (currentQ !== prevCurrentQ) {
@@ -63,6 +69,63 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
 
     fetchPublicQuiz();
   }, [id]);
+
+  // Check for saved progress on mount / quiz load
+  useEffect(() => {
+    if (quiz && typeof window !== "undefined") {
+      const saved = localStorage.getItem(`sabilearn_shared_quiz_progress_${id}`);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (
+            parsed &&
+            typeof parsed === "object" &&
+            parsed.feedbackMode &&
+            parsed.answers &&
+            typeof parsed.currentQ === "number"
+          ) {
+            setSavedProgressData(parsed);
+            setShowResumePrompt(true);
+          }
+        } catch (e) {
+          console.error("Failed to parse saved progress", e);
+        }
+      }
+    }
+  }, [quiz, id]);
+
+  // Save progress on change
+  useEffect(() => {
+    if (quiz && feedbackMode && !submitted && typeof window !== "undefined") {
+      const progress = {
+        currentQ,
+        answers,
+        feedbackMode
+      };
+      localStorage.setItem(`sabilearn_shared_quiz_progress_${id}`, JSON.stringify(progress));
+    }
+  }, [quiz, id, currentQ, answers, feedbackMode, submitted]);
+
+  const handleResume = () => {
+    if (savedProgressData) {
+      setAnswers(savedProgressData.answers);
+      setCurrentQ(savedProgressData.currentQ);
+      setFeedbackMode(savedProgressData.feedbackMode);
+      setShowModeSelector(false);
+      setShowResumePrompt(false);
+    }
+  };
+
+  const handleRestart = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(`sabilearn_shared_quiz_progress_${id}`);
+    }
+    setAnswers({});
+    setCurrentQ(0);
+    setFeedbackMode(null);
+    setShowModeSelector(true);
+    setShowResumePrompt(false);
+  };
 
   const selectAnswer = (answer: string) => {
     if (submitted) return;
@@ -119,6 +182,9 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
     });
     setScore(correct);
     setSubmitted(true);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(`sabilearn_shared_quiz_progress_${id}`);
+    }
   };
 
   const handleRetry = () => {
@@ -127,6 +193,9 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
     setScore(0);
     setCurrentQ(0);
     setFillBlankInput("");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(`sabilearn_shared_quiz_progress_${id}`);
+    }
   };
 
   if (loading) {
@@ -155,6 +224,42 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
       </div>
     );
   }
+
+  const resumeModal = showResumePrompt && savedProgressData && quiz && (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="w-full max-w-md bg-[var(--bg-elevated)] border border-[var(--border)] rounded-2xl p-6 shadow-[var(--shadow-lg)] animate-in scale-in duration-200">
+        <div className="flex items-start gap-4">
+          <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center">
+            <svg className="w-6 h-6 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-bold text-[var(--text-primary)] font-[family-name:var(--font-display)] mb-2">
+              Resume Quiz?
+            </h3>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-6">
+              We found your previous attempt for <strong>{quiz.title}</strong>. Would you like to pick up where you left off at question {savedProgressData.currentQ + 1} or start fresh?
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={handleResume}
+                className="flex-1 px-5 py-3 rounded-xl bg-[var(--accent)] text-[var(--bg-primary)] text-sm font-semibold hover:bg-[var(--accent-hover)] transition-colors shadow-sm text-center cursor-pointer"
+              >
+                Resume Attempt
+              </button>
+              <button
+                onClick={handleRestart}
+                className="flex-1 px-5 py-3 rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] text-sm font-semibold hover:bg-[var(--bg-tertiary)] hover:border-[var(--text-muted)] text-[var(--text-primary)] transition-all text-center cursor-pointer"
+              >
+                Start Fresh
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   if (showModeSelector) {
     return (
@@ -208,6 +313,7 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
             </button>
           </div>
         </div>
+        {resumeModal}
       </div>
     );
   }
@@ -466,6 +572,7 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
           </>
         )}
       </div>
+      {resumeModal}
     </div>
   );
 }
