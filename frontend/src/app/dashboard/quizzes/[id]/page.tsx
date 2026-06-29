@@ -795,7 +795,7 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
           <div className="flex items-center justify-between mt-8">
             <button
               onClick={() => setCurrentQ((p) => Math.max(0, p - 1))}
-              disabled={currentQ === 0 || (feedbackMode === "immediate" && hasAnsweredCurrent)}
+              disabled={currentQ === 0}
               className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] disabled:opacity-30 transition-colors"
             >
               Previous
