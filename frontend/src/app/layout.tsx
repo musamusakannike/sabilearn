@@ -3,6 +3,7 @@ import { Outfit, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import { RegisterSW } from "@/components/RegisterSW";
 import { OfflineToast } from "@/components/OfflineToast";
+import { WhatsAppFAB } from "@/components/WhatsAppFAB";
 import { Analytics } from "@vercel/analytics/react";
 import "katex/dist/katex.min.css";
 import "./globals.css";
@@ -93,7 +94,7 @@ export default function RootLayout({
                   var saved = localStorage.getItem('theme');
                   var systemLight = window.matchMedia('(prefers-color-scheme: light)').matches;
                   if (saved === 'light' || (!saved && systemLight)) {
-                    document.documentElement.classList.add('light');
+                     document.documentElement.classList.add('light');
                   } else {
                     document.documentElement.classList.remove('light');
                   }
@@ -121,6 +122,7 @@ export default function RootLayout({
           {children}
           <RegisterSW />
           <OfflineToast />
+          <WhatsAppFAB />
           <Analytics />
         </Providers>
       </body>
