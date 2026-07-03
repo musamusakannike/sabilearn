@@ -4,6 +4,7 @@ import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { ShareButton } from "@/components/ShareButton";
+import { formatMarkdown } from "@/lib/markdown";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Question {
@@ -76,8 +77,12 @@ function FlashCard({
               </svg>
             )}
           </div>
-          <span className="text-xs text-[var(--text-muted)]">
-            Your answer: <span className={cn("font-semibold", isCorrect ? "text-[var(--success)]" : "text-[var(--danger)]")}>{userAnswer}</span>
+          <span className="text-xs text-[var(--text-muted)] flex items-center gap-1 flex-wrap">
+            <span>Your answer:</span>
+            <span 
+              className={cn("font-semibold prose max-w-none [&_p]:m-0 [&_p]:inline", isCorrect ? "text-[var(--success)]" : "text-[var(--danger)]")}
+              dangerouslySetInnerHTML={{ __html: formatMarkdown(userAnswer) }}
+            />
           </span>
         </div>
         {!isCorrect && (
@@ -124,9 +129,10 @@ function FlashCard({
             )}
             style={{ backfaceVisibility: "hidden" }}
           >
-            <p className="text-base sm:text-lg font-medium tracking-tight text-[var(--text-primary)] leading-snug">
-              {question}
-            </p>
+            <div 
+              className="text-base sm:text-lg font-medium tracking-tight text-[var(--text-primary)] leading-snug prose max-w-none [&_p]:m-0 [&_p]:inline"
+              dangerouslySetInnerHTML={{ __html: formatMarkdown(question) }}
+            />
             <p className="text-xs font-mono tracking-wide text-[var(--text-muted)] mt-4 opacity-75">
               touch to see the answer
             </p>
@@ -145,9 +151,11 @@ function FlashCard({
             <p className="text-[10px] font-mono tracking-widest text-[var(--text-muted)] mb-2 uppercase opacity-70">
               Correct Answer
             </p>
-            <p className="text-lg sm:text-xl font-medium tracking-tight leading-snug" style={{ color: isCorrect ? "var(--success)" : "var(--accent)" }}>
-              {correctAnswer}
-            </p>
+            <div 
+              className="text-lg sm:text-xl font-medium tracking-tight leading-snug prose max-w-none [&_p]:m-0 [&_p]:inline" 
+              style={{ color: isCorrect ? "var(--success)" : "var(--accent)" }}
+              dangerouslySetInnerHTML={{ __html: formatMarkdown(correctAnswer) }}
+            />
           </div>
         </motion.div>
       </div>
@@ -155,10 +163,10 @@ function FlashCard({
       {/* Explanation — below card */}
       {explanation && (
         <div className="mt-3 px-1">
-          <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-            <span className="font-semibold text-[var(--text-muted)] uppercase tracking-wide text-[10px]">Explanation </span>
-            {explanation}
-          </p>
+          <div className="text-xs text-[var(--text-secondary)] leading-relaxed">
+            <span className="font-semibold text-[var(--text-muted)] uppercase tracking-wide text-[10px] mr-1">Explanation </span>
+            <div className="prose max-w-none inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(explanation) }} />
+          </div>
         </div>
       )}
     </div>
@@ -649,7 +657,7 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
           <div className="mb-2 text-xs text-[var(--text-muted)]">
             Question {currentQ + 1} of {quiz.questions.length} • {question.type.replace(/-/g, " ")}
           </div>
-          <h2 className="text-lg font-semibold mb-6">{question.question}</h2>
+          <div className="text-lg font-semibold mb-6 prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.question) }} />
 
           {question.type === "fill-in-the-blank" ? (
             <div className="space-y-3">
@@ -707,11 +715,12 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
                     )}
                   </div>
                   {!currentAnswerCorrect && (
-                    <p className="text-sm text-[var(--text-secondary)] mb-2">
-                      Correct answer: <span className="font-medium text-[var(--success)]">{question.answer}</span>
-                    </p>
+                    <div className="text-sm text-[var(--text-secondary)] mb-2 flex items-center gap-1 flex-wrap">
+                      <span>Correct answer: </span>
+                      <span className="font-medium text-[var(--success)] prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.answer) }} />
+                    </div>
                   )}
-                  <p className="text-sm text-[var(--text-muted)]">{question.explanation}</p>
+                  <div className="text-sm text-[var(--text-muted)] prose max-w-none" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.explanation) }} />
                 </div>
               )}
             </div>
@@ -741,7 +750,7 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
                       feedbackMode === "immediate" && hasAnsweredCurrent && !isSelected && !isCorrectAnswer && "cursor-default"
                     )}
                   >
-                    <span>{opt}</span>
+                    <span className="prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(opt) }} />
                     {showCorrectIcon && (
                       <svg className="w-5 h-5 text-[var(--success)] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -781,11 +790,12 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
                     )}
                   </div>
                   {!currentAnswerCorrect && (
-                    <p className="text-sm text-[var(--text-secondary)] mb-2">
-                      Correct answer: <span className="font-medium text-[var(--success)]">{question.answer}</span>
-                    </p>
+                    <div className="text-sm text-[var(--text-secondary)] mb-2 flex items-center gap-1 flex-wrap">
+                      <span>Correct answer: </span>
+                      <span className="font-medium text-[var(--success)] prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.answer) }} />
+                    </div>
                   )}
-                  <p className="text-sm text-[var(--text-muted)]">{question.explanation}</p>
+                  <div className="text-sm text-[var(--text-muted)] prose max-w-none" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.explanation) }} />
                 </div>
               )}
             </div>

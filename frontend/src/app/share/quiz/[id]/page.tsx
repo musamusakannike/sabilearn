@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from "react";
 import { cn } from "@/lib/cn";
 import { ShareBanner } from "@/components/ShareBanner";
+import { formatMarkdown } from "@/lib/markdown";
 import { AddToLibraryButton } from "@/components/AddToLibraryButton";
 import Link from "next/link";
 
@@ -381,11 +382,15 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
                 const isCorrect = answers[i]?.toLowerCase().trim() === q.answer.toLowerCase().trim();
                 return (
                   <div key={i} className={cn("p-4 rounded-xl border", isCorrect ? "border-[var(--success)]/30 bg-[var(--success)]/5" : "border-[var(--danger)]/30 bg-[var(--danger)]/5")}>
-                    <p className="text-sm font-medium mb-1">{q.question}</p>
-                    <p className="text-xs text-[var(--text-muted)]">
-                      Your answer: {answers[i] || "(none)"} • Correct: {q.answer}
-                    </p>
-                    <p className="text-xs text-[var(--text-secondary)] mt-2">{q.explanation}</p>
+                    <div className="text-sm font-medium mb-1 prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(q.question) }} />
+                    <div className="text-xs text-[var(--text-muted)] mt-1 flex flex-wrap items-center gap-1">
+                      <span>Your answer: </span>
+                      <span className="prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(answers[i] || "(none)") }} />
+                      <span className="mx-1">•</span>
+                      <span>Correct: </span>
+                      <span className="prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(q.answer) }} />
+                    </div>
+                    <div className="text-xs text-[var(--text-secondary)] mt-2 prose max-w-none" dangerouslySetInnerHTML={{ __html: formatMarkdown(q.explanation) }} />
                   </div>
                 );
               })}
@@ -396,7 +401,7 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
             <div className="mb-2 text-xs text-[var(--text-muted)]">
               Question {currentQ + 1} of {quiz.questions.length} • {question.type.replace(/-/g, " ")}
             </div>
-            <h2 className="text-lg font-semibold mb-6">{question.question}</h2>
+            <div className="text-lg font-semibold mb-6 prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.question) }} />
 
             {question.type === "fill-in-the-blank" ? (
               <div className="space-y-3">
@@ -442,11 +447,12 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
                       )}
                     </div>
                     {!currentAnswerCorrect && (
-                      <p className="text-sm text-[var(--text-secondary)] mb-2">
-                        Correct answer: <span className="font-medium text-[var(--success)]">{question.answer}</span>
-                      </p>
+                      <div className="text-sm text-[var(--text-secondary)] mb-2 flex items-center gap-1 flex-wrap">
+                        <span>Correct answer: </span>
+                        <span className="font-medium text-[var(--success)] prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.answer) }} />
+                      </div>
                     )}
-                    <p className="text-sm text-[var(--text-muted)]">{question.explanation}</p>
+                    <div className="text-sm text-[var(--text-muted)] prose max-w-none" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.explanation) }} />
                   </div>
                 )}
               </div>
@@ -476,7 +482,7 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
                         feedbackMode === "immediate" && hasAnsweredCurrent && !isSelected && !isCorrectAnswer && "cursor-default"
                       )}
                     >
-                      <span>{opt}</span>
+                      <span className="prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(opt) }} />
                       {showCorrectIcon && (
                         <svg className="w-5 h-5 text-[var(--success)] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -505,11 +511,12 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
                       )}
                     </div>
                     {!currentAnswerCorrect && (
-                      <p className="text-sm text-[var(--text-secondary)] mb-2">
-                        Correct answer: <span className="font-medium text-[var(--success)]">{question.answer}</span>
-                      </p>
+                      <div className="text-sm text-[var(--text-secondary)] mb-2 flex items-center gap-1 flex-wrap">
+                        <span>Correct answer: </span>
+                        <span className="font-medium text-[var(--success)] prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.answer) }} />
+                      </div>
                     )}
-                    <p className="text-sm text-[var(--text-muted)]">{question.explanation}</p>
+                    <div className="text-sm text-[var(--text-muted)] prose max-w-none" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.explanation) }} />
                   </div>
                 )}
               </div>
