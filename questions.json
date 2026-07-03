@@ -1,1089 +1,872 @@
 [
   {
-    "question": "What is the primary function of a machine shop?",
+    "question": "What is the state of a body when the resultant of all external forces and moments are equal to zero?",
     "type": "multiple-choice",
-    "options": [
-      "Pouring molten metal into moulds to produce metal components",
-      "Plastically deforming metal into a predetermined shape using compressive forces",
-      "Shaping, cutting, drilling, and finishing raw materials to produce precise mechanical components",
-      "Joining materials permanently through the application of heat and pressure"
-    ],
-    "answer": "Shaping, cutting, drilling, and finishing raw materials to produce precise mechanical components",
-    "explanation": "A machine shop is a specialised facility where raw materials are shaped, cut, drilled, milled, ground, and finished to produce precise mechanical components."
+    "options": ["Equilibrium", "Stability", "Dynamic state", "Translation"],
+    "answer": "Equilibrium",
+    "explanation": "Equilibrium is defined as the state of a body in which the resultant of all external forces and the resultant of all moments acting on the body are equal to zero. [cite: 11, 12]"
   },
   {
-    "question": "A fitting shop primarily focuses on shaping and machining raw metal stock into initial geometries.",
+    "question": "A structure must be able to resist disturbances without undergoing excessive displacement or collapse. This refers to its:",
+    "type": "multiple-choice",
+    "options": ["Reaction", "Equilibrium", "Momentum", "Stability"],
+    "answer": "Stability",
+    "explanation": "A structure must be stable, meaning it must be able to resist disturbances without undergoing excessive displacement or collapse. [cite: 6]"
+  },
+  {
+    "question": "For a two-dimensional system to be in equilibrium, only the sum of vertical forces and horizontal forces must be zero.",
     "type": "true-false",
     "answer": "false",
-    "explanation": "Unlike a machine shop, a fitting shop deals with the final adjustment and assembly of already machined, forged, or cast components into functional units."
+    "explanation": "For a two-dimensional system to be in equilibrium, the algebraic sum of horizontal forces, vertical forces, AND the moments about any point must all be equal to zero. [cite: 16, 17, 19]"
   },
   {
-    "question": "_____ is defined as the process of plastically deforming a metal into a predetermined shape by applying compressive forces without the removal of material.",
+    "question": "A body moving with constant velocity (no acceleration) is said to be in ________.",
     "type": "fill-in-the-blank",
-    "answer": "Forging",
-    "explanation": "Forging shapes metal by hammering, pressing, bending, or drawing operations using compressive forces, without removing material like in machining."
+    "answer": "dynamic equilibrium",
+    "explanation": "A body is in dynamic equilibrium if it moves with constant velocity (no acceleration). [cite: 48]"
   },
   {
-    "question": "Which type of forging is performed below the material's recrystallisation temperature to produce a smooth surface finish and close tolerances?",
+    "question": "How many reactions does a roller support typically provide?",
     "type": "multiple-choice",
-    "options": ["Hot forging", "Cold forging", "Drop forging", "Press forging"],
-    "answer": "Cold forging",
-    "explanation": "Cold forging is performed below the recrystallisation temperature (generally at room temperature) and is suitable for small parts requiring a smooth finish and close tolerances."
+    "options": ["Zero", "One", "Two", "Three"],
+    "answer": "One",
+    "explanation": "A roller support resists motion in one direction only and provides one reaction. [cite: 103, 108]"
   },
   {
-    "question": "Foundry work is capable of producing complex and intricate shapes with internal cavities.",
-    "type": "true-false",
-    "answer": "true",
-    "explanation": "The advantages of foundry work include its capability to produce complex and intricate shapes, including hollow sections and internal cavities, using cores and moulds."
-  },
-  {
-    "question": "Which of the following is an example of a solid-state welding process (welding without melting)?",
+    "question": "Which type of support prevents both translation and rotation, providing three reactions?",
     "type": "multiple-choice",
     "options": [
-      "Shielded metal arc welding",
-      "Friction stir welding",
-      "Diffusion bonding",
-      "Oxy-acetylene welding"
+      "Roller support",
+      "Pin support",
+      "Fixed support",
+      "Hinge support"
     ],
-    "answer": "Diffusion bonding",
-    "explanation": "According to the document, solid-state welding processes, which occur without melting the base materials, include diffusion bonding, cold welding, and explosion welding."
+    "answer": "Fixed support",
+    "explanation": "A fixed support is a support that prevents both translation and rotation of a structure, yielding three reactions. [cite: 128, 132]"
   },
   {
-    "question": "How is a 'trivial accident' defined in the context of workshop safety?",
-    "type": "multiple-choice",
-    "options": [
-      "An incident in which no injury occurs but could have under slightly different circumstances",
-      "An accident that causes severe injury requiring immediate medical attention",
-      "An accident that causes minor injury to a worker or minimal damage to equipment",
-      "An accident that results in very severe injury or permanent disability"
-    ],
-    "answer": "An accident that causes minor injury to a worker or minimal damage to equipment",
-    "explanation": "The document defines a trivial accident as one that causes minor injury to a worker or minimal damage to equipment, distinguishing it from near-miss, minor, serious, and fatal accidents."
-  },
-  {
-    "question": "_____ involves the use of specialised computer software to create detailed 2D drawings and 3D models of components and assemblies.",
-    "type": "fill-in-the-blank",
-    "answer": "CAD",
-    "explanation": "Computer-Aided Design (CAD) uses software to create accurate 2D and 3D representations that provide precise geometrical data and material specifications for engineering products."
-  },
-  {
-    "question": "What is a potential consequence of exposure to long-term noise in a workshop, and which of the following is a device used to prevent it?",
-    "type": "multiple-choice",
-    "options": [
-      "Loss of sight; welding goggles",
-      "Respiratory issues; dust mask",
-      "Hearing impairment; earmuffs",
-      "Skin burns; cotton gloves"
-    ],
-    "answer": "Hearing impairment; earmuffs",
-    "explanation": "Exposure to long-term noise could result in hearing impairment or complete hearing loss, and earmuffs are a common type of ear protector used to reduce noise intensity[cite: 382, 383]."
-  },
-  {
-    "question": "It is acceptable to remove or bypass machine guards if it speeds up the production process.",
+    "question": "In neutral equilibrium, a structure will return to its original position after a slight disturbance.",
     "type": "true-false",
     "answer": "false",
-    "explanation": "According to the essential workshop safety rules, workers must keep guards in place and never remove or bypass machine guards[cite: 453]."
+    "explanation": "A structure is in neutral equilibrium if, after disturbance, it remains in its new position rather than returning to its original position. [cite: 76]"
   },
   {
-    "question": "The three essentials for combustion, often represented in a triangle, are fuel, air, and _____.",
+    "question": "The turning effect of a force about a point or axis is known as its ________.",
     "type": "fill-in-the-blank",
-    "answer": "Heat",
-    "explanation": "The triangle of fire illustrates that the essentials for combustion comprise fuel, air, and heat (the means of ignition)[cite: 479, 480, 481, 482]."
+    "answer": "moment",
+    "explanation": "A moment is the turning effect of a force about a point or axis, mathematically expressed as the magnitude of force multiplied by the perpendicular distance. [cite: 37, 38]"
   },
   {
-    "question": "Which type of fire involves energised electrical equipment such as motors, transformers, and appliances?",
+    "question": "Which type of support prevents translation in both horizontal and vertical directions but allows rotation? [cite: 115]",
     "type": "multiple-choice",
-    "options": ["Class A fire", "Class B fire", "Class C fire", "Class D fire"],
-    "answer": "Class C fire",
-    "explanation": "A Class C fire is a fire type that involves energised electrical equipment such as motors, transformers and appliances[cite: 505]."
+    "options": [
+      "Roller support",
+      "Pin support",
+      "Fixed support",
+      "Cantilever support"
+    ],
+    "answer": "Pin support",
+    "explanation": "A pin support is a support that prevents translation in both horizontal and vertical directions but allows rotation. [cite: 115]"
   },
   {
-    "question": "Water and foam fire extinguishers are highly effective and recommended for putting out fires involving energised electrical equipment.",
+    "question": "Internal forces are developed within the body as a result of external loading and are responsible for stress and deformation. [cite: 34, 35]",
+    "type": "true-false",
+    "answer": "true",
+    "explanation": "Internal forces are developed within the body as a result of external loading[cite: 34]. They are responsible for stress and deformation[cite: 35]."
+  },
+  {
+    "question": "What is the first step in all cases when determining support reactions?",
+    "type": "multiple-choice",
+    "options": [
+      "Take moments about a support",
+      "Apply vertical equilibrium",
+      "Draw a correct Free Body Diagram (FBD)",
+      "Calculate the uniformly distributed load"
+    ],
+    "answer": "Draw a correct Free Body Diagram (FBD)",
+    "explanation": "In all cases, the first step is to draw a correct Free Body Diagram (FBD), followed by the application of equilibrium equations[cite: 4]."
+  },
+  {
+    "question": "A structure must have a fixed support in order to be stable.",
     "type": "true-false",
     "answer": "false",
-    "explanation": "Water and foam extinguishers should not be used on Class C fires (energised electrical equipment) because the water could create a shock hazard, posing a serious risk to the operator[cite: 516]."
+    "explanation": "A structure does not need a fixed support to be stable[cite: 141]. Stability is achieved when the arrangement of supports prevents all possible movements, including rotation[cite: 142]."
   },
   {
-    "question": "Which type of fire extinguisher is specifically designed for Class K fires involving cooking oils and fats?",
-    "type": "multiple-choice",
-    "options": [
-      "Carbon Dioxide Fire Extinguishers",
-      "Wet Chemical Fire Extinguishers",
-      "Dry Powder Fire Extinguishers",
-      "Halogenated Fire Extinguishers"
-    ],
-    "answer": "Wet Chemical Fire Extinguishers",
-    "explanation": "Wet chemical extinguishers are specifically designed for Class K fires, which involve cooking oils and fats commonly found in modern, high-efficiency deep-fat fryers[cite: 530]."
-  },
-  {
-    "question": "Dry powder fire extinguishers are specifically designed for Class _____ fires, which involve combustible metals like magnesium, aluminium, and titanium.",
+    "question": "For a beam carrying a uniformly distributed load (UDL) of 10 kN/m over an entire 4 m span, the equivalent point load is ____ kN.",
     "type": "fill-in-the-blank",
-    "answer": "D",
-    "explanation": "Dry powder extinguishers are specifically designed for Class D fires, which involve combustible metals such as magnesium, aluminium, and titanium[cite: 540]."
+    "answer": "40",
+    "explanation": "To convert the UDL to a point load, multiply the load intensity by the length: W = 10 * 4 = 40 kN[cite: 36, 39]."
   },
   {
-    "question": "When an injury occurs in the workshop, what is the recommended timeframe for an accident investigation to take place?",
+    "question": "A 6 m beam is supported by a pin at A and a roller at B, carrying a 12 kN point load at its midpoint. What is the vertical reaction at the roller support B (RB)?",
     "type": "multiple-choice",
-    "options": [
-      "Within one week of occurrence",
-      "Only after the worker has fully recovered",
-      "As soon as possible, most times within 24 hours of occurrence",
-      "At the end of the fiscal year"
-    ],
-    "answer": "As soon as possible, most times within 24 hours of occurrence",
-    "explanation": "It is advisable that when injuries occur, they are investigated as soon as possible, which is most times within 24 hours of occurrence[cite: 606]."
+    "options": ["6 kN", "12 kN", "18 kN", "36 kN"],
+    "answer": "6 kN",
+    "explanation": "Taking moments about A, RB * 6 - 12 * 3 = 0, which gives 6RB = 36, resulting in RB = 6 kN[cite: 7, 8, 9, 10, 24, 25, 26]."
   },
   {
-    "question": "What is the primary function of a bench work in an engineering workshop?",
+    "question": "A 5 m beam with a pin at A and a roller at B carries a 10 kN point load located 2 m from A. What is the vertical reaction at the pin support A (RAy)?",
     "type": "multiple-choice",
-    "options": [
-      "To completely replace machining operations for all components",
-      "To manufacture components strictly using automated machine tools",
-      "To produce the final accuracy of mating surfaces manually, complementing machining operations",
-      "To rapidly produce large quantities of components from raw materials"
-    ],
-    "answer": "To produce the final accuracy of mating surfaces manually, complementing machining operations",
-    "explanation": "Bench work acts as a complementary process to machining, ensuring final accuracy and proper fit when machine operations alone cannot deliver the required precision."
+    "options": ["4 kN", "6 kN", "10 kN", "0 kN"],
+    "answer": "6 kN",
+    "explanation": "First, RB is found to be 4 kN[cite: 75]. Applying vertical equilibrium, RAy + RB - 10 = 0, so RAy = 10 - 4 = 6 kN[cite: 77, 78]."
   },
   {
-    "question": "Primary shaping processes are characterized by the significant removal of material to achieve the final shape.",
+    "question": "A 6 m beam carries two point loads: 8 kN at 2 m from A, and 6 kN at 4 m from A. The vertical reaction at roller B (RB) is ____ kN. (Round to two decimal places).",
+    "type": "fill-in-the-blank",
+    "answer": "6.67",
+    "explanation": "Taking moments about A: RB * 6 - (8 * 2 + 6 * 4) = 0. This gives 6RB = 16 + 24 = 40, so RB = 6.67 kN[cite: 94]."
+  },
+  {
+    "question": "A 6 m beam carries a UDL of 5 kN/m over the left 3 m only. What is the equivalent point load for this partial UDL?",
+    "type": "multiple-choice",
+    "options": ["30 kN", "15 kN", "18 kN", "5 kN"],
+    "answer": "15 kN",
+    "explanation": "To convert the partial UDL, multiply the load by the distance it covers: W = 5 * 3 = 15 kN[cite: 104, 107]."
+  },
+  {
+    "question": "A cantilever beam of length 4 m is fixed at A and has a downward point load of 10 kN at the free end. What is the magnitude of the moment reaction (MA) at the fixed support?",
+    "type": "multiple-choice",
+    "options": ["10 kNm", "20 kNm", "30 kNm", "40 kNm"],
+    "answer": "40 kNm",
+    "explanation": "Taking moments about A, MA - (10 * 4) = 0, so MA = 40 kNm[cite: 116, 117, 118, 136, 137]."
+  },
+  {
+    "question": "Unlike pin and roller supports, a fixed support resists rotation.",
+    "type": "true-false",
+    "answer": "true",
+    "explanation": "Unlike pin and roller supports, a fixed support resists rotation, which is why a moment reaction develops at the support[cite: 139]."
+  },
+  {
+    "question": "For a simply supported beam, rotation is prevented by a single moment reaction at a specific support point.",
     "type": "true-false",
     "answer": "false",
-    "explanation": "Primary shaping processes convert raw materials into semi-finished or finished products with minimal residues and negligible loss of material volume."
+    "explanation": "In a simply supported beam, rotation is prevented by the reactions at different supports, not by a moment at a single point[cite: 143]."
   },
   {
-    "question": "In metal forming, _____ is the principle where the applied stress exceeds the elastic limit, causing the metal to undergo permanent change without fracture.",
-    "type": "fill-in-the-blank",
-    "answer": "Plastic deformation",
-    "explanation": "Plastic deformation in metal forming is based on the principle of plasticity; when stress exceeds the elastic limit, the metal deforms permanently without fracturing."
-  },
-  {
-    "question": "Which of the following is a characteristic of hot working in metal forming?",
-    "type": "multiple-choice",
-    "options": [
-      "It is carried out below the re-crystallisation temperature.",
-      "It provides a smooth surface finish with good dimensional accuracy.",
-      "It requires higher forces and power compared to cold working.",
-      "It allows for large deformations to be achieved without fracture."
-    ],
-    "answer": "It allows for large deformations to be achieved without fracture.",
-    "explanation": "Hot worked metals have high ductility, low resistance to deformation, and allow for large deformations without fracture."
-  },
-  {
-    "question": "Temporary joints can be assembled and dismantled repeatedly without causing damage to the components or the joining device.",
-    "type": "true-false",
-    "answer": "true",
-    "explanation": "A temporary joint is defined as a type of joint that can be assembled and dismantled repeatedly without causing damage to either the components or the joining device."
-  },
-  {
-    "question": "Which type of threaded fastener is best suited for soft or low-strength materials and general-purpose fabrication?",
-    "type": "multiple-choice",
-    "options": [
-      "Fine-threaded fasteners",
-      "Coarse-threaded fasteners",
-      "Self-tapping screws",
-      "Taper pins"
-    ],
-    "answer": "Coarse-threaded fasteners",
-    "explanation": "Coarse-threaded fasteners are stronger, less likely to strip, and are used with soft or low-strength materials (e.g., aluminium, plastic) and for general-purpose fabrication."
-  },
-  {
-    "question": "Frictional locking devices, such as _____ washers, generate additional tension between the bolt and nut threads when compressed to resist loosening.",
-    "type": "fill-in-the-blank",
-    "answer": "Spring",
-    "explanation": "Spring washers generate additional tension between the bolt and nut threads when compressed, which enhances locking friction and prevents loosening."
-  },
-  {
-    "question": "What happens when a permanent joint, such as a riveted joint, needs to be dismantled?",
-    "type": "multiple-choice",
-    "options": [
-      "The joint can be unscrewed and reused later.",
-      "The joining device (like a rivet) must be removed, drilled out, or destroyed.",
-      "The parts can be pulled apart with minimal force.",
-      "The joining material is melted away cleanly."
-    ],
-    "answer": "The joining device (like a rivet) must be removed, drilled out, or destroyed.",
-    "explanation": "Permanent joints cannot be dismantled without damaging the components or the joining device. To separate riveted components, the rivet head must be cut off or drilled out, destroying the rivet."
-  },
-  {
-    "question": "Self-secure joints are commonly used for thin sheets of metal that are less than _____ thick.",
-    "type": "fill-in-the-blank",
-    "answer": "1.6 mm",
-    "explanation": "Self-secure joints are commonly used for thin sheets of metal that are less than 1.6 mm thick[cite: 27]."
-  },
-  {
-    "question": "In the brazing process, the base metals are melted to form a strong joint.",
+    "question": "Within the elastic limit of a material, stress is inversely proportional to strain.",
     "type": "true-false",
     "answer": "false",
-    "explanation": "In brazing, the base metals are not melted; instead, a filler metal is melted and drawn into the joint[cite: 116]."
+    "explanation": "Within the elastic limit of a material, stress is directly proportional to strain[cite: 151]."
   },
   {
-    "question": "What is the typical temperature range for a soft soldering process?",
+    "question": "Under Generalized Hooke's Law, when a material is stretched longitudinally, it gets skinnier in the cross-section. What is this phenomenon called?",
     "type": "multiple-choice",
     "options": [
-      "Above 450°C",
-      "Below 450°C",
-      "Exactly 3,200°C",
-      "Above 1000°C"
+      "Young's Effect",
+      "Poisson's Effect",
+      "Shear Distortion",
+      "Thermal Contraction"
     ],
-    "answer": "Below 450°C",
-    "explanation": "Soldering is a soft-permanent joint formed by a low-temperature process (below 450°C)[cite: 56]."
+    "answer": "Poisson's Effect",
+    "explanation": "Poisson’s effect describes how a material gets thinner in one direction when it is stretched in another direction[cite: 166, 167]."
   },
   {
-    "question": "Which gas combination is most widely used in gas welding due to its ability to reach temperatures of about 3,200°C?",
+    "question": "Which of the following is the correct mathematical expression for normal strain in the x-direction within a 3D stress system?",
     "type": "multiple-choice",
     "options": [
-      "Oxygen and propane",
-      "Acetylene and oxygen",
-      "Nitrogen and oxygen",
-      "Hydrogen and acetylene"
+      "$\\epsilon_x = \\frac{1}{E}[\\sigma_x + \\nu(\\sigma_y + \\sigma_z)]$",
+      "$\\epsilon_x = \\frac{1}{E}[\\sigma_x - \\nu(\\sigma_y + \\sigma_z)]$",
+      "$\\epsilon_x = E[\\sigma_x - \\nu(\\sigma_y + \\sigma_z)]$",
+      "$\\epsilon_x = \\frac{1}{E}[\\sigma_y - \\nu(\\sigma_x + \\sigma_z)]$"
     ],
-    "answer": "Acetylene and oxygen",
-    "explanation": "The most widely used gas combination is acetylene and oxygen, which produces a high-temperature flame capable of reaching temperatures of about 3,200°C[cite: 153]."
+    "answer": "$\\epsilon_x = \\frac{1}{E}[\\sigma_x - \\nu(\\sigma_y + \\sigma_z)]$",
+    "explanation": "The strain in the 3D case for the x-axis is mathematically given as $\\epsilon_x = \\frac{1}{E}[\\sigma_x - \\nu(\\sigma_y + \\sigma_z)]$[cite: 170]."
   },
   {
-    "question": "Very small scratches on a metal surface can actually promote the spreading of molten solder.",
+    "question": "In the shear formula $\\gamma = \\tau / G$, the variable G represents the _____.",
+    "type": "fill-in-the-blank",
+    "answer": "Shear modulus",
+    "explanation": "Equation 5 states $\\gamma = \\tau / G$, where G represents the Shear modulus[cite: 174, 178]."
+  },
+  {
+    "question": "A material is subjected to stresses $\\sigma_x=90$ MPa, $\\sigma_y=60$ MPa, and $\\sigma_z=30$ MPa, with a Young's Modulus $E=210$ GPa and Poisson's ratio $\\nu=0.25$. What is the calculated strain in the x-direction ($\\epsilon_x$)?",
+    "type": "multiple-choice",
+    "options": [
+      "$6.75 \\times 10^{-4}$",
+      "$3.21 \\times 10^{-4}$",
+      "$4.28 \\times 10^{-4}$",
+      "$1.55 \\times 10^{-4}$"
+    ],
+    "answer": "$3.21 \\times 10^{-4}$",
+    "explanation": "Using the 3D strain formula, substitute the values: $\\epsilon_x = \\frac{1}{210 \\times 10^3}[90 - 0.25(60+30)] = 3.21 \\times 10^{-4}$[cite: 240, 241]."
+  },
+  {
+    "question": "A steel rod carries an axial load of 40 kN and has a cross-sectional area of 400 $mm^2$. The normal stress in the rod is ____ MPa.",
+    "type": "fill-in-the-blank",
+    "answer": "100",
+    "explanation": "Stress is calculated as $\\sigma = P / A$. Substituting $40 \\times 10^3$ N for P and 400 $mm^2$ for A gives 100 MPa[cite: 261, 262]."
+  },
+  {
+    "question": "Volumetric strain is calculated as the sum of strains in the x, y, and z directions.",
     "type": "true-false",
     "answer": "true",
-    "explanation": "In practice, it has been found that very small scratches on a metal surface actually promote the spreading of the molten solder[cite: 103]."
+    "explanation": "Volumetric Strain is given mathematically by the equation $\\epsilon_v = \\epsilon_x + \\epsilon_y + \\epsilon_z$[cite: 250, 251]."
   },
   {
-    "question": "In brazing, the filler metal is drawn into the joint between close-fitting parts by _____ action.",
+    "question": "In the case of free thermal expansion of a member, which of the following is true?",
+    "type": "multiple-choice",
+    "options": [
+      "Both stress and strain develop equally",
+      "Only stress develops, no strain occurs",
+      "No stress develops, only strain occurs",
+      "Neither stress nor strain occurs"
+    ],
+    "answer": "No stress develops, only strain occurs",
+    "explanation": "During free expansion caused by temperature changes, no stress develops and only strain occurs[cite: 304, 305, 306]."
+  },
+  {
+    "question": "What is the formula for the thermal stress developed in a fully restrained member subjected to a temperature change?",
+    "type": "multiple-choice",
+    "options": [
+      "$\\sigma = E \\alpha / \\Delta T$",
+      "$\\sigma = \\alpha \\Delta T / E$",
+      "$\\sigma = E \\Delta T / \\alpha$",
+      "$\\sigma = E \\alpha \\Delta T$"
+    ],
+    "answer": "$\\sigma = E \\alpha \\Delta T$",
+    "explanation": "For a fully restrained member, the thermal stress formula is $\\sigma = E \\alpha \\Delta T$[cite: 299, 300]."
+  },
+  {
+    "question": "A steel bar 3 m long is heated by $40^\\circ C$. If the coefficient of linear expansion $\\alpha = 12 \\times 10^{-6} / ^\\circ C$, the free increase in length is ____ mm.",
     "type": "fill-in-the-blank",
-    "answer": "capillary",
-    "explanation": "In brazing, a filler metal is melted and drawn into the joint between close-fitting parts by capillary action[cite: 116]."
+    "answer": "1.44",
+    "explanation": "Using $\\Delta L = \\alpha L \\Delta T$, the calculation is $12 \\times 10^{-6} \\times 3 \\times 40 = 0.00144$ m, which equals 1.44 mm[cite: 326, 327, 328]."
   },
   {
-    "question": "Which of the following is NOT a type of self-secured joint mentioned in the text?",
+    "question": "A fully restrained steel bar is heated by $50^\\circ C$. If $E = 200$ GPa and $\\alpha = 12 \\times 10^{-6} / ^\\circ C$, what is the thermal stress developed?",
+    "type": "multiple-choice",
+    "options": ["100 MPa", "120 MPa", "200 MPa", "240 MPa"],
+    "answer": "120 MPa",
+    "explanation": "Using the thermal stress formula $\\sigma = E \\alpha \\Delta T$, the calculation is $200 \\times 10^9 \\times 12 \\times 10^{-6} \\times 50 = 120 \\times 10^6$ Pa, or 120 MPa[cite: 334, 335, 336]."
+  },
+  {
+    "question": "A bar is subjected to a tensile stress of 80 MPa and a temperature rise of $30^\\circ C$. With $E = 200$ GPa and $\\alpha = 12 \\times 10^{-6} / ^\\circ C$, the total combined strain is:",
     "type": "multiple-choice",
     "options": [
-      "Paned-down joint",
-      "Grooved-seam joint",
-      "Knocked-up joint",
-      "Butt-weld joint"
+      "$4.0 \\times 10^{-4}$",
+      "$3.6 \\times 10^{-4}$",
+      "$7.6 \\times 10^{-4}$",
+      "$1.16 \\times 10^{-3}$"
     ],
-    "answer": "Butt-weld joint",
-    "explanation": "The most widely used self-secured joints include paned-down joints, grooved-seam joints, and knocked-up joints[cite: 28]."
+    "answer": "$7.6 \\times 10^{-4}$",
+    "explanation": "Total strain equals mechanical strain plus thermal strain. This is calculated as $\\frac{80 \\times 10^6}{200 \\times 10^9} + (12 \\times 10^{-6} \\times 30) = 4 \\times 10^{-4} + 3.6 \\times 10^{-4} = 7.6 \\times 10^{-4}$[cite: 342, 343, 344, 345, 346, 347]."
   },
   {
-    "question": "According to the text, what is the composition of \"tinman's or tinsmith's solder\" (BS solder K)?",
+    "question": "Why are expansion gaps structurally provided in bridges and rails?",
     "type": "multiple-choice",
     "options": [
-      "65% Tin / 34.4% Lead",
-      "60% Tin / 40% Lead",
-      "50% Tin / 50% Lead",
-      "30% Tin / 69.7% Lead"
+      "To increase the overall aesthetic appeal",
+      "To prevent stress built-up resulting in buckling during hot weather",
+      "To allow the materials to yield permanently under small loads",
+      "To ensure free contraction during extremely cold weather exclusively"
     ],
-    "answer": "60% Tin / 40% Lead",
-    "explanation": "BS solder K, known as tinman's or tinsmith's solder, is composed of 60% Tin and 40% Lead[cite: 84]."
+    "answer": "To prevent stress built-up resulting in buckling during hot weather",
+    "explanation": "Expansion gaps or joints are provided to avoid stress built-up resulting in buckling during hot weather when expansion is restrained[cite: 321]."
   },
   {
-    "question": "Which electrode angle has a significant influence on weld penetration and slag behavior?",
-    "type": "multiple-choice",
-    "options": [
-      "Tilt angle",
-      "Slope angle",
-      "Vertical angle",
-      "Horizontal angle"
-    ],
-    "answer": "Slope angle",
-    "explanation": "The slope angle has a significant influence on weld penetration and slag behaviour. [cite: 235]"
-  },
-  {
-    "question": "______, a sub-type of mechanical polishing, employs a cloth wheel coated with fine abrasive compounds to produce a bright, reflective finish.",
+    "question": "A body is said to be in _____ when all forces and moments acting on it are balanced ($\\sum F=0$ and $\\sum M=0$).",
     "type": "fill-in-the-blank",
-    "answer": "Buffing",
-    "explanation": "Buffing is a finishing process where a cloth wheel coated with fine abrasive compounds is employed to produce a bright, reflective finish. [cite: 366]"
+    "answer": "equilibrium",
+    "explanation": "A body is said to be in equilibrium when $\\sum F=0$ and $\\sum M=0$, meaning all forces and moments acting on the body are balanced[cite: 374, 375, 376]."
   },
   {
-    "question": "Anodising is a surface treatment process that is highly suitable and commonly applied to steels.",
+    "question": "When composite members are connected rigidly side-by-side in a parallel arrangement, which of the following statements is true?",
+    "type": "multiple-choice",
+    "options": [
+      "The total load passes entirely through only one material",
+      "They experience the same deformation",
+      "Each material deforms independently of the other",
+      "Load sharing does not depend on the stiffness of the materials"
+    ],
+    "answer": "They experience the same deformation",
+    "explanation": "In a parallel arrangement, materials are placed side-by-side and rigidly connected such that they experience the same deformation under load[cite: 402]."
+  },
+  {
+    "question": "In a series composite member arrangement, the total applied load is shared between the connected materials depending on their respective stiffness.",
     "type": "true-false",
     "answer": "false",
-    "explanation": "Its limitations are primarily to aluminium and a few reactive metals, and it is not suitable for steels. [cite: 461]"
+    "explanation": "In a series arrangement, the same force passes through each material because they are connected end-to-end; there is no load sharing based on stiffness[cite: 449, 450, 483, 484, 485]."
   },
   {
-    "question": "Which galvanising method involves heating steel components in a closed drum with zinc dust at 380°C - 500°C?",
+    "question": "For a composite member connected in series, the total deformation is defined as:",
     "type": "multiple-choice",
     "options": [
-      "Hot-dip galvanising",
-      "Electro-galvanising",
-      "Sherardising",
-      "Mechanical plating"
+      "Equal to the deformation of the stiffest material",
+      "Equal to the deformation of the most flexible material",
+      "The sum of the individual deformations of each material",
+      "Zero, since the members restrict each other"
     ],
-    "answer": "Sherardising",
-    "explanation": "Sherardising (vapour galvanising) is a method in which steel components are heated in a closed drum with zinc dust at 380°C - 500°C to produce a diffusion-bonded zinc-iron alloy layer. [cite: 469]"
+    "answer": "The sum of the individual deformations of each material",
+    "explanation": "In series composite members, the total deformation of the system is equal to the sum of the individual deformations of each material[cite: 458, 459]."
   },
   {
-    "question": "In painting, which coat is applied directly to the substrate and often contains corrosion inhibitors?",
-    "type": "multiple-choice",
-    "options": ["Topcoat", "Intermediate coat", "Primer coat", "Finish coat"],
-    "answer": "Primer coat",
-    "explanation": "The primer coat is often a first layer applied directly to the substrate to ensure adhesion and often contains corrosion inhibitors. [cite: 482, 483]"
-  },
-  {
-    "question": "The ______ process is a case hardening method that uses ammonia gas to diffuse nitrogen into the steel surface without the need for quenching.",
+    "question": "The load sharing relationship in parallel composite members depends heavily on the material's _____, which is defined by the product $AE$.",
     "type": "fill-in-the-blank",
-    "answer": "nitriding",
-    "explanation": "The nitriding is a thermochemical surface treatment process in which nitrogen is diffused into the steel surface (using ammonia gas) to produce hard nitrides without quenching. [cite: 523]"
+    "answer": "stiffness",
+    "explanation": "In parallel composite members, load sharing depends on stiffness, which is represented by AE[cite: 482]."
   },
   {
-    "question": "Cladding creates a permanent composite structure by relying solely on mechanical adhesion between the base metal and the cladding layer.",
+    "question": "A parallel composite bar of steel ($A=200 mm^2, E=200 GPa$) and aluminium ($A=300 mm^2, E=70 GPa$) carries a total axial load of 60 kN. The load carried by the aluminium rod is:",
+    "type": "multiple-choice",
+    "options": ["20.66 kN", "39.34 kN", "30.00 kN", "60.00 kN"],
+    "answer": "20.66 kN",
+    "explanation": "By compatibility $P_s/P_a = (A_s E_s)/(A_a E_a) = 1.905$. By equilibrium $60 = P_s + P_a$. Solving gives $2.905 P_a = 60$, so $P_a = 20.66$ kN[cite: 557, 559, 560, 563, 564]."
+  },
+  {
+    "question": "Continuing with the parallel composite bar (Total load=60 kN, Steel $A=200 mm^2$, Steel load $P_s=39.34 kN$), what is the stress in the steel rod?",
+    "type": "multiple-choice",
+    "options": ["68.9 MPa", "100.0 MPa", "196.7 MPa", "393.4 MPa"],
+    "answer": "196.7 MPa",
+    "explanation": "With a load $P_s = 39.34$ kN and area $A_s = 200 mm^2$, the stress $\\sigma_s = P/A = (39.34 \\times 1000) / 200 = 196.7$ MPa[cite: 565, 568, 569]."
+  },
+  {
+    "question": "A composite bar is in series. It consists of Brass ($L=1200 mm, A=250 mm^2, E=100 GPa$) and Copper ($L=1800 mm, A=300 mm^2, E=120 GPa$). If the total extension is 8.82 mm, what is the applied load $P$?",
+    "type": "multiple-choice",
+    "options": ["45 kN", "90 kN", "120 kN", "180 kN"],
+    "answer": "90 kN",
+    "explanation": "Using $\\delta_{total} = \\delta_b + \\delta_c$, substituting $PL/AE$ for both sections gives $8.82 = \\frac{1200P}{25\\times 10^6} + \\frac{1800P}{36\\times 10^6}$. Simplifying this to $8.82 = 0.000098 P$ gives $P = 90,000$ N, or 90 kN[cite: 604, 605, 607, 608, 612, 614]."
+  },
+  {
+    "question": "For the same series composite bar in the previous question ($P = 90$ kN, Brass area $A = 250 mm^2$), what is the internal stress in the brass section?",
+    "type": "multiple-choice",
+    "options": ["300 MPa", "360 MPa", "420 MPa", "90 MPa"],
+    "answer": "360 MPa",
+    "explanation": "Stress is calculated as $\\sigma = P/A$. With $P = 90$ kN and $A_b = 250 mm^2$, $\\sigma_b = (90 \\times 1000) / 250 = 360$ MPa[cite: 617, 618, 619]."
+  },
+  {
+    "question": "For the same series bar under 90 kN load, the extension of the copper section alone is ____ mm.",
+    "type": "fill-in-the-blank",
+    "answer": "4.50",
+    "explanation": "The extension of the copper section is $\\delta_c = \\epsilon_c \\times L_c = 0.0025 \\times 1800 = 4.50$ mm[cite: 633, 634]."
+  },
+  {
+    "question": "On a material's stress-strain curve, the specific point where noticeable permanent plastic deformation begins, and full original length recovery is lost, is called the:",
+    "type": "multiple-choice",
+    "options": [
+      "Elastic limit",
+      "Yield point",
+      "Ultimate stress",
+      "Fracture point"
+    ],
+    "answer": "Yield point",
+    "explanation": "The yield point is where noticeable plastic deformation begins and the material will no longer fully recover its original length[cite: 528]."
+  },
+  {
+    "question": "A material possessing a highly elevated value of Young's Modulus ($E$) typically deforms very easily under small loads.",
     "type": "true-false",
     "answer": "false",
-    "explanation": "The bond is achieved through the application of heat, pressure, or both, resulting in metallurgical fusion rather than just mechanical adhesion. [cite: 389]"
+    "explanation": "A material with a high value of E is stiff and resists deformation, while a material with a low value of E deforms easily[cite: 515]."
   },
   {
-    "question": "What is a key characteristic of electroless plating compared to electroplating?",
+    "question": "Which formula accurately describes the general relationship of Poisson's Effect linking lateral and longitudinal strain?",
     "type": "multiple-choice",
     "options": [
-      "It requires an external electrical power supply",
-      "It relies on autocatalytic chemical reactions without external electricity",
-      "It only works on highly conductive metals",
-      "It acts as a reverse plating process"
+      "$\\epsilon_{lateral} = \\nu / \\epsilon_{longitudinal}$",
+      "$\\epsilon_{lateral} = \\nu \\epsilon_{longitudinal}$",
+      "$\\epsilon_{lateral} = -\\nu \\epsilon_{longitudinal}$",
+      "$\\epsilon_{longitudinal} = -\\nu \\epsilon_{lateral}$"
     ],
-    "answer": "It relies on autocatalytic chemical reactions without external electricity",
-    "explanation": "Electroless plating is a chemical deposition process that relies on autocatalytic reactions rather than an external power supply. [cite: 331]"
+    "answer": "$\\epsilon_{lateral} = -\\nu \\epsilon_{longitudinal}$",
+    "explanation": "Poisson's Effect is generally given by the formula $\\epsilon_{lateral} = -\\nu \\epsilon_{longitudinal}$[cite: 248, 249]."
   },
   {
-    "question": "________ is a chemical conversion treatment that involves immersing steel or iron components in a phosphoric acid solution containing zinc, manganese, or iron salts.",
+    "question": "Stress is mathematically and fundamentally defined as the internal resisting force per unit ____ developed within a material.",
     "type": "fill-in-the-blank",
-    "answer": "Phosphating",
-    "explanation": "Phosphating involves the immersion of steel or iron components in a phosphoric acid solution containing phosphate salts to form a fine-grained crystalline phosphate layer on the surface[cite: 569]."
+    "answer": "area",
+    "explanation": "Stress is defined as the internal resisting force per unit area developed within a material when it is subjected to external load[cite: 489]."
   },
   {
-    "question": "Property-modification processes primarily focus on significantly altering the shape and dimensions of manufactured components.",
+    "question": "Why is strain considered a dimensionless quantity?",
+    "type": "multiple-choice",
+    "options": [
+      "It represents a force divided by a uniform area",
+      "It measures deformation per unit volume",
+      "It is the ratio of deformation to the original length",
+      "It is heavily influenced by surrounding thermal dynamics"
+    ],
+    "answer": "It is the ratio of deformation to the original length",
+    "explanation": "Strain is defined as the ratio of deformation to the original length of a material, making it a dimensionless quantity[cite: 499, 500]."
+  },
+  {
+    "question": "The ultimate stress point on a stress-strain curve represents the maximum absolute stress a material can sustain before failing at the fracture point.",
+    "type": "true-false",
+    "answer": "true",
+    "explanation": "The ultimate stress represents the maximum stress the material can sustain, finally ending at the fracture point where the material breaks[cite: 529]."
+  },
+  {
+    "question": "A structural steel rod with a cross-sectional area of $400 mm^2$ carries a 40 kN load. Given that $E = 200 GPa$, what is the calculated longitudinal strain?",
+    "type": "multiple-choice",
+    "options": [
+      "$5 \\times 10^{-4}$",
+      "$2 \\times 10^{-4}$",
+      "$100 \\times 10^{-4}$",
+      "$0.5 \\times 10^{-4}$"
+    ],
+    "answer": "$5 \\times 10^{-4}$",
+    "explanation": "First, stress is $\\sigma = P/A = 100$ MPa. Then, strain is $\\epsilon = \\sigma / E = 100 / (200 \\times 10^3) = 5 \\times 10^{-4}$[cite: 262, 263]."
+  },
+  {
+    "question": "What defines a 'plane stress' state in mechanics?",
+    "type": "multiple-choice",
+    "options": [
+      "A 3D state where all normal and shear stresses are equal.",
+      "A 2D simplification where stress components in one direction (z-axis) are assumed to be zero.",
+      "A state where only shear stresses act on the material.",
+      "A state where normal stresses are zero and only the z-axis has stress."
+    ],
+    "answer": "A 2D simplification where stress components in one direction (z-axis) are assumed to be zero.",
+    "explanation": "Plane stress is a 2D simplification in mechanics where stress components in the z-axis direction are assumed to be zero, simplifying the analysis[cite: 13, 14]."
+  },
+  {
+    "question": "Normal Stress (σ) acts ________ to the surface or the selected plane and can be compressive or tensile.",
+    "type": "fill-in-the-blank",
+    "answer": "perpendicular",
+    "explanation": "Normal stress acts perpendicular to the surface or the selected plane, unlike shear stress which acts parallel[cite: 8]."
+  },
+  {
+    "question": "How is the center of Mohr's Circle calculated for a given plane stress state?",
+    "type": "multiple-choice",
+    "options": [
+      "By finding the difference between the normal stresses.",
+      "By taking the average of the shear stresses.",
+      "By calculating the average of the normal stresses: (σx + σy) / 2.",
+      "By using the maximum shear stress formula."
+    ],
+    "answer": "By calculating the average of the normal stresses: (σx + σy) / 2.",
+    "explanation": "The center of Mohr's Circle, denoted as C, is positioned at the average normal stress on the horizontal axis, calculated as (σx + σy) / 2[cite: 228, 229]."
+  },
+  {
+    "question": "Given a stress state with normal stresses σx = 40 MPa and σy = 10 MPa, what is the value of the center of Mohr's Circle on the normal stress axis?",
+    "type": "multiple-choice",
+    "options": ["15 MPa", "25 MPa", "30 MPa", "50 MPa"],
+    "answer": "25 MPa",
+    "explanation": "The center is the average normal stress. Calculating (40 MPa + 10 MPa) / 2 gives 25 MPa[cite: 228, 229]."
+  },
+  {
+    "question": "For a stress state where σx = 40 MPa, σy = 10 MPa, and τxy = 5 MPa, calculate the radius of Mohr's Circle (rounded to two decimal places).",
+    "type": "multiple-choice",
+    "options": ["10.00 MPa", "15.81 MPa", "20.00 MPa", "25.00 MPa"],
+    "answer": "15.81 MPa",
+    "explanation": "The radius is calculated as √[((σx - σy) / 2)² + τxy²]. Plugging in the numbers: √[((40 - 10) / 2)² + 5²] = √[15² + 25] = √250, which is approximately 15.81 MPa[cite: 230, 231]."
+  },
+  {
+    "question": "Using the stress state σx = 50 MPa, σy = -10 MPa, and τxy = 40 MPa, calculate the maximum shear stress (τmax) in MPa. (Enter number only)",
+    "type": "fill-in-the-blank",
+    "answer": "50",
+    "explanation": "Maximum shear stress equals the radius of Mohr's circle: τmax = √[((50 - (-10)) / 2)² + 40²] = √[30² + 40²] = √[900 + 1600] = √2500 = 50 MPa[cite: 240, 241]."
+  },
+  {
+    "question": "Principal stresses represent the maximum and minimum magnitudes of shear stress experienced at a point.",
     "type": "true-false",
     "answer": "false",
-    "explanation": "Property-modification processes alter material properties without significantly changing their shape or dimensions; they focus on improving performance to meet specific service requirements such as strength or hardness[cite: 583, 586]."
+    "explanation": "Principal stresses actually represent the maximum and minimum magnitudes of normal stress, not shear stress[cite: 142]."
   },
   {
-    "question": "Which heat treatment process is specifically used to refine grain size and improve both strength and toughness?",
-    "type": "multiple-choice",
-    "options": ["Annealing", "Normalising", "Hardening", "Tempering"],
-    "answer": "Normalising",
-    "explanation": "Normalising is a heat treatment process used to refine grain size, which in turn improves strength and toughness[cite: 591]."
-  },
-  {
-    "question": "Which type of lathe lacks a feed gearbox, lead screw, or conventional carriage mechanism?",
+    "question": "Which trigonometric equation is used to find the angle of the principal plane (θp)?",
     "type": "multiple-choice",
     "options": [
-      "Centre lathe",
-      "Tool room lathe",
-      "Speed lathe",
-      "Automatic lathe"
+      "sin 2θp = τxy / (σx + σy)",
+      "cos 2θp = 2τxy / (σx - σy)",
+      "tan 2θp = 2τxy / (σx - σy)",
+      "tan 2θp = (σx - σy) / 2τxy"
     ],
-    "answer": "Speed lathe",
-    "explanation": "Unlike the centre lathe, the speed lathe is the simplest type in construction and does not have a feed gearbox, lead screw, or conventional carriage mechanism[cite: 687, 694]."
+    "answer": "tan 2θp = 2τxy / (σx - σy)",
+    "explanation": "The angle of the principal plane is found by differentiating the transformed normal stress equation, resulting in tan 2θp = 2τxy / (σx - σy)[cite: 149, 150, 155]."
   },
   {
-    "question": "The key distinguishing feature of a semi-automatic lathe is the hexagonal ______ mounted on the machine in place of the tailstock.",
+    "question": "The principal stresses σ1 and σ2 are found at the points where Mohr's circle intersects the horizontal axis, meaning the shear stress equals ________.",
     "type": "fill-in-the-blank",
-    "answer": "turret",
-    "explanation": "A distinguishing feature of a semi-automatic lathe is the hexagonal turret mounted on the machine in place of the tailstock, which allows multiple tools to be fitted simultaneously[cite: 775, 776]."
+    "answer": "0",
+    "explanation": "On Mohr's circle, the horizontal axis represents normal stress where the vertical axis (shear stress, τ) is zero. These intersection points yield the principal stresses[cite: 234, 235]."
   },
   {
-    "question": "A gap bed lathe features a removable section of the bed adjacent to the tailstock to accommodate long workpieces.",
+    "question": "When transforming stress components, positive angles of rotation are measured clockwise from the positive x-axis.",
     "type": "true-false",
     "answer": "false",
-    "explanation": "A gap bed lathe features a removable section of the bed adjacent to the headstock, not the tailstock, to allow the machining of extra-large diameter workpieces[cite: 796, 797]."
+    "explanation": "According to the sign convention, positive angles of rotation are measured counterclockwise from the positive x-axis, while negative angles are clockwise[cite: 69, 70]."
   },
   {
-    "question": "What material is usually used to make the bed of a lathe to provide a massive and rigid foundation?",
+    "question": "When plotting Mohr's Circle, what does Point A with coordinates (σx, τxy) represent?",
     "type": "multiple-choice",
     "options": [
-      "Aluminium alloy",
-      "Grey cast iron",
-      "High-carbon steel",
-      "Copper alloy"
+      "The normal and shear stress on the y-plane.",
+      "The maximum principal stress.",
+      "The average normal stress.",
+      "The normal stress and shear stress on the x-plane."
     ],
-    "answer": "Grey cast iron",
-    "explanation": "The bed of a lathe is a massive, rigid, single-piece casting that is usually made of grey cast iron[cite: 807]."
+    "answer": "The normal stress and shear stress on the x-plane.",
+    "explanation": "In the construction of Mohr's Circle, Point A specifically represents the given normal stress (σx) and shear stress (τxy) acting on the x-plane of the element[cite: 223, 224]."
   },
   {
-    "question": "What is the purpose of the back gear arrangement in a lathe's headstock?",
+    "question": "An element is subjected to pure shear, where normal stresses σx = 0 MPa, σy = 0 MPa, and shear stress τxy = 20 MPa. What are the principal stresses (σ1 and σ2)?",
     "type": "multiple-choice",
     "options": [
-      "To rapidly reverse the spindle rotation",
-      "To obtain faster spindle speeds for finishing",
-      "To automatically feed the carriage along the bed",
-      "To obtain slower spindle speeds for heavy cutting or threading"
+      "20 MPa and 0 MPa",
+      "20 MPa and -20 MPa",
+      "0 MPa and -20 MPa",
+      "40 MPa and -40 MPa"
     ],
-    "answer": "To obtain slower spindle speeds for heavy cutting or threading",
-    "explanation": "The back gear arrangement in a headstock is employed to obtain slower spindle speeds, which is particularly useful during heavy cutting or threading operations[cite: 824]."
+    "answer": "20 MPa and -20 MPa",
+    "explanation": "Using the principal stress formula σ1,2 = (σx+σy)/2 ± √[((σx-σy)/2)² + τxy²], we get 0 ± √[0² + 20²] = ± 20 MPa[cite: 163]."
   },
   {
-    "question": "What is the primary purpose of tuning operations as described in the document?",
-    "type": "multiple-choice",
-    "options": [
-      "To add material to the surface of a workpiece",
-      "To remove material from the central or internal surface of a rotating workpiece",
-      "To polish the external surface of a stationary workpiece",
-      "To measure the diameter of a rotating workpiece"
-    ],
-    "answer": "To remove material from the central or internal surface of a rotating workpiece",
-    "explanation": "The document states that tuning is a process in which material is removed from the central or internal surface of a rotating workpiece using a traversing single-point cutting tool."
-  },
-  {
-    "question": "What type of cutting tool is used in tuning operations?",
-    "type": "fill-in-the-blank",
-    "answer": "single-point cutting tool",
-    "explanation": "The document specifies that a traversing single-point cutting tool is used in the tuning process."
-  },
-  {
-    "question": "Is tuning performed on a rotating workpiece?",
+    "question": "Shear stress acts parallel to the selected plane and tends to cause deformation.",
     "type": "true-false",
     "answer": "true",
-    "explanation": "The document describes tuning as removing material from a rotating workpiece."
+    "explanation": "Shear stress is defined as the component of stress that acts parallel to the chosen plane, which causes the material to deform[cite: 9]."
   },
   {
-    "question": "What is the page number where the tuning operation is described?",
+    "question": "Why is determining the principal stresses crucial in engineering?",
     "type": "multiple-choice",
-    "options": ["Page 5", "Page 8", "Page 2", "Page 9"],
-    "answer": "Page 8",
-    "explanation": "The tuning operation is described on page 8 of the document, under section 4.2.4.1."
+    "options": [
+      "Because materials generally only fail due to minimum shear stress.",
+      "Because materials often fail on planes where stress is at its maximum, making it vital for predicting failure points.",
+      "Because it simplifies the 3D stress tensors into a 1D tensor.",
+      "Because it increases the complexity of structural design."
+    ],
+    "answer": "Because materials often fail on planes where stress is at its maximum, making it vital for predicting failure points.",
+    "explanation": "Engineers need to calculate principal stresses because materials often fail on planes of maximum stress. This knowledge helps predict potential failure points and optimize component orientation[cite: 134, 135, 142, 143]."
   },
   {
-    "question": "Does the document mention that tuning removes material from the external surface of the workpiece?",
+    "question": "On Mohr's Circle, the maximum shear stress (τmax) is visually located at the ________ point of the circle.",
+    "type": "fill-in-the-blank",
+    "answer": "highest",
+    "explanation": "Since the vertical axis represents shear stress, the maximum shear stress corresponds to the peak or the highest point on the plotted Mohr's Circle[cite: 239]."
+  },
+  {
+    "question": "What type of beam is fixed rigidly at one end and free at the other?",
+    "type": "multiple-choice",
+    "options": [
+      "Simply Supported Beam",
+      "Cantilever Beam",
+      "Overhanging Beam",
+      "Continuous Beam"
+    ],
+    "answer": "Cantilever Beam",
+    "explanation": "A cantilever beam is defined as a structural member fixed rigidly at one end and completely free at the other, with the maximum bending moment occurring at the fixed end."
+  },
+  {
+    "question": "In a simply supported beam, the bending moment at both the pin and roller supports is always zero.",
+    "type": "true-false",
+    "answer": "true",
+    "explanation": "For a simply supported beam, the ends are free to rotate and offer no resistance to bending, resulting in a zero bending moment at both supports."
+  },
+  {
+    "question": "In a shear force diagram, a uniformly distributed load (UDL) zone produces what kind of line?",
+    "type": "multiple-choice",
+    "options": [
+      "A sudden vertical step",
+      "A horizontal constant line",
+      "A linearly varying (sloped) line",
+      "A cubic variation curve"
+    ],
+    "answer": "A linearly varying (sloped) line",
+    "explanation": "A UDL produces a linearly varying (sloped) line in the shear force diagram, whereas it produces a parabolic curve in the bending moment diagram."
+  },
+  {
+    "question": "The bending moment is maximum at a cross-section where the shear force is ________ or changes sign.",
+    "type": "fill-in-the-blank",
+    "answer": "zero",
+    "explanation": "Mathematical relationships between shear and moment dictate that the bending moment peaks (maximum or minimum) exactly where the shear force diagram crosses the baseline (becomes zero)."
+  },
+  {
+    "question": "A cantilever beam of length 2 m carries three point loads: 300 N, 500 N, and 800 N. What is the total shear force at the fixed end?",
+    "type": "multiple-choice",
+    "options": ["800 N", "1300 N", "1600 N", "2400 N"],
+    "answer": "1600 N",
+    "explanation": "The total shear force at the fixed end of a cantilever is the algebraic sum of all downward forces acting on the beam: 300 + 500 + 800 = 1600 N."
+  },
+  {
+    "question": "A simply supported beam of span L carries a point load W exactly at its mid-point. What is the maximum bending moment?",
+    "type": "multiple-choice",
+    "options": ["WL/2", "WL/4", "WL/8", "W/2L"],
+    "answer": "WL/4",
+    "explanation": "For a simply supported beam with a central point load, the reactions are W/2. The maximum bending moment occurs at the center and is calculated as (W/2) * (L/2) = WL/4."
+  },
+  {
+    "question": "What defines 'pure bending' or 'simple bending' in a beam segment?",
+    "type": "multiple-choice",
+    "options": [
+      "A section with maximum shear force and zero bending moment",
+      "A length of beam subjected to a constant bending moment and zero shear force",
+      "A beam undergoing only vertical displacement without curving",
+      "A beam loaded with uniformly distributed loads only"
+    ],
+    "answer": "A length of beam subjected to a constant bending moment and zero shear force",
+    "explanation": "Pure bending occurs when a portion of a beam is subjected only to a constant bending moment, meaning no shear force is present to cause complex structural deformations."
+  },
+  {
+    "question": "According to the theory of simple bending, the transverse sections which were plane before bending will warp or distort after bending.",
     "type": "true-false",
     "answer": "false",
-    "explanation": "The document specifically says material is removed from the 'central or internal surface,' not the external surface."
+    "explanation": "A core assumption of the simple bending theory is that transverse sections remain plane before and after bending. This ensures that strain and stress vary linearly across the depth of the beam."
   },
   {
-    "question": "How is the cutting tool moved during tuning?",
+    "question": "The Neutral Axis (N.A.) of a symmetrical beam cross-section always passes through the ________ of the cross-section.",
     "type": "fill-in-the-blank",
-    "answer": "traversing",
-    "explanation": "The document describes the cutting tool as traversing, meaning it moves across the workpiece during the process."
+    "answer": "centroid",
+    "explanation": "The theorem of the neutral axis states that it always passes through the geometric center, or centroid, of the cross-section where bending stress is exactly zero."
   },
   {
-    "question": "Which section of the document covers the tuning operation?",
+    "question": "Which of the following represents the correct Bending Equation?",
     "type": "multiple-choice",
-    "options": ["4.2.4", "4.2.4.1", "4.2.3", "4.2.5"],
-    "answer": "4.2.4.1",
-    "explanation": "The tuning operation is covered under section 4.2.4.1, as shown on page 8."
+    "options": [
+      "M/y = sigma/I = E/R",
+      "M/I = sigma/y = E/R",
+      "M/E = sigma/R = I/y",
+      "M/R = sigma/I = E/y"
+    ],
+    "answer": "M/I = sigma/y = E/R",
+    "explanation": "The standard bending equation relates bending moment (M), moment of inertia (I), bending stress (sigma), distance from the neutral axis (y), Young's modulus (E), and radius of curvature (R)."
   },
   {
-    "question": "Is tuning also referred to as a 'boring' operation?",
+    "question": "What is the section modulus (Z) of a solid rectangular beam with a width (b) of 150 mm and a depth (d) of 250 mm?",
+    "type": "multiple-choice",
+    "options": [
+      "1,562,500 mm^3",
+      "3,125,000 mm^3",
+      "9,375,000 mm^3",
+      "62,500 mm^3"
+    ],
+    "answer": "1,562,500 mm^3",
+    "explanation": "The section modulus for a rectangle is Z = (b * d^2) / 6. Plugging in the values: (150 * 250^2) / 6 = (150 * 62500) / 6 = 1,562,500 mm^3."
+  },
+  {
+    "question": "A cantilever beam carries a uniformly distributed load of 3 kN/m over its full 2 m length, and a 2 kN point load at its free end. What is the moment contribution from ONLY the point load at the fixed end?",
+    "type": "multiple-choice",
+    "options": [
+      "-2,000,000 N.mm",
+      "-4,000,000 N.mm",
+      "-6,000,000 N.mm",
+      "4,000,000 N.mm"
+    ],
+    "answer": "-4,000,000 N.mm",
+    "explanation": "The moment from the point load (W = 2 kN = 2000 N) acting at a distance of 2 m (2000 mm) is -W * L = -2000 * 2000 = -4,000,000 N.mm (hogging moment)."
+  },
+  {
+    "question": "In a cantilever beam subjected to downward loading (hogging), the top fibers are under compressive stress.",
     "type": "true-false",
     "answer": "false",
-    "explanation": "The document does not refer to tuning as boring; it defines tuning as a specific material removal process on internal surfaces."
+    "explanation": "In a cantilever beam (which hoggs under downward load), the upper fibers stretch and are thus subjected to tensile stress, while the bottom fibers shorten and experience compressive stress."
   },
   {
-    "question": "What is the primary purpose of a drill press?",
-    "type": "multiple-choice",
-    "options": [
-      "To cut external threads",
-      "To drill holes and perform related operations",
-      "To grind surfaces to a fine finish",
-      "To turn cylindrical workpieces"
-    ],
-    "answer": "To drill holes and perform related operations",
-    "explanation": "The document states that a drill press is a stationary machine tool designed primarily for drilling holes and is one of the most important and versatile machines in a workshop."
-  },
-  {
-    "question": "What type of cutting tool is used in drilling operations?",
+    "question": "Section modulus is defined as the ratio of the moment of inertia (I) to the ________ distance from the neutral axis (y_max).",
     "type": "fill-in-the-blank",
-    "answer": "drill",
-    "explanation": "The document specifies that drilling is performed using a tool known as a drill, which is a multi-point rotary cutting tool."
+    "answer": "outermost",
+    "explanation": "Section modulus (Z) represents the strength of a section and is calculated as I / y_max, where y_max is the distance to the extreme outermost layer (or fiber) of the beam."
   },
   {
-    "question": "A typical drill has two cutting edges inclined at an angle to its longitudinal axis.",
-    "type": "true-false",
-    "answer": "true",
-    "explanation": "The document explicitly states that a typical drill has two cutting edges inclined at an angle to its longitudinal axis."
-  },
-  {
-    "question": "Which of the following is NOT mentioned as an operation that can be performed on a drill press?",
+    "question": "A simply supported beam of 6 m span carries a uniformly distributed load of 8 kN/m. If we ignore any point loads, what is the reaction force at each support?",
     "type": "multiple-choice",
-    "options": ["Counterboring", "Countersinking", "Thread cutting", "Reaming"],
-    "answer": "Thread cutting",
-    "explanation": "The document lists counterboring, countersinking, reaming, honing, and lapping as operations that can be performed on a drill press, but does not mention thread cutting."
+    "options": ["12 kN", "24 kN", "36 kN", "48 kN"],
+    "answer": "24 kN",
+    "explanation": "The total load is 8 kN/m * 6 m = 48 kN. Because the UDL is distributed symmetrically over a simply supported beam, the reaction at each support is exactly half the total load: 48 / 2 = 24 kN."
   },
   {
-    "question": "What component of the drill press contains the electric motor and V-pulleys?",
+    "question": "A beam has a maximum bending moment of 58,760,000 N.mm and a section modulus of 1,562,500 mm^3. What is the maximum bending stress?",
+    "type": "multiple-choice",
+    "options": ["18.5 N/mm^2", "37.6 N/mm^2", "52.1 N/mm^2", "75.2 N/mm^2"],
+    "answer": "37.6 N/mm^2",
+    "explanation": "Maximum bending stress is calculated as sigma_max = M / Z. Dividing 58,760,000 by 1,562,500 gives exactly 37.6 N/mm^2."
+  },
+  {
+    "question": "The formula for the section modulus (Z) of a solid circular cross-section with diameter 'd' is:",
+    "type": "multiple-choice",
+    "options": [
+      "(pi * d^4) / 64",
+      "(pi * d^3) / 32",
+      "(b * d^2) / 6",
+      "(pi * d^2) / 4"
+    ],
+    "answer": "(pi * d^3) / 32",
+    "explanation": "The moment of inertia (I) for a solid circle is (pi * d^4)/64, and the max distance to the neutral axis (y_max) is d/2. Dividing I by y_max yields the section modulus Z = (pi * d^3) / 32."
+  },
+  {
+    "question": "In the theory of simple bending, the value of Young's Modulus of Elasticity (E) is assumed to be the ________ in tension and compression.",
     "type": "fill-in-the-blank",
-    "answer": "head",
-    "explanation": "According to the document, the head of a typical drill press contains the electric motor and a system of V-pulleys with a V-belt."
+    "answer": "same",
+    "explanation": "One of the core assumptions of bending theory is that the material has identical elastic properties (Young's Modulus) regardless of whether its fibers are being stretched (tension) or squashed (compression)."
   },
   {
-    "question": "The spindle of a drill press rotates and moves vertically through a rack and pinion mechanism.",
+    "question": "An overhanging beam is a type of cantilever beam where one end is fully fixed into a wall.",
     "type": "true-false",
-    "answer": "true",
-    "explanation": "The document states that the spindle rotates and moves vertically within a sleeve through a rack and pinion mechanism, allowing the drill to be fed into or withdrawn from the workpiece."
-  },
-  {
-    "question": "What is the maximum hole diameter a radial drill press is typically capable of drilling?",
-    "type": "multiple-choice",
-    "options": ["25 mm", "50 mm", "75 mm", "100 mm"],
-    "answer": "50 mm",
-    "explanation": "The document mentions that a radial drill press is typically capable of drilling holes up to about 50 mm in diameter."
-  },
-  {
-    "question": "Which type of radial drill press allows the drill head to swing about a horizontal axis in addition to vertical and horizontal movements?",
-    "type": "fill-in-the-blank",
-    "answer": "semi-universal",
-    "explanation": "The document explains that the semi-universal type of radial drill press adds the ability for the drill head to swing about a horizontal axis, in addition to vertical movement of the arm and horizontal movement of the drill head."
-  },
-  {
-    "question": "What is the primary advantage of using a gang drill press?",
-    "type": "multiple-choice",
-    "options": [
-      "It can drill multiple holes simultaneously",
-      "It allows multiple operations without resetting the workpiece",
-      "It has a higher drilling speed than other presses",
-      "It is portable and easy to move"
-    ],
-    "answer": "It allows multiple operations without resetting the workpiece",
-    "explanation": "The document states that a gang drill press allows multiple operations to be performed sequentially by moving the workpiece from one spindle to another without resetting it, primarily for production work where efficiency is essential."
-  },
-  {
-    "question": "What is the most commonly used type of drill today due to its efficiency and versatility?",
-    "type": "fill-in-the-blank",
-    "answer": "twist drill",
-    "explanation": "The document specifically mentions that the twist drill is the most commonly used type today due to its efficiency and versatility."
-  },
-  {
-    "question": "In the British imperial system, which drill size number is the smallest?",
-    "type": "multiple-choice",
-    "options": ["No. 1", "No. 60", "No. 80", "No. 100"],
-    "answer": "No. 80",
-    "explanation": "The document indicates that drill sizes range from No. 80 (smallest, 0.0135 inches) to No. 1 (largest, 0.228 inches) in the imperial system."
-  },
-  {
-    "question": "A multi-spindle drill press operates with several spindles simultaneously to drill multiple holes in a workpiece.",
-    "type": "true-false",
-    "answer": "true",
-    "explanation": "The document confirms that a multi-spindle drill press is equipped with several spindles, each holding a drill, which operate simultaneously to drill multiple holes."
-  },
-  {
-    "question": "What are the three main parts of a twist drill?",
-    "type": "fill-in-the-blank",
-    "answer": "drill point, body and shank",
-    "explanation": "The document states that a twist drill is composed of three main parts: the drill point, body, and shank."
-  },
-  {
-    "question": "Which material is primarily used for twist drills due to its excellent hardness and wear resistance?",
-    "type": "multiple-choice",
-    "options": [
-      "Carbon steel",
-      "High-speed steel (HSS)",
-      "Ceramic",
-      "Tungsten carbide"
-    ],
-    "answer": "High-speed steel (HSS)",
-    "explanation": "The document explains that twist drills are primarily made from high-speed steel (HSS), which provides excellent hardness, toughness, and wear resistance at elevated temperatures."
-  },
-  {
-    "question": "A flat drill has a major disadvantage: its diameter reduces each time it is reground.",
-    "type": "true-false",
-    "answer": "true",
-    "explanation": "The document explicitly states that a major disadvantage of the flat drill is that its diameter reduces each time it is reground."
-  },
-  {
-    "question": "What operation is performed to size and finish an existing hole, producing a smooth and accurately dimensioned bore?",
-    "type": "fill-in-the-blank",
-    "answer": "reaming",
-    "explanation": "The document describes reaming as a machining operation used to size and finish an existing hole, producing a smooth, straight, and accurately dimensioned bore using a reamer."
-  },
-  {
-    "question": "What is a primary characteristic of a player-type milling machine?",
-    "type": "multiple-choice",
-    "options": [
-      "It is a lightweight machine for small parts",
-      "It is a heavy-duty machine with high rigidity and exceptional metal removability",
-      "It is designed only for cutting plastic materials",
-      "It operates with low power and speed"
-    ],
-    "answer": "It is a heavy-duty machine with high rigidity and exceptional metal removability",
-    "explanation": "According to the document, a player-type machine is a heavy-duty machine similar in construction to a designer for large-scale production work, offering high rigidity and exceptional removability, making it suitable for machining large and heavy parts."
-  },
-  {
-    "question": "The document shows a figure of a vertical column and knee-type milling machine.",
-    "type": "true-false",
-    "options": [],
-    "answer": "true",
-    "explanation": "Page 3 of the document contains Figure 4.3.1, which is titled 'A vertical column and knee-type milling machine'."
-  },
-  {
-    "question": "What is the purpose of a saw-milling operation as described in the document?",
-    "type": "multiple-choice",
-    "options": [
-      "To polish metal surfaces",
-      "To cut materials into sections while maintaining dimensional accuracy",
-      "To weld components together",
-      "To drill holes in large parts"
-    ],
-    "answer": "To cut materials into sections while maintaining dimensional accuracy",
-    "explanation": "The document states that saw milling (also called sky milling) is a machining operation in which a slitting saw is used to cut materials into sections or for separation while maintaining dimensional accuracy."
-  },
-  {
-    "question": "The document includes multiple figures related to saw-milling operations.",
-    "type": "true-false",
-    "options": [],
-    "answer": "true",
-    "explanation": "Page 9 lists Figures 4.4.1, 4.4.2, and 4.4.3, all showing saw-milling operations."
-  },
-  {
-    "question": "What type of milling operation is used to cut a keyway?",
-    "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "Keyway milling",
-    "explanation": "The document states: 'Keywork milling is a machining operation employed to cut a keyway.' It also mentions that a slot and a railline are key-milling operations."
-  },
-  {
-    "question": "According to the document, which of the following is an example of a key-milling operation?",
-    "type": "multiple-choice",
-    "options": [
-      "Gear cutting",
-      "T-slot milling",
-      "Slot and railline milling",
-      "Helical turning"
-    ],
-    "answer": "Slot and railline milling",
-    "explanation": "The document says: 'Keywork milling is a machining operation employed to cut a keyway. A slot and a railline are key-milling operations.'"
-  },
-  {
-    "question": "The document shows a figure for a T-slot-milling operation.",
-    "type": "true-false",
-    "options": [],
-    "answer": "true",
-    "explanation": "Page 9 mentions: 'Figure 4.4.4 illustrates a T-slot-milling operation.'"
-  },
-  {
-    "question": "Which operation is illustrated in Figure 4.4.7 according to the document?",
-    "type": "multiple-choice",
-    "options": [
-      "A gear-clamping milling operation",
-      "A helical-turning operation",
-      "A profile-milling operation",
-      "A long-ramling operation"
-    ],
-    "answer": "A helical-turning operation",
-    "explanation": "Page 10 shows Figure 4.4.7 with the caption 'A helical-turning operation'."
-  },
-  {
-    "question": "What is the main purpose of differential indexing in milling operations?",
-    "type": "multiple-choice",
-    "options": [
-      "To increase the cutting speed",
-      "To achieve divisions that cannot be obtained by simple indexing",
-      "To reduce the number of gear teeth",
-      "To eliminate the need for a dividing head"
-    ],
-    "answer": "To achieve divisions that cannot be obtained by simple indexing",
-    "explanation": "According to the document, differential indexing is used when the required number of divisions cannot be achieved by simple indexing."
-  },
-  {
-    "question": "The document mentions that universal drill heads can only be operated in simple mode.",
-    "type": "true-false",
-    "options": [],
     "answer": "false",
-    "explanation": "The document states that universal drill heads can be operated in different modes to suit various drilling requirements, including simple, complex, and special drill heads."
+    "explanation": "An overhanging beam is not a cantilever. It is a simply supported beam (resting on pins/rollers) where the end portion of the beam projects freely beyond the support."
   },
   {
-    "question": "What type of milling operation is listed alongside straddle milling and vertical milling in the document?",
+    "question": "For a rectangular beam subjected to a maximum bending stress of 120 N/mm^2 with a section modulus (Z) of 2,000,000 mm^3, what is the maximum bending moment it can resist?",
+    "type": "multiple-choice",
+    "options": [
+      "120,000,000 N.mm",
+      "240,000,000 N.mm",
+      "360,000,000 N.mm",
+      "480,000,000 N.mm"
+    ],
+    "answer": "240,000,000 N.mm",
+    "explanation": "The moment of resistance is calculated using the formula M = sigma_max * Z. Multiplying the stress of 120 N/mm^2 by the section modulus of 2,000,000 mm^3 yields 240,000,000 N.mm."
+  },
+  {
+    "question": "What is the primary reason the simple torsion theory is applicable to circular shafts but not rectangular ones?",
+    "type": "multiple-choice",
+    "options": [
+      "Rectangular shafts have a lower shear modulus.",
+      "Circular shafts have cross-sections that remain plane after twisting, while rectangular shafts experience significant warping.",
+      "Rectangular shafts cannot transfer rotational energy effectively.",
+      "Circular shafts weigh less than rectangular shafts of the same volume."
+    ],
+    "answer": "Circular shafts have cross-sections that remain plane after twisting, while rectangular shafts experience significant warping.",
+    "explanation": "A core assumption of simple torsion theory is that cross-sections remain plane after twisting. In rectangular shafts, significant warping occurs, making the simple torsion equation invalid."
+  },
+  {
+    "question": "If a force of 600 N is applied tangentially to a circular shaft with a radius of 0.3 m, what is the applied torque?",
+    "type": "multiple-choice",
+    "options": ["18 Nm", "180 Nm", "2000 Nm", "200 Nm"],
+    "answer": "180 Nm",
+    "explanation": "Torque is calculated as T = F * r. Multiplying the applied force of 600 N by the radius of 0.3 m gives 180 Nm."
+  },
+  {
+    "question": "In a circular shaft subjected to a twisting moment, the torsional shear stress is ________ at the center of the cross-section.",
     "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "Horizontal milling",
-    "explanation": "The document lists several milling operations including straddle milling, vertical milling, and horizontal milling under section 4.5.1."
+    "answer": "zero",
+    "explanation": "The stress distribution in a circular shaft subjected to torsion varies linearly with the radius, being zero at the center and maximum at the outer surface."
   },
   {
-    "question": "Which operation is illustrated in Figure 4.49?",
+    "question": "A solid circular shaft has a diameter of 100 mm and transmits a torque of 5 kNm (5,000,000 Nmm). What is the maximum shear stress (approximate)?",
     "type": "multiple-choice",
-    "options": [
-      "A universal drilling head",
-      "A simple indexing operation",
-      "A differential indexing operation",
-      "A straddle milling operation"
-    ],
-    "answer": "A universal drilling head",
-    "explanation": "The document shows Figure 4.49 with the caption 'A universal drilling head'."
+    "options": ["12.73 MPa", "25.46 MPa", "31.83 MPa", "50.92 MPa"],
+    "answer": "25.46 MPa",
+    "explanation": "Using the formula τ_max = 16T / (π*d^3), τ_max = (16 * 5,000,000) / (π * 100^3) = 80 / π ≈ 25.46 MPa."
   },
   {
-    "question": "In simple indexing, the index crank produces 1/4 of a revolution of the workpiece.",
+    "question": "For a given weight and material, a solid shaft has a higher torsional efficiency and higher strength-to-weight ratio than a hollow shaft.",
     "type": "true-false",
-    "options": [],
-    "answer": "true",
-    "explanation": "The document states that with a standard worm gear, the index crank produces 1/4 of a revolution of the workpiece."
-  },
-  {
-    "question": "Which indexing method is mentioned as being illustrated in Figure 4.5.6?",
-    "type": "multiple-choice",
-    "options": [
-      "Differential indexing",
-      "Simple indexing",
-      "Compound indexing",
-      "Direct indexing"
-    ],
-    "answer": "Simple indexing",
-    "explanation": "Page 4 shows Figure 4.5.6 with the caption 'A simple indexing'."
-  },
-  {
-    "question": "What is the purpose of differential indexing when the required number of divisions cannot be achieved by simple indexing?",
-    "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "To achieve the required divisions",
-    "explanation": "The document explains that differential indexing is used when the required number of divisions cannot be obtained by simple indexing, providing an alternative method to achieve the needed spacing."
-  },
-  {
-    "question": "The document shows Figure 4.50 to illustrate a standard worm gear operation.",
-    "type": "true-false",
-    "options": [],
-    "answer": "true",
-    "explanation": "Page 3 references Figure 4.50 in the context of using a standard worm gear, where the workpiece is turned on the workpiece."
-  },
-  {
-    "question": "What is the unit of displacement for a ball screw with a lead of 5 mm/rev and a motor generating 2,000 pulses per revolution?",
-    "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "0.0025 mm",
-    "explanation": "The document states that the unit of displacement is calculated as 5/2,000 = 0.0025 mm, which equals 2.5 μm per pulse."
-  },
-  {
-    "question": "A smaller unit of displacement in CNC systems results in higher resolution and finer control.",
-    "type": "true-false",
-    "options": [],
-    "answer": "true",
-    "explanation": "According to the document, a smaller unit of displacement indicates higher resolution and finer control, which enhances machining precision, especially in contouring operations and complex geometries."
-  },
-  {
-    "question": "What is a part program in CNC machining?",
-    "type": "multiple-choice",
-    "options": [
-      "A mechanical blueprint of the workpiece",
-      "A structured set of coded instructions that defines the sequence of machining operations",
-      "A list of tool specifications",
-      "A maintenance schedule for the machine"
-    ],
-    "answer": "A structured set of coded instructions that defines the sequence of machining operations",
-    "explanation": "The document defines a part program as 'a structured set of coded instructions that defines the sequence of machining operations to be executed by a CNC machine tool.'"
-  },
-  {
-    "question": "Which of the following is NOT mentioned as a component of a part program block?",
-    "type": "multiple-choice",
-    "options": [
-      "Coordinate and motion commands",
-      "Machining parameters",
-      "Material hardness values",
-      "Auxiliary function codes"
-    ],
-    "answer": "Material hardness values",
-    "explanation": "The document lists coordinate and motion commands, machining parameters, auxiliary function codes, program execution control codes, and subsystem configuration statements as components of a part program block. Material hardness values are not mentioned."
-  },
-  {
-    "question": "What do auxiliary function codes (M-codes) govern in CNC machining?",
-    "type": "multiple-choice",
-    "options": [
-      "The speed of the cutting tool",
-      "Machine tool operations such as spindle start/stop, coolant on/off, and tool change",
-      "The coordinate system of the machine",
-      "The interpolation type for motion"
-    ],
-    "answer": "Machine tool operations such as spindle start/stop, coolant on/off, and tool change",
-    "explanation": "The document states that auxiliary function codes (M-codes) govern machine tool operations such as spindle start/stop, coolant on/off, tool change, and optional program stops."
-  },
-  {
-    "question": "A hand tool is defined as a tool that is manually operated with the assistance of an external power source.",
-    "type": "true-false",
-    "options": [],
     "answer": "false",
-    "explanation": "The document explicitly defines a hand tool as 'a tool that is manually operated without the assistance of an external power source.'"
+    "explanation": "Hollow shafts are stronger and resist torsion more efficiently than solid shafts of the same weight, granting them a higher strength-to-weight ratio."
   },
   {
-    "question": "What are the five main categories of hand tools mentioned in the document?",
+    "question": "A shaft rotates at 600 rpm and transmits a torque of 200 Nm. What is the approximate power transmitted in kW?",
+    "type": "multiple-choice",
+    "options": ["6.28 kW", "12.57 kW", "25.13 kW", "120.00 kW"],
+    "answer": "12.57 kW",
+    "explanation": "Power P = (2 * π * N * T) / 60. P = (2 * π * 600 * 200) / 60 = 4000π Watts ≈ 12,566 W, which is 12.57 kW."
+  },
+  {
+    "question": "In a composite shaft made of a steel shaft and a brass shaft rigidly connected together, the angle of twist for both materials will be ________.",
     "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "Measuring and marking tools, holding and supporting tools, cutting tools, finishing tools, and miscellaneous tools",
-    "explanation": "The document lists these five categories: measuring and marking tools, holding and supporting tools, cutting tools, finishing tools, and miscellaneous tools."
+    "answer": "equal",
+    "explanation": "Because the shafts are rigidly connected, they twist together as a single unit, meaning the angle of twist (θ1) equals the angle of twist (θ2)."
   },
   {
-    "question": "What is the preliminary stage in most engineering workshop operations according to the document?",
+    "question": "Which mode of failure is characteristic of a short column under axial compression?",
     "type": "multiple-choice",
     "options": [
-      "Cutting the workpiece",
-      "Measuring and marking out",
-      "Assembling components",
-      "Finishing the surface"
+      "Flexural buckling",
+      "Torsional buckling",
+      "Crushing",
+      "Bending"
     ],
-    "answer": "Measuring and marking out",
-    "explanation": "The document states that 'measuring and marking out constitute the preliminary stage in most engineering workshop operations,' involving laying out outlines, centres, and dimensions before cutting or forming operations."
+    "answer": "Crushing",
+    "explanation": "A short column under compression fails by crushing (yielding). Even if loaded eccentrically, it undergoes negligible lateral deflection."
   },
   {
-    "question": "What is the typical least count of a metric vernier calliper?",
-    "type": "multiple-choice",
-    "options": ["0.001 mm", "0.02 mm or 0.05 mm", "0.1 mm", "0.5 mm"],
-    "answer": "0.02 mm or 0.05 mm",
-    "explanation": "The document states that in the metric system, the typical least count of a vernier calliper is 0.02 mm or 0.05 mm, while in the imperial system it is commonly 0.001 inch."
-  },
-  {
-    "question": "A micrometre provides greater accuracy than a vernier calliper but is typically limited to measuring within a smaller range of dimensions.",
+    "question": "Intermediate columns fail exclusively by buckling without any crushing effects.",
     "type": "true-false",
-    "options": [],
-    "answer": "true",
-    "explanation": "According to the document, a micrometre provides greater accuracy than a vernier calliper, although it is typically limited to measuring within a smaller range of dimensions."
+    "answer": "false",
+    "explanation": "Intermediate columns show behavior of both long and short columns; they fail by a combination of both crushing and buckling."
   },
   {
-    "question": "What is used to ensure uniform measuring pressure and prevent damage to the component when using a micrometre?",
+    "question": "The lateral deflection of a long, slender column subjected to an axial compressive load is referred to as ________.",
     "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "ratchet stop",
-    "explanation": "The document states that the ratchet stop is used to apply a consistent force, ensuring uniform measuring pressure and preventing damage to the component."
+    "answer": "buckling",
+    "explanation": "When a long column is subjected to compression, it bends in a lateral direction. This lateral deflection is known as buckling."
   },
   {
-    "question": "Which of the following is NOT a type of micrometre mentioned in the document?",
+    "question": "Which type of buckling occurs when a structural member fails by twisting around its longitudinal axis?",
     "type": "multiple-choice",
     "options": [
-      "Outside micrometre",
-      "Inside micrometre",
-      "Digital micrometre",
-      "Depth micrometre"
+      "Flexural Buckling",
+      "Local Buckling",
+      "Torsional Buckling",
+      "Flexural-Torsional Buckling"
     ],
-    "answer": "Digital micrometre",
-    "explanation": "The document classifies micrometres into three main types based on their applications: outside, inside, and depth micrometres. Digital micrometre is not mentioned as a main type."
+    "answer": "Torsional Buckling",
+    "explanation": "Torsional buckling occurs when a member fails due to twisting around its longitudinal axis, commonly seen under compressive loads where torsional stress is present."
   },
   {
-    "question": "What is the function of a surface plate in engineering workshops?",
+    "question": "In the context of mechanical system stability, what describes a 'neutral equilibrium'?",
     "type": "multiple-choice",
     "options": [
-      "To cut materials into sections",
-      "To provide a flat reference surface for marking and inspection",
-      "To hold cylindrical workpieces securely",
-      "To measure the depth of holes"
+      "A body returns to its original position after being slightly displaced.",
+      "A body moves away from its equilibrium position and loses equilibrium after a slight disturbance.",
+      "A body does not return to its original position but its motion stops and it resumes equilibrium in a new position.",
+      "A body constantly oscillates back and forth without settling."
     ],
-    "answer": "To provide a flat reference surface for marking and inspection",
-    "explanation": "The document mentions a surface plate in the context of marking and measuring tools, indicating it serves as a flat reference surface for layout and inspection work."
+    "answer": "A body does not return to its original position but its motion stops and it resumes equilibrium in a new position.",
+    "explanation": "Neutral equilibrium is when a displaced body stops moving and finds a new state of equilibrium in its new position, like a ball rolling on a perfectly flat surface."
   },
   {
-    "question": "Spring dividers are used for scribing arcs and circles on the surface of a workpiece.",
+    "question": "According to Euler's theory, the self-weight of the column is fully accounted for in buckling calculations.",
     "type": "true-false",
-    "options": [],
-    "answer": "true",
-    "explanation": "The document states that spring dividers are commonly used in engineering workshops for scribing arcs and circles on the surface of a workpiece, as well as for transferring measurements and dividing lines."
+    "answer": "false",
+    "explanation": "One of the specific assumptions of Euler's Theory of Column Buckling is that the self-weight of the column itself is neglected."
   },
   {
-    "question": "What is the primary purpose of a scriber in engineering workshops?",
+    "question": "Based on Euler's formula, what is the effective length (Le) of a column where one end is fixed and the other end is free?",
+    "type": "multiple-choice",
+    "options": ["0.5L", "0.699L", "L", "2L"],
+    "answer": "2L",
+    "explanation": "For a fixed-free column, the effective length factor (K) is 2, making the effective length Le = 2L."
+  },
+  {
+    "question": "A pinned-pinned column has a length of 4 m, E = 200 GPa, and I = 5 x 10^-6 m^4. Calculate the Euler critical buckling load (P_cr).",
+    "type": "multiple-choice",
+    "options": ["308.42 kN", "616.85 kN", "1233.70 kN", "2467.40 kN"],
+    "answer": "616.85 kN",
+    "explanation": "For a pinned-pinned column, P_cr = (π^2 * E * I) / L^2. Plugging in values: (π^2 * 200x10^9 * 5x10^-6) / 4^2 = (1,000,000 * π^2) / 16 ≈ 616,850 N = 616.85 kN."
+  },
+  {
+    "question": "What is the ratio of Euler's buckling load of a fixed-fixed column to that of a pinned-pinned column of identical length and flexural rigidity?",
+    "type": "multiple-choice",
+    "options": ["0.25", "0.5", "2", "4"],
+    "answer": "4",
+    "explanation": "The buckling load for a fixed-fixed column is 4π^2*EI/L^2, while for a pinned-pinned column it is π^2*EI/L^2. The ratio is 4:1."
+  },
+  {
+    "question": "A bending moment that bends a column such that it presents a ________ towards the initial center line of the member is regarded as positive.",
     "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "Marking lines on the surface of a workpiece",
-    "explanation": "The document describes a scriber as a slender hand tool commonly used in engineering workshops for marking lines on the surface of a workpiece, with its tip ground to a sharp point for producing fine layout lines."
+    "answer": "convexity",
+    "explanation": "According to the sign convention for bending moments in columns, convexity towards the initial center line is considered positive (+ve), while concavity is negative (-ve)."
   },
   {
-    "question": "Which work-holding device is specifically designed to support cylindrical workpieces securely?",
-    "type": "multiple-choice",
-    "options": ["Bench vice", "Surface plate", "Vee block", "C-clamp"],
-    "answer": "Vee block",
-    "explanation": "The document states that a vee block is a work-holding device used to support and hold cylindrical or round workpieces during measuring, marking, or machining operations, with a V-shaped groove that allows cylindrical components to rest securely without rolling."
-  },
-  {
-    "question": "What is the primary function of a C-clamp in engineering workshops?",
+    "question": "If the slenderness ratio of a column is reduced, what happens to the critical buckling load?",
     "type": "multiple-choice",
     "options": [
-      "To cut metal materials",
-      "To secure a workpiece against a surface during machining or assembly",
-      "To measure the thickness of components",
-      "To mark lines on a workpiece"
+      "It decreases.",
+      "It remains exactly the same.",
+      "It increases.",
+      "It becomes zero."
     ],
-    "answer": "To secure a workpiece against a surface during machining or assembly",
-    "explanation": "The document states that a C-clamp is a versatile work-holding device used to secure a workpiece against a surface such as an angle plate, vee block, or workbench during machining, assembly, or gluing operations."
+    "answer": "It increases.",
+    "explanation": "A reduced slenderness ratio indicates a shorter, thicker column, which inherently has a higher critical buckling load (it is harder to buckle)."
   },
   {
-    "question": "Angle plates are machined and ground so that their two flat surfaces are positioned at 90° to each other.",
-    "type": "true-false",
-    "options": [],
-    "answer": "true",
-    "explanation": "The document states that angle plates are carefully machined and ground so that their two flat surfaces are positioned at right angles (90°) to each other."
-  },
-  {
-    "question": "What is the purpose of the zig-zag pattern (set) on hacksaw blades?",
-    "type": "multiple-choice",
-    "options": [
-      "To increase the cutting speed",
-      "To make the cut slightly wider than the blade thickness, preventing jamming",
-      "To reduce the weight of the blade",
-      "To improve the blade's flexibility"
-    ],
-    "answer": "To make the cut slightly wider than the blade thickness, preventing jamming",
-    "explanation": "The document explains that the teeth of the hacksaw blade are arranged in a zig-zag pattern (set) so that the cut produced is slightly wider than the blade thickness, thereby preventing the blade from rubbing against the sides of the cut and reducing the possibility of jamming."
-  },
-  {
-    "question": "According to tooth pitch, hacksaw blades with 24-32 teeth per inch are classified as __________.",
+    "question": "Adding lateral bracing, such as cross-beams, to a column prevents buckling by cutting the ________ length of the column in half.",
     "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "fine",
-    "explanation": "The document classifies hacksaw blades based on tooth pitch: coarse (8-14 teeth per inch), medium (16-20 teeth per inch), and fine (24-32 teeth per inch)."
+    "answer": "effective",
+    "explanation": "Lateral bracing reduces the unbraced length of the column, directly decreasing its effective length and increasing its critical buckling load."
   },
   {
-    "question": "What is the main function of the flutes on a twist drill?",
+    "question": "Which of the following is NOT an assumption made in Euler's Theory of Column Buckling?",
     "type": "multiple-choice",
     "options": [
-      "To hold the drill in the chuck",
-      "To remove metal chips and provide cutting edges",
-      "To cool the drill during operation",
-      "To increase the drill's weight"
+      "The column is initially straight.",
+      "The material obeys Hooke's law.",
+      "The compressive load acts eccentrically.",
+      "The stresses are within the elastic limit."
     ],
-    "answer": "To remove metal chips and provide cutting edges",
-    "explanation": "The document states that the spiral flutes on a twist drill serve two main purposes: they remove metal chips produced during drilling and provide the necessary cutting edges along their leading sides."
-  },
-  {
-    "question": "A chisel is a hand-cutting tool with a bevelled cutting edge at one end and a striking head at the other end.",
-    "type": "true-false",
-    "options": [],
-    "answer": "true",
-    "explanation": "The document defines a chisel as 'a hand-cutting long-bladed hardened steel tool with a bevelled cutting edge at one end and a striking head at the other end, for cutting, shaping, or removing material such as wood, stone, or metal.'"
-  },
-  {
-    "question": "Which shank type is typically used in drill presses and other machine tools?",
-    "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "tapered shank",
-    "explanation": "The document states that the tapered shank is typically used in drill presses and other machine tools, while straight shanks are used in hand drills and square shanks fit into a carpenter's brace."
-  },
-  {
-    "question": "What is the typical size range of C-clamps mentioned in the document?",
-    "type": "multiple-choice",
-    "options": [
-      "10 mm to 50 mm",
-      "70 mm to 800 mm",
-      "100 mm to 500 mm",
-      "50 mm to 300 mm"
-    ],
-    "answer": "70 mm to 800 mm",
-    "explanation": "The document states that C-clamps are available in a wide range of sizes, typically from 70 mm to 800 mm, to accommodate different workpiece dimensions."
-  },
-  {
-    "question": "What is the primary function of a diode in an electronic circuit?",
-    "type": "multiple-choice",
-    "options": [
-      "To amplify weak signals",
-      "To permit current flow in one direction while restricting it in the opposite direction",
-      "To store electrical charge",
-      "To convert DC to AC"
-    ],
-    "answer": "To permit current flow in one direction while restricting it in the opposite direction",
-    "explanation": "A diode is a semiconductor device that permits current flow primarily in one direction due to its p-n junction, which restricts flow in the opposite direction."
-  },
-  {
-    "question": "Active components require an external power source to operate.",
-    "type": "true-false",
-    "options": ["true", "false"],
-    "answer": "true",
-    "explanation": "Active components, such as diodes, transistors, and integrated circuits, require an external power source to supply energy to a circuit and control current flow."
-  },
-  {
-    "question": "What are the three terminals of a bipolar junction transistor (BJT) called?",
-    "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "Base, Emitter, and Collector",
-    "explanation": "A BJT has three terminals: the base (control terminal), emitter (emits charge carriers), and collector (collects charge carriers and delivers output current)."
-  },
-  {
-    "question": "What type of diode is specifically used for voltage regulation?",
-    "type": "multiple-choice",
-    "options": [
-      "Light-emitting diode (LED)",
-      "Photodiode",
-      "Zener diode",
-      "p-n junction diode"
-    ],
-    "answer": "Zener diode",
-    "explanation": "Zener diodes are designed for voltage regulation, unlike p-n junction diodes (general rectification), LEDs (illumination), and photodiodes (light detection)."
-  },
-  {
-    "question": "Operational amplifiers are characterized by high input impedance, low output impedance, and very high voltage gain.",
-    "type": "true-false",
-    "options": ["true", "false"],
-    "answer": "true",
-    "explanation": "Op-amps are high-gain differential amplifiers with high input impedance, low output impedance, and very high voltage gain, making them suitable for precise signal processing."
-  },
-  {
-    "question": "What are the two broad classifications of integrated circuits (ICs) based on their mode of operation?",
-    "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "Analogue and digital",
-    "explanation": "ICs are classified into analogue (linear) ICs, which produce continuously varying output signals, and digital ICs, which operate using discrete binary signal levels."
-  },
-  {
-    "question": "Which of the following is NOT a category of basic electrical and electronic components as mentioned in the document?",
-    "type": "multiple-choice",
-    "options": [
-      "Active components",
-      "Passive components",
-      "Electromechanical components",
-      "Semiconductor components"
-    ],
-    "answer": "Semiconductor components",
-    "explanation": "The document classifies electrical and electronic components into three main categories: active, passive, and electromechanical components. Semiconductor components fall under active components."
-  },
-  {
-    "question": "Transistors can function as both amplifiers and switches in electronic circuits.",
-    "type": "true-false",
-    "options": ["true", "false"],
-    "answer": "true",
-    "explanation": "Transistors are versatile devices that can operate as amplifiers to enhance weak signals or as switches to turn signals on and off, as stated in the document."
-  },
-  {
-    "question": "What is the primary operating principle of a liquid crystal display (LCD)?",
-    "type": "multiple-choice",
-    "options": [
-      "Emitting light through electron-hole recombination",
-      "Modulating light using liquid crystal materials between polarising filters",
-      "Directing a beam of electrons onto a phosphorescent screen",
-      "Using a vacuum tube to accelerate electrons"
-    ],
-    "answer": "Modulating light using liquid crystal materials between polarising filters",
-    "explanation": "An LCD operates by modulating light using liquid crystal materials placed between two polarising filters, with the alignment of molecules controlled by an electric field to permit or block light transmission."
-  },
-  {
-    "question": "A microcontroller integrates a processor core with on-chip memory and peripheral interfaces on a single integrated circuit.",
-    "type": "true-false",
-    "options": ["true", "false"],
-    "answer": "true",
-    "explanation": "A microcontroller is a compact embedded computing device implemented on a single IC, integrating a processor core with on-chip memory (RAM, ROM/flash) and peripheral interfaces for dedicated control tasks."
-  },
-  {
-    "question": "What are the three primary types of passive components mentioned in the document?",
-    "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "Resistors, capacitors, and inductors",
-    "explanation": "The document states that the primary types of passive components include resistors, capacitors, and inductors, each serving distinct roles in controlling electrical parameters."
-  },
-  {
-    "question": "Which electromechanical device is designed to automatically interrupt current flow under abnormal conditions like overloads or short circuits?",
-    "type": "multiple-choice",
-    "options": ["Relay", "Switch", "Circuit breaker", "Transformer"],
-    "answer": "Circuit breaker",
-    "explanation": "A circuit breaker is an electromechanical protective device that automatically interrupts current flow under abnormal conditions such as overloads or short circuits to prevent damage and ensure safety."
-  },
-  {
-    "question": "Inductors resist sudden changes in current and store energy in a magnetic field.",
-    "type": "true-false",
-    "options": ["true", "false"],
-    "answer": "true",
-    "explanation": "An inductor stores energy in a magnetic field when current flows through it and resists sudden changes in current, as governed by Faraday's law of electromagnetic induction."
-  },
-  {
-    "question": "What is the main function of a transformer in an electrical system?",
-    "type": "multiple-choice",
-    "options": [
-      "To convert electrical energy into mechanical motion",
-      "To transfer electrical energy between circuits through mutual induction without changing frequency",
-      "To open or close a circuit manually",
-      "To amplify weak electrical signals"
-    ],
-    "answer": "To transfer electrical energy between circuits through mutual induction without changing frequency",
-    "explanation": "A transformer is a static electromagnetic device that transfers electrical energy between circuits through mutual induction, used to step up or step down voltage levels without changing frequency."
-  },
-  {
-    "question": "Name the two main types of multimeters available for measuring electrical parameters.",
-    "type": "fill-in-the-blank",
-    "options": [],
-    "answer": "Analogue and digital",
-    "explanation": "Multimeters are available in two main types: analogue (displaying measurements with a moving pointer) and digital (providing numerical readings with higher accuracy and resolution)."
-  },
-  {
-    "question": "A relay is an electromechanical device that allows a low-power signal to control a high-power circuit.",
-    "type": "true-false",
-    "options": ["true", "false"],
-    "answer": "true",
-    "explanation": "A relay is an electromechanical switching device that enables a low-power electrical signal to control a high-power circuit through electromagnetic induction, using a coil to actuate contacts."
+    "answer": "The compressive load acts eccentrically.",
+    "explanation": "Euler's theory explicitly assumes that the compressive load is perfectly axial and passes directly through the centroid of the section, not eccentrically."
   }
 ]
