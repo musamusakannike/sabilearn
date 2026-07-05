@@ -50,8 +50,8 @@ async function main() {
   // Create new quiz document
   const quizDoc = {
     userId: user._id.toString(),
-    title: "Workshop Practice Fundamentals",
-    topic: "Workshop Practice Fundamentals",
+    title: "GST212 Practice Test",
+    topic: "Philosophy and Human Existence (GST212)",
     questions: questions,
     attempts: [],
     createdAt: new Date(),

@@ -33,8 +33,8 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
-  const [feedbackMode, setFeedbackMode] = useState<FeedbackMode | null>(null);
-  const [showModeSelector, setShowModeSelector] = useState(true);
+  const [feedbackMode, setFeedbackMode] = useState<FeedbackMode | null>("immediate");
+  const [showModeSelector, setShowModeSelector] = useState(false);
   const [fillBlankInput, setFillBlankInput] = useState<string>("");
   const [error, setError] = useState("");
   const [savedProgressData, setSavedProgressData] = useState<{
@@ -123,8 +123,8 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
     }
     setAnswers({});
     setCurrentQ(0);
-    setFeedbackMode(null);
-    setShowModeSelector(true);
+    setFeedbackMode("immediate");
+    setShowModeSelector(false);
     setShowResumePrompt(false);
   };
 

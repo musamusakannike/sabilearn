@@ -182,8 +182,8 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
-  const [feedbackMode, setFeedbackMode] = useState<FeedbackMode | null>(null);
-  const [showModeSelector, setShowModeSelector] = useState(true);
+  const [feedbackMode, setFeedbackMode] = useState<FeedbackMode | null>("immediate");
+  const [showModeSelector, setShowModeSelector] = useState(false);
   const [savedProgressData, setSavedProgressData] = useState<{
     currentQ: number;
     answers: Record<number, string>;
@@ -254,8 +254,8 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
     }
     setAnswers({});
     setCurrentQ(0);
-    setFeedbackMode(null);
-    setShowModeSelector(true);
+    setFeedbackMode("immediate");
+    setShowModeSelector(false);
     setShowResumePrompt(false);
   };
 

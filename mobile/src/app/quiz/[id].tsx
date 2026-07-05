@@ -44,8 +44,8 @@ export default function QuizDetailScreen() {
   const { c } = useTheme();
   const toast = useToast();
 
-  const [feedbackMode, setFeedbackMode] = useState<FeedbackMode | null>(null);
-  const [showModeSelector, setShowModeSelector] = useState(true);
+  const [feedbackMode, setFeedbackMode] = useState<FeedbackMode | null>('immediate');
+  const [showModeSelector, setShowModeSelector] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [answers, setAnswers] = useState<Record<number, string>>({});
@@ -133,8 +133,8 @@ export default function QuizDetailScreen() {
     setAnswers({});
     setFillBlankInput('');
     setShowResult(false);
-    setShowModeSelector(true);
-    setFeedbackMode(null);
+    setShowModeSelector(false);
+    setFeedbackMode('immediate');
   };
 
   const handleSubmit = async () => {
