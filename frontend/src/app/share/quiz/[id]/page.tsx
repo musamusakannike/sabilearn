@@ -782,7 +782,7 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
                         </svg>
                       </button>
                     ) : feedbackMode === "immediate" ? (
-                      hasAnsweredCurrent ? (
+                      hasAnsweredCurrent && (
                         <button
                           id="quiz-continue-btn"
                           onClick={handleNext}
@@ -798,10 +798,6 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
                         </button>
-                      ) : (
-                        <span className="text-xs text-[var(--text-muted)] italic">
-                          Select an answer or skip to continue
-                        </span>
                       )
                     ) : (
                       // Traditional mode
