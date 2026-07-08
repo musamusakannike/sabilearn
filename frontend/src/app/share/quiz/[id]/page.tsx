@@ -7,6 +7,15 @@ import { formatMarkdown } from "@/lib/markdown";
 import { AddToLibraryButton } from "@/components/AddToLibraryButton";
 import Link from "next/link";
 
+function shuffleArray<T>(array: T[]): T[] {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+}
+
 interface Question {
   question: string;
   type: "multiple-choice" | "true-false" | "fill-in-the-blank";
@@ -55,8 +64,18 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
       try {
         const res = await fetch(`/api/share?id=${id}&type=quiz`);
         const data = await res.json();
-        if (data.success) {
-          setQuiz(data.quiz);
+        if (data.success && data.quiz) {
+          const quizData = data.quiz;
+          const shuffledQuestions = quizData.questions?.map((q: Question) => {
+            if (q.type === "multiple-choice" && q.options && q.options.length > 0) {
+              return {
+                ...q,
+                options: shuffleArray(q.options),
+              };
+            }
+            return q;
+          }) || [];
+          setQuiz({ ...quizData, questions: shuffledQuestions });
           setAdded(!!data.added);
         } else {
           setError(data.error || "Shared quiz not found");

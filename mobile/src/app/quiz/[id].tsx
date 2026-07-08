@@ -20,6 +20,15 @@ import { api } from '@/lib/api';
 import { haptics } from '@/lib/haptics';
 import { typography, spacing, fontSize, radius } from '@/constants/theme';
 
+function shuffleArray<T>(array: T[]): T[] {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+}
+
 interface Question {
   question: string;
   type: 'multiple-choice' | 'true-false' | 'fill-in-the-blank';
@@ -57,7 +66,20 @@ export default function QuizDetailScreen() {
     queryKey: ['quiz', id],
     queryFn: async () => {
       const res = await api.get(`/api/ai/quiz?id=${id}`);
-      return res.data?.quiz;
+      const quizData = res.data?.quiz;
+      if (quizData && quizData.questions) {
+        const shuffledQuestions = quizData.questions.map((q: Question) => {
+          if (q.type === 'multiple-choice' && q.options && q.options.length > 0) {
+            return {
+              ...q,
+              options: shuffleArray(q.options),
+            };
+          }
+          return q;
+        });
+        return { ...quizData, questions: shuffledQuestions };
+      }
+      return quizData;
     },
     enabled: !!id,
   });

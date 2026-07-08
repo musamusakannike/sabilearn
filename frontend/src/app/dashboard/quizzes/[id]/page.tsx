@@ -7,6 +7,15 @@ import { ShareButton } from "@/components/ShareButton";
 import { formatMarkdown } from "@/lib/markdown";
 import { motion, AnimatePresence } from "framer-motion";
 
+function shuffleArray<T>(array: T[]): T[] {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+}
+
 interface Question {
   question: string;
   type: "multiple-choice" | "true-false" | "fill-in-the-blank";
@@ -270,8 +279,21 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
     try {
       const res = await fetch(`/api/ai/quiz?id=${id}`);
       const data = await res.json();
-      if (data.success) setQuiz(data.quiz);
-      else router.push("/dashboard/quizzes");
+      if (data.success && data.quiz) {
+        const quizData = data.quiz;
+        const shuffledQuestions = quizData.questions?.map((q: Question) => {
+          if (q.type === "multiple-choice" && q.options && q.options.length > 0) {
+            return {
+              ...q,
+              options: shuffleArray(q.options),
+            };
+          }
+          return q;
+        }) || [];
+        setQuiz({ ...quizData, questions: shuffledQuestions });
+      } else {
+        router.push("/dashboard/quizzes");
+      }
     } catch {
       router.push("/dashboard/quizzes");
     } finally {
