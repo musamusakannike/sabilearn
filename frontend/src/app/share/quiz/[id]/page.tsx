@@ -560,16 +560,6 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
                 <div className="flex items-center gap-3 mb-2 flex-wrap justify-between">
                   <div className="flex items-center gap-3">
                     <h1 className="font-[family-name:var(--font-display)] text-lg sm:text-xl font-bold">{quiz.title}</h1>
-                    <span
-                      className={cn(
-                        "px-2 py-0.5 rounded-full text-xs font-medium",
-                        feedbackMode === "immediate"
-                          ? "bg-[var(--success)]/10 text-[var(--success)] border border-[var(--success)]/20"
-                          : "bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20"
-                      )}
-                    >
-                      {feedbackMode === "immediate" ? "Instant Feedback" : "Review at End"}
-                    </span>
                   </div>
                   {isReviewing && (
                     <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 animate-pulse">
