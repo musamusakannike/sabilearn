@@ -1,11 +1,15 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, use, useRef } from "react";
 import { cn } from "@/lib/cn";
 import { ShareBanner } from "@/components/ShareBanner";
 import { formatMarkdown } from "@/lib/markdown";
 import { AddToLibraryButton } from "@/components/AddToLibraryButton";
 import Link from "next/link";
+import { gsap } from "gsap";
+import confetti from "canvas-confetti";
+import QuizOverview from "@/components/quiz/QuizOverview";
+import OptionCard from "@/components/quiz/OptionCard";
 
 function shuffleArray<T>(array: T[]): T[] {
   const newArray = [...array];
@@ -50,8 +54,17 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
     currentQ: number;
     answers: Record<number, string>;
     feedbackMode: FeedbackMode;
+    maxReachedIndex?: number;
   } | null>(null);
   const [showResumePrompt, setShowResumePrompt] = useState(false);
+
+  // Expanded taking features
+  const [maxReachedIndex, setMaxReachedIndex] = useState(0);
+  const [isReviewing, setIsReviewing] = useState(false);
+  const [displayScore, setDisplayScore] = useState(0);
+
+  const questionRef = useRef<HTMLDivElement>(null);
+  const feedbackRef = useRef<HTMLDivElement>(null);
 
   const [prevCurrentQ, setPrevCurrentQ] = useState(currentQ);
   if (currentQ !== prevCurrentQ) {
@@ -59,6 +72,65 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
     setPrevCurrentQ(currentQ);
   }
 
+  // Update maxReachedIndex when currentQ changes
+  useEffect(() => {
+    setMaxReachedIndex((prev) => Math.max(prev, currentQ));
+  }, [currentQ]);
+
+  // GSAP animation for question entry
+  useEffect(() => {
+    if (questionRef.current) {
+      gsap.fromTo(
+        questionRef.current,
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+      );
+    }
+  }, [currentQ]);
+
+  // GSAP animation for feedback panel entry
+  const hasAnsweredCurrent = answers[currentQ] !== undefined;
+  useEffect(() => {
+    if ((hasAnsweredCurrent || isReviewing) && feedbackRef.current) {
+      gsap.fromTo(
+        feedbackRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
+      );
+    }
+  }, [hasAnsweredCurrent, isReviewing, currentQ]);
+
+  // Confetti celebration & score counting
+  useEffect(() => {
+    if (submitted && quiz) {
+      const percentage = Math.round((score / quiz.questions.length) * 100);
+      if (percentage >= 70) {
+        // Confetti burst
+        confetti({
+          particleCount: 120,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+      }
+
+      // Count up score
+      let startTime = performance.now();
+      const duration = 1500;
+      const animateCount = (now: number) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setDisplayScore(Math.round(eased * score));
+
+        if (progress < 1) {
+          requestAnimationFrame(animateCount);
+        }
+      };
+      requestAnimationFrame(animateCount);
+    }
+  }, [submitted, score, quiz]);
+
+  // Fetch Public Quiz
   useEffect(() => {
     const fetchPublicQuiz = async () => {
       try {
@@ -116,21 +188,23 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
 
   // Save progress on change
   useEffect(() => {
-    if (quiz && feedbackMode && !submitted && typeof window !== "undefined") {
+    if (quiz && feedbackMode && !submitted && !isReviewing && typeof window !== "undefined") {
       const progress = {
         currentQ,
         answers,
-        feedbackMode
+        feedbackMode,
+        maxReachedIndex: Math.max(maxReachedIndex, currentQ),
       };
       localStorage.setItem(`sabilearn_shared_quiz_progress_${id}`, JSON.stringify(progress));
     }
-  }, [quiz, id, currentQ, answers, feedbackMode, submitted]);
+  }, [quiz, id, currentQ, answers, feedbackMode, submitted, maxReachedIndex, isReviewing]);
 
   const handleResume = () => {
     if (savedProgressData) {
       setAnswers(savedProgressData.answers);
       setCurrentQ(savedProgressData.currentQ);
       setFeedbackMode(savedProgressData.feedbackMode);
+      setMaxReachedIndex(savedProgressData.maxReachedIndex || savedProgressData.currentQ);
       setShowModeSelector(false);
       setShowResumePrompt(false);
     }
@@ -142,19 +216,21 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
     }
     setAnswers({});
     setCurrentQ(0);
+    setMaxReachedIndex(0);
     setFeedbackMode("immediate");
+    setIsReviewing(false);
     setShowModeSelector(false);
     setShowResumePrompt(false);
   };
 
   const selectAnswer = (answer: string) => {
-    if (submitted) return;
-    if (feedbackMode === "immediate" && answers[currentQ]) return;
+    if (submitted || isReviewing) return;
+    if (feedbackMode === "immediate" && answers[currentQ] !== undefined) return;
     setAnswers((prev) => ({ ...prev, [currentQ]: answer }));
   };
 
   const submitFillBlankAnswer = () => {
-    if (submitted || !fillBlankInput.trim()) return;
+    if (submitted || isReviewing || !fillBlankInput.trim()) return;
     selectAnswer(fillBlankInput.trim());
   };
 
@@ -171,25 +247,12 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
     return answer.toLowerCase().trim() === q.answer.toLowerCase().trim();
   };
 
-  const getOptionStyle = (opt: string) => {
-    const isSelected = answers[currentQ] === opt;
-    const hasAnswered = !!answers[currentQ];
-    const isCorrectAnswer = question.answer.toLowerCase().trim() === opt.toLowerCase().trim();
-
-    if (feedbackMode === "immediate" && hasAnswered) {
-      if (isCorrectAnswer) {
-        return "border-[var(--success)] bg-[var(--success)]/10 text-[var(--success)]";
-      }
-      if (isSelected && !isCorrectAnswer) {
-        return "border-[var(--danger)] bg-[var(--danger)]/10 text-[var(--danger)]";
-      }
-      return "border-[var(--border)] bg-[var(--bg-secondary)] opacity-60";
+  const getQuestionOptions = (q: Question) => {
+    if (q.type === "true-false") {
+      if (q.options && q.options.length > 0) return q.options;
+      return ["True", "False"];
     }
-
-    if (isSelected) {
-      return "border-[var(--accent)] bg-[var(--accent-muted)]";
-    }
-    return "border-[var(--border)] hover:border-[var(--text-muted)] bg-[var(--bg-secondary)]";
+    return q.options || [];
   };
 
   const handleSubmit = () => {
@@ -202,6 +265,7 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
     });
     setScore(correct);
     setSubmitted(true);
+    setIsReviewing(false);
     if (typeof window !== "undefined") {
       localStorage.removeItem(`sabilearn_shared_quiz_progress_${id}`);
     }
@@ -210,13 +274,122 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
   const handleRetry = () => {
     setAnswers({});
     setSubmitted(false);
+    setIsReviewing(false);
     setScore(0);
     setCurrentQ(0);
+    setMaxReachedIndex(0);
     setFillBlankInput("");
     if (typeof window !== "undefined") {
       localStorage.removeItem(`sabilearn_shared_quiz_progress_${id}`);
     }
   };
+
+  const handleReviewAnswers = () => {
+    setIsReviewing(true);
+    setSubmitted(false);
+    setCurrentQ(0);
+  };
+
+  // Skip and Navigation functions
+  const handleNext = () => {
+    if (!quiz) return;
+    if (isReviewing) {
+      if (currentQ < quiz.questions.length - 1) {
+        setCurrentQ((p) => p + 1);
+      } else {
+        setSubmitted(true);
+        setIsReviewing(false);
+      }
+      return;
+    }
+
+    if (currentQ < quiz.questions.length - 1) {
+      setCurrentQ((p) => p + 1);
+    } else {
+      handleSubmit();
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQ > 0) {
+      setCurrentQ((p) => p - 1);
+    }
+  };
+
+  const handleSkip = () => {
+    if (submitted || isReviewing || !quiz) return;
+    if (feedbackMode === "immediate") {
+      setAnswers((prev) => ({ ...prev, [currentQ]: "" })); // Mark empty for skipped
+    } else {
+      handleNext();
+    }
+  };
+
+  const handleJumpToQuestion = (index: number) => {
+    setCurrentQ(index);
+  };
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
+
+      const key = e.key;
+      const lowerKey = key.toLowerCase();
+
+      // Enter or N for Continue / Next
+      if (key === "Enter" || lowerKey === "n") {
+        e.preventDefault();
+        const continueBtn = document.getElementById("quiz-continue-btn");
+        if (continueBtn) {
+          continueBtn.click();
+        } else {
+          handleNext();
+        }
+        return;
+      }
+
+      // Backspace or P for Previous
+      if (key === "Backspace" || lowerKey === "p") {
+        e.preventDefault();
+        handlePrevious();
+        return;
+      }
+
+      // S to Skip
+      if (lowerKey === "s") {
+        e.preventDefault();
+        handleSkip();
+        return;
+      }
+
+      // Option selections (A-D or 1-4)
+      if (!submitted && !isReviewing && quiz) {
+        const question = quiz.questions[currentQ];
+        if (question && question.type !== "fill-in-the-blank") {
+          const opts = getQuestionOptions(question);
+          let idx = -1;
+          if (key === "1" || lowerKey === "a") idx = 0;
+          if (key === "2" || lowerKey === "b") idx = 1;
+          if (key === "3" || lowerKey === "c") idx = 2;
+          if (key === "4" || lowerKey === "d") idx = 3;
+
+          if (idx !== -1 && opts[idx] !== undefined && !hasAnsweredCurrent) {
+            e.preventDefault();
+            selectAnswer(opts[idx]);
+          }
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentQ, answers, isReviewing, quiz, feedbackMode, submitted]);
 
   if (loading) {
     return (
@@ -339,263 +512,332 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
   }
 
   const question = quiz.questions[currentQ];
-  const hasAnsweredCurrent = !!answers[currentQ];
-  const currentAnswerCorrect = hasAnsweredCurrent ? isAnswerCorrect(currentQ, answers[currentQ]) : null;
+  const isSkipped = answers[currentQ] === "";
+  const currentAnswerCorrect = hasAnsweredCurrent && !isSkipped
+    ? isAnswerCorrect(currentQ, answers[currentQ])
+    : false;
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-primary)]">
       <ShareBanner />
-      <div className="flex-1 p-4 sm:p-6 md:p-8 max-w-2xl mx-auto w-full flex flex-col justify-center">
-        <div className="flex items-center gap-3 mb-2 flex-wrap">
-          <h1 className="font-[family-name:var(--font-display)] text-lg sm:text-xl font-bold">{quiz.title}</h1>
-          <span
-            className={cn(
-              "px-2 py-0.5 rounded-full text-xs font-medium",
-              feedbackMode === "immediate"
-                ? "bg-[var(--success)]/10 text-[var(--success)] border border-[var(--success)]/20"
-                : "bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20"
-            )}
-          >
-            {feedbackMode === "immediate" ? "Instant Feedback" : "Review at End"}
-          </span>
-        </div>
-
-        {/* Progress */}
-        <div className="flex items-center gap-2 mb-8">
-          {quiz.questions.map((_, i) => (
-            <div
-              key={i}
-              className={cn(
-                "h-1.5 flex-1 rounded-full transition-colors",
-                i === currentQ ? "bg-[var(--accent)]" : answers[i] ? "bg-[var(--accent)]/40" : "bg-[var(--bg-elevated)]"
-              )}
-            />
-          ))}
-        </div>
-
+      <div className="flex-1 p-4 sm:p-6 md:p-8 w-full max-w-7xl mx-auto flex items-center justify-center">
         {submitted ? (
-          <div className="text-center py-10">
+          <div className="w-full max-w-md mx-auto text-center py-10">
             <div className="text-5xl font-bold font-[family-name:var(--font-display)] mb-4">
-              {score}/{quiz.questions.length}
+              {displayScore}/{quiz.questions.length}
             </div>
             <p className="text-sm text-[var(--text-secondary)] mb-8">
-              {score === quiz.questions.length ? "Perfect score!" : score >= quiz.questions.length / 2 ? "Good job!" : "Keep practicing!"}
+              {score === quiz.questions.length
+                ? "Perfect score! You're a master!"
+                : score >= quiz.questions.length / 2
+                  ? "Good job! Keep learning!"
+                  : "Keep practicing! You'll get better!"}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
               <button
                 onClick={handleRetry}
-                className="px-5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] text-sm font-semibold hover:border-[var(--text-muted)] hover:bg-[var(--bg-tertiary)] transition-all flex items-center justify-center gap-2"
+                className="px-5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] text-sm font-semibold hover:border-[var(--text-muted)] hover:bg-[var(--bg-tertiary)] transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 Retry quiz
+              </button>
+              <button
+                onClick={handleReviewAnswers}
+                className="px-5 py-2.5 rounded-xl bg-[var(--accent)] text-[var(--bg-primary)] text-sm font-semibold hover:bg-[var(--accent-hover)] transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              >
+                Review Answers
               </button>
             </div>
 
             <div className="flex justify-center mb-6">
               <AddToLibraryButton resourceId={id} type="quiz" initialAdded={added} />
             </div>
-
-            {/* Review */}
-            <div className="text-left space-y-4 mt-4">
-              {quiz.questions.map((q, i) => {
-                const isCorrect = answers[i]?.toLowerCase().trim() === q.answer.toLowerCase().trim();
-                return (
-                  <div key={i} className={cn("p-4 rounded-xl border", isCorrect ? "border-[var(--success)]/30 bg-[var(--success)]/5" : "border-[var(--danger)]/30 bg-[var(--danger)]/5")}>
-                    <div className="text-sm font-medium mb-1 prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(q.question) }} />
-                    <div className="text-xs text-[var(--text-muted)] mt-1 flex flex-wrap items-center gap-1">
-                      <span>Your answer: </span>
-                      <span className="prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(answers[i] || "(none)") }} />
-                      <span className="mx-1">•</span>
-                      <span>Correct: </span>
-                      <span className="prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(q.answer) }} />
-                    </div>
-                    <div className="text-xs text-[var(--text-secondary)] mt-2 prose max-w-none" dangerouslySetInnerHTML={{ __html: formatMarkdown(q.explanation) }} />
-                  </div>
-                );
-              })}
-            </div>
           </div>
         ) : (
-          <>
-            <div className="mb-2 text-xs text-[var(--text-muted)]">
-              Question {currentQ + 1} of {quiz.questions.length} • {question.type.replace(/-/g, " ")}
-            </div>
-            <div className="text-lg font-semibold mb-6 prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.question) }} />
-
-            {question.type === "fill-in-the-blank" ? (
-              <div className="space-y-3">
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={feedbackMode === "immediate" && hasAnsweredCurrent ? answers[currentQ] || "" : fillBlankInput}
-                    onChange={(e) => setFillBlankInput(e.target.value)}
-                    onKeyDown={feedbackMode === "immediate" ? handleFillBlankKeyDown : undefined}
-                    disabled={feedbackMode === "immediate" && hasAnsweredCurrent}
-                    placeholder="Type your answer..."
-                    className={cn(
-                      "flex-1 px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border text-sm focus:outline-none focus:border-[var(--accent)] transition-colors",
-                      feedbackMode === "immediate" && hasAnsweredCurrent
-                        ? currentAnswerCorrect
-                          ? "border-[var(--success)] bg-[var(--success)]/10"
-                          : "border-[var(--danger)] bg-[var(--danger)]/10"
-                        : "border-[var(--border)]"
-                    )}
-                  />
-                  {feedbackMode === "immediate" && !hasAnsweredCurrent && (
-                    <button
-                      onClick={submitFillBlankAnswer}
-                      disabled={!fillBlankInput.trim()}
-                      className="px-4 py-3 rounded-xl bg-[var(--accent)] text-[var(--bg-primary)] text-sm font-semibold disabled:opacity-50 hover:bg-[var(--accent-hover)] transition-colors whitespace-nowrap"
+          <div className="quiz-layout-wrapper">
+            <div className="quiz-main-column w-full">
+              <div className="max-w-2xl mx-auto">
+                <div className="flex items-center gap-3 mb-2 flex-wrap justify-between">
+                  <div className="flex items-center gap-3">
+                    <h1 className="font-[family-name:var(--font-display)] text-lg sm:text-xl font-bold">{quiz.title}</h1>
+                    <span
+                      className={cn(
+                        "px-2 py-0.5 rounded-full text-xs font-medium",
+                        feedbackMode === "immediate"
+                          ? "bg-[var(--success)]/10 text-[var(--success)] border border-[var(--success)]/20"
+                          : "bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20"
+                      )}
                     >
-                      Check Answer
-                    </button>
+                      {feedbackMode === "immediate" ? "Instant Feedback" : "Review at End"}
+                    </span>
+                  </div>
+                  {isReviewing && (
+                    <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 animate-pulse">
+                      Review Mode
+                    </span>
                   )}
                 </div>
-                {feedbackMode === "immediate" && hasAnsweredCurrent && (
-                  <div className={cn(
-                    "p-4 rounded-xl border text-sm animate-in fade-in slide-in-from-bottom-2 duration-300",
-                    currentAnswerCorrect
-                      ? "border-[var(--success)]/30 bg-[var(--success)]/5"
-                      : "border-[var(--danger)]/30 bg-[var(--danger)]/5"
-                  )}>
-                    <div className="flex items-center gap-2 mb-2">
-                      {currentAnswerCorrect ? (
-                        <span className="font-medium text-[var(--success)]">Correct!</span>
-                      ) : (
-                        <span className="font-medium text-[var(--danger)]">Incorrect</span>
-                      )}
-                    </div>
-                    {!currentAnswerCorrect && (
-                      <div className="text-sm text-[var(--text-secondary)] mb-2 flex items-center gap-1 flex-wrap">
-                        <span>Correct answer: </span>
-                        <span className="font-medium text-[var(--success)] prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.answer) }} />
-                      </div>
-                    )}
-                    <div className="text-sm text-[var(--text-muted)] prose max-w-none" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.explanation) }} />
+
+                {/* Progress Bar (Hidden in Review Mode since we have Sidebar) */}
+                {!isReviewing && (
+                  <div className="flex items-center gap-2 mb-8">
+                    {quiz.questions.map((_, i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          "h-1.5 flex-1 rounded-full transition-colors",
+                          i === currentQ
+                            ? "bg-[var(--accent)]"
+                            : answers[i] !== undefined
+                              ? answers[i] === ""
+                                ? "bg-[var(--warning)]/50" // Skipped
+                                : "bg-[var(--accent)]/40"  // Answered
+                              : "bg-[var(--bg-elevated)]"
+                        )}
+                      />
+                    ))}
                   </div>
                 )}
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {(question.type === "true-false"
-                  ? (question.options && question.options.length > 0
-                      ? question.options
-                      : (question.answer === "true" || question.answer === "false"
-                          ? ["true", "false"]
-                          : ["True", "False"]))
-                  : (question.options || [])
-                ).map((opt) => {
-                  const isCorrectAnswer = question.answer.toLowerCase().trim() === opt.toLowerCase().trim();
-                  const isSelected = answers[currentQ] === opt;
-                  const showCorrectIcon = feedbackMode === "immediate" && hasAnsweredCurrent && isCorrectAnswer;
-                  const showIncorrectIcon = feedbackMode === "immediate" && hasAnsweredCurrent && isSelected && !isCorrectAnswer;
 
-                  return (
-                    <button
-                      key={opt}
-                      onClick={() => selectAnswer(opt)}
-                      disabled={feedbackMode === "immediate" && hasAnsweredCurrent}
-                      className={cn(
-                        "w-full text-left p-4 rounded-xl border text-sm transition-all flex items-center justify-between gap-3",
-                        getOptionStyle(opt),
-                        feedbackMode === "immediate" && hasAnsweredCurrent && !isSelected && !isCorrectAnswer && "cursor-default"
-                      )}
-                    >
-                      <span className="prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(opt) }} />
-                      {showCorrectIcon && (
-                        <svg className="w-5 h-5 text-[var(--success)] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      )}
-                      {showIncorrectIcon && (
-                        <svg className="w-5 h-5 text-[var(--danger)] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      )}
-                    </button>
-                  );
-                })}
-                {feedbackMode === "immediate" && hasAnsweredCurrent && (
-                  <div className={cn(
-                    "p-4 rounded-xl border text-sm animate-in fade-in slide-in-from-bottom-2 duration-300",
-                    currentAnswerCorrect
-                      ? "border-[var(--success)]/30 bg-[var(--success)]/5"
-                      : "border-[var(--danger)]/30 bg-[var(--danger)]/5"
-                  )}>
-                    <div className="flex items-center gap-2 mb-2">
-                      {currentAnswerCorrect ? (
-                        <span className="font-medium text-[var(--success)]">Correct!</span>
-                      ) : (
-                        <span className="font-medium text-[var(--danger)]">Incorrect</span>
+                <div className="mb-2 text-xs text-[var(--text-muted)]">
+                  Question {currentQ + 1} of {quiz.questions.length} • {question.type.replace(/-/g, " ")}
+                </div>
+
+                <div
+                  ref={questionRef}
+                  className="text-lg font-semibold mb-6 prose max-w-none [&_p]:m-0 [&_p]:inline text-[var(--text-primary)]"
+                  dangerouslySetInnerHTML={{ __html: formatMarkdown(question.question) }}
+                />
+
+                {question.type === "fill-in-the-blank" ? (
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={
+                          (feedbackMode === "immediate" && hasAnsweredCurrent) || isReviewing
+                            ? answers[currentQ] || ""
+                            : fillBlankInput
+                        }
+                        onChange={(e) => setFillBlankInput(e.target.value)}
+                        onKeyDown={feedbackMode === "immediate" ? handleFillBlankKeyDown : undefined}
+                        disabled={(feedbackMode === "immediate" && hasAnsweredCurrent) || isReviewing}
+                        placeholder={isSkipped ? "Skipped" : "Type your answer..."}
+                        className={cn(
+                          "flex-1 px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border text-sm focus:outline-none focus:border-[var(--accent)] transition-colors text-[var(--text-primary)]",
+                          ((feedbackMode === "immediate" && hasAnsweredCurrent) || isReviewing)
+                            ? isSkipped
+                              ? "border-[var(--warning)] bg-[var(--warning)]/10"
+                              : currentAnswerCorrect
+                                ? "border-[var(--success)] bg-[var(--success)]/10"
+                                : "border-[var(--danger)] bg-[var(--danger)]/10"
+                            : "border-[var(--border)]"
+                        )}
+                      />
+                      {feedbackMode === "immediate" && !hasAnsweredCurrent && !isReviewing && (
+                        <button
+                          onClick={submitFillBlankAnswer}
+                          disabled={!fillBlankInput.trim()}
+                          className="px-4 py-3 rounded-xl bg-[var(--accent)] text-[var(--bg-primary)] text-sm font-semibold disabled:opacity-50 hover:bg-[var(--accent-hover)] transition-colors whitespace-nowrap cursor-pointer"
+                        >
+                          Check Answer
+                        </button>
                       )}
                     </div>
-                    {!currentAnswerCorrect && (
-                      <div className="text-sm text-[var(--text-secondary)] mb-2 flex items-center gap-1 flex-wrap">
-                        <span>Correct answer: </span>
-                        <span className="font-medium text-[var(--success)] prose max-w-none [&_p]:m-0 [&_p]:inline" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.answer) }} />
+
+                    {/* Immediate feedback explanation for fill-in-the-blank */}
+                    {(((feedbackMode === "immediate" && hasAnsweredCurrent) || isReviewing)) && (
+                      <div
+                        ref={feedbackRef}
+                        className={cn(
+                          "p-4 rounded-xl border text-sm",
+                          isSkipped
+                            ? "border-[var(--warning)]/30 bg-[var(--warning)]/5"
+                            : currentAnswerCorrect
+                              ? "border-[var(--success)]/30 bg-[var(--success)]/5"
+                              : "border-[var(--danger)]/30 bg-[var(--danger)]/5"
+                        )}
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          {isSkipped ? (
+                            <span className="font-medium text-[var(--warning)]">Skipped</span>
+                          ) : currentAnswerCorrect ? (
+                            <span className="font-medium text-[var(--success)]">Correct!</span>
+                          ) : (
+                            <span className="font-medium text-[var(--danger)]">Incorrect</span>
+                          )}
+                        </div>
+                        {(!currentAnswerCorrect || isSkipped) && (
+                          <div className="text-sm text-[var(--text-secondary)] mb-2 flex items-center gap-1 flex-wrap">
+                            <span>Correct answer: </span>
+                            <span
+                              className="font-medium text-[var(--success)] prose max-w-none [&_p]:m-0 [&_p]:inline"
+                              dangerouslySetInnerHTML={{ __html: formatMarkdown(question.answer) }}
+                            />
+                          </div>
+                        )}
+                        {question.explanation && (
+                          <div
+                            className="text-sm text-[var(--text-muted)] prose max-w-none"
+                            dangerouslySetInnerHTML={{ __html: formatMarkdown(question.explanation) }}
+                          />
+                        )}
                       </div>
                     )}
-                    <div className="text-sm text-[var(--text-muted)] prose max-w-none" dangerouslySetInnerHTML={{ __html: formatMarkdown(question.explanation) }} />
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {getQuestionOptions(question).map((opt, idx) => {
+                      const isSelected = answers[currentQ] === opt;
+                      const isThisCorrectAnswer = question.answer.toLowerCase().trim() === opt.toLowerCase().trim();
+                      return (
+                        <OptionCard
+                          key={`${currentQ}-${idx}`}
+                          optionText={opt}
+                          index={idx}
+                          isSelected={isSelected}
+                          isCorrect={currentAnswerCorrect}
+                          showResult={(feedbackMode === "immediate" && hasAnsweredCurrent) || isReviewing}
+                          isCorrectAnswer={isThisCorrectAnswer}
+                          onSelect={selectAnswer}
+                          disabled={(feedbackMode === "immediate" && hasAnsweredCurrent) || isReviewing}
+                        />
+                      );
+                    })}
+
+                    {/* Immediate feedback explanation for choices */}
+                    {(((feedbackMode === "immediate" && hasAnsweredCurrent) || isReviewing)) && (
+                      <div
+                        ref={feedbackRef}
+                        className={cn(
+                          "p-4 rounded-xl border text-sm mt-4",
+                          isSkipped
+                            ? "border-[var(--warning)]/30 bg-[var(--warning)]/5"
+                            : currentAnswerCorrect
+                              ? "border-[var(--success)]/30 bg-[var(--success)]/5"
+                              : "border-[var(--danger)]/30 bg-[var(--danger)]/5"
+                        )}
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          {isSkipped ? (
+                            <span className="font-medium text-[var(--warning)]">Skipped</span>
+                          ) : currentAnswerCorrect ? (
+                            <span className="font-medium text-[var(--success)]">Correct!</span>
+                          ) : (
+                            <span className="font-medium text-[var(--danger)]">Incorrect</span>
+                          )}
+                        </div>
+                        {(!currentAnswerCorrect || isSkipped) && (
+                          <div className="text-sm text-[var(--text-secondary)] mb-2 flex items-center gap-1 flex-wrap">
+                            <span>Correct answer: </span>
+                            <span
+                              className="font-medium text-[var(--success)] prose max-w-none [&_p]:m-0 [&_p]:inline"
+                              dangerouslySetInnerHTML={{ __html: formatMarkdown(question.answer) }}
+                            />
+                          </div>
+                        )}
+                        {question.explanation && (
+                          <div
+                            className="text-sm text-[var(--text-muted)] prose max-w-none"
+                            dangerouslySetInnerHTML={{ __html: formatMarkdown(question.explanation) }}
+                          />
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
-              </div>
-            )}
 
-            {/* Navigation */}
-            <div className="flex items-center justify-between mt-8">
-              <button
-                onClick={() => setCurrentQ((p) => Math.max(0, p - 1))}
-                disabled={currentQ === 0}
-                className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] disabled:opacity-30 transition-colors"
-              >
-                Previous
-              </button>
-
-              {feedbackMode === "immediate" ? (
-                hasAnsweredCurrent ? (
+                {/* Navigation actions wrapper */}
+                <div className="flex items-center justify-between mt-8">
+                  {/* Previous button */}
                   <button
-                    onClick={() => {
-                      if (currentQ === quiz.questions.length - 1) {
-                        handleSubmit();
-                      } else {
-                        setCurrentQ((p) => Math.min(quiz.questions.length - 1, p + 1));
-                      }
-                    }}
-                    className={cn(
-                      "px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2",
-                      currentAnswerCorrect
-                        ? "bg-[var(--success)] text-white hover:bg-[var(--success)]/90"
-                        : "bg-[var(--accent)] text-[var(--bg-primary)] hover:bg-[var(--accent-hover)]"
+                    onClick={handlePrevious}
+                    disabled={currentQ === 0}
+                    className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] disabled:opacity-30 transition-colors flex items-center gap-1 cursor-pointer"
+                  >
+                    ← Previous
+                  </button>
+
+                  <div className="flex items-center gap-2">
+                    {/* Skip button (only shown if unanswered & not reviewing) */}
+                    {!hasAnsweredCurrent && !isReviewing && (
+                      <button
+                        onClick={handleSkip}
+                        className="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] text-sm transition-all cursor-pointer"
+                      >
+                        Skip Question
+                      </button>
                     )}
-                  >
-                    {currentQ === quiz.questions.length - 1 ? "Finish Quiz" : "Continue"}
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                ) : (
-                  <span className="text-sm text-[var(--text-muted)]">Select an answer to continue</span>
-                )
-              ) : (
-                currentQ === quiz.questions.length - 1 ? (
-                  <button
-                    onClick={handleSubmit}
-                    disabled={Object.keys(answers).length < quiz.questions.length}
-                    className="px-6 py-2.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-sm font-semibold disabled:opacity-50 hover:bg-[var(--accent-hover)] transition-colors"
-                  >
-                    Submit Quiz
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setCurrentQ((p) => Math.min(quiz.questions.length - 1, p + 1))}
-                    className="text-sm text-[var(--accent)] hover:text-[var(--accent-hover)] font-medium transition-colors"
-                  >
-                    Next →
-                  </button>
-                )
-              )}
+
+                    {/* Next / Continue button */}
+                    {isReviewing ? (
+                      <button
+                        id="quiz-continue-btn"
+                        onClick={handleNext}
+                        className="px-6 py-2.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-sm font-semibold hover:bg-[var(--accent-hover)] transition-colors flex items-center gap-2 cursor-pointer"
+                      >
+                        {currentQ === quiz.questions.length - 1 ? "Back to Results" : "Next"}
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    ) : feedbackMode === "immediate" ? (
+                      hasAnsweredCurrent ? (
+                        <button
+                          id="quiz-continue-btn"
+                          onClick={handleNext}
+                          className={cn(
+                            "px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 cursor-pointer",
+                            currentAnswerCorrect
+                              ? "bg-[var(--success)] text-white hover:bg-[var(--success)]/90"
+                              : "bg-[var(--accent)] text-[var(--bg-primary)] hover:bg-[var(--accent-hover)]"
+                          )}
+                        >
+                          {currentQ === quiz.questions.length - 1 ? "Finish Quiz" : "Continue"}
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      ) : (
+                        <span className="text-xs text-[var(--text-muted)] italic">
+                          Select an answer or skip to continue
+                        </span>
+                      )
+                    ) : (
+                      // Traditional mode
+                      currentQ === quiz.questions.length - 1 ? (
+                        <button
+                          id="quiz-continue-btn"
+                          onClick={handleSubmit}
+                          disabled={Object.keys(answers).length < quiz.questions.length}
+                          className="px-6 py-2.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-sm font-semibold disabled:opacity-50 hover:bg-[var(--accent-hover)] transition-colors cursor-pointer"
+                        >
+                          Submit Quiz
+                        </button>
+                      ) : (
+                        <button
+                          id="quiz-continue-btn"
+                          onClick={handleNext}
+                          className="text-sm text-[var(--accent)] hover:text-[var(--accent-hover)] font-medium transition-colors cursor-pointer"
+                        >
+                          Next →
+                        </button>
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
-          </>
+
+            {/* Question grid progress sidebar */}
+            <QuizOverview
+              questions={quiz.questions}
+              userAnswers={answers}
+              currentQuestionIndex={currentQ}
+              maxReachedIndex={maxReachedIndex}
+              onQuestionClick={handleJumpToQuestion}
+            />
+          </div>
         )}
       </div>
       {resumeModal}

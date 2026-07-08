@@ -1,1802 +1,1142 @@
 [
   {
-    "question": "The term philosophy is derived from two Greek words, 'Philo' and 'Sophia', which respectively mean:",
+    "question": "Which part of a DC machine is explicitly designed to provide a path of very low reluctance for the magnetic flux traveling from a North pole to a South pole?",
     "type": "multiple-choice",
     "options": [
-      "Wisdom and Love",
-      "Love and Knowledge",
-      "Love and Wisdom",
-      "Knowledge and Search"
+      "Yoke",
+      "Pole shoe",
+      "Armature core",
+      "Commutator"
     ],
-    "answer": "Love and Wisdom",
-    "explanation": "The philosophy derived it name from two Greek words 'Philo' (love) and 'Sophia' (wisdom)[cite: 5]."
+    "answer": "Armature core",
+    "explanation": "While the pole shoe spreads out flux and reduces the reluctance of the magnetic path in the air gap [cite: 5], the most important function of the armature core is to provide a path of very low reluctance to the flux passing through the armature from a N-pole to a S-pole[cite: 7]."
   },
   {
-    "question": "Which scholar described philosophy as a science that organizes and systematizes all fields of knowledge to interpret the totality of reality?",
+    "question": "The commutator serves different functions depending on whether the machine is operating as a DC generator or a DC motor. What is its primary function in a DC motor?",
     "type": "multiple-choice",
-    "options": ["Socrates", "Carter Good", "Aristotle", "Jalaluddin & Idi"],
-    "answer": "Carter Good",
-    "explanation": "According to Carter Good, philosophy is a science that seeks to organise and systematise all fields of knowledge as a means of understanding and interpreting the totality of reality[cite: 25]."
-  },
-  {
-    "question": "Which mode of philosophy is characterized as a systematic search for wholeness and coherence in all that we experience?",
-    "type": "multiple-choice",
-    "options": [
-      "Speculative Mode",
-      "Analytic Mode",
-      "Prescriptive Mode",
-      "Dialectical Mode"
-    ],
-    "answer": "Speculative Mode",
-    "explanation": "This mode is a systematic search for wholeness and order of knowledge in all that we experience[cite: 71]. Amaele stressed further that speculative philosophy is a search for some coherence in the whole realm of thought and experience[cite: 72]."
-  },
-  {
-    "question": "A philosophical approach that assesses values, judges human conduct, and determines what \"ought to be\" rather than what \"is\" belongs to the:",
-    "type": "multiple-choice",
-    "options": [
-      "Analytic Mode",
-      "Dialectical Mode",
-      "Prescriptive Mode",
-      "Speculative Mode"
-    ],
-    "answer": "Prescriptive Mode",
-    "explanation": "The prescriptive mode is interested in establishing standards for assessing values, judging conducts and appraising art[cite: 79]. It evaluates human actions and is concerned with what ought to be rather than what is[cite: 85, 86]."
-  },
-  {
-    "question": "If a philosopher focuses primarily on clarifying concepts, exposing language inconsistencies, and eliminating ambiguity, they are operating within the:",
-    "type": "multiple-choice",
-    "options": [
-      "Speculative Mode",
-      "Analytic Mode",
-      "Dialectical Mode",
-      "Normative Mode"
-    ],
-    "answer": "Analytic Mode",
-    "explanation": "Analytic mode is interested in words and meaning[cite: 90]. It examines concepts, language, and arguments to eliminate ambiguity and confusion[cite: 96]."
-  },
-  {
-    "question": "The interaction of a thesis and antithesis to synthesize a new viewpoint is the core method of which philosophical mode?",
-    "type": "multiple-choice",
-    "options": [
-      "Speculative Mode",
-      "Empirical Mode",
-      "Analytic Mode",
-      "Dialectical Mode"
-    ],
-    "answer": "Dialectical Mode",
-    "explanation": "The dialectical mode involves dialogue, argument, and the synthesis of opposing viewpoints[cite: 100]. Truth emerges through the interaction of thesis and antithesis[cite: 101]."
-  },
-  {
-    "question": "The branch of philosophy concerned with ultimate reality, existing beyond the physical world and immediate senses, is known as:",
-    "type": "multiple-choice",
-    "options": ["Epistemology", "Axiology", "Metaphysics", "Cosmology"],
-    "answer": "Metaphysics",
-    "explanation": "Metaphysics is concerned with explaining the features of reality that exist beyond the physical world and our immediate senses[cite: 116]."
-  },
-  {
-    "question": "Within metaphysics, the specific sub-branch that questions what it means for anything to exist and classifies entities and their properties is:",
-    "type": "multiple-choice",
-    "options": ["Theology", "Cosmology", "Epistemology", "Ontology"],
-    "answer": "Ontology",
-    "explanation": "Ontology is the study of being and existence or what it means for anything to exist[cite: 126]. It includes the definition and classification of entities, physical or mental, their properties, and the nature of change[cite: 127]."
-  },
-  {
-    "question": "Questions such as \"Did the universe come about by accident or design?\" and \"How did the universe develop?\" are primarily addressed by:",
-    "type": "multiple-choice",
-    "options": ["Cosmology", "Ontology", "Theology", "Axiology"],
-    "answer": "Cosmology",
-    "explanation": "Cosmology deals with the study of theories about the origin, nature, and development of the universe as an orderly system[cite: 133]. It asks questions like how the universe originated and developed, and whether it came about by accident or design[cite: 134]."
-  },
-  {
-    "question": "Epistemology seeks to investigate the dependability of knowledge. Its name is derived from the Greek words 'episteme' and 'logos', meaning:",
-    "type": "multiple-choice",
-    "options": [
-      "Nature and Study",
-      "Knowledge and Value",
-      "Understanding and Truth",
-      "Knowledge and Study of"
-    ],
-    "answer": "Knowledge and Study of",
-    "explanation": "Etymologically the word epistemology has been derived from the Greek word episteme, meaning \"knowledge, understanding\", and logos, meaning \"study of\"[cite: 139]."
-  },
-  {
-    "question": "Gorgias asserted that nothing exists, and if it did, we could not know it. This position is a classic example of:",
-    "type": "multiple-choice",
-    "options": ["Skepticism", "Agnosticism", "Empiricism", "Rationalism"],
-    "answer": "Skepticism",
-    "explanation": "Skeptics assert that people cannot acquire reliable knowledge and that any search for truth is in vain[cite: 142]. This thought was expressed by Gorgias who asserted that nothing exists, and that if it did, we could not know it[cite: 144]."
-  },
-  {
-    "question": "A person who claims ignorance regarding the existence or nonexistence of God is professing:",
-    "type": "multiple-choice",
-    "options": ["Atheism", "Agnosticism", "Skepticism", "Ontology"],
-    "answer": "Agnosticism",
-    "explanation": "Agnosticism is a profession of ignorance in reference to the existence or nonexistence of God[cite: 145]."
-  },
-  {
-    "question": "Which source of knowledge is considered by its adherents to be uncontaminated and absolute, but faces the disadvantage of not being empirically provable?",
-    "type": "multiple-choice",
-    "options": [
-      "Rational Source",
-      "Authoritative Source",
-      "Revelation Source",
-      "Intuitive Source"
-    ],
-    "answer": "Revelation Source",
-    "explanation": "The truth revealed through the revelation source is believed to be absolute and uncontaminated[cite: 157]. However, one of the disadvantages of revealed knowledge is that it must be accepted by faith and cannot be proved or disproved empirically[cite: 158]."
-  },
-  {
-    "question": "Knowledge acquired practically through the human perception of hearing, seeing, feeling, smelling, and tasting is termed:",
-    "type": "multiple-choice",
-    "options": [
-      "Rational Knowledge",
-      "Empirical Knowledge",
-      "Authoritative Knowledge",
-      "Intuitive Knowledge"
-    ],
-    "answer": "Empirical Knowledge",
-    "explanation": "Empirical source refers to the type of knowledge acquired through the observation of the things around us with the use of the senses[cite: 159]. It is practically derived from human perception and confirmed by the evidence of human five senses[cite: 160]."
-  },
-  {
-    "question": "Which source of knowledge relies on formal logic and asserts that the human mind can arrive at irrefutable knowledge independently of sensory experience?",
-    "type": "multiple-choice",
-    "options": [
-      "Empirical Source",
-      "Intuition Source",
-      "Rational Source",
-      "Authoritative Source"
-    ],
-    "answer": "Rational Source",
-    "explanation": "Rational source is acquired through the use of our reasoning faculty[cite: 168]. Rationalists opine that human beings are capable of arriving at irrefutable knowledge independently of sensory experience using formal logic[cite: 170, 171]."
-  },
-  {
-    "question": "Knowledge that appears suddenly as a flash of insight, bypassing the standard reasoning process, is known as:",
-    "type": "multiple-choice",
-    "options": ["Rationalism", "Intuition", "Empiricism", "Revelation"],
-    "answer": "Intuition",
-    "explanation": "Intuition source is the type of knowledge that comes suddenly and directly to the knower without passing through the process of reasoning[cite: 172]. It comes with a flash of insight full of meaning[cite: 173]."
-  },
-  {
-    "question": "The branch of philosophy that evaluates objects we cherish or appreciate, and attempts to justify notions of right and beautiful, is:",
-    "type": "multiple-choice",
-    "options": ["Axiology", "Epistemology", "Metaphysics", "Ontology"],
-    "answer": "Axiology",
-    "explanation": "Axiology is the branch of philosophy that studies judgements about values including both ethics and aesthetics[cite: 180]. Values primarily refer to those objects which we cherish, appreciate, want, desire or need[cite: 181]."
-  },
-  {
-    "question": "Unlike descriptive sciences that focus on \"what is,\" philosophy evaluates human conduct and justice. This reflects which characteristic of philosophy?",
-    "type": "multiple-choice",
-    "options": [
-      "It is reflective and second-order.",
-      "It is normative and evaluative.",
-      "It is universal and foundational.",
-      "It is dialectical."
-    ],
-    "answer": "It is normative and evaluative.",
-    "explanation": "Philosophy is normative and evaluative; unlike descriptive sciences, it is concerned with what ought to be[cite: 48]. In ethics and political philosophy, it evaluates human conduct, justice, and the good life[cite: 49]."
-  },
-  {
-    "question": "When philosophy engages with the foundations, methods, and implications of other disciplines rather than just facts about the world, it is being:",
-    "type": "multiple-choice",
-    "options": [
-      "Reflective and second-order",
-      "Speculative and empirical",
-      "Universal and foundational",
-      "Practical and transformative"
-    ],
-    "answer": "Reflective and second-order",
-    "explanation": "Philosophy is reflective and second-order because it does not simply engage with facts about the world but reflects on the foundations, methods, and implications of other disciplines[cite: 43]."
-  },
-  {
-    "question": "According to the lecture notes, Bertrand Russell is highly associated with which mode of philosophy due to his emphasis on logical precision?",
-    "type": "multiple-choice",
-    "options": [
-      "Speculative Mode",
-      "Dialectical Mode",
-      "Analytic Mode",
-      "Prescriptive Mode"
-    ],
-    "answer": "Analytic Mode",
-    "explanation": "Thinkers such as Bertrand Russell emphasized logical analysis as the proper method of philosophy, which falls under the analytic mode[cite: 98]."
-  },
-  {
-    "question": "The classroom is described as an 'axiological theatre' primarily because:",
-    "type": "multiple-choice",
-    "options": [
-      "Teachers act out scenarios to illustrate complex logical propositions.",
-      "Teachers instruct impressionable youths who assimilate their value structures.",
-      "Students engage in heated debates over the definitions of beauty and art.",
-      "The curriculum focuses heavily on the performing arts and aesthetic values."
-    ],
-    "answer": "Teachers instruct impressionable youths who assimilate their value structures.",
-    "explanation": "The text states the classroom is an axiological theatre in which teachers cannot hide their moral selves, as they instruct impressionable young people who assimilate and imitate their teachers' value structures[cite: 2]."
-  },
-  {
-    "question": "Which of the following is NOT explicitly listed as a subdiscipline of ethics in the text?",
-    "type": "multiple-choice",
-    "options": [
-      "Theory of conduct",
-      "Applied ethics",
-      "Value theory",
-      "Meta-aesthetics"
-    ],
-    "answer": "Meta-aesthetics",
-    "explanation": "The text lists meta-ethics, value theory, theory of conduct, and applied ethics as subdisciplines of ethics[cite: 2]. 'Meta-aesthetics' is not mentioned."
-  },
-  {
-    "question": "According to the text, what fundamental issue places schools at the center of societal 'culture wars'?",
-    "type": "multiple-choice",
-    "options": [
-      "The lack of funding for teaching traditional arts and logic.",
-      "The debate over replacing deductive logic with inductive reasoning.",
-      "People embracing different ethical bases and resisting moral indoctrination.",
-      "The unprecedented technological advances that overshadow moral development."
-    ],
-    "answer": "People embracing different ethical bases and resisting moral indoctrination.",
-    "explanation": "The text notes that people embrace different ethical bases and strongly resist having their children 'indoctrinated' into alien moral views, putting schools at the center of the various 'culture wars'[cite: 2]."
-  },
-  {
-    "question": "In the study of aesthetics, the appreciation of beauty and art encompasses which of the following?",
-    "type": "multiple-choice",
-    "options": [
-      "Strictly the higher arts like classical music and fine art.",
-      "Both the higher arts and things of daily life like billboards.",
-      "Only natural phenomena and not human-made architecture.",
-      "Exclusively human character, voluntary determination, and propriety."
-    ],
-    "answer": "Both the higher arts and things of daily life like billboards.",
-    "explanation": "Aesthetics searches for principles governing the creation and appreciation of beauty and art in both 'the higher arts' and things of daily life, such as school architecture, television programs, and billboards[cite: 2]."
-  },
-  {
-    "question": "Which statement best describes the primary interest of logicians according to the text?",
-    "type": "multiple-choice",
-    "options": [
-      "They are deeply focused on understanding the psychological processes of how the mind arrives at conclusions.",
-      "They are primarily interested in the correctness of the completed process of reasoning.",
-      "They study the historical development of ethical and aesthetic values in society.",
-      "They seek to guarantee the absolute, 100% certainty of inductive inferences."
-    ],
-    "answer": "They are primarily interested in the correctness of the completed process of reasoning.",
-    "explanation": "The text specifies that logicians are not interested in how the mind arrives at conclusions, but are interested in the correctness of the completed process of the reasoning[cite: 2]."
-  },
-  {
-    "question": "A reasoning process that moves from a specific discussion to a general conclusion, aiming for high probability rather than absolute certainty, is termed:",
-    "type": "multiple-choice",
-    "options": [
-      "Categorical Syllogism",
-      "Deductive Logic",
-      "Inductive Logic",
-      "Modus Ponens"
-    ],
-    "answer": "Inductive Logic",
-    "explanation": "Inductive logic is the reasoning process that starts from specific discussion and ends with a general conclusion[cite: 2]. It is not interested in absolute certainty but in the accuracy of general probabilities[cite: 2]."
-  },
-  {
-    "question": "In a standard syllogism, what is the proper sequence of its three core components?",
-    "type": "multiple-choice",
-    "options": [
-      "Minor Premise, Conclusion, Major Premise.",
-      "Major Premise, Minor Premise, Conclusion.",
-      "Conclusion, Major Premise, Minor Premise.",
-      "Major Premise, Minor Premise, Synthesis."
-    ],
-    "answer": "Major Premise, Minor Premise, Conclusion.",
-    "explanation": "A syllogism is a three-step method of framing an argument that starts with a Major Premise, is followed by a Minor Premise, and finally, a Conclusion is drawn[cite: 2]."
-  },
-  {
-    "question": "When forming the conclusion of a proper syllogism, which elements should be combined?",
-    "type": "multiple-choice",
-    "options": [
-      "The shared elements found in both the Major and Minor Premises.",
-      "The unique elements from either the Major or Minor Premise.",
-      "Only the terms introduced in the Major Premise.",
-      "Completely new elements to expand the scope of the argument."
-    ],
-    "answer": "The unique elements from either the Major or Minor Premise.",
-    "explanation": "The conclusion is found by combining the unique elements of the Major and Minor Premises, because the shared, non-unique element has already been established and is taken as a given[cite: 2]."
-  },
-  {
-    "question": "Based on the 'Illicit Major' example provided, why is the conclusion 'John is a dog' invalid given the premises 'All dogs love food' and 'John loves food'?",
-    "type": "multiple-choice",
-    "options": [
-      "Because John is explicitly defined as a human elsewhere.",
-      "Because loving food is an inductive probability, not a deductive certainty.",
-      "Because the shared element does not logically necessitate that John belongs to the category of dogs.",
-      "Because the major premise is negative, making the conclusion negative."
-    ],
-    "answer": "Because the shared element does not logically necessitate that John belongs to the category of dogs.",
-    "explanation": "The text provides an 'Illicit Major' example where 'All dogs love food' and 'John loves food' does not logically indicate that 'John is a dog', making it an invalid conclusion because sharing a trait does not mean one belongs to the other group[cite: 2]."
-  },
-  {
-    "question": "According to the rules of syllogism, if the minor premise is negative, what must the conclusion be?",
-    "type": "multiple-choice",
-    "options": ["Affirmative", "Negative", "Inductive", "Hypothetical"],
-    "answer": "Negative",
-    "explanation": "One of the specific rules of syllogism states: 'If the minor premise is negative, the conclusion must be negative'[cite: 2]."
-  },
-  {
-    "question": "'If it rains, the grass gets wet. It is raining. Therefore, the grass is wet.' This is an example of which rule of inference?",
-    "type": "multiple-choice",
-    "options": [
-      "Modus Tollens",
-      "Simplification",
-      "Modus Ponens",
-      "Constructive Dilemma"
-    ],
-    "answer": "Modus Ponens",
-    "explanation": "Modus Ponens dictates that if you have a conditional statement and you know the antecedent is true, you can correctly conclude the consequent is true[cite: 2]. The example directly mirrors this operational rule[cite: 2]."
-  },
-  {
-    "question": "Which rule of inference states that if a conditional statement is given and its consequent is false, the antecedent must also be false?",
-    "type": "multiple-choice",
-    "options": [
-      "Absorption",
-      "Modus Tollens",
-      "Disjunctive Syllogism",
-      "Modus Ponens"
-    ],
-    "answer": "Modus Tollens",
-    "explanation": "Modus Tollens states that if you have a conditional statement and the consequent is false, the antecedent must also be false[cite: 2]."
-  },
-  {
-    "question": "The logical sequence 'If I study, I pass. If I pass, I graduate. Therefore, if I study, I graduate' is an application of:",
-    "type": "multiple-choice",
-    "options": [
-      "Constructive Dilemma",
-      "Hypothetical Syllogism",
-      "Addition",
-      "Simplification"
-    ],
-    "answer": "Hypothetical Syllogism",
-    "explanation": "Hypothetical Syllogism acts as the 'chain rule' for logic, where if one thing leads to another, and that second thing leads to a third, the first leads to the third[cite: 2]."
-  },
-  {
-    "question": "In a scenario where you are presented with an 'either/or' situation and one option is logically ruled out, allowing you to affirm the other, which rule are you applying?",
-    "type": "multiple-choice",
-    "options": [
-      "Conjunction",
-      "Simplification",
-      "Disjunctive Syllogism",
-      "Modus Ponens"
-    ],
-    "answer": "Disjunctive Syllogism",
-    "explanation": "Disjunctive Syllogism occurs when you are given an 'either/or' scenario and one option is ruled out, meaning the other must be true[cite: 2]."
-  },
-  {
-    "question": "A rule that combines two conditionals with a disjunction, such as 'If I stay, I'm bored; if I leave, I'm tired. I must stay or leave. Therefore, I am either bored or tired,' is known as:",
-    "type": "multiple-choice",
-    "options": [
-      "Hypothetical Syllogism",
-      "Disjunctive Syllogism",
-      "Absorption",
-      "Constructive Dilemma"
-    ],
-    "answer": "Constructive Dilemma",
-    "explanation": "Constructive Dilemma is a more complex rule that combines two conditionals with a disjunction[cite: 2]."
-  },
-  {
-    "question": "How does the rule of 'Absorption' function in symbolic logic?",
-    "type": "multiple-choice",
-    "options": [
-      "It extracts a single truth from a conjunction.",
-      "It bundles the cause and the result into the same statement so other rules can work with both parts.",
-      "It introduces a completely irrelevant variable to an existing truth using an 'or' statement.",
-      "It negates the consequent to prove the antecedent is false."
-    ],
-    "answer": "It bundles the cause and the result into the same statement so other rules can work with both parts.",
-    "explanation": "Absorption does not change the real-world meaning; it simply 'bundles' the cause and the result so they show up together in the same statement, making it easier for other rules to work with both parts[cite: 2]."
-  },
-  {
-    "question": "If you are told 'The car is red and the car is fast,' and you conclude solely that 'The car is red,' which operational rule have you applied?",
-    "type": "multiple-choice",
-    "options": ["Conjunction", "Simplification", "Modus Tollens", "Addition"],
-    "answer": "Simplification",
-    "explanation": "Simplification states that if two things are both true (a conjunction), you can pull out either one of them and say it on its own[cite: 2]."
-  },
-  {
-    "question": "Joining two independently true statements, such as 'He is a king' and 'He is a bus driver,' into 'He is a king and he is a bus driver,' demonstrates:",
-    "type": "multiple-choice",
-    "options": ["Addition", "Absorption", "Simplification", "Conjunction"],
-    "answer": "Conjunction",
-    "explanation": "Conjunction dictates that if two statements are true separately, you can join them together with an 'and'[cite: 2]."
-  },
-  {
-    "question": "The text describes a 'Wit' factor where adding an entirely unrelated statement (e.g., 'OR I am a billionaire') to a known truth (e.g., 'The sky is blue') results in a technically true statement. Which rule allows this?",
-    "type": "multiple-choice",
-    "options": ["Simplification", "Conjunction", "Addition", "Absorption"],
-    "answer": "Addition",
-    "explanation": "The rule of Addition states that if a statement is true, you can attach anything else to it with an 'or' (disjunction), and the whole thing remains true[cite: 2]."
-  },
-  {
-    "question": "Which reasoning approach is characterized as the classical approach to traditional philosophical thought, starting from a general discussion to reach a specific conclusion?",
-    "type": "multiple-choice",
-    "options": [
-      "Inductive Logic",
-      "Deductive Logic",
-      "Constructive Dilemma",
-      "Epistemology"
-    ],
-    "answer": "Deductive Logic",
-    "explanation": "Deductive Logic is the reasoning process that starts from a general discussion and ends with a specific conclusion. It is also described as the classical approach to traditional philosophical thought[cite: 2]."
-  },
-  {
-    "question": "How are fallacies fundamentally categorized based on their underlying flaws?",
-    "type": "multiple-choice",
-    "options": [
-      "Intentional (aim to deceive) and Unintentional (lack of reasoning skills)",
-      "Relevance (distraction), Presumption (false dilemma), and Ambiguity (equivocation)",
-      "Structural (flaw in argument structure) and Informal (flaw in content or relevance)",
-      "Formal (flaw in argument structure) and Informal (flaw in content/relevance)"
-    ],
-    "answer": "Formal (flaw in argument structure) and Informal (flaw in content/relevance)",
-    "explanation": "While fallacies can be intentional or unintentional, they are fundamentally categorized into two main groups: Formal (representing a flaw in the argument's structure) and Informal (representing a flaw in the content or relevance)[cite: 7, 12]."
-  },
-  {
-    "question": "Which of the following is an absolute characteristic of a formal fallacy?",
-    "type": "multiple-choice",
-    "options": [
-      "The argument contains false premises that lead to an unsound conclusion.",
-      "It relies heavily on social biases or perceived authority to gain audience acceptance.",
-      "The flaw is identifiable solely by examining the abstract pattern of the argument.",
-      "It always features a perfectly true premise but a demonstrably false conclusion."
-    ],
-    "answer": "The flaw is identifiable solely by examining the abstract pattern of the argument.",
-    "explanation": "A formal fallacy is purely formal, meaning you can spot the structural error by analyzing the argument's abstract form—like a mathematical equation—without even knowing the specific terms or their meanings[cite: 22]."
-  },
-  {
-    "question": "In everyday conversation and classical logic, what does the term \"non sequitur\" most accurately describe?",
-    "type": "multiple-choice",
-    "options": [
-      "An informal fallacy involving irrelevant information to distract from the main point.",
-      "Any invalid argument, typically referring to unnamed formal fallacies.",
-      "A conclusion that logically follows true premises but lacks real-world application.",
-      "A named structural error like Affirming the Consequent or Denying the Antecedent."
-    ],
-    "answer": "Any invalid argument, typically referring to unnamed formal fallacies.",
-    "explanation": "The term \"non sequitur\" is synonymous with an invalid logical argument. It typically refers to invalid arguments that constitute formal fallacies not covered by particular or specific names[cite: 39, 40]."
-  },
-  {
-    "question": "A politician argues against a new policy by claiming the person proposing it has a history of failed marriages. What specific informal fallacy does this represent?",
-    "type": "multiple-choice",
-    "options": [
-      "Straw Man Fallacy",
-      "Red Herring Fallacy",
-      "Ad Hominem Fallacy",
-      "Begging the Question"
-    ],
-    "answer": "Ad Hominem Fallacy",
-    "explanation": "This is an example of an Ad Hominem fallacy because it involves attacking the opponent's personality or personal life rather than addressing the actual validity or real issue of their argument[cite: 42, 43]."
-  },
-  {
-    "question": "Which of the following correctly maps an informal fallacy to its specific sub-category?",
-    "type": "multiple-choice",
-    "options": [
-      "False Dilemma is a fallacy of Relevance.",
-      "Ad Hominem is a fallacy of Ambiguity.",
-      "Hasty Generalisation is a fallacy of Presumption.",
-      "Equivocation is a fallacy of Relevance."
-    ],
-    "answer": "Hasty Generalisation is a fallacy of Presumption.",
-    "explanation": "The informal fallacy category of \"Presumption\" explicitly includes False Dilemma, Begging the Question, and Hasty Generalisation[cite: 14]."
-  },
-  {
-    "question": "How do contemporary philosophers and logic experts primarily describe the \"laws of thought\"?",
-    "type": "multiple-choice",
-    "options": [
-      "Empirical generalizations derived from psychological observation.",
-      "Normative rules dictating how reasoning should logically progress.",
-      "Biological constraints placed on the brain's information processing.",
-      "Descriptive rules that map exactly how people think in real life."
-    ],
-    "answer": "Normative rules dictating how reasoning should logically progress.",
-    "explanation": "Experts repeatedly stress that the laws of thought are normative rather than descriptive, meaning they dictate how reasoning *should* progress, rather than describing how people actually think in practice[cite: 57]."
-  },
-  {
-    "question": "What does the law of excluded middle guarantee in classical logic?",
-    "type": "multiple-choice",
-    "options": [
-      "It ensures that every proposition is completely identical to itself.",
-      "It prevents true and false propositions from coexisting to the same extent.",
-      "It eliminates intermediate truth values, making every assertion either true or untrue.",
-      "It allows for the presence of multiple logical systems in various situations."
-    ],
-    "answer": "It eliminates intermediate truth values, making every assertion either true or untrue.",
-    "explanation": "According to the law of excluded middle, every assertion is either true or untrue. In classical logic, this eliminates intermediate truth values and guarantees decisiveness in logical assessment[cite: 78, 79]."
-  },
-  {
-    "question": "According to the 2007 study by Goel et al., how does the human brain handle logical contradictions?",
-    "type": "multiple-choice",
-    "options": [
-      "It automatically identifies them using a passive mental rule.",
-      "It requires significant cognitive effort, activating specific conflict monitoring networks.",
-      "It ignores them unless they are presented in a purely abstract, mathematical format.",
-      "It entirely rejects them through the immediate application of the law of excluded middle."
-    ],
-    "answer": "It requires significant cognitive effort, activating specific conflict monitoring networks.",
-    "explanation": "Goel et al. (2007) revealed that contradictions activate specific regions like the prefrontal cortex, showing that detecting them takes cognitive effort and is not an automatic or passive mental rule[cite: 152, 153, 154]."
-  },
-  {
-    "question": "In the philosophy of mind, the concept that a thought always has an object, content, or \"aboutness\" refers to its:",
-    "type": "multiple-choice",
-    "options": [
-      "Normative quality",
-      "Structural framework",
-      "Intentionality",
-      "Abstract nature"
-    ],
-    "answer": "Intentionality",
-    "explanation": "Because thought is intentional, it always has a purpose, an object, or content. This \"aboutness\" (e.g., thinking about Nigeria or justice) sets mental activities apart from those that are solely physical[cite: 114, 115, 116, 117]."
-  },
-  {
-    "question": "Which statement best describes the relationship between language and thought according to contemporary philosophers?",
-    "type": "multiple-choice",
-    "options": [
-      "Language and thought are identical and interchangeable cognitive processes.",
-      "Thought cannot physically occur without the explicit use of spoken or written words.",
-      "Language is the fundamental essence and foundation of all human reasoning.",
-      "Language is merely a tool for organizing and conveying ideas, not thought itself."
-    ],
-    "answer": "Language is merely a tool for organizing and conveying ideas, not thought itself.",
-    "explanation": "Language and thought are not the same thing. Because it is possible to think without speaking, philosophers contend that language is a tool of thought rather than its essence[cite: 126, 127, 129]."
-  },
-  {
-    "question": "In philosophy, what is the primary focus of an \"argument\"?",
-    "type": "multiple-choice",
-    "options": [
-      "A verbal disagreement, conflict, or fight among opposing individuals.",
-      "The logical relation that exists between premises and a conclusion.",
-      "A sequence of psychological thoughts leading to an arbitrary conclusion.",
-      "The attempt to force a false belief onto an unsuspecting audience."
-    ],
-    "answer": "The logical relation that exists between premises and a conclusion.",
-    "explanation": "In philosophy, an argument is not about disagreement or fighting among people; rather, it is platforms upon which reasoning is tested and focuses on the relation that exists between premises and a conclusion[cite: 168, 169, 171]."
-  },
-  {
-    "question": "In the structure of an argument, what specific role do \"premises\" play?",
-    "type": "multiple-choice",
-    "options": [
-      "They are the final statements that are affirmed on the basis of other evidence.",
-      "They provide the grounds or reasons for accepting the argument's conclusion.",
-      "They are purely psychological biases used to subtly persuade the audience.",
-      "They serve as the abstract mathematical equation of a formal fallacy."
-    ],
-    "answer": "They provide the grounds or reasons for accepting the argument's conclusion.",
-    "explanation": "Every argument comprises premises and a conclusion. Premises are propositions which provide the grounds or reasons for accepting the conclusion of the argument[cite: 178]."
-  },
-  {
-    "question": "What specifically distinguishes an inductive argument from a deductive one?",
-    "type": "multiple-choice",
-    "options": [
-      "Its conclusion is absolutely guaranteed by the verifiable truth of its premises.",
-      "It relies solely on attacking an opponent's character to infer a valid point.",
-      "It generalises from specific cases, producing a conclusion that is probable but not guaranteed.",
-      "It strictly utilizes the law of non-contradiction to eliminate intermediate truth values."
-    ],
-    "answer": "It generalises from specific cases, producing a conclusion that is probable but not guaranteed.",
-    "explanation": "An inductive argument involves generalizing from specific cases to produce a conclusion that is probable. Its premises provide some support but do not guarantee its conclusion[cite: 183, 184]."
-  },
-  {
-    "question": "Based on experimental studies using Wason-style tasks, how do humans typically interact with the law of excluded middle in everyday reasoning?",
-    "type": "multiple-choice",
-    "options": [
-      "They naturally apply strict binary reasoning seamlessly in all uncertain contexts.",
-      "They strictly adhere to it only when statements are completely abstract or context-free.",
-      "They entirely reject strict binary reasoning in uncertain contexts, preferring probabilistic judgments.",
-      "They use it to guarantee decisiveness, proving everyday reasoning is perfectly logical."
-    ],
-    "answer": "They entirely reject strict binary reasoning in uncertain contexts, preferring probabilistic judgments.",
-    "explanation": "Experimental studies reveal that participants often reject strict binary reasoning in uncertain contexts, relying instead on probabilistic or \"maybe true\" reasoning. This affirms that the law of excluded middle is not naturally used in everyday reasoning[cite: 157]."
-  },
-  {
-    "question": "Which of the following correctly describes the relationship between formal fallacies and the soundness of an argument?",
-    "type": "multiple-choice",
     "options": [
-      "A formal fallacy occurs exclusively when an argument is factually untrue in real life.",
-      "An argument with a formal fallacy can still be considered completely logically sound.",
-      "An argument might have a valid logical form but remain unsound if a premise is false.",
-      "Formal fallacies are exclusively found in inductive arguments, never deductive ones."
+      "To facilitate the collection of current from the armature conductors.",
+      "To help provide current to the armature conductor.",
+      "To convert alternating current into direct current.",
+      "To act as a protecting cover for the entire machine."
     ],
-    "answer": "An argument might have a valid logical form but remain unsound if a premise is false.",
-    "explanation": "While a formal fallacy must have an invalid logical form to be unsound, an argument can have a perfectly valid logical form and still be unsound simply because one or more of its premises are false[cite: 35, 36]."
+    "answer": "To help provide current to the armature conductor.",
+    "explanation": "In a DC generator, the commutator facilitates the collection of current from the armature[cite: 12]. Conversely, in a DC motor, it helps provide current to the armature conductor[cite: 12, 13]."
   },
   {
-    "question": "Assuming that a drop in temperature caused a company's stock to rise simply because the weather changed right before the stock market opened is an example of:",
+    "question": "Self-excited DC generators are energized by the current they produce. What initial physical condition allows this generation process to begin?",
     "type": "multiple-choice",
     "options": [
-      "False Cause (Post Hoc)",
-      "Bandwagon Fallacy",
-      "Straw Man Fallacy",
-      "Circular Reasoning"
+      "An independent external DC power source.",
+      "A permanent magnet placed on the stator.",
+      "Residual magnetism in the poles.",
+      "Friction between the carbon brushes and the commutator."
     ],
-    "answer": "False Cause (Post Hoc)",
-    "explanation": "The False Cause (Post Hoc) fallacy occurs when a person assumes that one event caused another merely because it occurred first chronologically[cite: 53]."
+    "answer": "Residual magnetism in the poles.",
+    "explanation": "Self-excited generators rely on residual magnetism, which ensures some flux is always present in the poles[cite: 19]. When the armature rotates, this residual flux induces the initial EMF needed to generate current[cite: 20]."
   },
   {
-    "question": "When an individual constructs an argument that assumes the conclusion is true within the premises themselves, they are committing which specific fallacy?",
+    "question": "Which type of DC motor is best suited for industrial applications requiring high starting torque, such as cranes and hoists?",
     "type": "multiple-choice",
     "options": [
-      "Hasty Generalisation",
-      "Appeal to Authority",
-      "Circular Reasoning (Begging the Question)",
-      "False Dilemma (Either/or)"
+      "Shunt DC motor",
+      "Series DC motor",
+      "Compound DC motor",
+      "Permanent magnet DC motor"
     ],
-    "answer": "Circular Reasoning (Begging the Question)",
-    "explanation": "Circular Reasoning, also known as Begging the Question, is a fallacy that occurs when we assume that the conclusion is true within the premise of the argument[cite: 52]."
+    "answer": "Series DC motor",
+    "explanation": "Series DC motors have their field winding connected in series with the armature[cite: 28]. This specific configuration offers high starting torque, making it ideal for heavy-lifting equipment like cranes, hoists, and electric vehicles[cite: 29]."
   },
   {
-    "question": "The philosophical viewpoint that \"thought is both descriptive and evaluative\" implies that:",
+    "question": "In the power flow diagram of a DC motor, which of the following losses is encountered immediately after the mechanical power is developed in the armature?",
     "type": "multiple-choice",
     "options": [
-      "Thinking only involves physical brain events that can be objectively observed by science.",
-      "Conscious thought is entirely separate from unconscious background mental processes.",
-      "Thoughts must be directly tied to physical objects and tangible sensory experiences.",
-      "Thinking captures what actually occurs in the mind as well as how reasoning ought to take place."
+      "Armature and field copper losses",
+      "Magnetic core and mechanical friction losses",
+      "Brush contact resistance losses",
+      "Driving engine input losses"
     ],
-    "answer": "Thinking captures what actually occurs in the mind as well as how reasoning ought to take place.",
-    "explanation": "The normative viewpoint of thought demonstrates that it is both descriptive (capturing what physically or mentally occurs in the mind) and evaluative (dictating how thinking ought to logically take place)[cite: 107]."
+    "answer": "Magnetic core and mechanical friction losses",
+    "explanation": "After electrical power overcomes the copper losses to develop mechanical power in the armature [cite: 42, 43], this developed mechanical power then experiences magnetic core losses and mechanical friction before finally being delivered to the shaft as output[cite: 44, 45]."
   },
   {
-    "question": "Waheed's (2024) research on contradiction processing suggests that human recognition of logical contradictions is:",
+    "question": "Why does a transformer require an alternating current (AC) to operate properly?",
     "type": "multiple-choice",
     "options": [
-      "Governed entirely by pure logic devoid of any emotional or decision-making components.",
-      "Tied heavily to belief conflict, engaging decision-making and emotional control systems.",
-      "Exclusively an unconscious process that has no noticeable effect on brain activity.",
-      "Identical to recognizing a mathematical equation where $1=1$, independent of context."
+      "AC directly powers the secondary winding without needing magnetic induction.",
+      "The changing direction and intensity of AC create a fluctuating magnetic field.",
+      "AC minimizes the risk of overheating the ferromagnetic core.",
+      "AC provides a steady, unchanging magnetic field for highly efficient energy transfer."
     ],
-    "answer": "Tied heavily to belief conflict, engaging decision-making and emotional control systems.",
-    "explanation": "Waheed's (2024) studies show that recognizing contradictions engages emotional control and decision-making systems, indicating that human recognition of contradictions is tied to belief conflict, not pure logic alone[cite: 155, 156]."
+    "answer": "The changing direction and intensity of AC create a fluctuating magnetic field.",
+    "explanation": "An alternating current constantly changes its direction and intensity[cite: 53]. This oscillating behavior is necessary to create a fluctuating magnetic field around the primary coil, which then induces a voltage in the secondary winding according to Faraday's Law[cite: 54, 55]."
   },
   {
-    "question": "Consider the argument: \"If it is raining, the streets are wet. The streets are wet. Therefore, it is raining.\" Why is this considered an invalid pattern of reasoning?",
+    "question": "An ideal transformer has a primary voltage of 240V and a secondary voltage of 30V. If the primary current is 3A, what is the secondary current?",
     "type": "multiple-choice",
     "options": [
-      "Because the argument maliciously attacks the weather rather than addressing the wetness.",
-      "Because it commits the structural error known as Denying the Antecedent.",
-      "Because the premises provide absolutely no factual support for the conclusion whatsoever.",
-      "Because the streets could be wet for other reasons, meaning the conclusion does not necessarily follow even if the premises are true."
+      "0.375 A",
+      "8 A",
+      "24 A",
+      "240 A"
     ],
-    "answer": "Because the streets could be wet for other reasons, meaning the conclusion does not necessarily follow even if the premises are true.",
-    "explanation": "This argument commits the formal fallacy of Affirming the Consequent. It is invalid because the streets could be wet by other means (like a street cleaner or sprinkler), so the conclusion may not be true even if all premises are true[cite: 23, 27]."
+    "answer": "24 A",
+    "explanation": "For an ideal transformer, the ratio of voltages is equal to the inverse ratio of the currents: V1/V2 = I2/I1[cite: 60]. Substituting the values gives 240/30 = I2/3, making the secondary current (I2) equal to 24 A[cite: 63]."
   },
   {
-    "question": "Which of the following best describes the relationship between premises and the conclusion in an inductive argument?",
+    "question": "In a core type transformer design, how are the primary and secondary windings physically arranged on the core?",
     "type": "multiple-choice",
     "options": [
-      "The premises absolutely guarantee the conclusion.",
-      "The premises provide varying degrees of probable support but never guarantee the conclusion.",
-      "The premises are always less informative than the conclusion they support.",
-      "The premises provide conclusive grounds for the truth of the conclusion."
+      "Both primary and secondary windings are grouped entirely on the central limb.",
+      "The primary winding is on the central limb, and the secondary winding is wrapped on the outer limb.",
+      "The high-voltage coil is placed closest to the core with the low-voltage coil layered on top.",
+      "The low-voltage coil is placed closest to the core with the high-voltage coil layered on top."
     ],
-    "answer": "The premises provide varying degrees of probable support but never guarantee the conclusion.",
-    "explanation": "The premises of inductive arguments offer varying degrees of support (high, low, or no degree) to the conclusion but do not guarantee that the conclusion is certain[cite: 2]."
+    "answer": "The low-voltage coil is placed closest to the core with the high-voltage coil layered on top.",
+    "explanation": "In a core type transformer, the windings are wrapped around the outer vertical legs[cite: 71]. To optimize insulation, the low-voltage coil is positioned closest to the core, while the high-voltage coil is layered on top[cite: 72]."
   },
   {
-    "question": "It is a common misconception that inductive arguments only move from particular to general. According to the text, what other directional flow can an inductive argument logically take?",
+    "question": "What is a defining structural difference that separates an alternator from a standard DC generator?",
     "type": "multiple-choice",
     "options": [
-      "From general to general.",
-      "From general to particular.",
-      "From particular to particular.",
-      "From universal to specific."
+      "The alternator has a stationary field winding and a highly insulated rotating armature.",
+      "The alternator has an armature winding on a stationary element and field windings on a rotating element.",
+      "The alternator relies entirely on solid permanent magnets instead of conventional field windings.",
+      "An alternator does not require a physical prime mover to generate rotational motion."
     ],
-    "answer": "From particular to particular.",
-    "explanation": "There are two types of inductive arguments: those that move from particular to general, and those that go from particular to particular[cite: 2]."
+    "answer": "The alternator has an armature winding on a stationary element and field windings on a rotating element.",
+    "explanation": "The fundamental difference is that in an alternator, the armature winding is mounted on a stationary element (stator), while the field windings are located on a rotating element (rotor)[cite: 89]."
   },
   {
-    "question": "The scientific prediction that iron will continue to rust in the future relies on which foundational notion of inductive reasoning?",
+    "question": "Which of the following is NOT an advantage of having a stationary armature in an alternator?",
     "type": "multiple-choice",
     "options": [
-      "The law of excluded middle.",
-      "The absolute certainty of empirical premises.",
-      "The uniformity of nature.",
-      "The logical validity of general conclusions."
+      "The output current can be led directly to the load circuit without brush-contacts.",
+      "It is much easier to insulate the stationary winding for high AC voltages.",
+      "The sliding contacts can safely handle high-voltage, high-power AC directly.",
+      "The armature windings can be more easily braced to prevent physical deformation."
     ],
-    "answer": "The uniformity of nature.",
-    "explanation": "Inductive reasoning has its root in the notion of the \"uniformity of nature,\" which holds that tomorrow will be like the past and that the present will repeat itself[cite: 2]."
+    "answer": "The sliding contacts can safely handle high-voltage, high-power AC directly.",
+    "explanation": "The advantage is precisely the opposite: the sliding contacts (slip-rings) are transferred to the low-voltage, low-power DC field circuit so they can be easily insulated, rather than dealing with high-power AC[cite: 95]. The other options are true advantages[cite: 93, 94, 96]."
   },
   {
-    "question": "In a deductive argument, what is the required relationship between the premises and the conclusion?",
+    "question": "In the induced EMF equation for an alternator, what does the variable Kw represent?",
     "type": "multiple-choice",
     "options": [
-      "The premises must provide high probable support for the conclusion.",
-      "The premises must guarantee that the conclusion is necessarily true if the premises are true.",
-      "The premises and conclusion must both be factually true in the real world.",
-      "The conclusion must be more informative than the premises provided."
+      "The number of coil turns per individual phase.",
+      "The rotational speed of the machine's prime mover.",
+      "The winding factor, which incorporates both pitch and distribution factors.",
+      "The total amount of magnetic flux generated per pole."
     ],
-    "answer": "The premises must guarantee that the conclusion is necessarily true if the premises are true.",
-    "explanation": "In a deductive argument, the premises not only support but guarantee its conclusion; if the premises are true, the conclusion must necessarily be true[cite: 2]."
+    "answer": "The winding factor, which incorporates both pitch and distribution factors.",
+    "explanation": "In an alternator, how the coils are physically arranged in the stator slots is referred to as the winding factor (Kw), which is the product of the pitch factor (Kp) and the distribution factor (Kd)[cite: 102]."
   },
   {
-    "question": "Deductive arguments are structured to clarify logical relationships. Which of the following represents the directional flows a deductive argument can take?",
+    "question": "In a compound wound DC generator, what distinguishes a commutatively-compounded configuration from a differentially-compounded one?",
     "type": "multiple-choice",
     "options": [
-      "General to particular, and general to general.",
-      "Particular to general, and particular to particular.",
-      "General to particular, and particular to general.",
-      "Particular to general, and general to general."
+      "The shunt field opposes the magnetic flux of the series field.",
+      "The series field aids the shunt field by producing flux in the same direction.",
+      "The series field is completely electrically isolated from the shunt field.",
+      "The shunt field acts purely as a permanent magnet without continuous electrical excitation."
     ],
-    "answer": "General to particular, and general to general.",
-    "explanation": "Examples of deductive arguments logically include those that go from general to particular, as well as those that go from general to general[cite: 2]."
+    "answer": "The series field aids the shunt field by producing flux in the same direction.",
+    "explanation": "When the series field aids the shunt field by producing flux in the same direction, the generator is commutatively-compounded[cite: 26]. Conversely, if the series field opposes the shunt field, it is differentially compounded[cite: 27]."
   },
   {
-    "question": "In the context of logic, what specifically makes an argument \"valid\"?",
+    "question": "When mathematically analyzing the equivalent circuit of a transformer, what assumption is often made to simplify calculations involving resistance and reactance?",
     "type": "multiple-choice",
     "options": [
-      "The premises and the conclusion are all factually true statements.",
-      "It is impossible for the conclusion to be false when the premises are true.",
-      "The argument relies on the uniformity of nature to guarantee its outcome.",
-      "The conclusion provides more information than is contained within the premises."
+      "All resistance and reactance values are entirely omitted because they are negligible compared to the load.",
+      "The primary resistance is safely assumed to be identical to the secondary resistance.",
+      "All of the resistance and reactance are treated as being located entirely on one side of the transformer.",
+      "The core losses are completely ignored regardless of the varying no-load current."
     ],
-    "answer": "It is impossible for the conclusion to be false when the premises are true.",
-    "explanation": "An argument is considered valid if its premises and conclusion are so logically related that it is impossible for the conclusion to be false when the premises are assumed to be true[cite: 2]."
+    "answer": "All of the resistance and reactance are treated as being located entirely on one side of the transformer.",
+    "explanation": "For convenience in electrical analysis, it is often assumed that all of the resistance and reactance are transferred to and considered as being on one side of the transformer[cite: 81, 82]."
   },
   {
-    "question": "Can a valid argument contain completely false premises?",
+    "question": "In the simplified equivalent circuit of an alternator, what two components combine to make up the total synchronous reactance (Xs)?",
     "type": "multiple-choice",
     "options": [
-      "Yes, because validity focuses on the structural link between premises and conclusion, not factual content.",
-      "No, because a valid argument must always preserve truth and completely eliminate falsehood.",
-      "Yes, but only if the conclusion turns out to be factually true despite the premises.",
-      "No, an argument with all false premises is inherently classified as an invalid deductive argument."
+      "The armature resistance and the armature reactance.",
+      "The armature reactance and the armature reaction reactance.",
+      "The induced EMF on no load and the armature resistance.",
+      "The armature resistance and the armature reaction reactance."
     ],
-    "answer": "Yes, because validity focuses on the structural link between premises and conclusion, not factual content.",
-    "explanation": "In logic proper, an argument can still be perfectly valid even when all the premises are false because validity focuses entirely on the structural link between the premises and the conclusion rather than the factual truth of the individual statements[cite: 2]."
+    "answer": "The armature reactance and the armature reaction reactance.",
+    "explanation": "In the equivalent circuit, the total synchronous reactance (Xs) is defined as the sum of the armature reactance (Xa) and the armature reaction reactance (X_AR)[cite: 105]."
   },
   {
-    "question": "A student evaluates an argument and determines it is \"true.\" Why is this terminology incorrect in logic proper?",
+    "question": "Based on the EMF equation of a DC generator, which of the following variables does NOT directly dictate the generated EMF (Eg)?",
     "type": "multiple-choice",
     "options": [
-      "Because only inductive arguments can be evaluated for truth.",
-      "Because an argument as a whole is evaluated for validity, whereas truth only applies to individual statements.",
-      "Because deductive arguments are evaluated based on their probability, not their absolute truth.",
-      "Because truth and validity are entirely synonymous and interchangeable terms in logic."
+      "The total number of parallel paths in the armature.",
+      "The total number of magnetic poles in the machine.",
+      "The resistance of the external load connected to the terminals.",
+      "The total number of active armature conductors."
     ],
-    "answer": "Because an argument as a whole is evaluated for validity, whereas truth only applies to individual statements.",
-    "explanation": "In logic, \"truth\" specifically describes the individual statements making up an argument, whereas \"validity\" is used to describe the argument as a whole by evaluating whether the conclusion successfully follows from the premises[cite: 2]."
+    "answer": "The resistance of the external load connected to the terminals.",
+    "explanation": "The EMF equation for a DC generator is E = (phi * Z * N * P) / (60 * A)[cite: 35]. The variables directly dictating generated EMF are flux (phi), conductors (Z), speed (N), poles (P), and parallel paths (A)[cite: 35]. External load resistance is not a variable in this internal generation equation."
   },
   {
-    "question": "If you have a perfectly valid argument but discover that one of its premises is actually false, how is the argument classified?",
+    "question": "Which of the following best describes the fundamental difference between analog and digital television broadcasting data formats?",
     "type": "multiple-choice",
     "options": [
-      "It remains a sound argument because its structural validity is unaffected.",
-      "It becomes an invalid argument because validity requires all premises to be true.",
-      "It is classified as an unsound argument.",
-      "It transitions from a deductive argument to a weak inductive argument."
+      "Analog uses continuous electromagnetic signals, whereas digital uses discrete binary data.",
+      "Analog broadcasts can transmit high-definition video, while digital is limited to standard definition.",
+      "Analog signals utilize interactive services and internet integration, unlike digital signals.",
+      "Digital broadcasting transmits continuous electromagnetic waves, whereas analog converts audiovisual content into discrete binary data."
     ],
-    "answer": "It is classified as an unsound argument.",
-    "explanation": "Any valid argument that contains at least one false premise is formally classified as an unsound argument[cite: 2]."
+    "answer": "Analog uses continuous electromagnetic signals, whereas digital uses discrete binary data.",
+    "explanation": "Analog broadcasting used continuous electromagnetic signals to transmit audio and video information[cite: 121]. Conversely, digital broadcasting converts the audiovisual content into discrete binary data, which enables better picture quality and interactive services[cite: 121]."
   },
   {
-    "question": "What is the strict logical relationship between invalid arguments and soundness?",
+    "question": "In a television transmitter, which component is primarily responsible for combining audio and video signals onto a carrier frequency?",
     "type": "multiple-choice",
     "options": [
-      "An invalid argument can be sound if all its premises are factually true.",
-      "All invalid arguments are definitively classified as unsound.",
-      "An invalid argument is sound only if its conclusion turns out to be logically true.",
-      "Invalid arguments are evaluated for probability rather than soundness."
+      "RF Amplifier",
+      "Modulation Unit",
+      "Transmission Line",
+      "Demodulator"
     ],
-    "answer": "All invalid arguments are definitively classified as unsound.",
-    "explanation": "According to the fundamental rules of logical evaluation, all invalid arguments are definitively classified as unsound[cite: 2]."
+    "answer": "Modulation Unit",
+    "explanation": "The modulation unit is responsible for encoding the audio and video signals onto a carrier frequency[cite: 133, 134]. It applies modulation techniques like AM, FM, or QAM depending on the standard used[cite: 134]."
   },
   {
-    "question": "How many propositions must a standard syllogism contain?",
+    "question": "Which transmission method relies on a network of coaxial or fiber-optic lines rather than over-the-air antennas or satellites to deliver television signals?",
     "type": "multiple-choice",
     "options": [
-      "Any number, as long as there is at least one premise and one conclusion.",
-      "Exactly two propositions: one premise and one conclusion.",
-      "Exactly three propositions: two premises and one conclusion.",
-      "At least three premises and one strictly deduced conclusion."
+      "Over-the-top (OTT) broadcasting",
+      "Cable Television",
+      "Terrestrial Broadcasting",
+      "Satellite Broadcasting"
     ],
-    "answer": "Exactly three propositions: two premises and one conclusion.",
-    "explanation": "A syllogism is an argument that contains and must strictly contain exactly three propositions, two of which act as the premises and one as the conclusion[cite: 2]."
+    "answer": "Cable Television",
+    "explanation": "Cable TV uses coaxial or fiber-optic cables to deliver television signals to subscribers[cite: 123, 124]. In contrast, terrestrial broadcasting uses over-the-air towers [cite: 122], and satellite uses geostationary orbit satellites[cite: 125]."
   },
   {
-    "question": "According to the rules of logic regarding syllogisms, which of the following actions is permissible?",
+    "question": "In early analog TV systems like the NTSC standard, how were the video and audio signals modulated?",
     "type": "multiple-choice",
     "options": [
-      "Asserting the entire syllogism as completely true.",
-      "Denying the entire syllogism as completely false.",
-      "Asserting or denying individual propositions within the syllogism.",
-      "Applying the terms \"subject\" and \"predicate\" to the entire syllogism structure."
+      "Both video and audio were frequency modulated to ensure high-fidelity transmission.",
+      "The video signal was frequency modulated, while the audio signal was amplitude modulated.",
+      "The video signal modulated the carrier's amplitude, while the audio signal was frequency modulated.",
+      "Both video and audio were encoded using Vestigial Sideband (VSB) modulation exclusively."
     ],
-    "answer": "Asserting or denying individual propositions within the syllogism.",
-    "explanation": "A whole syllogism can neither be asserted nor denied; however, the individual propositions (sentences) that make up the syllogism can be individually asserted or denied[cite: 2]."
+    "answer": "The video signal modulated the carrier's amplitude, while the audio signal was frequency modulated.",
+    "explanation": "In early analog systems like the NTSC standard, the video signal modulates the carrier's amplitude (AM), while the audio signal is frequency modulated (FM)[cite: 173, 174]."
   },
   {
-    "question": "When analyzing a logical argument, where should you correctly identify the \"subject term\" and \"predicate term\"?",
+    "question": "Which modulation technique is a form of amplitude modulation designed specifically to conserve bandwidth by significantly reducing one sideband while keeping a remnant of it?",
     "type": "multiple-choice",
     "options": [
-      "They are associated exclusively with the argument or syllogism as a whole.",
-      "They are associated with individual propositions only, regardless of being a premise or conclusion.",
-      "The subject term belongs to the premises, and the predicate term belongs to the conclusion.",
-      "They are terms exclusively used when evaluating inductive, rather than deductive, inferences."
+      "Frequency Modulation (FM)",
+      "Vestigial Sideband (VSB) Modulation",
+      "Quadrature Amplitude Modulation (QAM)",
+      "Orthogonal Frequency Division Multiplexing (OFDM)"
     ],
-    "answer": "They are associated with individual propositions only, regardless of being a premise or conclusion.",
-    "explanation": "In logic proper, the subject term and predicate term are strictly associated with individual propositions only, and it does not matter whether that individual proposition serves as a premise or a conclusion within the argument[cite: 2]."
+    "answer": "Vestigial Sideband (VSB) Modulation",
+    "explanation": "VSB modulation is a form of amplitude modulation where one sideband of the carrier wave is significantly reduced while retaining a vestige of the other sideband[cite: 178]. It helps conserve bandwidth while maintaining signal quality[cite: 180]."
   },
   {
-    "question": "When constructing a truth table to test the validity of an argument, what uniquely defines a \"critical row\"?",
+    "question": "Which digital modulation technique divides the available frequency spectrum into multiple orthogonal subcarriers to provide robustness against multipath interference?",
     "type": "multiple-choice",
     "options": [
-      "A row where the conclusion is explicitly determined to be true.",
-      "A row where at least one premise and the conclusion share the same truth value.",
-      "A row where the premises are all true simultaneously.",
-      "A row where all statements (premises and conclusion) are completely false."
+      "Orthogonal Frequency Division Multiplexing (OFDM)",
+      "Quadrature Amplitude Modulation (QAM)",
+      "Vestigial Sideband (VSB) Modulation",
+      "Phase Alternating Line (PAL)"
     ],
-    "answer": "A row where the premises are all true simultaneously.",
-    "explanation": "When constructing a truth table to test validity, \"critical rows\" are specifically defined as all the individual rows where the premises are all true simultaneously[cite: 2]."
+    "answer": "Orthogonal Frequency Division Multiplexing (OFDM)",
+    "explanation": "OFDM is a digital modulation technique that divides the available frequency spectrum into multiple orthogonal subcarriers[cite: 184]. This parallel transmission method provides robustness against multipath interference[cite: 185, 186]."
   },
   {
-    "question": "After identifying the critical rows in a truth table, what condition conclusively proves that the argument is logically invalid?",
+    "question": "Which of the following frequency bands is widely used for TV broadcasting because it provides better signal propagation characteristics and increased channel capacity compared to VHF?",
     "type": "multiple-choice",
     "options": [
-      "If the conclusion is false in any single critical row.",
-      "If the conclusion is true in a row that is not a critical row.",
-      "If there are absolutely no critical rows present in the truth table.",
-      "If the conclusion is false in a row where at least one premise is false."
+      "Super High Frequency (SHF) Band",
+      "Ultra High Frequency (UHF) Band",
+      "Medium Wave (MW) Band",
+      "Very High Frequency (VHF) Low Band"
     ],
-    "answer": "If the conclusion is false in any single critical row.",
-    "explanation": "When evaluating a truth table, if the conclusion happens to be false in a critical row (a row where all the premises are true), then it is proven that the argument is structurally invalid[cite: 2]."
+    "answer": "Ultra High Frequency (UHF) Band",
+    "explanation": "The UHF band, which ranges from 300 MHz to 3 GHz, provides better signal propagation characteristics and increased channel capacity compared to VHF[cite: 193, 194]."
   },
   {
-    "question": "Is it possible for an argument to have completely true premises and a completely true conclusion, yet still be considered structurally invalid?",
+    "question": "Which analog TV broadcast standard, predominantly used in Europe and Australia, utilizes a 625-line, 50 fields per second video encoding with a color subcarrier frequency of 4.43 MHz?",
     "type": "multiple-choice",
     "options": [
-      "No, because true premises leading to a true conclusion fundamentally defines structural validity.",
-      "Yes, because the premises might not support the conclusion in the logically correct way.",
-      "No, this exact scenario exclusively describes a sound deductive argument.",
-      "Yes, but only if the argument is formally classified as inductive rather than deductive."
+      "NTSC",
+      "SECAM",
+      "ATSC",
+      "PAL"
     ],
-    "answer": "Yes, because the premises might not support the conclusion in the logically correct way.",
-    "explanation": "An argument can indeed have true premises and a true conclusion but may not necessarily be valid, because sometimes the premises might not logically support the conclusion in the right structural way[cite: 2]."
+    "answer": "PAL",
+    "explanation": "The Phase Alternating Line (PAL) standard is predominantly used in Europe and Australia[cite: 210]. It uses a 625-line, 50 fields per second standard [cite: 211] and a YUV color model with a color subcarrier frequency of 4.43 MHz[cite: 212]."
   },
   {
-    "question": "In an inductive argument, how does the information content of the conclusion compare to that of the premises?",
+    "question": "In a TV receiver, what is the specific role of the demodulator?",
     "type": "multiple-choice",
     "options": [
-      "The conclusion contains exactly the same information as the premises.",
-      "The conclusion is always found to be less informative than the combined premises.",
-      "The conclusion is always found to be more informative than the premises.",
-      "The information content fluctuates based on whether the argument is sound or unsound."
+      "It selects and tunes into a specific broadcast channel or frequency.",
+      "It captures the transmitted electromagnetic waves using an antenna.",
+      "It extracts the audio and video signals from the modulated carrier wave.",
+      "It adjusts color balance, contrast, and brightness of the decoded signals."
     ],
-    "answer": "The conclusion is always found to be more informative than the premises.",
-    "explanation": "While the evidence provided in inductive arguments only makes the argument strong or weak, the conclusion is always found to be more informative than the original premises[cite: 2]."
+    "answer": "It extracts the audio and video signals from the modulated carrier wave.",
+    "explanation": "The demodulator in a TV receiver extracts the audio and video signals from the modulated carrier wave by reversing the modulation process applied during transmission[cite: 240, 241]."
   },
   {
-    "question": "According to logic proper, what does the fundamental concept of \"validity\" strictly preserve within an argument?",
+    "question": "What standard, widely used in North America, uses digital modulation (such as 8VSB for terrestrial broadcasting) and supports high-definition resolutions like 1080i and 720p?",
     "type": "multiple-choice",
     "options": [
-      "It preserves both truth and falsehood equally.",
-      "It preserves falsehood but cannot strictly preserve truth.",
-      "It preserves truth but cannot preserve falsehood.",
-      "It preserves the factual content of the subject terms across the syllogism."
+      "DVB",
+      "ISDB",
+      "ATSC",
+      "NTSC"
     ],
-    "answer": "It preserves truth but cannot preserve falsehood.",
-    "explanation": "In logic proper, the structural framework of validity only preserves truth, but it cannot preserve falsehood[cite: 2]."
+    "answer": "ATSC",
+    "explanation": "The Advanced Television Systems Committee (ATSC) standard is widely used in North America[cite: 216, 217]. It uses digital modulation for various resolutions including 1080i and 720p [cite: 218] and employs 8VSB for terrestrial transmission[cite: 220]."
   },
   {
-    "question": "What specifically makes a deductive argument fundamentally valid?",
+    "question": "During the television transmission process, what is the purpose of multiplexing after the audio and video signals have been encoded?",
     "type": "multiple-choice",
     "options": [
-      "The conclusion relies on high degrees of probability derived from empirical evidence.",
-      "The conclusion is necessarily and logically drawn from its premises.",
-      "The premises generalize from particular instances to form a universal mathematical rule.",
-      "The argument contains exactly two propositions and one absolute conclusion."
+      "To amplify the signals to a power level appropriate for long-distance travel.",
+      "To separate the audio and video signals into distinct, parallel carrier waves.",
+      "To combine the encoded signals into a single stream for efficient transmission.",
+      "To dissipate the heat generated by the RF amplifier during operation."
     ],
-    "answer": "The conclusion is necessarily and logically drawn from its premises.",
-    "explanation": "A deductive argument is considered valid if its conclusion is necessarily and logically drawn directly from its premise(s)[cite: 2]."
+    "answer": "To combine the encoded signals into a single stream for efficient transmission.",
+    "explanation": "During transmission, the encoded audio and video signals are multiplexed together to combine them into a single stream for efficient transmission[cite: 156, 157]."
   },
   {
-    "question": "How do the terms \"true\" and \"valid\" fundamentally differ when evaluating a logical argument?",
+    "question": "Which of the following is true regarding Frequency Modulation (FM) in radio broadcasting?",
     "type": "multiple-choice",
     "options": [
-      "\"True\" describes deductive certainty, while \"valid\" describes inductive probability.",
-      "\"True\" applies to the statements making up an argument, while \"valid\" applies to whether the conclusion follows from the premises.",
-      "\"True\" is used for arguments with real-world applications, while \"valid\" is reserved for purely mathematical syllogisms.",
-      "\"True\" indicates that all premises guarantee the conclusion, while \"valid\" means the conclusion is highly probable."
+      "The frequency of the carrier wave remains constant while the amplitude changes.",
+      "The amplitude of the carrier wave remains constant while the frequency changes.",
+      "Both the frequency and the amplitude of the carrier wave change simultaneously.",
+      "The frequency of the audio signal remains constant to prevent multipath interference."
     ],
-    "answer": "\"True\" applies to the statements making up an argument, while \"valid\" applies to whether the conclusion follows from the premises.",
-    "explanation": "In logic, the words \"true\" and \"valid\" have very different meanings: truth applies strictly to the individual statements making up an argument, while validity applies to whether the conclusion properly follows from the premises[cite: 2]."
+    "answer": "The amplitude of the carrier wave remains constant while the frequency changes.",
+    "explanation": "In FM modulation, the amplitude of the carrier wave remains constant while the frequency changes in proportion to the audio signal[cite: 275, 276]."
   },
   {
-    "question": "Which of the following accurately represents the logical structure of the valid argument known as Modus Tollens?",
+    "question": "Why is AM broadcasting often preferred over FM for talk radio, news, and sports stations in certain regions?",
     "type": "multiple-choice",
     "options": [
-      "p -> q, p; therefore q.",
-      "p -> q, ~p; therefore ~q.",
-      "p V q, ~p; therefore q.",
-      "p -> q, ~q; therefore ~p."
+      "AM provides superior audio quality and fidelity compared to FM.",
+      "AM is highly resistant to electrical noise and atmospheric interference.",
+      "AM allows for a longer transmission range due to lower frequencies and ionospheric reflection.",
+      "AM utilizes the Very High Frequency (VHF) band, allowing for perfect line-of-sight transmission."
     ],
-    "answer": "p -> q, ~q; therefore ~p.",
-    "explanation": "Modus Tollens is defined as the valid argument form where, given the hypotheses \"p -> q\" and \"~q\", one can definitively conclude \"~p\"[cite: 3]."
-  },
-  {
-    "question": "In formal logic, if you are given a single true statement 'p', the rule of \"Generalization\" allows you to validly conclude which of the following?",
-    "type": "multiple-choice",
-    "options": ["p -> q", "~p -> q", "p V q", "p AND q"],
-    "answer": "p V q",
-    "explanation": "The rule of Generalization states that from a single statement form \"p\", one can validly infer the disjunction \"p V q\"[cite: 3]."
+    "answer": "AM allows for a longer transmission range due to lower frequencies and ionospheric reflection.",
+    "explanation": "AM broadcasting operates in the Medium Wave band utilizing lower frequencies, which allows for a longer transmission range and nighttime signal propagation due to ionospheric reflection[cite: 283, 296]. FM offers better audio quality but has a shorter, line-of-sight range[cite: 286, 299]."
   },
   {
-    "question": "Why do a group of logicians known as \"intuitionists\" strongly object to the use of proof by contradiction based on the \"law of the excluded middle\"?",
+    "question": "In FM radio broadcasting, what is the standard frequency separation typically maintained between channels?",
     "type": "multiple-choice",
     "options": [
-      "Because it forces mathematicians to physically construct objects before proving their equations.",
-      "Because it allows proving the existence of mathematical objects without ever actually constructing one.",
-      "Because it deliberately uses ambiguous premises that jump to unreliable conclusions.",
-      "Because it universally eliminates one of the possible variable statements completely."
+      "10 kHz",
+      "50 kHz",
+      "200 kHz",
+      "1.705 MHz"
     ],
-    "answer": "Because it allows proving the existence of mathematical objects without ever actually constructing one.",
-    "explanation": "Intuitionists believe proof by contradiction is an invalid argument in certain contexts because relying on the law of the excluded middle allows one to prove the existence of mathematical objects without ever actually constructing one[cite: 3]."
+    "answer": "200 kHz",
+    "explanation": "FM broadcasting typically uses frequency channels with a separation of 200 kHz (e.g., 88.1 MHz, 88.3 MHz, etc.)[cite: 305, 306]."
   },
   {
-    "question": "The valid argument form known as \"Transitivity\" requires which of the following specific sets of premises to successfully reach the conclusion \"p -> r\"?",
+    "question": "In a radio broadcasting transmitter, what is the function of the audio processing unit?",
     "type": "multiple-choice",
     "options": [
-      "p -> q and p -> r",
-      "p V q and q -> r",
-      "p -> q and q -> r",
-      "p AND q and q AND r"
+      "It converts the electrical signals directly into electromagnetic waves for the antenna.",
+      "It modulates the audio signals onto a carrier frequency.",
+      "It uses equalizers, compressors, and limiters to enhance and optimize audio quality before modulation.",
+      "It amplifies the modulated RF signals to ensure wide coverage."
     ],
-    "answer": "p -> q and q -> r",
-    "explanation": "The Transitivity rule specifically states that if \"p -> q\" and \"q -> r\" are both given as premises, one can validly conclude \"p -> r\"[cite: 3]."
+    "answer": "It uses equalizers, compressors, and limiters to enhance and optimize audio quality before modulation.",
+    "explanation": "The audio processing unit in a transmitter may include equalizers, compressors, and limiters to enhance and optimize the audio quality before it is modulated and transmitted[cite: 262, 263]."
   },
   {
-    "question": "If you are given the premises \"p V q\" and \"~p\", which valid argument form explicitly allows you to conclude \"q\"?",
+    "question": "What is the frequency range commonly associated with the Medium Wave (MW) band used for AM radio broadcasting?",
     "type": "multiple-choice",
     "options": [
-      "Specialization",
-      "Elimination",
-      "Division into Cases",
-      "Modus Tollens"
+      "88 MHz to 108 MHz",
+      "30 MHz to 300 MHz",
+      "535 kHz to 1705 kHz",
+      "2 MHz to 30 MHz"
     ],
-    "answer": "Elimination",
-    "explanation": "The Elimination rule dictates that if one of the variable statements has to be true (\"p V q\") and we know one of them is not true (\"~p\"), we can validly conclude the other must be true (\"q\")[cite: 3]."
+    "answer": "535 kHz to 1705 kHz",
+    "explanation": "AM radio broadcasting typically operates in the Medium Wave (MW) band, which ranges from approximately 535 kHz to 1705 kHz[cite: 294, 295]."
   },
   {
-    "question": "An individual confidently argues: \"If I study hard, I will pass. I passed. Therefore, I must have studied hard.\" What specific logical fallacy does this argument commit?",
+    "question": "Which radio receiver component is explicitly designed to increase the volume of the extracted audio signals to a level suitable for a speaker or headphones?",
     "type": "multiple-choice",
     "options": [
-      "Inverse Error",
-      "Modus Ponens",
-      "Begging the Question",
-      "Converse Error"
+      "The Demodulator",
+      "The Audio Amplifier",
+      "The Tuner",
+      "The Antenna"
     ],
-    "answer": "Converse Error",
-    "explanation": "This is a Converse Error because it assumes the antecedent occurred simply because the consequent did. It is invalid because the person could have passed by other means, just as getting somewhere quicker could involve driving instead of running[cite: 3]."
+    "answer": "The Audio Amplifier",
+    "explanation": "The audio amplifier amplifies the weak audio signals received from the demodulator, increasing the volume to a suitable level for playback through the speaker or headphone output[cite: 318, 319]."
   },
   {
-    "question": "Which of the following symbolic structures perfectly represents the invalid argument known as the \"Inverse Error\"?",
+    "question": "Which regulatory body is mentioned as overseeing the allocation and management of radio frequency bands specifically in Nigeria?",
     "type": "multiple-choice",
     "options": [
-      "p -> q, q; therefore p.",
-      "p -> q, ~p; therefore ~q.",
-      "p -> q, ~q; therefore ~p.",
-      "p V q, ~p; therefore q."
+      "International Telecommunication Union (ITU)",
+      "Advanced Television Systems Committee (ATSC)",
+      "Nigeria Communications Commission (NCC)",
+      "National Television System Committee (NTSC)"
     ],
-    "answer": "p -> q, ~p; therefore ~q.",
-    "explanation": "The Inverse Error incorrectly assumes that just because the first event (\"p\") has not occurred, the second event (\"q\") must not have occurred either. It is structured as \"p -> q\" and \"~p\" yielding the false conclusion \"~q\"[cite: 3]."
+    "answer": "Nigeria Communications Commission (NCC)",
+    "explanation": "The Nigeria Communications Commission (NCC) oversees the allocation and management of radio frequency bands in Nigeria[cite: 308]."
   },
   {
-    "question": "Which of the following scenarios is a direct example of the logical fallacy called \"Begging the question\"?",
+    "question": "Which mobile telephony standard generation introduced General Packet Radio Service (GPRS) for packet-switched data transmission, acting as a bridge before 3G?",
     "type": "multiple-choice",
     "options": [
-      "Smoking cigarettes does not cause brain damage; therefore, it is inherently healthy.",
-      "Cutting people is a crime; surgeons cut people; therefore surgeons are criminals.",
-      "All lawyers always tell the truth; Jack is a lawyer; therefore Jack always tells the truth.",
-      "If it rains, the ground gets wet; the ground is not wet; therefore it definitely did not rain."
+      "1G",
+      "2G",
+      "2.5G",
+      "4G"
     ],
-    "answer": "All lawyers always tell the truth; Jack is a lawyer; therefore Jack always tells the truth.",
-    "explanation": "Begging the question involves assuming what is to be proved without actually deriving it from independent premises, as seen in assuming all lawyers tell the truth to prove a specific lawyer tells the truth[cite: 3]."
+    "answer": "2.5G",
+    "explanation": "The 2.5G standard acted as an intermediate step between 2G and 3G networks, introducing enhanced data services over 2G networks, specifically GPRS for packet-switched data transmission[cite: 400, 401]."
   },
   {
-    "question": "In the context of logical reasoning, how is a \"fallacy\" fundamentally defined?",
+    "question": "In the transmitter circuitry of a mobile telephone, what is the primary role of the Analog-to-Digital Converter (ADC)?",
     "type": "multiple-choice",
     "options": [
-      "A mathematically sound argument that lacks real-world contextual application.",
-      "A situation where a conclusion is inferred from a purely subjective or emotional premise.",
-      "An error in reasoning which leads directly to an invalid argument.",
-      "A valid argument form that relies entirely on the law of the excluded middle."
+      "It processes digital voice signals and performs tasks like error correction.",
+      "It converts incoming RF signals from the mobile network into electrical signals.",
+      "It amplifies the RF signals to an appropriate level for transmission through the antenna.",
+      "It converts analog electrical signals from the microphone into digital signals for network processing."
     ],
-    "answer": "An error in reasoning which leads directly to an invalid argument.",
-    "explanation": "A fallacy is defined fundamentally as an error in reasoning which ultimately leads to an invalid argument[cite: 3]."
+    "answer": "It converts analog electrical signals from the microphone into digital signals for network processing.",
+    "explanation": "The Analog-to-Digital Converter (ADC) converts the analog electrical signals originating from the microphone into digital signals so they can be processed and transmitted over the mobile network[cite: 354]."
   },
   {
-    "question": "Consider the argument: \"Surgeons cut people. Cutting people is a crime. Therefore, surgeons are criminals.\" Why is this specifically considered an invalid fallacy?",
+    "question": "Which receiver component in a mobile telephone is responsible for converting processed digital signals back into analog audio signals so they can be heard through the speaker?",
     "type": "multiple-choice",
     "options": [
-      "It attempts to jump to a conclusion without any adequate or verifiable grounds.",
-      "It commits the Inverse Error by explicitly denying the antecedent.",
-      "It uses ambiguous premises and erroneously treats them as if they are unambiguous.",
-      "It openly begs the question by assuming the conclusion within the premise itself."
+      "Digital Signal Processor (DSP)",
+      "Low-Noise Amplifier (LNA)",
+      "Digital-to-Analog Converter (DAC)",
+      "Analog-to-Digital Converter (ADC)"
     ],
-    "answer": "It uses ambiguous premises and erroneously treats them as if they are unambiguous.",
-    "explanation": "The argument uses the word \"cut\" in two different contexts (surgical vs. violent), meaning it uses ambiguous premises but treats them as if they are entirely unambiguous to force a false conclusion[cite: 3]."
+    "answer": "Digital-to-Analog Converter (DAC)",
+    "explanation": "The Digital-to-Analog Converter (DAC) in the receiver component converts the processed digital signals back into analog audio signals, which the speaker then reproduces as sound waves[cite: 362, 363]."
   },
   {
-    "question": "According to the rule of Contradiction, if you assume that a statement 'p' is false ('~p') and this assumption logically leads to a contradiction ('c'), what must you validly conclude?",
+    "question": "Within a cellular network architecture, which element acts as a central hub, connecting base stations to the core network and interfacing with the Public Switched Telephone Network (PSTN)?",
     "type": "multiple-choice",
     "options": [
-      "That statement 'p' is definitively true.",
-      "That statement 'p' is definitively false.",
-      "That both 'p' and 'c' are fundamentally false.",
-      "That 'p' can neither be proven true nor false."
+      "Base Station Controller (BSC)",
+      "Mobile Switching Center (MSC)",
+      "Home Location Register (HLR)",
+      "Authentication Center (AuC)"
     ],
-    "answer": "That statement 'p' is definitively true.",
-    "explanation": "In proof by contradiction, if you can clearly show that the hypothesis that \"p\" is false (\"~p -> c\") leads directly to a contradiction, then \"p\" has to be true[cite: 3]."
+    "answer": "Mobile Switching Center (MSC)",
+    "explanation": "The Mobile Switching Center (MSC) acts as a central hub, connecting base stations to the core network. It performs call routing and interfaces with networks like the PSTN to enable communication between cellular and landline phones[cite: 375, 376, 377]."
   },
   {
-    "question": "In the Truth/Lie Tribe puzzle, native A says \"Both of us are from the Truth Tribe\" and native B says \"A is from the Lie Tribe.\" Using proof by contradiction, what is the logical conclusion regarding A's tribe?",
+    "question": "In a cellular network, what is the distinct difference between the Home Location Register (HLR) and the Visitor Location Register (VLR)?",
     "type": "multiple-choice",
     "options": [
-      "A must be in the Truth Tribe because he openly includes himself in the statement.",
-      "A is in the Truth Tribe but B is lying to create a paradox.",
-      "A is in the Lie Tribe because if he were in the Truth Tribe, B would also have to be, creating an impossible contradiction.",
-      "A could be in either tribe because the premises provided are inherently ambiguous."
+      "The HLR stores temporary subscriber data, while the VLR stores permanent data like phone numbers.",
+      "The HLR authenticates SIM cards, while the VLR routes packet-switched data.",
+      "The HLR stores permanent subscriber data, while the VLR stores temporary data for users currently within a specific service area.",
+      "The HLR interfaces with the PSTN, while the VLR manages call handoffs between base stations."
     ],
-    "answer": "A is in the Lie Tribe because if he were in the Truth Tribe, B would also have to be, creating an impossible contradiction.",
-    "explanation": "Assuming A is in the Truth Tribe means his statement is true, putting B in the Truth Tribe too. But if B is a truth-teller, his claim that A is a liar must be true, creating a contradiction. Thus, A must be in the Lie Tribe[cite: 3]."
+    "answer": "The HLR stores permanent subscriber data, while the VLR stores temporary data for users currently within a specific service area.",
+    "explanation": "The HLR contains permanent subscriber data such as phone numbers and service profiles[cite: 379]. The VLR stores temporary subscriber data for users currently within a specific service area to facilitate call routing and mobility management[cite: 380]."
   },
   {
-    "question": "To correctly use the \"Proof by Division into Cases\" rule to conclude 'r', you are given the premise \"p V q\". What other specific premises are required?",
+    "question": "Which component in a cellular network manages and controls multiple base stations within a given area, handling tasks such as call handoff and radio resource allocation?",
     "type": "multiple-choice",
     "options": [
-      "p -> q and q -> r",
-      "p -> r and ~q -> r",
-      "~p -> r and ~q -> r",
-      "p -> r and q -> r"
+      "Mobile Equipment",
+      "Gateway Mobile Switching Center (GMSC)",
+      "Base Station Controller (BSC)",
+      "Serving GPRS Support Node (SGSN)"
     ],
-    "answer": "p -> r and q -> r",
-    "explanation": "The valid argument called \"Proof by Division into Cases\" relies on knowing that either \"p\" or \"q\" is true (\"p V q\"), and requires that both individual cases lead to \"r\" (\"p -> r\" and \"q -> r\") in order to conclude \"r\"[cite: 3]."
+    "answer": "Base Station Controller (BSC)",
+    "explanation": "The Base Station Controller (BSC) manages and controls multiple base stations within a given area, handling tasks like call setup, call handoff (transferring a call as a user moves), and allocating radio resources[cite: 372, 373]."
   },
   {
-    "question": "Within the specific context of creative thinking, how is the characteristic known as \"Fluency\" accurately defined?",
+    "question": "Which of the following is true regarding 1G mobile telephony standards?",
     "type": "multiple-choice",
     "options": [
-      "The ability to approach complex problems from entirely different logical perspectives.",
-      "The generation of unique, completely original, or highly novel ideas.",
-      "The capacity to produce multiple ideas or solutions.",
-      "The skill of taking a single existing idea and continuously expanding upon it."
+      "They were digital cellular networks introduced in the early 1990s.",
+      "They provided high-speed packet-switched data transmission globally.",
+      "They were analog networks introduced in the 1980s and included standards like AMPS and NMT.",
+      "They utilized massive MIMO and millimeter-wave spectrum for basic voice calling."
     ],
-    "answer": "The capacity to produce multiple ideas or solutions.",
-    "explanation": "In creative thinking, Fluency is explicitly defined as the capacity to produce multiple ideas or solutions to a given issue[cite: 3]."
+    "answer": "They were analog networks introduced in the 1980s and included standards like AMPS and NMT.",
+    "explanation": "1G was the first generation of analog cellular networks introduced in the 1980s. Standards included Advanced Mobile Phone System (AMPS) in North America and Nordic Mobile Telephone (NMT) in Europe, providing basic voice calling with limited features[cite: 394, 395, 396]."
   },
   {
-    "question": "How do the overall processes of creative thinking and critical thinking contrast when focusing on their direction of thought?",
+    "question": "In cellular networks supporting packet-switched data, which node acts as the gateway between the cellular network and external packet data networks like the internet?",
     "type": "multiple-choice",
     "options": [
-      "Creative thinking relies strictly on evaluating evidence, while critical thinking focuses on fluency.",
-      "Creative thinking is divergent (exploring possibilities), while critical thinking is convergent (refining and choosing).",
-      "Both are considered completely convergent forms of thinking, just applied to vastly different subjects.",
-      "Creative thinking is heavily convergent, while critical thinking relies on being fully divergent."
+      "Serving GPRS Support Node (SGSN)",
+      "Gateway GPRS Support Node (GGSN)",
+      "Gateway Mobile Switching Center (GMSC)",
+      "Authentication Center (AuC)"
     ],
-    "answer": "Creative thinking is divergent (exploring possibilities), while critical thinking is convergent (refining and choosing).",
-    "explanation": "Creative thinking is about generating new ideas and imagining different possibilities (divergent thinking), whereas critical thinking focuses on evaluating ideas, checking evidence, and choosing the best options (convergent thinking)[cite: 3]."
-  },
-  {
-    "question": "Which specific component of critical thinking involves drawing logical conclusions based strictly on available evidence?",
-    "type": "multiple-choice",
-    "options": ["Reflection", "Evaluation", "Analysis", "Inference"],
-    "answer": "Inference",
-    "explanation": "In the process of critical thinking, \"Inference\" is specifically defined as drawing logical conclusions based directly on the evidence provided[cite: 3]."
-  },
-  {
-    "question": "When a person successfully tackles a difficult problem by consciously looking at it from various, uncommon perspectives, they are demonstrating which precise characteristic of creative thinking?",
-    "type": "multiple-choice",
-    "options": ["Originality", "Elaboration", "Flexibility", "Fluency"],
-    "answer": "Flexibility",
-    "explanation": "Flexibility is a key characteristic of creative thinking, defined directly as the ability to approach problems from various differing perspectives[cite: 3]."
+    "answer": "Gateway GPRS Support Node (GGSN)",
+    "explanation": "The Gateway GPRS Support Node (GGSN) acts as a gateway between the cellular network and external packet data networks, such as the internet[cite: 387, 389]. Conversely, the SGSN handles internal packet routing and mobility[cite: 388]."
   },
   {
-    "question": "What does the crucial critical thinking skill of \"Analysis\" strictly entail?",
+    "question": "What advanced technologies are utilized by 5G (Fifth Generation) mobile telephony to enable ultra-fast data rates and massive device connectivity?",
     "type": "multiple-choice",
     "options": [
-      "Judging the credibility and ultimate relevance of an opponent's argument.",
-      "Engaging in continuous self-assessment to rapidly identify personal biases.",
-      "Synthesizing entirely new concepts that exist far outside conventional boundaries.",
-      "Breaking down complex information into smaller components for better understanding."
+      "Analog signal compression and vestigial sideband modulation.",
+      "Millimeter-wave spectrum, massive MIMO, and network slicing.",
+      "General Packet Radio Service (GPRS) and basic SMS.",
+      "Code Division Multiple Access (CDMA) and standard WiMAX."
     ],
-    "answer": "Breaking down complex information into smaller components for better understanding.",
-    "explanation": "Analysis, as a component of critical thinking, involves breaking down complex information into much smaller components to facilitate a better overall understanding[cite: 3]."
+    "answer": "Millimeter-wave spectrum, massive MIMO, and network slicing.",
+    "explanation": "5G utilizes advanced technologies like millimeter-wave spectrum, massive MIMO (Multiple-Input Multiple-Output), and network slicing to offer ultra-fast data rates, low latency, and massive device connectivity[cite: 408, 410]."
   },
   {
-    "question": "Because a valid conclusion can always be guaranteed from the hypothesis, a valid argument form is sometimes alternatively referred to as a:",
+    "question": "Which receiver component in a mobile phone amplifies weak incoming electrical signals from the antenna while actively working to minimize noise and interference?",
     "type": "multiple-choice",
     "options": [
-      "Fallacy of presumption",
-      "Rule of inference",
-      "Law of the excluded middle",
-      "Divergent possibility"
+      "Digital Signal Processor (DSP)",
+      "Low-Noise Amplifier (LNA)",
+      "Power Amplifier",
+      "Receiver Circuitry Demodulator"
     ],
-    "answer": "Rule of inference",
-    "explanation": "A valid argument is sometimes called a \"rule of inference\" because the conclusion can always be correctly and consistently inferred from the hypothesis[cite: 3]."
+    "answer": "Low-Noise Amplifier (LNA)",
+    "explanation": "The Low-Noise Amplifier (LNA) in a mobile phone receiver amplifies the weak incoming electrical signals from the antenna while minimizing noise and interference[cite: 359]."
   },
   {
-    "question": "If you have two completely separate, true statement forms 'p' and 'q', which valid argument explicitly allows you to logically combine them to conclude \"p AND q\"?",
+    "question": "Which generation of mobile telephony standards was the first to introduce video calling and mobile internet access by providing faster data rates and improved voice quality?",
     "type": "multiple-choice",
     "options": [
-      "Generalization",
-      "Specialization",
-      "Conjunction",
-      "Modus Ponens"
+      "2G",
+      "2.5G",
+      "3G",
+      "4G"
     ],
-    "answer": "Conjunction",
-    "explanation": "The valid argument rule known as \"Conjunction\" allows you to take two separate true statements, \"p\" and \"q\", and validly infer their combined form[cite: 3]."
+    "answer": "3G",
+    "explanation": "3G (Third Generation), introduced in the early 2000s, provided faster data rates, improved voice quality, and introduced video calling and mobile internet access[cite: 401, 402, 403]."
   },
   {
-    "question": "Which of the following best describes the primary goal of critical thinking compared to creative thinking?",
+    "question": "What is the function of the Authentication Center (AuC) within a cellular network?",
     "type": "multiple-choice",
     "options": [
-      "To generate completely original solutions and expand potential options as broadly as possible.",
-      "To explore new and unexpected angles for problem-solving.",
-      "To evaluate, analyse, and judge the logic of existing situations.",
-      "To completely challenge existing rules and assumptions."
+      "It manages packet-switched data routing for internet access.",
+      "It authenticates and validates the identities of mobile subscribers to ensure secure network access.",
+      "It converts the base station's analog signals into secure digital packets.",
+      "It tracks the temporary location of a visitor to facilitate call handoffs."
     ],
-    "answer": "To evaluate, analyse, and judge the logic of existing situations.",
-    "explanation": "While exploring angles, generating solutions, and challenging rules belong to creative thinking, critical thinking focuses on evaluating, analysing, and judging the logic of existing ideas or situations[cite: 2]."
+    "answer": "It authenticates and validates the identities of mobile subscribers to ensure secure network access.",
+    "explanation": "The Authentication Center (AuC) is responsible for authenticating and validating the identities of mobile subscribers (such as verifying SIM card info) to ensure secure network access and prevent unauthorized usage[cite: 383, 384]."
   },
   {
-    "question": "A student tests the nutritional value of various poultry feed ingredients and calculates an exact formula to meet health standards. What kind of thinking process is this?",
+    "question": "In a television transmitter, which component ensures the transmitter does not overheat during the amplification process?",
     "type": "multiple-choice",
     "options": [
-      "Divergent thinking",
-      "Lateral thinking",
-      "Convergent thinking",
-      "Ambiguous thinking"
+      "Modulation Unit",
+      "Power Supply",
+      "Cooling System",
+      "Antenna Array"
     ],
-    "answer": "Convergent thinking",
-    "explanation": "Testing exact formulas and narrowing down options to find the most logical and effective solution is an example of convergent thinking[cite: 2]. Divergent and lateral thinking involve expanding options and looking from new angles[cite: 2]."
+    "answer": "Cooling System",
+    "explanation": "TV transmitters generate heat during operation due to the amplification process. Cooling systems, such as fans or liquid cooling systems, are employed to dissipate this heat and maintain optimal operating temperatures[cite: 140, 141]."
   },
   {
-    "question": "When addressing a failing student business, how does critical thinking uniquely complement creative marketing ideas?",
+    "question": "Regarding digital TV broadcast standards, which standard is commonly used in Japan and Brazil and utilizes COFDM modulation?",
     "type": "multiple-choice",
     "options": [
-      "By generating an abundance of new promotional marketing strategies.",
-      "By expanding the target market options through rapid brainstorming.",
-      "By breaking mental fixedness to see entirely new possibilities for the business.",
-      "By asking 'why' to determine if the product itself is the issue."
+      "Integrated Services Digital Broadcasting (ISDB)",
+      "Advanced Television Systems Committee (ATSC)",
+      "Digital Video Broadcasting (DVB)",
+      "Phase Alternating Line (PAL)"
     ],
-    "answer": "By asking 'why' to determine if the product itself is the issue.",
-    "explanation": "Creative thinking generates new ideas (like promotional strategies), but critical thinking pushes us to ask 'why' repeatedly to identify the underlying root cause, such as questioning if the product itself is failing to meet consumer needs[cite: 16, 17]."
+    "answer": "Integrated Services Digital Broadcasting (ISDB)",
+    "explanation": "The Integrated Services Digital Broadcasting (ISDB) standard is used in Japan, Brazil, and some other countries[cite: 225]. It utilizes COFDM modulation similar to DVB[cite: 228]."
   },
   {
-    "question": "In overcoming mental fixedness and bias, what specific role does creative thinking play?",
+    "question": "What is the primary difference between a base station and a Mobile Switching Center (MSC) in a cellular network?",
     "type": "multiple-choice",
     "options": [
-      "It critically identifies and challenges personal biases clouding judgment.",
-      "It evaluates the downside of a proposed solution before implementation.",
-      "It breaks mental blocks to reveal new possibilities.",
-      "It forces individuals to consider long-term academic implications."
+      "The MSC is the physical antenna tower, while the base station routes calls to the PSTN.",
+      "The base station provides wireless coverage to a specific cell area, while the MSC acts as the central hub managing call routing across the network.",
+      "The base station stores permanent subscriber data, while the MSC stores temporary subscriber data.",
+      "The MSC converts digital voice signals to analog, while the base station amplifies the RF signal."
     ],
-    "answer": "It breaks mental blocks to reveal new possibilities.",
-    "explanation": "Creative thinking breaks mental blocks to allow us to see new possibilities[cite: 25]. Identifying and challenging personal biases that cloud judgment is the specific role of critical thinking[cite: 26]."
+    "answer": "The base station provides wireless coverage to a specific cell area, while the MSC acts as the central hub managing call routing across the network.",
+    "explanation": "A base station serves as a physical infrastructure/central point for communication within a specific cell area[cite: 369]. The MSC acts as a central hub connecting base stations to the core network and performing call routing, switching, and mobility management[cite: 375, 376]."
   },
   {
-    "question": "According to classical logic, which fundamental act of the mind involves deciding 'whether something is' by relating concepts?",
+    "question": "Which modulation technique combined amplitude and phase modulation to allow the transmission of multiple bits per symbol, and is widely used in digital TV broadcasting like ATSC?",
     "type": "multiple-choice",
     "options": [
-      "Simple apprehension",
-      "Judging",
-      "Reasoning",
-      "Cognitive flexibility"
+      "Vestigial Sideband (VSB) Modulation",
+      "Orthogonal Frequency Division Multiplexing (OFDM)",
+      "Frequency Modulation (FM)",
+      "Quadrature Amplitude Modulation (QAM)"
     ],
-    "answer": "Judging",
-    "explanation": "The thinking process involves three acts: Simple apprehension (what something is), Judging (whether something is), and Reasoning (why something is)[cite: 36, 37]."
+    "answer": "Quadrature Amplitude Modulation (QAM)",
+    "explanation": "Quadrature Amplitude Modulation (QAM) is a digital modulation technique that combines amplitude and phase modulation, allowing the transmission of multiple bits per symbol. It is widely used in digital TV broadcasting like ATSC[cite: 181, 182, 183]."
   },
   {
-    "question": "A student asserts that capitalism is entirely good and socialism is entirely bad without acknowledging any contextual factors. This student is likely in which stage of cognitive development?",
+    "question": "In a radio broadcasting receiver, which component is responsible for selecting the specific frequency to listen to?",
     "type": "multiple-choice",
     "options": [
-      "Relativism Thinking",
-      "Commitment Thinking",
-      "Multiplicity Thinking",
-      "Dualistic Thinking"
+      "The Demodulator",
+      "The Tuner",
+      "The Antenna",
+      "The Audio Amplifier"
     ],
-    "answer": "Dualistic Thinking",
-    "explanation": "Dualistic thinking is simplistic and binary (right or wrong, good or bad), often failing to acknowledge nuance or contextual complexities[cite: 44, 46]."
+    "answer": "The Tuner",
+    "explanation": "The tuner is responsible for selecting and tuning into specific radio frequencies or channels, allowing users to choose the desired station[cite: 314, 315]."
   },
   {
-    "question": "What is a distinguishing characteristic of a student in the Multiplicity stage of critical thinking?",
+    "question": "What distinct feature separated 4G from its predecessors?",
     "type": "multiple-choice",
     "options": [
-      "They critically evaluate a source's personal experience to determine their authority.",
-      "They synthesize wide evidence to make an informed and firm personal commitment.",
-      "They acknowledge that differing opinions exist and uncertainty is legitimate.",
-      "They categorize information into broad binary groups like strictly true or strictly false."
+      "It introduced basic analog voice calling with limited features.",
+      "It was the first generation to introduce SMS and digital cellular networking.",
+      "It offered significantly faster data speeds, low latency, and enabled high-quality video streaming and mobile gaming.",
+      "It introduced massive MIMO and autonomous vehicle connectivity as its baseline."
     ],
-    "answer": "They acknowledge that differing opinions exist and uncertainty is legitimate.",
-    "explanation": "In the Multiplicity stage, students understand there may be no clear right or wrong answers, recognize diverse viewpoints, and grow comfortable with uncertainty[cite: 53, 54, 55]. Binary categorization happens in the Dualistic stage[cite: 50]."
+    "answer": "It offered significantly faster data speeds, low latency, and enabled high-quality video streaming and mobile gaming.",
+    "explanation": "4G networks offered significantly faster data speeds and low latency, enabling high-quality video streaming, mobile gaming, and advanced multimedia services[cite: 405, 406]. (Massive MIMO is a feature of 5G [cite: 410], and SMS was introduced in 2G [cite: 399])."
   },
   {
-    "question": "In Relativism Thinking, how do students approach information provided by a knowledgeable authority?",
+    "question": "When considering the function of a TV receiver, what does the signal decoding process primarily entail?",
     "type": "multiple-choice",
     "options": [
-      "They accept it as absolute truth without ever questioning the source's background.",
-      "They recognize it as one of many equally valid opinions without further analysis.",
-      "They completely reject conventional facts in an attempt to form entirely independent beliefs.",
-      "They assess the source's experience and research to determine their authority."
+      "Capturing electromagnetic waves using a terrestrial antenna.",
+      "Reversing the modulation process to extract the raw carrier wave.",
+      "Interpreting encoded information such as image data, audio samples, and synchronization signals.",
+      "Adjusting aspects like color balance, contrast, and brightness on the screen."
     ],
-    "answer": "They assess the source's experience and research to determine their authority.",
-    "explanation": "Relativist thinkers do not accept information as fact solely based on authority; instead, they assess the source's experience and research to determine true authority and critical validity[cite: 63, 65]."
+    "answer": "Interpreting encoded information such as image data, audio samples, and synchronization signals.",
+    "explanation": "Signal decoding in a TV receiver involves interpreting the encoded information, such as image data, audio samples, synchronization signals, and metadata into a format understood by display and audio systems[cite: 242, 243]. Adjusting contrast/brightness falls under audio and video processing[cite: 244, 245]."
   },
   {
-    "question": "A thinker in the Commitment stage is distinct from earlier developmental stages because they:",
+    "question": "Why is Shortwave (SW) radio broadcasting typically utilized?",
     "type": "multiple-choice",
     "options": [
-      "See all viewpoints and opinions as equally valid and therefore avoid taking a final stance.",
-      "Make informed personal commitments but remain open to revising beliefs.",
-      "Focus solely on breaking existing rules and continuously challenging structural assumptions.",
-      "Rely heavily on authority figures like teachers and textbooks for final answers."
+      "Because it operates below AM frequencies, avoiding line-of-sight limitations.",
+      "Because it covers frequencies between 2 MHz and 30 MHz, allowing for long-distance transmission and global coverage.",
+      "Because it is immune to multipath interference and provides high-definition stereo sound.",
+      "Because it uses purely digital modulation for highly local, low-power broadcasts."
     ],
-    "answer": "Make informed personal commitments but remain open to revising beliefs.",
-    "explanation": "The final Commitment stage enables learners to use personal experience and knowledge to settle on beliefs, while remaining open to revising those beliefs when presented with new evidence[cite: 73, 74]."
+    "answer": "Because it covers frequencies between 2 MHz and 30 MHz, allowing for long-distance transmission and global coverage.",
+    "explanation": "Shortwave radio broadcasts cover frequencies typically between 2 MHz and 30 MHz, allowing for long-distance transmission and global coverage[cite: 300, 301]."
   },
   {
-    "question": "Which component of creative thinking recognizes that most breakthroughs involve synthesizing existing knowledge rather than creating entirely from nothing?",
+    "question": "In a mobile phone's transmitter circuitry, what is the role of the Digital Signal Processor (DSP)?",
     "type": "multiple-choice",
     "options": [
-      "Divergent Thinking",
-      "Cognitive Flexibility",
-      "Combinatorial Creativity",
-      "Academic Creativity"
+      "It amplifies the final RF signal before it reaches the antenna.",
+      "It converts the analog sound waves from the microphone into a digital stream.",
+      "It performs tasks on the digitized voice signals such as compression, filtering, and modulation.",
+      "It authenticates the user's SIM card with the mobile network's core system."
     ],
-    "answer": "Combinatorial Creativity",
-    "explanation": "Combinatorial Creativity is defined as innovation through combining existing elements in unexpected ways, recognizing that breakthroughs usually involve a novel synthesis of existing knowledge[cite: 91, 92]."
+    "answer": "It performs tasks on the digitized voice signals such as compression, filtering, and modulation.",
+    "explanation": "In the transmitter, the Digital Signal Processor (DSP) performs various signal processing tasks on the digitized voice signals, such as compression, filtering, and modulation[cite: 355]."
   },
   {
-    "question": "Reframing a problem from an alternative angle and adapting to changing circumstances is best described as:",
+    "question": "How did the transition from analog to digital television broadcasting affect frequency spectrum usage?",
     "type": "multiple-choice",
     "options": [
-      "Cognitive Flexibility",
-      "Originality",
-      "Convergent Thinking",
-      "Idea Fluency"
+      "It forced broadcasters to completely abandon the UHF band in favor of SHF microwaves.",
+      "It allowed for more efficient use of available spectrum, enabling multiple digital subchannels within a single broadcast channel.",
+      "It required each channel to use 10 times more bandwidth to support discrete binary data.",
+      "It made frequency allocation obsolete since digital signals do not require specific bands."
     ],
-    "answer": "Cognitive Flexibility",
-    "explanation": "Cognitive Flexibility is the ability to shift perspectives, adapt mental strategies, reframe problems from alternative angles, and adapt to changing circumstances[cite: 89, 90]."
+    "answer": "It allowed for more efficient use of available spectrum, enabling multiple digital subchannels within a single broadcast channel.",
+    "explanation": "The transition to digital television broadcasting has allowed for more efficient use of available frequency spectrum [cite: 203], enabling broadcasters to carry multiple digital subchannels through multiplexing techniques to provide a greater number of channels and services[cite: 198, 199, 204]."
   },
   {
-    "question": "How do creative and critical thinking interact synergistically in the research process?",
+    "question": "Which of the following describes the behavioral relationship between applied voltage and current in a semiconductor diode?",
     "type": "multiple-choice",
     "options": [
-      "Creative thinking relies on blind faith to implement solutions rigorously evaluated by critical thinking.",
-      "Creative thinking evaluates the methodology, while critical thinking brainstorms the research questions.",
-      "Creative thinking minimizes the risk of poor decisions, while critical thinking actively breaks mental blocks.",
-      "Creative thinking formulates original questions, while critical thinking designs rigorous methodologies."
+      "It follows a strict linear progression defined by Ohm's law.",
+      "It exhibits an exponential relationship.",
+      "It behaves linearly only when a forward bias is applied.",
+      "It displays an inverse proportional relationship similar to insulators."
     ],
-    "answer": "Creative thinking formulates original questions, while critical thinking designs rigorous methodologies.",
-    "explanation": "In research, creative thinking formulates original questions, while critical thinking designs the rigorous methodologies needed to properly investigate them[cite: 99]."
+    "answer": "It exhibits an exponential relationship.",
+    "explanation": "Unlike a resistor, a diode has an exponential current-voltage relationship."
   },
   {
-    "question": "Which technique for cultivating curiosity involves alternating between intensive study and taking breaks?",
+    "question": "What is the primary factor that causes some materials to act as good electrical insulators?",
     "type": "multiple-choice",
     "options": [
-      "Engaging in collaborative learning",
-      "Practicing metacognitive awareness",
-      "Balancing focus and diffuse thinking",
-      "Keeping a daily idea journal"
+      "They possess an abundance of free electrons floating within their crystal lattice.",
+      "Their atomic nuclei are exceptionally small, allowing electrons to drift away easily.",
+      "The electrons in their outer valence shell are strongly attracted by the positively charged inner nucleus.",
+      "They are always completely immune to normal temperature changes and voltage stimulation."
     ],
-    "answer": "Balancing focus and diffuse thinking",
-    "explanation": "Balancing focus and diffuse thinking involves alternating between intensive study and taking breaks to allow for unconscious processing and the incubation effect[cite: 108]."
+    "answer": "The electrons in their outer valence shell are strongly attracted by the positively charged inner nucleus.",
+    "explanation": "This strong attraction prevents the creation of free electrons, giving them insulating properties."
   },
   {
-    "question": "When a student reflects on their own thinking patterns and consciously experiments with alternative perspectives, they are practicing:",
+    "question": "Which of the following statements accurately describes a chemically pure, intrinsic semiconductor material like Silicon?",
     "type": "multiple-choice",
     "options": [
-      "Combinatorial Creativity",
-      "Divergent thinking",
-      "Metacognitive awareness",
-      "The incubation effect"
+      "It is electrically unbalanced due to its four outer valence electrons.",
+      "It possesses high conductivity at absolute zero due to the lack of impurities.",
+      "It shares valence electrons with neighboring atoms to form full orbitals of eight electrons.",
+      "It naturally contains an equal number of donor and acceptor atoms to maintain equilibrium."
     ],
-    "answer": "Metacognitive awareness",
-    "explanation": "Practicing metacognitive awareness involves reflecting on your own thinking patterns, identifying assumptions, and consciously experimenting with alternative perspectives[cite: 106]."
+    "answer": "It shares valence electrons with neighboring atoms to form full orbitals of eight electrons.",
+    "explanation": "Intrinsic silicon atoms share their four valence electrons covalently to create stable, full orbitals."
   },
   {
-    "question": "Regularly evaluating your past decisions to understand what went wrong and how to avoid similar errors is an example of which critical thinking strategy?",
+    "question": "When Phosphorus is added to a pure Silicon crystal during the doping process, what is the primary resulting effect?",
     "type": "multiple-choice",
     "options": [
-      "Analysing assumptions objectively",
-      "Gathering information thoroughly",
-      "Practicing problem-solving daily",
-      "Engaging in reflective thinking"
+      "It introduces a trivalent impurity that creates an abundance of positively charged holes.",
+      "It allows four of its five orbital electrons to bond, leaving one free electron to become mobile.",
+      "It turns the previously neutral Silicon crystal into a material with a massive net negative electrical charge.",
+      "It forces the Silicon atoms to release their innermost electrons to maintain lattice stability."
     ],
-    "answer": "Engaging in reflective thinking",
-    "explanation": "Engaging in reflective thinking means regularly evaluating your thought processes and analyzing past mistakes to understand what went wrong and avoid similar errors[cite: 124, 125]."
+    "answer": "It allows four of its five orbital electrons to bond, leaving one free electron to become mobile.",
+    "explanation": "Phosphorus is a pentavalent impurity (donor), providing an extra free electron for conduction."
   },
   {
-    "question": "Within the main questions asked by philosophy, which branch is primarily concerned with the question 'How do we know what's true?'",
+    "question": "What is the overall electrical charge of an N-type semiconductor material on its own?",
     "type": "multiple-choice",
-    "options": ["Metaphysics", "Ethics", "Purpose", "Epistemology"],
-    "answer": "Epistemology",
-    "explanation": "Epistemology is the branch of philosophy that asks 'How do we know what's true?'[cite: 132]. Metaphysics asks 'What is real?' [cite: 131], and Ethics asks 'What is right and wrong?'[cite: 133]."
-  },
-  {
-    "question": "According to the text, what is the fundamental difference in the direction of understanding between philosophy and religion?",
-    "type": "multiple-choice",
     "options": [
-      "Both rely completely on personal faith and human reason to eventually discover the ultimate truth.",
-      "Philosophy is God revealing downward, while religion is mortal man attempting to reason upward.",
-      "Philosophy relies strictly on sacred texts, while religion questions existence using pure formal logic.",
-      "Philosophy is man trying to reason upward, while religion is God revealing downward."
+      "It is heavily negatively charged because it contains a large majority of free electrons.",
+      "It is positively charged because the donor atoms lose an electron.",
+      "It is electrically neutral.",
+      "It oscillates between positive and negative depending on the ambient temperature."
     ],
-    "answer": "Philosophy is man trying to reason upward, while religion is God revealing downward.",
-    "explanation": "Philosophy is man trying to reason upward to understand life using human thinking[cite: 135]. Religion is based on God revealing truth downward, built on faith in something beyond human reason[cite: 142, 143]."
-  },
-  {
-    "question": "In Islamic tradition, which branch specifically uses dialectic and logic to defend Islamic doctrine, such as debates about God's attributes?",
-    "type": "multiple-choice",
-    "options": ["Falsafa", "Maturidism", "Kalam", "Epistemology"],
-    "answer": "Kalam",
-    "explanation": "Kalam is the Islamic scholastic theology that uses dialectic and logic to defend Islamic doctrine, including debates about God's attributes[cite: 157, 159, 160]."
+    "answer": "It is electrically neutral.",
+    "explanation": "Both P-type and N-type semiconductor materials are electrically neutral on their own."
   },
   {
-    "question": "The branch of Islamic thought known as 'Falsafa' emerged prominently during the Golden Age when Muslims translated works from which thinkers?",
+    "question": "In a P-type semiconductor, why do the 'holes' appear to move as a positive charge through the crystal structure?",
     "type": "multiple-choice",
     "options": [
-      "Roman thinkers like Cicero and Seneca",
-      "Greek thinkers like Aristotle and Plato",
-      "Ancient Egyptian philosophers and scholars",
-      "Western scholastic Christian theologians"
+      "The holes themselves physically carry a positive proton through the lattice.",
+      "Because trivalent impurity atoms constantly repel each other across the covalent bonds.",
+      "An electron moving to fill one hole leaves another hole behind it, creating a chain reaction.",
+      "The external voltage directly pushes the positively charged nuclei of the Boron atoms."
     ],
-    "answer": "Greek thinkers like Aristotle and Plato",
-    "explanation": "Falsafa came into Islam during the Golden Age when Muslims translated the works of Greek thinkers like Aristotle and Plato[cite: 153]."
-  },
-  {
-    "question": "Divergent thinking expands the solution space through several sub-skills. Which of the following involves developing ideas in detail?",
-    "type": "multiple-choice",
-    "options": ["Fluency", "Originality", "Elaboration", "Flexibility"],
-    "answer": "Elaboration",
-    "explanation": "Within divergent thinking, 'Elaboration' is the specific ability to develop ideas in detail[cite: 85, 86]. Fluency is generating many ideas, and flexibility is shifting perspectives[cite: 85]."
+    "answer": "An electron moving to fill one hole leaves another hole behind it, creating a chain reaction.",
+    "explanation": "The apparent movement of holes is actually the sequential jumping of valence electrons from one vacancy to another."
   },
   {
-    "question": "Within Islamic core ideas, what concept explicitly encourages the use of independent reasoning when the scripture does not directly address an issue?",
+    "question": "When an N-type and P-type material are first joined, what causes the immediate transfer of electrons and holes across the junction?",
     "type": "multiple-choice",
-    "options": ["Wahy", "Tawhid", "Ijtihad", "Kalam"],
-    "answer": "Ijtihad",
-    "explanation": "While Tawhid is the Oneness of God [cite: 176] and Wahy is revelation [cite: 177], Ijtihad specifically refers to the encouragement of independent reasoning when the scripture is silent[cite: 178]."
-  },
-  {
-    "question": "According to the historical debates on Islamic philosophical views, how did Al-Ghazali view the relationship between philosophy and core Islamic beliefs?",
-    "type": "multiple-choice",
     "options": [
-      "He believed philosophy and revelation were perfectly parallel and could never inherently conflict.",
-      "He warned that philosophy could lead to heresy if it denies fundamental Islamic beliefs.",
-      "He argued that human reason should always supersede revelation when discrepancies arise.",
-      "He suggested that philosophy is the master of revelation and should guide scriptural interpretation."
+      "A very large density gradient between both sides of the junction.",
+      "The inherent repulsive force of the trivalent and pentavalent nuclei.",
+      "The spontaneous generation of a high-voltage avalanche breakdown at room temperature.",
+      "The immediate application of an external forward-biasing voltage source."
     ],
-    "answer": "He warned that philosophy could lead to heresy if it denies fundamental Islamic beliefs.",
-    "explanation": "Unlike Ibn Rushd, who defended philosophy as not conflicting with revelation if understood properly [cite: 189], Al-Ghazali warned that philosophy could lead to heresy if it denies core Islamic beliefs[cite: 171, 172]."
+    "answer": "A very large density gradient between both sides of the junction.",
+    "explanation": "This density difference forces carriers to migrate to areas of lower concentration via diffusion."
   },
   {
-    "question": "What do the Christian and Islamic philosophical traditions identify as the ultimate decider when human reason and divine revelation appear to clash?",
+    "question": "As electrons and holes migrate across the newly formed PN junction, what is created on the N-side of the junction?",
     "type": "multiple-choice",
     "options": [
-      "Revelation always takes precedence over reason because God speaks first.",
-      "Human reason is utilized to overwrite outdated scriptural traditions.",
-      "Both are viewed as entirely equal, leaving the individual to choose based on culture.",
-      "Theological dialectic must be used to prove that the revelation was historically flawed."
+      "A dense region of free electrons that acts as an insulator.",
+      "A layer of negatively charged acceptor ions.",
+      "Positively charged donor ions that are left behind.",
+      "A highly conductive channel known as the dynamic equilibrium zone."
     ],
-    "answer": "Revelation always takes precedence over reason because God speaks first.",
-    "explanation": "Both major religions share a significant similarity: they both assert that revelation is greater than reason when they clash, affirming that God speaks first[cite: 202]."
-  },
-  {
-    "question": "If a culture is exploring questions like 'What is fair?' and defining concepts such as freedom, equality, and human dignity, which branch of philosophy are they engaging in?",
-    "type": "multiple-choice",
-    "options": ["Aesthetics", "Epistemology", "Ethics", "Political Philosophy"],
-    "answer": "Political Philosophy",
-    "explanation": "Political philosophy specifically asks 'What is fair?' and deals with values like freedom, equality, human dignity, and responsibility[cite: 216, 218]. Ethics, meanwhile, deals with what is good or bad[cite: 212, 214]."
+    "answer": "Positively charged donor ions that are left behind.",
+    "explanation": "When free electrons migrate away from the N-side, they leave behind fixed, positively charged donor ions."
   },
   {
-    "question": "Under the Christian worldview, how are human values fundamentally established?",
+    "question": "Which of the following defines the condition necessary to maintain charge neutrality around the PN junction's depletion layer?",
     "type": "multiple-choice",
     "options": [
-      "They are voted upon by believers to align with modern democratic ideals.",
-      "They are discovered from God's character, rather than invented by human society.",
-      "They are completely relative and shift depending on the historical time period.",
-      "They are created through human philosophy striving upward to find meaning."
+      "The penetration depth on the positive side must be precisely equal to the penetration depth on the negative side.",
+      "The product of penetration depth and acceptor density on the P-side must equal the product of penetration depth and donor density on the N-side.",
+      "The total number of minority carriers must exceed the total number of majority carriers.",
+      "The applied zero bias voltage must exactly match the internal thermal voltage."
     ],
-    "answer": "They are discovered from God's character, rather than invented by human society.",
-    "explanation": "In the Christian worldview, values are not invented but discovered[cite: 228]. God does not ask humans to vote on what is good; He reveals it because it flows inherently from who He is[cite: 230]."
-  },
-  {
-    "question": "When applying the 'Quick test for any value,' analyzing whether a given value ultimately leads to human flourishing or destruction over the long term evaluates its:",
-    "type": "multiple-choice",
-    "options": ["Fruit", "Endgame", "Source", "Relativism"],
-    "answer": "Endgame",
-    "explanation": "The 'Quick test' examines three areas: Source, Fruit, and Endgame. The 'Endgame' specifically asks if the value leads to human flourishing or destruction long-term[cite: 236, 237, 239, 240]."
+    "answer": "The product of penetration depth and acceptor density on the P-side must equal the product of penetration depth and donor density on the N-side.",
+    "explanation": "This relationship ensures the total charge on each side remains equal and opposite."
   },
   {
-    "question": "How does the existentialist perspective define the concept of 'man' and his essence?",
+    "question": "What is the approximate potential barrier voltage for a silicon diode at room temperature?",
     "type": "multiple-choice",
     "options": [
-      "Man possesses the freedom to choose and must create meaning without any predefined essence.",
-      "Man is heavily bound by biological drives that predetermine his ultimate purpose.",
-      "Man is a stream of consciousness that eventually merges into a communal spirit.",
-      "Man's essence is strictly predefined by his socioeconomic status and productive activity."
+      "0.3 volts",
+      "0.7 volts",
+      "1.2 volts",
+      "26 millivolts"
     ],
-    "answer": "Man possesses the freedom to choose and must create meaning without any predefined essence.",
-    "explanation": "Existentialism implies that man has freedom of existence, meaning he must choose and create meaning for his world without a predefined essence[cite: 258]."
+    "answer": "0.7 volts",
+    "explanation": "Silicon diodes typically require about 0.6 to 0.7 volts to overcome the built-in potential barrier."
   },
   {
-    "question": "Which philosophical tradition asserts that a person's identity is constituted primarily through communal bonds, encapsulated by the idea that 'a person is a person through other persons'?",
+    "question": "In a Zero Biased PN Junction diode, what establishes the state of 'Dynamic Equilibrium'?",
     "type": "multiple-choice",
     "options": [
-      "Marxism",
-      "African philosophy",
-      "Phenomenology",
-      "Christian theology"
+      "When the external voltage perfectly matches the internal barrier potential.",
+      "When the flow of majority carriers crossing the junction completely ceases.",
+      "When the movement of majority carriers in one direction equals the movement of minority carriers in the opposite direction.",
+      "When the depletion layer entirely collapses due to thermal fluctuations."
     ],
-    "answer": "African philosophy",
-    "explanation": "Considering African philosophy and community relationality, 'a person is a person through other persons,' which implies that identity is constituted through communal bonds[cite: 260]."
+    "answer": "When the movement of majority carriers in one direction equals the movement of minority carriers in the opposite direction.",
+    "explanation": "Equilibrium is reached when the forward current (majority carriers) exactly equals the reverse current (minority carriers), yielding zero net current."
   },
   {
-    "question": "According to the Marxist viewpoint, where does the essence of human beings within their environment primarily lie?",
+    "question": "How is a diode connected in a circuit to achieve a Reverse Bias condition?",
     "type": "multiple-choice",
     "options": [
-      "In the innate inclination toward good and spiritual enlightenment.",
-      "In the realization that consciousness is an illusion tied to physicalism.",
-      "In their productive and conscious activity shaped by material conditions.",
-      "In the ability to transcend biological urges through pure cognitive reasoning."
+      "Positive voltage to the P-type material and negative voltage to the N-type material.",
+      "Positive voltage to the N-type material and negative voltage to the P-type material.",
+      "Both terminals are shorted together to ground.",
+      "Alternating current is applied directly to the Anode."
     ],
-    "answer": "In their productive and conscious activity shaped by material conditions.",
-    "explanation": "The Marxism school of thought believes that human essence in the environment lies in the productive and conscious activity by which he shapes and is shaped by material conditions[cite: 262]."
+    "answer": "Positive voltage to the N-type material and negative voltage to the P-type material.",
+    "explanation": "This pulls electrons and holes away from the junction, widening the depletion layer."
   },
   {
-    "question": "In philosophical discussions about the mind as a component of existence, the 'identity theory' raises the question of whether the mind is:",
+    "question": "What happens to the depletion layer of a PN junction when a reverse bias voltage is applied?",
     "type": "multiple-choice",
     "options": [
-      "An eternal soul that outlives the physical body.",
-      "Reducible entirely to the physical state of the brain.",
-      "An illusion created by societal conditioning.",
-      "The result of spiritual karma spanning multiple lives."
+      "It becomes extremely narrow, allowing maximum current flow.",
+      "It completely disappears, turning the diode into a pure conductor.",
+      "It grows wider due to a lack of electrons and holes near the junction.",
+      "It remains unchanged but the potential barrier decreases slightly."
     ],
-    "answer": "Reducible entirely to the physical state of the brain.",
-    "explanation": "Philosophical debates about the mind and body emphasize questions like whether the mind is reducible to the state of the brain, a concept known as identity theory[cite: 286]."
+    "answer": "It grows wider due to a lack of electrons and holes near the junction.",
+    "explanation": "The external voltage pulls carriers away, expanding the region lacking charge carriers and increasing resistance."
   },
   {
-    "question": "Which component of human existence is philosophically linked to the concept of 'imago dei', Karma, or the Ubuntu communal spirits?",
+    "question": "If the reverse bias voltage across a standard diode is increased far beyond its normal operating limits, what is the most likely outcome?",
     "type": "multiple-choice",
     "options": [
-      "Social Connections",
-      "The Physical Body",
-      "The Mind",
-      "The Spirit or Soul"
+      "The diode will begin to act as a perfect insulator with infinite resistance indefinitely.",
+      "The diode will suffer an avalanche breakdown, likely overheating and failing.",
+      "The depletion layer will safely absorb the excess energy and shrink.",
+      "The diode will instantly transform into an N-type semiconductor."
     ],
-    "answer": "The Spirit or Soul",
-    "explanation": "Factors explaining the connections of the soul with human existence are deeply tied to ideas like the 'imago dei' in Abrahamic faith, Karma in Hinduism/Buddhism, and Ubuntu communal spirits[cite: 293]."
+    "answer": "The diode will suffer an avalanche breakdown, likely overheating and failing.",
+    "explanation": "Excessive reverse voltage causes the avalanche effect, leading to a massive current spike and thermal destruction."
   },
   {
-    "question": "How did existentialists interpret the role of human emotions, such as anxiety?",
+    "question": "Which type of specialized diode takes advantage of the reverse breakdown region to provide a fixed voltage output?",
     "type": "multiple-choice",
     "options": [
-      "As an illogical distraction that prevents true rational thought.",
-      "As a temperament revealing our inherent freedom of existence.",
-      "As a strictly biological response governed entirely by DNA.",
-      "As a temporary illusion that disappears upon achieving societal wealth."
+      "A Light Emitting Diode (LED)",
+      "A Silicon Controlled Rectifier (SCR)",
+      "A Signal Diode",
+      "A Zener Diode"
     ],
-    "answer": "As a temperament revealing our inherent freedom of existence.",
-    "explanation": "The Existentialist school of thought saw human emotions as the temperament of 'being in the world'; for example, the nature of anxiety explicitly reveals our freedom of existence[cite: 296]."
+    "answer": "A Zener Diode",
+    "explanation": "Zener diodes are intentionally designed to operate safely in the reverse breakdown region for voltage stabilization."
   },
   {
-    "question": "Which modern era philosopher profoundly influenced constitutionalism and democratic governance by emphasizing natural rights like life, liberty, and property?",
+    "question": "During Forward Bias, what represents the point on the static I-V characteristics curve where a sudden, high increase in current takes place?",
     "type": "multiple-choice",
     "options": [
-      "Jean-Jacques Rousseau",
-      "Thomas Hobbes",
-      "John Locke",
-      "Soren Kierkegaard"
+      "The dynamic equilibrium zone",
+      "The avalanche breakdown point",
+      "The 'knee' point",
+      "The saturation threshold"
     ],
-    "answer": "John Locke",
-    "explanation": "John Locke emphasized natural rights, including life, liberty, and property, which profoundly influenced democratic governance and constitutionalism[cite: 307]."
+    "answer": "The 'knee' point",
+    "explanation": "The 'knee' is where the external voltage overcomes the potential barrier, causing current to spike upwards."
   },
   {
-    "question": "What philosophical factor acts as the 'theater' where experiences, perceptions, and self-awareness play out?",
+    "question": "Why is it usually necessary to place a resistor in series with a forward-biased diode in a practical circuit?",
     "type": "multiple-choice",
     "options": [
-      "Emotions",
-      "Consciousness",
-      "The Physical Body",
-      "Social Connections"
+      "To increase the width of the depletion layer artificially.",
+      "Because the diode acts almost like a short circuit past the knee point and would draw infinite current.",
+      "To force the diode into an avalanche breakdown state.",
+      "To convert the direct current (DC) back into alternating current (AC)."
     ],
-    "answer": "Consciousness",
-    "explanation": "Consciousness is said to be one of the foundation factors of philosophies about human existence, acting as the theater where experience, perceptions, and self-awareness play out[cite: 313]."
+    "answer": "Because the diode acts almost like a short circuit past the knee point and would draw infinite current.",
+    "explanation": "Without a limiting resistor, the minimal resistance of the diode after the knee point would allow a destructive amount of current to flow."
   },
   {
-    "question": "According to philosopher Soren Kierkegaard, what is the true nature of individuality?",
+    "question": "In the general diode characteristic equation, what does 'Is' represent?",
     "type": "multiple-choice",
     "options": [
-      "A complete separation from societal rules and isolation from the community.",
-      "A reflective commitment to personal freedom and responsibility.",
-      "The passive acceptance of biological drives and evolutionary instincts.",
-      "A surrender to predefined values given by authoritative figures."
+      "The forward bias surge current.",
+      "The reverse saturation current.",
+      "The intrinsic silicon temperature coefficient.",
+      "The minimum holding current for conduction."
     ],
-    "answer": "A reflective commitment to personal freedom and responsibility.",
-    "explanation": "Kierkegaard argued that true individuality is not a passive isolation, but rather a reflective commitment to personal freedom and responsibility[cite: 320]."
+    "answer": "The reverse saturation current.",
+    "explanation": "This small leakage current occurs under reverse bias and is a foundational factor in the equation."
   },
   {
-    "question": "In contrast to Thomas Aquinas who used Aristotle to build systematic theology, which historical thinker utilized Plato's philosophy to explain Christianity?",
+    "question": "Structurally, a Silicon Controlled Rectifier (SCR) is fundamentally composed of how many alternating semiconductor layers?",
     "type": "multiple-choice",
-    "options": ["Al-Kindi", "C.S. Lewis", "Tertullian", "Augustine of Hippo"],
-    "answer": "Augustine of Hippo",
-    "explanation": "Augustine of Hippo used Plato to explain Christianity, whereas Thomas Aquinas used Aristotle to build systematic theology[cite: 196, 197]."
-  },
-  {
-    "question": "Under the Relativism worldview, what happens to the concept of moral truth over time?",
-    "type": "multiple-choice",
     "options": [
-      "It remains permanently anchored to ancient traditions.",
-      "It shifts constantly based on societal feelings, making it hard to stand firm.",
-      "It becomes completely obsolete and replaced by scientific theory.",
-      "It is defined exclusively by an individual's productive output."
+      "Two layers forming a single junction.",
+      "Three layers, similar to a standard NPN transistor.",
+      "Four layers arranged as PNPN.",
+      "Five layers for high voltage regulation."
     ],
-    "answer": "It shifts constantly based on societal feelings, making it hard to stand firm.",
-    "explanation": "In Relativism, society or feelings decide values, meaning what is 'right' in 2026 might be 'wrong' in 2036. Truth shifts, making it hard to stand firm[cite: 224, 225]."
+    "answer": "Four layers arranged as PNPN.",
+    "explanation": "An SCR is a four-layer, three-junction device (p-n-p-n)."
   },
   {
-    "question": "According to the biological and naturalism school of thought, what distinct ability characterizes man's survival?",
+    "question": "Which of the following correctly identifies the three terminals of a Silicon Controlled Rectifier?",
     "type": "multiple-choice",
     "options": [
-      "The spiritual desire to commune with a higher power.",
-      "The emotional capacity to form deep communal bonds.",
-      "The rational and intellect ability to think abstractly and carry out reasoning.",
-      "The absolute freedom to reject any pre-existing bodily limitations."
+      "Emitter, Base, Collector",
+      "Anode, Cathode, Gate",
+      "Source, Drain, Gate",
+      "Main Terminal 1, Main Terminal 2, Gate"
     ],
-    "answer": "The rational and intellect ability to think abstractly and carry out reasoning.",
-    "explanation": "In the biological and naturalism school of thought, man has the rational and intellect ability to think abstractly, carry out reasoning procedures, and plan accordingly for his existence and survival[cite: 263]."
-  },
-  {
-    "question": "Which component of human existence explicitly mediates between biological urges, social norms, emotions, and existential questions?",
-    "type": "multiple-choice",
-    "options": ["The Physical Body", "The Mind", "The Spirit", "Consciousness"],
-    "answer": "The Mind",
-    "explanation": "Philosophers justify that the factors of how the mind operates in the body mediate between biological urges, social norms, emotions, and existential questions[cite: 284]."
-  },
-  {
-    "question": "According to the Buddhist concept mentioned in the text, human existence encompasses the 'Five Aggregates'. Which of the following is NOT one of those aggregates?",
-    "type": "multiple-choice",
-    "options": ["Form", "Karma", "Perception", "Consciousness"],
-    "answer": "Karma",
-    "explanation": "The Buddhist concept of the Five Aggregates includes form, sensation, perception, mental formations, and consciousness[cite: 327]. Karma is discussed separately in relation to the soul, but it is not one of the aggregates[cite: 293]."
+    "answer": "Anode, Cathode, Gate",
+    "explanation": "The outer p-type is the Anode, the outer n-type is the Cathode, and the inner p-type is the Gate."
   },
   {
-    "question": "In the existentialist framework, how do the concepts of 'existence' and 'essence' fundamentally differ?",
+    "question": "In the equivalent circuit model of an SCR, the device is visualized as:",
     "type": "multiple-choice",
     "options": [
-      "Existence implies the state of being encompassing freedom and responsibility, whereas essence implies the inherent nature or purpose of human life.",
-      "Existence refers purely to the biological state of humanity, while essence refers exclusively to religiously dictated beliefs.",
-      "Existence dictates that societal norms must always be followed, while essence emphasizes complete rebellion against those norms.",
-      "Existence is the predetermined destiny of a person, and essence is the state of being free from all ethical consequences."
+      "Two diodes connected back-to-back in parallel.",
+      "A single NPN transistor paired with a high-power resistor.",
+      "One PNP transistor and one NPN transistor interconnected.",
+      "Three NPN transistors in a cascading sequence."
     ],
-    "answer": "Existence implies the state of being encompassing freedom and responsibility, whereas essence implies the inherent nature or purpose of human life.",
-    "explanation": "The concept of existence implies the state of being, which encompasses freedom, responsibility, and the search for meaning[cite: 3]. In contrast, essence implies the inherent nature or purpose of human existence on earth, relating to the 'why' of man on earth[cite: 3]."
+    "answer": "One PNP transistor and one NPN transistor interconnected.",
+    "explanation": "The base of one transistor is connected to the collector of the other, creating a positive feedback loop."
   },
   {
-    "question": "According to contemporary philosophical ethics, what should primarily guide the technological design and governance of artificial intelligence (AI)?",
+    "question": "When an SCR is connected to a power source with the Anode kept positive relative to the Cathode, but the Gate is left open (no voltage), what is the state of its internal junctions?",
     "type": "multiple-choice",
     "options": [
-      "The absolute maximization of corporate profits and computational efficiency across networks.",
-      "The gradual elimination of human autonomy to prevent digital communication errors.",
-      "Ethical principles such as respect for human dignity and autonomy.",
-      "The complete replacement of biological cognitive functions with digital reasoning."
+      "All three junctions are reverse biased.",
+      "Junctions J1 and J3 are forward biased, while junction J2 is reverse biased.",
+      "Junction J2 is forward biased, causing immediate conduction.",
+      "Junctions J1 and J3 break down simultaneously to allow leakage current."
     ],
-    "answer": "Ethical principles such as respect for human dignity and autonomy.",
-    "explanation": "Philosophers argue that ethical principles, specifically the respect for human dignity and autonomy, should guide technological design and governance regarding artificial intelligence[cite: 3]."
+    "answer": "Junctions J1 and J3 are forward biased, while junction J2 is reverse biased.",
+    "explanation": "The positive anode forward biases J1, and the negative cathode forward biases J3, leaving the middle junction J2 reverse biased."
   },
   {
-    "question": "Which ethical framework explicitly evaluates actions based on their consequences, particularly focusing on promoting happiness and reducing suffering?",
+    "question": "What is the specific purpose of applying a small positive voltage to the Gate of an SCR?",
     "type": "multiple-choice",
     "options": [
-      "Deontological ethics",
-      "Ethics of virtue",
-      "Utilitarianism",
-      "Existentialism"
+      "It instantly reduces the supply voltage to zero.",
+      "It turns the SCR completely off by expanding the depletion layer at J2.",
+      "It forces junction J2 to break down at a much lower applied anode-cathode voltage.",
+      "It acts as a permanent power source to keep the SCR conducting continuously."
     ],
-    "answer": "Utilitarianism",
-    "explanation": "Utilitarianism, advanced by philosophers like Jeremy Bentham and John Stuart Mill, evaluates actions based on their consequences; particularly on the promotion of happiness and reduction of suffering among human folk[cite: 3]. Deontology focuses on duties[cite: 3], while virtue ethics emphasizes character[cite: 3]."
+    "answer": "It forces junction J2 to break down at a much lower applied anode-cathode voltage.",
+    "explanation": "The gate current initiates a feedback loop that causes the reverse-biased J2 to break down rapidly, closing the switch."
   },
   {
-    "question": "Immanuel Kant's deontological ethics forms the philosophical basis for which of the following modern concepts?",
+    "question": "Once an SCR starts conducting heavily (turned ON), what happens if you completely remove the Gate voltage?",
     "type": "multiple-choice",
     "options": [
-      "Human rights and democratic principles.",
-      "The strict calculation of societal happiness versus individual suffering.",
-      "The prioritization of artistic value over cognitive development.",
-      "The belief that existence strictly precedes essence in all matters."
+      "The SCR immediately stops conducting and turns OFF.",
+      "The anode current drops proportionally to the missing gate current.",
+      "The SCR begins to conduct in the reverse direction.",
+      "The SCR continues to conduct as the Gate loses all control."
     ],
-    "answer": "Human rights and democratic principles.",
-    "explanation": "Deontological ethics, articulated by Kant, emphasizes performing duties, moral rules, and respect for human dignity, which forms the philosophical basis for human rights and democratic principles[cite: 3]."
+    "answer": "The SCR continues to conduct as the Gate loses all control.",
+    "explanation": "Once the internal positive feedback loop is established, the SCR remains ON regardless of gate voltage."
   },
   {
-    "question": "What did philosopher John Dewey argue was the primary purpose of education?",
+    "question": "What is the only reliable way to bring a conducting SCR back to its OFF condition?",
     "type": "multiple-choice",
     "options": [
-      "To enforce conservative and rigid dogmas regarding established societal norms.",
-      "To prepare individuals for active participation in society through experiential learning.",
-      "To strictly prepare students for digital communication and artificial intelligence oversight.",
-      "To separate students from real-world contexts to foster purely abstract reasoning."
+      "Apply a massive negative voltage spike to the Gate terminal.",
+      "Reduce the main supply voltage across the Anode and Cathode to almost zero.",
+      "Physically disconnect the Gate terminal from the control circuit.",
+      "Increase the load resistance to exactly double its original value."
     ],
-    "answer": "To prepare individuals for active participation in society through experiential learning.",
-    "explanation": "John Dewey emphasized experiential learning, critical thinking, and democratic education, arguing that education should prepare individuals for active participation in society[cite: 3]."
+    "answer": "Reduce the main supply voltage across the Anode and Cathode to almost zero.",
+    "explanation": "Dropping the anode current below the holding current breaks the internal feedback loop, turning the SCR off."
   },
   {
-    "question": "How does philosophical reflection specifically benefit teachers when facing the unpredictable realities of educational practice, according to Sherwood (2024)?",
+    "question": "How does the 'accumulative action' work in the two-transistor equivalent circuit of an SCR?",
     "type": "multiple-choice",
     "options": [
-      "It allows them to blindly follow standardized instructional manuals without deviation.",
-      "It ensures they remain rigid and dogmatic to strictly maintain classroom discipline.",
-      "It positions them to respond creatively and ethically to complex classroom contexts.",
-      "It encourages them to delegate all moral judgments to school administrators."
+      "The base current of T1 cancels out the collector current of T2, creating a safe equilibrium.",
+      "An increase of current in one transistor directly causes an increase of current in the other, driving both to saturation.",
+      "The emitter of T1 directly absorbs excess heat from T2, preventing thermal runaway.",
+      "It slowly builds up resistance until the circuit safely shuts itself down."
     ],
-    "answer": "It positions them to respond creatively and ethically to complex classroom contexts.",
-    "explanation": "According to Sherwood (2024), reflective practitioners are better positioned to respond creatively and ethically to the unpredictable realities of educational practice[cite: 3]."
+    "answer": "An increase of current in one transistor directly causes an increase of current in the other, driving both to saturation.",
+    "explanation": "The collector of one feeds the base of the other, creating a positive feedback loop that rapidly saturates both."
   },
   {
-    "question": "Which statement best captures John Dewey's perspective on aesthetic experiences?",
+    "question": "The 'Breakover Voltage' of an SCR refers to:",
     "type": "multiple-choice",
     "options": [
-      "They are strictly confined to the appreciation of high-level fine arts and sensory pleasure.",
-      "They are entirely separate from cognitive development and emotional growth in education.",
-      "They only occur during religious rituals, deep existential crises, or times of mortality.",
-      "They are embedded in ordinary human activities that lead to unity, intensity, and fulfillment."
+      "The maximum reverse voltage it can withstand before avalanche breakdown occurs.",
+      "The voltage at which the physical silicon lattice shatters.",
+      "The minimum forward supply voltage required to turn the SCR ON when the gate is completely open.",
+      "The exact voltage applied to the gate to trigger conduction."
     ],
-    "answer": "They are embedded in ordinary human activities that lead to unity, intensity, and fulfillment.",
-    "explanation": "Dewey argued that aesthetic experience is not confined to fine art but is embedded in ordinary human activities when that experience leads to achieving unity, intensity, and the fulfillment of life purposes[cite: 3]."
+    "answer": "The minimum forward supply voltage required to turn the SCR ON when the gate is completely open.",
+    "explanation": "Without gate current, the SCR relies purely on a high forward voltage to force junction J2 to break down."
   },
   {
-    "question": "According to the text, what specific psychological effect does pursuing philosophy have on teachers?",
+    "question": "Why is 'Peak Reverse Voltage' (PRV) a critical rating when using an SCR in an alternating current (AC) circuit?",
     "type": "multiple-choice",
     "options": [
-      "It makes them more rigid and dogmatic in enforcing their traditional teaching methods.",
-      "It instills a sense of absolute certainty, making them completely resistant to new evidence.",
-      "It convinces them that their past opinions and methods are academically infallible.",
-      "It has a humbling effect, encouraging them to keep an open mind to new evidence."
+      "Because an SCR requires alternating reverse pulses to maintain conduction.",
+      "Because during the negative half-cycle, the SCR is reverse-biased, and exceeding PRV will destroy it.",
+      "Because it dictates the exact moment the gate will trigger in the next cycle.",
+      "Because AC circuits inherently lack resistance, making PRV the only current limiting factor."
     ],
-    "answer": "It has a humbling effect, encouraging them to keep an open mind to new evidence.",
-    "explanation": "Philosophy has a humbling effect on those who pursue it, encouraging teachers to keep an open mind because new evidence may render previous opinions less tenable; this is good for countering traditional rigidity[cite: 3]."
+    "answer": "Because during the negative half-cycle, the SCR is reverse-biased, and exceeding PRV will destroy it.",
+    "explanation": "In AC circuits, the SCR acts as a rectifier and must safely block the entire negative half-cycle voltage without suffering avalanche breakdown."
   },
   {
-    "question": "Which branch of philosophy is credited as the origin of questions regarding observation, the explanation of facts, and causation in the scientific method?",
+    "question": "What is the definition of the 'Holding Current' of an SCR?",
     "type": "multiple-choice",
     "options": [
-      "Metaphysics",
-      "Epistemology",
-      "Aesthetics",
-      "Deontology"
+      "The continuous current required at the Gate terminal to keep the device ON.",
+      "The minimum load current needed before the SCR can be initially triggered.",
+      "The maximum steady-state anode current the device can safely carry indefinitely.",
+      "The specific minimum anode current level below which the SCR will turn OFF."
     ],
-    "answer": "Epistemology",
-    "explanation": "Questions about observations, explanation of facts, and causation are said to have originated in philosophical epistemology, which laid the foundation for early scientific methods[cite: 3]."
+    "answer": "The specific minimum anode current level below which the SCR will turn OFF.",
+    "explanation": "If the current drops below this tiny threshold, the internal transistors drop out of saturation and the device opens."
   },
   {
-    "question": "Existentialist philosophers like Kierkegaard, Nietzsche, and Sartre primarily emphasized which of the following?",
+    "question": "The 'Circuit Fusing Rating' of an SCR is used primarily to indicate:",
     "type": "multiple-choice",
     "options": [
-      "Individual freedom, authenticity of existence, and the responsibility to create meaning.",
-      "The necessity of adhering strictly to predetermined theological doctrines for salvation.",
-      "The absolute reliance on established societal norms to define a person's identity.",
-      "The belief that human existence is entirely dictated by biological determinism."
+      "Its ability to act as a permanent replacement for a standard household fuse.",
+      "Its maximum capability to withstand short-duration forward surge currents without excessive power dissipation damage.",
+      "The exact delay time between gate triggering and heavy load conduction.",
+      "The highest AC frequency the SCR can accurately rectify."
     ],
-    "answer": "Individual freedom, authenticity of existence, and the responsibility to create meaning.",
-    "explanation": "Existentialist philosophers such as Søren Kierkegaard, Friedrich Nietzsche, and Jean-Paul Sartre emphasized individual freedom, authenticity of existence, and the responsibility to create meaning in a world that may lack inherent purpose[cite: 3]."
+    "answer": "Its maximum capability to withstand short-duration forward surge currents without excessive power dissipation damage.",
+    "explanation": "The rating measures the thermal energy a surge deposits; exceeding it destroys the device."
   },
   {
-    "question": "According to contemporary scholars (Abeyta & Blake, 2020), what role do religious beliefs often play in human existence?",
+    "question": "If an SCR has a breakover voltage of 400V, and a supply voltage of 200V is applied with the gate completely disconnected, what is the state of the SCR?",
     "type": "multiple-choice",
     "options": [
-      "They act as cognitive barriers to understanding natural aesthetics and science.",
-      "They function solely as political tools to enforce rigid global governance.",
-      "They serve as existential frameworks helping individuals cope with mortality and uncertainty.",
-      "They replace the need for critical thinking in all forms of educational policy formulation."
+      "It is conducting heavily because 200V is sufficient to drive the forward bias.",
+      "It remains in an open, non-conducting state.",
+      "It is conducting a moderate load current equal to exactly half its maximum rating.",
+      "It is operating in the avalanche breakdown region."
     ],
-    "answer": "They serve as existential frameworks helping individuals cope with mortality and uncertainty.",
-    "explanation": "Contemporary scholars highlight that religious beliefs often serve as existential frameworks that help individuals cope with mortality, uncertainty, and the search for purpose[cite: 3]."
+    "answer": "It remains in an open, non-conducting state.",
+    "explanation": "Since the applied 200V is less than the 400V breakover threshold and there is no gate signal, it will block current."
   },
   {
-    "question": "Which philosopher is specifically associated with the concept of 'rights' that forms the backbone of modern democratic institutions, according to the text?",
+    "question": "In the context of doping, what are 'Majority Carriers' in a P-type semiconductor?",
     "type": "multiple-choice",
     "options": [
-      "Plato",
-      "Thomas Hobbes",
-      "John Rawls",
-      "Jeremy Bentham"
+      "Free electrons donated by pentavalent impurities.",
+      "Positively charged holes generated by trivalent impurities.",
+      "The static nuclei of the pure silicon atoms.",
+      "Negative ions residing inside the depletion layer."
     ],
-    "answer": "John Rawls",
-    "explanation": "The text specifically states that concepts from political philosophy such as 'rights by Rawls' form the backbone of modern democratic institutions and legal frameworks[cite: 3]. Justice is associated with Plato, and the social contract with Hobbes[cite: 3]."
+    "answer": "Positively charged holes generated by trivalent impurities.",
+    "explanation": "Acceptor impurities create a deficit of electrons (holes), making them the dominant charge carrier in P-type material."
   },
   {
-    "question": "What analogy is used in the text to emphasize the necessity for a teacher to continue developing intellectually in order to help students?",
+    "question": "Which of the following elements is frequently used as a Pentavalent impurity?",
     "type": "multiple-choice",
     "options": [
-      "A tree cannot bear fruit unless its roots are watered daily.",
-      "A lamp can never light another lamp unless it continues to turn its own flame.",
-      "A building cannot stand unless its foundation is made of solid stone.",
-      "A ship cannot sail unless the wind continuously blows against its sails."
+      "Boron",
+      "Aluminum",
+      "Antimony",
+      "Indium"
     ],
-    "answer": "A lamp can never light another lamp unless it continues to turn its own flame.",
-    "explanation": "The text explains that a teacher can never truly teach unless he is still learning, using the specific analogy that 'a lamp can never light another lamp unless it continues to turn its own flame'[cite: 3]."
+    "answer": "Antimony",
+    "explanation": "Antimony has 5 valence electrons, making it a pentavalent donor impurity."
   },
   {
-    "question": "In the context of ethical guidance for global challenges, how does intergenerational justice fundamentally differ from utilitarianism?",
+    "question": "Which equation correctly defines Resistivity?",
     "type": "multiple-choice",
     "options": [
-      "Intergenerational justice maximizes immediate economic profit, while utilitarianism focuses strictly on animal rights.",
-      "Intergenerational justice emphasizes moral obligations to future generations, while utilitarianism focuses on maximizing overall current happiness.",
-      "Intergenerational justice prioritizes aesthetic beauty, while utilitarianism focuses exclusively on individual freedom.",
-      "Intergenerational justice strictly follows religious dogma, while utilitarianism relies on existentialist freedom."
+      "Resistivity is Resistance multiplied by Length divided by Area.",
+      "Resistivity is Voltage divided by Current.",
+      "Resistivity is Resistance multiplied by Area divided by Length.",
+      "Resistivity is Resistance multiplied by Area multiplied by Length."
     ],
-    "answer": "Intergenerational justice emphasizes moral obligations to future generations, while utilitarianism focuses on maximizing overall current happiness.",
-    "explanation": "Intergenerational justice emphasizes the moral obligation to protect the environment for future generations, whereas utilitarianism advocates for actions that maximize overall happiness and minimize suffering[cite: 3]."
+    "answer": "Resistivity is Resistance multiplied by Area divided by Length.",
+    "explanation": "Resistivity equals Resistance times cross-sectional Area divided by length."
   },
   {
-    "question": "In the realm of natural aesthetics, what does recent research (von Fircks, 2020) emphasize about how individuals respond to beauty in their environment?",
+    "question": "An SCR in a circuit is subjected to a 100 A surge. If the SCR's circuit fusing rating is 50 A^2s, what is the maximum duration this surge can safely last?",
     "type": "multiple-choice",
     "options": [
-      "It is entirely based on biological instincts without any cognitive input.",
-      "It relies on the complex interaction between cognition, knowledge, and perception.",
-      "It is strictly determined by socioeconomic status and ancient cultural background.",
-      "It is purely a sensory reaction completely devoid of any intellectual engagement."
+      "50 milliseconds",
+      "2 milliseconds",
+      "5 milliseconds",
+      "0.5 seconds"
     ],
-    "answer": "It relies on the complex interaction between cognition, knowledge, and perception.",
-    "explanation": "Research by von Fircks (2020) emphasizes that in natural aesthetics, there is a complex interaction between cognition and aesthetic appreciation, where knowledge and perception directly influence how individuals respond to beauty[cite: 3]."
+    "answer": "5 milliseconds",
+    "explanation": "Using maximum time = (Circuit fusing rating) / (Surge current squared), we get 50 / 10000 = 0.005 seconds, which is 5ms."
   },
   {
-    "question": "How does the knowledge of philosophy practically empower a teacher regarding educational policies?",
+    "question": "Which component does the Gate terminal of an SCR physically connect to in its multi-layer structure?",
     "type": "multiple-choice",
     "options": [
-      "It forces the teacher to strictly enforce policies formulated by external administrators without question.",
-      "It completely removes the teacher's need to appraise their progress against background educational aims.",
-      "It enables the teacher to theoretically evaluate problems and cooperate with others to formulate adequate policies.",
-      "It allows the teacher to bypass all school laws and implement purely subjective, independent rules."
+      "The outer P-type material near the Anode.",
+      "The inner N-type material.",
+      "The outer N-type material near the Cathode.",
+      "The inner P-type material."
     ],
-    "answer": "It enables the teacher to theoretically evaluate problems and cooperate with others to formulate adequate policies.",
-    "explanation": "A teacher's knowledge of philosophy increases their ability to influence policies; their engagement in theoretical discussion enables them to offer alternatives and cooperate with others to formulate adequate policies rather than just being at the receiving end[cite: 3]."
+    "answer": "The inner P-type material.",
+    "explanation": "The gate terminal is attached to the inner P-type layer, adjacent to the N-type cathode."
   },
   {
-    "question": "According to Aristotle's ethics of virtue, how is a 'good life' primarily pursued and achieved?",
+    "question": "What historic device is considered the vacuum-tube equivalent of the solid-state SCR?",
     "type": "multiple-choice",
     "options": [
-      "Through the rigorous calculation of consequences to maximize pleasure.",
-      "Through the strict adherence to universal democratic rules and modern laws.",
-      "Through character development, moderation, and the cultivation of moral habits.",
-      "Through the existential rejection of all predetermined societal norms."
+      "The Magnetron",
+      "The Triode",
+      "The Thyratron",
+      "The Klystron"
     ],
-    "answer": "Through character development, moderation, and the cultivation of moral habits.",
-    "explanation": "Aristotle's ethics of virtue emphasizes character development and the pursuit of a good life through moderation and moral excellence, highlighting the importance of habits and moral education[cite: 3]."
+    "answer": "The Thyratron",
+    "explanation": "The SCR acts as a solid-state equivalent to the gas-filled thyratron tube, matching its grid, plate, and cathode behavior."
   },
   {
-    "question": "What is a proven outcome of applying existential principles to human existence, according to recent studies by Basnet et al. (2024)?",
+    "question": "If an SCR has a 'Forward current rating' of 40A, what does this specification strictly mean?",
     "type": "multiple-choice",
     "options": [
-      "It eliminates the need for any social relationships or community interactions entirely.",
-      "It forces individuals to prioritize external standards of success over personal meaning.",
-      "It completely resolves all forms of existential anxiety by proving religious doctrines.",
-      "It results in deeper self-reflection and improved coping strategies during life transitions."
+      "It requires exactly 40A to trigger the ON state.",
+      "It can safely conduct a maximum of 40A without suffering destructive overheating.",
+      "It will automatically turn OFF if the current drops below 40A.",
+      "It acts as a current amplifier, boosting input signals by a factor of 40."
     ],
-    "answer": "It results in deeper self-reflection and improved coping strategies during life transitions.",
-    "explanation": "Recent studies inform that applying existential principles to human existence results in deeper self-reflection and improved coping strategies during life transitions[cite: 3]."
+    "answer": "It can safely conduct a maximum of 40A without suffering destructive overheating.",
+    "explanation": "This rating defines the upper limit of continuous current the device junctions can survive."
   },
   {
-    "question": "The component of 'Language and Communication' is primarily identified as essential for what aspect of human existence?",
+    "question": "Why are Trivalent impurities known as 'Acceptors'?",
     "type": "multiple-choice",
     "options": [
-      "Evaluating the biological and physiological processes of the physical body.",
-      "Expressing feelings, making connections, and making meaning from environmental encounters.",
-      "Developing strict computational models for artificial intelligence integration.",
-      "Calculating the utilitarian value of complex social and political laws."
+      "Because they naturally accept positive protons from the silicon lattice.",
+      "Because they accept an extra free electron from a neighboring atom to complete their bond, generating a moving hole.",
+      "Because they accept excess thermal energy to prevent avalanche breakdown.",
+      "Because they freely accept donor atoms into their nucleus."
     ],
-    "answer": "Expressing feelings, making connections, and making meaning from environmental encounters.",
-    "explanation": "The language and communication component focuses essentially on man's medium for expressing feelings, making connections, and making meaning from our environmental encounters[cite: 3]."
+    "answer": "Because they accept an extra free electron from a neighboring atom to complete their bond, generating a moving hole.",
+    "explanation": "Having only 3 valence electrons, they 'accept' an electron to form a stable 4-bond structure, leaving a positive hole behind."
   },
   {
-    "question": "Why is the philosophical analysis of concepts like 'meaning' and 'understanding' deemed important for the future of artificial intelligence (AI)?",
+    "question": "When comparing the width of the depletion layer to the N and P type materials further away from the junction, what defines the depletion layer?",
     "type": "multiple-choice",
     "options": [
-      "It guarantees that AI models will eventually possess an immortal, self-aware soul.",
-      "It helps ensure that future AI technologies will align with human values.",
-      "It ensures that AI will completely replace the need for human teachers in educational settings.",
-      "It maximizes the processing speed and data storage capacities of new digital technologies."
+      "It is completely filled with a dense cloud of highly mobile minority carriers.",
+      "It becomes a highly conductive metallic strip due to ion clustering.",
+      "It contains only pure, intrinsic silicon with no doping atoms present.",
+      "It is completely depleted of any free charge carriers."
     ],
-    "answer": "It helps ensure that future AI technologies will align with human values.",
-    "explanation": "Research on interpretability in AI argues that philosophical analysis of concepts such as meaning and understanding can help ensure that future technologies align with human values[cite: 3]."
+    "answer": "It is completely depleted of any free charge carriers.",
+    "explanation": "The diffusion process leaves this area empty of free electrons and holes, containing only fixed ions."
   }
 ]
