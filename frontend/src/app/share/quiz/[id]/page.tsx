@@ -520,7 +520,7 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-primary)]">
       <ShareBanner />
-      <div className="flex-1 p-4 sm:p-6 md:p-8 w-full max-w-7xl mx-auto flex items-center justify-center">
+      <div className="flex-1 p-4 sm:p-6 md:p-8 pb-24 lg:pb-8 w-full max-w-7xl mx-auto flex items-center justify-center">
         {submitted ? (
           <div className="w-full max-w-md mx-auto text-center py-10">
             <div className="text-5xl font-bold font-[family-name:var(--font-display)] mb-4">
@@ -826,7 +826,14 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
 
             {/* Mobile Floating Progress/Overview Button */}
             {!submitted && !showModeSelector && (
-              <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden">
+              <motion.div
+                drag
+                dragConstraints={{ left: -160, right: 160, top: -600, bottom: 10 }}
+                dragElastic={0.1}
+                dragMomentum={false}
+                whileDrag={{ scale: 1.05 }}
+                className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden cursor-grab active:cursor-grabbing touch-none"
+              >
                 <button
                   onClick={() => setIsOverviewOpen(true)}
                   className="flex items-center gap-2 px-5 py-3 rounded-full border border-[var(--border)] bg-[var(--bg-secondary)]/90 backdrop-blur-md text-[var(--text-primary)] font-semibold shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:border-[var(--accent)] transition-all duration-300 transform active:scale-95 cursor-pointer text-sm font-sans"
@@ -836,7 +843,7 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
                   <span className="text-[var(--text-muted)]">|</span>
                   <span className="text-[var(--accent)]">View Progress</span>
                 </button>
-              </div>
+              </motion.div>
             )}
 
             {/* Mobile Bottomsheet Drawer */}

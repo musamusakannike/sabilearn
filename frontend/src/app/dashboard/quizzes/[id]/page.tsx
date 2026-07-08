@@ -726,7 +726,7 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
     : false;
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto w-full">
+    <div className="p-4 sm:p-6 md:p-8 pb-24 lg:pb-8 max-w-7xl mx-auto w-full">
       {submitted ? (
         <div className="max-w-2xl mx-auto text-center py-10">
           <div className="text-5xl font-bold font-[family-name:var(--font-display)] mb-4">
@@ -1120,7 +1120,14 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
 
           {/* Mobile Floating Progress/Overview Button */}
           {!submitted && !showModeSelector && (
-            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden">
+            <motion.div
+              drag
+              dragConstraints={{ left: -160, right: 160, top: -600, bottom: 10 }}
+              dragElastic={0.1}
+              dragMomentum={false}
+              whileDrag={{ scale: 1.05 }}
+              className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden cursor-grab active:cursor-grabbing touch-none"
+            >
               <button
                 onClick={() => setIsOverviewOpen(true)}
                 className="flex items-center gap-2 px-5 py-3 rounded-full border border-[var(--border)] bg-[var(--bg-secondary)]/90 backdrop-blur-md text-[var(--text-primary)] font-semibold shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:border-[var(--accent)] transition-all duration-300 transform active:scale-95 cursor-pointer text-sm font-sans"
@@ -1130,7 +1137,7 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
                 <span className="text-[var(--text-muted)]">|</span>
                 <span className="text-[var(--accent)]">View Progress</span>
               </button>
-            </div>
+            </motion.div>
           )}
 
           {/* Mobile Bottomsheet Drawer */}
