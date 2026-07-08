@@ -50,8 +50,8 @@ async function main() {
   // Create new quiz document
   const quizDoc = {
     userId: user._id.toString(),
-    title: "GST212 Practice Test",
-    topic: "Philosophy and Human Existence (GST212)",
+    title: "Electrical Machines & Electronics Practice Test",
+    topic: "DC Machines, Transformers, Alternators & Semiconductors",
     questions: questions,
     attempts: [],
     createdAt: new Date(),
