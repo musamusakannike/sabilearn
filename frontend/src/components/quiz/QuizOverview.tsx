@@ -1,5 +1,6 @@
 import React from "react";
 import { CheckCircle, XCircle, SkipForward, Circle } from "lucide-react";
+import { cn } from "@/lib/cn";
 
 interface Question {
   question: string;
@@ -15,6 +16,7 @@ interface QuizOverviewProps {
   currentQuestionIndex: number;
   maxReachedIndex: number;
   onQuestionClick: (index: number) => void;
+  className?: string;
 }
 
 export default function QuizOverview({
@@ -23,6 +25,7 @@ export default function QuizOverview({
   currentQuestionIndex,
   maxReachedIndex,
   onQuestionClick,
+  className,
 }: QuizOverviewProps) {
   const getItemClass = (index: number) => {
     const classes = ["overview-item"];
@@ -87,8 +90,8 @@ export default function QuizOverview({
   );
 
   return (
-    <aside className="quiz-overview-sidebar">
-      <div className="overview-card">
+    <aside className={className || "quiz-overview-sidebar"}>
+      <div className={cn("overview-card", className && "border-none !bg-transparent !p-0")}>
         <h3 className="overview-title">
           Question {currentQuestionIndex + 1} / {questions.length}
         </h3>

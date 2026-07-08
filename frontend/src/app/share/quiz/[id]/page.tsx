@@ -10,6 +10,7 @@ import { gsap } from "gsap";
 import confetti from "canvas-confetti";
 import QuizOverview from "@/components/quiz/QuizOverview";
 import OptionCard from "@/components/quiz/OptionCard";
+import { motion, AnimatePresence } from "framer-motion";
 
 function shuffleArray<T>(array: T[]): T[] {
   const newArray = [...array];
@@ -49,6 +50,7 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
   const [feedbackMode, setFeedbackMode] = useState<FeedbackMode | null>("immediate");
   const [showModeSelector, setShowModeSelector] = useState(false);
   const [fillBlankInput, setFillBlankInput] = useState<string>("");
+  const [isOverviewOpen, setIsOverviewOpen] = useState(false);
   const [error, setError] = useState("");
   const [savedProgressData, setSavedProgressData] = useState<{
     currentQ: number;
@@ -318,15 +320,13 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
 
   const handleSkip = () => {
     if (submitted || isReviewing || !quiz) return;
-    if (feedbackMode === "immediate") {
-      setAnswers((prev) => ({ ...prev, [currentQ]: "" })); // Mark empty for skipped
-    } else {
-      handleNext();
-    }
+    setAnswers((prev) => ({ ...prev, [currentQ]: "" })); // Mark empty for skipped
+    handleNext();
   };
 
   const handleJumpToQuestion = (index: number) => {
     setCurrentQ(index);
+    setIsOverviewOpen(false);
   };
 
   // Keyboard navigation
@@ -823,6 +823,64 @@ export default function PublicQuizPage({ params }: { params: Promise<{ id: strin
               maxReachedIndex={maxReachedIndex}
               onQuestionClick={handleJumpToQuestion}
             />
+
+            {/* Mobile Floating Progress/Overview Button */}
+            {!submitted && !showModeSelector && (
+              <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden">
+                <button
+                  onClick={() => setIsOverviewOpen(true)}
+                  className="flex items-center gap-2 px-5 py-3 rounded-full border border-[var(--border)] bg-[var(--bg-secondary)]/90 backdrop-blur-md text-[var(--text-primary)] font-semibold shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:border-[var(--accent)] transition-all duration-300 transform active:scale-95 cursor-pointer text-sm font-sans"
+                >
+                  <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse" />
+                  <span>Question {currentQ + 1}/{quiz.questions.length}</span>
+                  <span className="text-[var(--text-muted)]">|</span>
+                  <span className="text-[var(--accent)]">View Progress</span>
+                </button>
+              </div>
+            )}
+
+            {/* Mobile Bottomsheet Drawer */}
+            <AnimatePresence>
+              {isOverviewOpen && (
+                <>
+                  {/* Backdrop */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => setIsOverviewOpen(false)}
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 lg:hidden"
+                  />
+                  {/* Drawer */}
+                  <motion.div
+                    initial={{ y: "100%" }}
+                    animate={{ y: 0 }}
+                    exit={{ y: "100%" }}
+                    transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                    className="fixed bottom-0 left-0 right-0 max-h-[85vh] bg-[var(--bg-secondary)] border-t border-[var(--border)] rounded-t-3xl z-50 overflow-y-auto lg:hidden shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+                  >
+                    {/* Handle bar */}
+                    <div className="flex justify-center py-3 sticky top-0 bg-[var(--bg-secondary)] border-b border-[var(--border)]/30 z-10">
+                      <div 
+                        className="w-12 h-1.5 rounded-full bg-[var(--border)] hover:bg-[var(--text-muted)] transition-colors cursor-pointer" 
+                        onClick={() => setIsOverviewOpen(false)} 
+                      />
+                    </div>
+                    
+                    <div className="p-4 pb-12">
+                      <QuizOverview
+                        questions={quiz.questions}
+                        userAnswers={answers}
+                        currentQuestionIndex={currentQ}
+                        maxReachedIndex={maxReachedIndex}
+                        onQuestionClick={handleJumpToQuestion}
+                        className="block w-full"
+                      />
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </div>
         )}
       </div>
