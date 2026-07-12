@@ -864,23 +864,32 @@ export default function QuizTakePage({ params }: { params: Promise<{ id: string 
 
               {/* Progress Bar (Hidden in Review Mode since we have Sidebar) */}
               {!isReviewing && (
-                <div className="flex items-center gap-2 mb-8">
-                  {quiz.questions.map((_, i) => (
+                quiz.questions.length <= 15 ? (
+                  <div className="flex items-center gap-1.5 mb-8 w-full">
+                    {quiz.questions.map((_, i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          "h-1.5 flex-1 rounded-full transition-colors",
+                          i === currentQ
+                            ? "bg-[var(--accent)]"
+                            : answers[i] !== undefined
+                              ? answers[i] === ""
+                                ? "bg-[var(--warning)]/50" // Skipped
+                                : "bg-[var(--accent)]/40"  // Answered
+                              : "bg-[var(--bg-elevated)]"
+                        )}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="w-full bg-[var(--bg-elevated)] h-1.5 rounded-full mb-8 overflow-hidden relative">
                     <div
-                      key={i}
-                      className={cn(
-                        "h-1.5 flex-1 rounded-full transition-colors",
-                        i === currentQ
-                          ? "bg-[var(--accent)]"
-                          : answers[i] !== undefined
-                            ? answers[i] === ""
-                              ? "bg-[var(--warning)]/50" // Skipped
-                              : "bg-[var(--accent)]/40"  // Answered
-                            : "bg-[var(--bg-elevated)]"
-                      )}
+                      className="bg-[var(--accent)] h-full transition-all duration-300"
+                      style={{ width: `${((currentQ + 1) / quiz.questions.length) * 100}%` }}
                     />
-                  ))}
-                </div>
+                  </div>
+                )
               )}
 
               <div className="mb-2 text-xs text-[var(--text-muted)]">

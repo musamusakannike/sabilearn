@@ -1,1142 +1,1357 @@
 [
   {
-    "question": "Which part of a DC machine is explicitly designed to provide a path of very low reluctance for the magnetic flux traveling from a North pole to a South pole?",
+    "question": "Which of the following does classical thermodynamics NOT handle regarding energy transformation?",
     "type": "multiple-choice",
     "options": [
-      "Yoke",
-      "Pole shoe",
-      "Armature core",
-      "Commutator"
+      "The direction of the process",
+      "The amount of possible transformation",
+      "The physical changes involved",
+      "The rates of transformation"
     ],
-    "answer": "Armature core",
-    "explanation": "While the pole shoe spreads out flux and reduces the reluctance of the magnetic path in the air gap [cite: 5], the most important function of the armature core is to provide a path of very low reluctance to the flux passing through the armature from a N-pole to a S-pole[cite: 7]."
+    "answer": "The rates of transformation",
+    "explanation": "Thermodynamics is restricted to defining the direction and amount of energy transformation, but it cannot handle the issue of rates of transformation[cite: 8, 10]."
   },
   {
-    "question": "The commutator serves different functions depending on whether the machine is operating as a DC generator or a DC motor. What is its primary function in a DC motor?",
+    "question": "In thermodynamic terms, the word 'thermodynamics' is derived from two words meaning:",
     "type": "multiple-choice",
     "options": [
-      "To facilitate the collection of current from the armature conductors.",
-      "To help provide current to the armature conductor.",
-      "To convert alternating current into direct current.",
-      "To act as a protecting cover for the entire machine."
+      "Heat and force",
+      "Energy and motion",
+      "Temperature and power",
+      "Work and dynamics"
     ],
-    "answer": "To help provide current to the armature conductor.",
-    "explanation": "In a DC generator, the commutator facilitates the collection of current from the armature[cite: 12]. Conversely, in a DC motor, it helps provide current to the armature conductor[cite: 12, 13]."
+    "answer": "Heat and force",
+    "explanation": "The word thermodynamics is a combination of 'thermo' which means heat and 'dynamics' which means force[cite: 6]."
   },
   {
-    "question": "Self-excited DC generators are energized by the current they produce. What initial physical condition allows this generation process to begin?",
+    "question": "A thermodynamic system that possesses a definite quantity of matter and a volume is usually referred to as a:",
     "type": "multiple-choice",
     "options": [
-      "An independent external DC power source.",
-      "A permanent magnet placed on the stator.",
-      "Residual magnetism in the poles.",
-      "Friction between the carbon brushes and the commutator."
+      "Surrounding space",
+      "Control volume",
+      "Cyclic domain",
+      "State function"
     ],
-    "answer": "Residual magnetism in the poles.",
-    "explanation": "Self-excited generators rely on residual magnetism, which ensures some flux is always present in the poles[cite: 19]. When the armature rotates, this residual flux induces the initial EMF needed to generate current[cite: 20]."
+    "answer": "Control volume",
+    "explanation": "Such a thermodynamic system is usually referred to as a control volume as it would possess a volume and would also contain a definite quantity of matter[cite: 18]."
   },
   {
-    "question": "Which type of DC motor is best suited for industrial applications requiring high starting torque, such as cranes and hoists?",
+    "question": "Which statement accurately describes a system boundary?",
     "type": "multiple-choice",
     "options": [
-      "Shunt DC motor",
-      "Series DC motor",
-      "Compound DC motor",
-      "Permanent magnet DC motor"
+      "It must be a rigid physical container.",
+      "It separates the system from its internal properties.",
+      "It may be imaginary and can change in size over time.",
+      "It prevents any exchange of heat under all conditions."
     ],
-    "answer": "Series DC motor",
-    "explanation": "Series DC motors have their field winding connected in series with the armature[cite: 28]. This specific configuration offers high starting torque, making it ideal for heavy-lifting equipment like cranes, hoists, and electric vehicles[cite: 29]."
+    "answer": "It may be imaginary and can change in size over time.",
+    "explanation": "The system boundary may be real or imaginary, and may change in shape as well as in size over time, i.e., increase or decrease[cite: 19]."
   },
   {
-    "question": "In the power flow diagram of a DC motor, which of the following losses is encountered immediately after the mechanical power is developed in the armature?",
+    "question": "According to thermodynamic definitions, the universe is composed of:",
     "type": "multiple-choice",
     "options": [
-      "Armature and field copper losses",
-      "Magnetic core and mechanical friction losses",
-      "Brush contact resistance losses",
-      "Driving engine input losses"
+      "Matter and energy",
+      "Open and closed systems",
+      "The system and its surroundings",
+      "Macroscopic and microscopic processes"
     ],
-    "answer": "Magnetic core and mechanical friction losses",
-    "explanation": "After electrical power overcomes the copper losses to develop mechanical power in the armature [cite: 42, 43], this developed mechanical power then experiences magnetic core losses and mechanical friction before finally being delivered to the shaft as output[cite: 44, 45]."
+    "answer": "The system and its surroundings",
+    "explanation": "The combination of the system and surroundings is called the universe[cite: 21]."
   },
   {
-    "question": "Why does a transformer require an alternating current (AC) to operate properly?",
+    "question": "A chemical engineer is observing a process where heat is transferred across the boundary, but no matter enters or leaves. What type of system is this?",
     "type": "multiple-choice",
     "options": [
-      "AC directly powers the secondary winding without needing magnetic induction.",
-      "The changing direction and intensity of AC create a fluctuating magnetic field.",
-      "AC minimizes the risk of overheating the ferromagnetic core.",
-      "AC provides a steady, unchanging magnetic field for highly efficient energy transfer."
+      "Open system",
+      "Isolated system",
+      "Closed system",
+      "Control state"
     ],
-    "answer": "The changing direction and intensity of AC create a fluctuating magnetic field.",
-    "explanation": "An alternating current constantly changes its direction and intensity[cite: 53]. This oscillating behavior is necessary to create a fluctuating magnetic field around the primary coil, which then induces a voltage in the secondary winding according to Faraday's Law[cite: 54, 55]."
+    "answer": "Closed system",
+    "explanation": "A closed system does not allow any transfer of mass (material) across its boundary, though energy transfer like heat can occur[cite: 25, 26]."
   },
   {
-    "question": "An ideal transformer has a primary voltage of 240V and a secondary voltage of 30V. If the primary current is 3A, what is the secondary current?",
+    "question": "An insulated container is sealed so completely that neither heat, work, nor matter can cross its boundary. This is an example of an:",
     "type": "multiple-choice",
     "options": [
-      "0.375 A",
-      "8 A",
-      "24 A",
-      "240 A"
+      "Extensive system",
+      "Open system",
+      "Isolated system",
+      "Equilibrium boundary"
     ],
-    "answer": "24 A",
-    "explanation": "For an ideal transformer, the ratio of voltages is equal to the inverse ratio of the currents: V1/V2 = I2/I1[cite: 60]. Substituting the values gives 240/30 = I2/3, making the secondary current (I2) equal to 24 A[cite: 63]."
+    "answer": "Isolated system",
+    "explanation": "A system which is enclosed by a boundary that allows neither mass nor energy transfer is an isolated system[cite: 28]."
   },
   {
-    "question": "In a core type transformer design, how are the primary and secondary windings physically arranged on the core?",
+    "question": "Which of the following is an intensive property?",
     "type": "multiple-choice",
+    "options": ["Enthalpy", "Mass density", "Kinetic energy", "Volume"],
+    "answer": "Mass density",
+    "explanation": "An intensive property is independent of the system's extent. Examples include temperature, pressure, and mass density[cite: 31, 32]."
+  },
+  {
+    "question": "Extensive properties depend on the mass of the system. Which of the following is NOT an extensive property?",
+    "type": "multiple-choice",
+    "options": ["Internal energy", "Potential energy", "Temperature", "Volume"],
+    "answer": "Temperature",
+    "explanation": "Temperature is independent of the size of the system, making it an intensive property, whereas volume, internal energy, and potential energy are extensive[cite: 32, 33]."
+  },
+  {
+    "question": "If you divide an extensive property by the total mass of the system, you obtain:",
+    "type": "multiple-choice",
+    "options": [
+      "A molar property",
+      "A specific property",
+      "A path function",
+      "A thermodynamic gradient"
+    ],
+    "answer": "A specific property",
+    "explanation": "The ratio of an extensive property to the mass or the property per unit mass is called a specific property[cite: 36]."
+  },
+  {
+    "question": "Molar volume is mathematically defined as:",
+    "type": "multiple-choice",
+    "options": ["$V = V^{t}/m$", "$V = V^{t}/n$", "$V = P/T$", "$V = m/V^{t}$"],
+    "answer": "$V = V^{t}/n$",
+    "explanation": "Molar volume is defined as the ratio of an extensive property (total volume) to the number of moles, mathematically $V = V^{t}/n$[cite: 37, 39]."
+  },
+  {
+    "question": "When a system goes from one equilibrium state to another through a series of intermediate states, this transformation is called a:",
+    "type": "multiple-choice",
+    "options": [
+      "Thermodynamic process",
+      "Cyclic boundary",
+      "State function",
+      "Thermal gradient"
+    ],
+    "answer": "Thermodynamic process",
+    "explanation": "A thermodynamic process is a transformation which takes a system from one equilibrium state to another equilibrium state through a succession of states[cite: 42]."
+  },
+  {
+    "question": "A process that finishes exactly at the same state where it began is known as:",
+    "type": "multiple-choice",
+    "options": [
+      "An extensive process",
+      "A cyclic process",
+      "An isolated sequence",
+      "An exact differential"
+    ],
+    "answer": "A cyclic process",
+    "explanation": "A cyclic process is a process whose final state is coincidental with its initial state[cite: 44]."
+  },
+  {
+    "question": "Variables that depend entirely on the present state and not on the past history or path are called:",
+    "type": "multiple-choice",
+    "options": [
+      "Transient variables",
+      "Extensive variables",
+      "State variables",
+      "Path variables"
+    ],
+    "answer": "State variables",
+    "explanation": "Properties that do not depend on the past history of the fluid or on the path by which it reaches a given state are defined as state variables[cite: 53, 54]."
+  },
+  {
+    "question": "Which of the following sets contains only state functions?",
+    "type": "multiple-choice",
+    "options": [
+      "Temperature, Pressure, Work",
+      "Heat, Volume, Internal Energy",
+      "Temperature, Pressure, Enthalpy",
+      "Enthalpy, Kinetic Energy, Heat"
+    ],
+    "answer": "Temperature, Pressure, Enthalpy",
+    "explanation": "Examples of state functions are temperature, pressure, mass density, internal energy, volume and enthalpy[cite: 47]. Work and heat are path functions[cite: 60, 67]."
+  },
+  {
+    "question": "The differential of a state function is described mathematically as:",
+    "type": "multiple-choice",
+    "options": ["Inexact", "Path-dependent", "Exact", "Transient"],
+    "answer": "Exact",
+    "explanation": "State functions constitute point functions and their differentials are exact[cite: 59]."
+  },
+  {
+    "question": "Thermodynamic work is depicted as the area under a curve on a P-V graph. This illustrates that work is:",
+    "type": "multiple-choice",
+    "options": [
+      "An exact differential",
+      "An intensive property",
+      "A state variable",
+      "A path variable"
+    ],
+    "answer": "A path variable",
+    "explanation": "The work associated with a thermodynamic process clearly is dependent on the path followed, describing it as a path variable[cite: 65, 66]."
+  },
+  {
+    "question": "Which of the following is considered a path function rather than a property of the system's state?",
+    "type": "multiple-choice",
+    "options": ["Mass density", "Internal energy", "Heat", "Enthalpy"],
+    "answer": "Heat",
+    "explanation": "Heat is an example of a path function, forms assumed by energy when it flows, not a state property[cite: 67, 81]."
+  },
+  {
+    "question": "Intrinsic or internal energy is possessed by a medium by virtue of its:",
+    "type": "multiple-choice",
     "options": [
-      "Both primary and secondary windings are grouped entirely on the central limb.",
-      "The primary winding is on the central limb, and the secondary winding is wrapped on the outer limb.",
-      "The high-voltage coil is placed closest to the core with the low-voltage coil layered on top.",
-      "The low-voltage coil is placed closest to the core with the high-voltage coil layered on top."
+      "Macroscopic motion",
+      "Relative elevation",
+      "Configuration and microscopic modes",
+      "External physical constraints"
     ],
-    "answer": "The low-voltage coil is placed closest to the core with the high-voltage coil layered on top.",
-    "explanation": "In a core type transformer, the windings are wrapped around the outer vertical legs[cite: 71]. To optimize insulation, the low-voltage coil is positioned closest to the core, while the high-voltage coil is layered on top[cite: 72]."
+    "answer": "Configuration and microscopic modes",
+    "explanation": "The internal energy or intrinsic energy is possessed by a body by virtue of its configuration and due to microscopic modes of motion[cite: 69, 70]."
   },
   {
-    "question": "What is a defining structural difference that separates an alternator from a standard DC generator?",
+    "question": "The energy that exists in a medium due to its relative elevation in a gravitational field is:",
     "type": "multiple-choice",
     "options": [
-      "The alternator has a stationary field winding and a highly insulated rotating armature.",
-      "The alternator has an armature winding on a stationary element and field windings on a rotating element.",
-      "The alternator relies entirely on solid permanent magnets instead of conventional field windings.",
-      "An alternator does not require a physical prime mover to generate rotational motion."
+      "Kinetic energy",
+      "Potential energy",
+      "Internal energy",
+      "Enthalpy"
     ],
-    "answer": "The alternator has an armature winding on a stationary element and field windings on a rotating element.",
-    "explanation": "The fundamental difference is that in an alternator, the armature winding is mounted on a stationary element (stator), while the field windings are located on a rotating element (rotor)[cite: 89]."
+    "answer": "Potential energy",
+    "explanation": "The potential energy is the energy which exists in a medium due to its relative elevation in the gravitational field[cite: 72]."
   },
   {
-    "question": "Which of the following is NOT an advantage of having a stationary armature in an alternator?",
+    "question": "Kinetic energy represents the state of motion of a body on what level?",
     "type": "multiple-choice",
     "options": [
-      "The output current can be led directly to the load circuit without brush-contacts.",
-      "It is much easier to insulate the stationary winding for high AC voltages.",
-      "The sliding contacts can safely handle high-voltage, high-power AC directly.",
-      "The armature windings can be more easily braced to prevent physical deformation."
+      "Microscopic level",
+      "Macroscopic level",
+      "Thermal level",
+      "Molecular level"
     ],
-    "answer": "The sliding contacts can safely handle high-voltage, high-power AC directly.",
-    "explanation": "The advantage is precisely the opposite: the sliding contacts (slip-rings) are transferred to the low-voltage, low-power DC field circuit so they can be easily insulated, rather than dealing with high-power AC[cite: 95]. The other options are true advantages[cite: 93, 94, 96]."
+    "answer": "Macroscopic level",
+    "explanation": "The kinetic energy is a measure of the state of motion of a body on a macroscopic level[cite: 75]."
   },
   {
-    "question": "In the induced EMF equation for an alternator, what does the variable Kw represent?",
+    "question": "Work and heat are unique because they are both:",
     "type": "multiple-choice",
     "options": [
-      "The number of coil turns per individual phase.",
-      "The rotational speed of the machine's prime mover.",
-      "The winding factor, which incorporates both pitch and distribution factors.",
-      "The total amount of magnetic flux generated per pole."
+      "Properties of the system at equilibrium",
+      "Forms of energy in transit",
+      "Exact differentials",
+      "Extensive state variables"
     ],
-    "answer": "The winding factor, which incorporates both pitch and distribution factors.",
-    "explanation": "In an alternator, how the coils are physically arranged in the stator slots is referred to as the winding factor (Kw), which is the product of the pitch factor (Kp) and the distribution factor (Kd)[cite: 102]."
+    "answer": "Forms of energy in transit",
+    "explanation": "Work and heat are two forms of energy in transit, forms assumed by energy when it flows from one medium to another[cite: 81]."
   },
   {
-    "question": "In a compound wound DC generator, what distinguishes a commutatively-compounded configuration from a differentially-compounded one?",
+    "question": "Which concept is described as being accomplished when a force experiences a displacement?",
     "type": "multiple-choice",
     "options": [
-      "The shunt field opposes the magnetic flux of the series field.",
-      "The series field aids the shunt field by producing flux in the same direction.",
-      "The series field is completely electrically isolated from the shunt field.",
-      "The shunt field acts purely as a permanent magnet without continuous electrical excitation."
+      "Heat transfer",
+      "Enthalpy change",
+      "Work",
+      "Internal energy shift"
     ],
-    "answer": "The series field aids the shunt field by producing flux in the same direction.",
-    "explanation": "When the series field aids the shunt field by producing flux in the same direction, the generator is commutatively-compounded[cite: 26]. Conversely, if the series field opposes the shunt field, it is differentially compounded[cite: 27]."
+    "answer": "Work",
+    "explanation": "Work is said to be accomplished when a force experiences a displacement[cite: 82]."
   },
   {
-    "question": "When mathematically analyzing the equivalent circuit of a transformer, what assumption is often made to simplify calculations involving resistance and reactance?",
+    "question": "Heat is energy transmitted to a medium that exclusively causes:",
     "type": "multiple-choice",
     "options": [
-      "All resistance and reactance values are entirely omitted because they are negligible compared to the load.",
-      "The primary resistance is safely assumed to be identical to the secondary resistance.",
-      "All of the resistance and reactance are treated as being located entirely on one side of the transformer.",
-      "The core losses are completely ignored regardless of the varying no-load current."
+      "A change in its mass density or volume",
+      "A shift in macroscopic physical constraints",
+      "A change in either its degree of hotness or its phase",
+      "A displacement against an electrical field"
     ],
-    "answer": "All of the resistance and reactance are treated as being located entirely on one side of the transformer.",
-    "explanation": "For convenience in electrical analysis, it is often assumed that all of the resistance and reactance are transferred to and considered as being on one side of the transformer[cite: 81, 82]."
+    "answer": "A change in either its degree of hotness or its phase",
+    "explanation": "Heat is that form of energy which when transmitted to or from a medium causes a change either in its degree of hotness or its phase[cite: 83]."
   },
   {
-    "question": "In the simplified equivalent circuit of an alternator, what two components combine to make up the total synchronous reactance (Xs)?",
+    "question": "Enthalpy is an essential thermodynamic function for flow processes. It is defined by the equation:",
     "type": "multiple-choice",
     "options": [
-      "The armature resistance and the armature reactance.",
-      "The armature reactance and the armature reaction reactance.",
-      "The induced EMF on no load and the armature resistance.",
-      "The armature resistance and the armature reaction reactance."
+      "$H = U - PV$",
+      "$H = U + PV$",
+      "$H = Q + W$",
+      "$H = E_{k} + E_{p}$"
     ],
-    "answer": "The armature reactance and the armature reaction reactance.",
-    "explanation": "In the equivalent circuit, the total synchronous reactance (Xs) is defined as the sum of the armature reactance (Xa) and the armature reaction reactance (X_AR)[cite: 105]."
+    "answer": "$H = U + PV$",
+    "explanation": "Enthalpy is defined by $H = U + PV$, where P is pressure and V is total volume[cite: 88, 89]."
   },
   {
-    "question": "Based on the EMF equation of a DC generator, which of the following variables does NOT directly dictate the generated EMF (Eg)?",
+    "question": "A thermodynamic system experiences a change of state primarily due to the existence of:",
     "type": "multiple-choice",
     "options": [
-      "The total number of parallel paths in the armature.",
-      "The total number of magnetic poles in the machine.",
-      "The resistance of the external load connected to the terminals.",
-      "The total number of active armature conductors."
+      "Gradients within or across its boundary",
+      "A lack of physical constraints",
+      "Excessive internal mass",
+      "Rigid external boundaries"
     ],
-    "answer": "The resistance of the external load connected to the terminals.",
-    "explanation": "The EMF equation for a DC generator is E = (phi * Z * N * P) / (60 * A)[cite: 35]. The variables directly dictating generated EMF are flux (phi), conductors (Z), speed (N), poles (P), and parallel paths (A)[cite: 35]. External load resistance is not a variable in this internal generation equation."
+    "answer": "Gradients within or across its boundary",
+    "explanation": "In general, change of state of a thermodynamic system results from the existence of gradients of various types within or across its boundary[cite: 92]."
   },
   {
-    "question": "Which of the following best describes the fundamental difference between analog and digital television broadcasting data formats?",
+    "question": "According to thermodynamic principles, a gradient of pressure specifically results in:",
     "type": "multiple-choice",
     "options": [
-      "Analog uses continuous electromagnetic signals, whereas digital uses discrete binary data.",
-      "Analog broadcasts can transmit high-definition video, while digital is limited to standard definition.",
-      "Analog signals utilize interactive services and internet integration, unlike digital signals.",
-      "Digital broadcasting transmits continuous electromagnetic waves, whereas analog converts audiovisual content into discrete binary data."
+      "Diffusive mass transfer",
+      "Momentum or convective transport of mass",
+      "Heat transfer",
+      "A change in chemical potential"
     ],
-    "answer": "Analog uses continuous electromagnetic signals, whereas digital uses discrete binary data.",
-    "explanation": "Analog broadcasting used continuous electromagnetic signals to transmit audio and video information[cite: 121]. Conversely, digital broadcasting converts the audiovisual content into discrete binary data, which enables better picture quality and interactive services[cite: 121]."
+    "answer": "Momentum or convective transport of mass",
+    "explanation": "A gradient of pressure results in momentum or convective transport of mass[cite: 93]."
   },
   {
-    "question": "In a television transmitter, which component is primarily responsible for combining audio and video signals onto a carrier frequency?",
+    "question": "A gradient of chemical potential within a system will promote:",
     "type": "multiple-choice",
     "options": [
-      "RF Amplifier",
-      "Modulation Unit",
-      "Transmission Line",
-      "Demodulator"
+      "Convective heat flow",
+      "Mechanical work",
+      "Diffusive mass transfer",
+      "Phase change"
     ],
-    "answer": "Modulation Unit",
-    "explanation": "The modulation unit is responsible for encoding the audio and video signals onto a carrier frequency[cite: 133, 134]. It applies modulation techniques like AM, FM, or QAM depending on the standard used[cite: 134]."
+    "answer": "Diffusive mass transfer",
+    "explanation": "A gradient of concentration (more exactly, of chemical potential) promotes diffusive mass transfer[cite: 94]."
   },
   {
-    "question": "Which transmission method relies on a network of coaxial or fiber-optic lines rather than over-the-air antennas or satellites to deliver television signals?",
+    "question": "When all external or internal gradients are non-existent and the system exhibits no further changes, it is said to be in:",
     "type": "multiple-choice",
     "options": [
-      "Over-the-top (OTT) broadcasting",
-      "Cable Television",
-      "Terrestrial Broadcasting",
-      "Satellite Broadcasting"
+      "Transient phase",
+      "Thermal transit",
+      "Thermodynamic equilibrium",
+      "Cyclic alignment"
     ],
-    "answer": "Cable Television",
-    "explanation": "Cable TV uses coaxial or fiber-optic cables to deliver television signals to subscribers[cite: 123, 124]. In contrast, terrestrial broadcasting uses over-the-air towers [cite: 122], and satellite uses geostationary orbit satellites[cite: 125]."
+    "answer": "Thermodynamic equilibrium",
+    "explanation": "In the ultimate limit where all gradients are non-existent and the system exhibits no further changes, the system is in a state of thermodynamic equilibrium[cite: 98, 99]."
   },
   {
-    "question": "In early analog TV systems like the NTSC standard, how were the video and audio signals modulated?",
+    "question": "For a system to achieve complete thermodynamic equilibrium, it must satisfy criteria for which specific types of equilibrium?",
     "type": "multiple-choice",
     "options": [
-      "Both video and audio were frequency modulated to ensure high-fidelity transmission.",
-      "The video signal was frequency modulated, while the audio signal was amplitude modulated.",
-      "The video signal modulated the carrier's amplitude, while the audio signal was frequency modulated.",
-      "Both video and audio were encoded using Vestigial Sideband (VSB) modulation exclusively."
+      "Kinetic, potential, and internal",
+      "Mechanical, thermal, and chemical",
+      "Extensive, intensive, and specific",
+      "Phase, structural, and volumetric"
     ],
-    "answer": "The video signal modulated the carrier's amplitude, while the audio signal was frequency modulated.",
-    "explanation": "In early analog systems like the NTSC standard, the video signal modulates the carrier's amplitude (AM), while the audio signal is frequency modulated (FM)[cite: 173, 174]."
+    "answer": "Mechanical, thermal, and chemical",
+    "explanation": "For a system to be in thermodynamic equilibrium, it needs to satisfy the criteria for mechanical, thermal, and chemical equilibrium[cite: 100]."
   },
   {
-    "question": "Which modulation technique is a form of amplitude modulation designed specifically to conserve bandwidth by significantly reducing one sideband while keeping a remnant of it?",
+    "question": "If System A and System C are in thermal equilibrium with System B, then A and C are in thermal equilibrium. This defines the:",
     "type": "multiple-choice",
     "options": [
-      "Frequency Modulation (FM)",
-      "Vestigial Sideband (VSB) Modulation",
-      "Quadrature Amplitude Modulation (QAM)",
-      "Orthogonal Frequency Division Multiplexing (OFDM)"
+      "First Law of Thermodynamics",
+      "Law of Thermal Dynamics",
+      "Zeroth Law of Thermodynamics",
+      "Principle of Specific Heat"
     ],
-    "answer": "Vestigial Sideband (VSB) Modulation",
-    "explanation": "VSB modulation is a form of amplitude modulation where one sideband of the carrier wave is significantly reduced while retaining a vestige of the other sideband[cite: 178]. It helps conserve bandwidth while maintaining signal quality[cite: 180]."
+    "answer": "Zeroth Law of Thermodynamics",
+    "explanation": "If two systems are each in thermal equilibrium with a third system, then they are in thermal equilibrium with each other, which is the Zeroth law of thermodynamics[cite: 107, 109]."
   },
   {
-    "question": "Which digital modulation technique divides the available frequency spectrum into multiple orthogonal subcarriers to provide robustness against multipath interference?",
+    "question": "Two systems are defined to be in thermal equilibrium specifically if:",
     "type": "multiple-choice",
     "options": [
-      "Orthogonal Frequency Division Multiplexing (OFDM)",
-      "Quadrature Amplitude Modulation (QAM)",
-      "Vestigial Sideband (VSB) Modulation",
-      "Phase Alternating Line (PAL)"
+      "They possess identical mass densities.",
+      "They could transfer heat between each other, but do not.",
+      "They exchange mass continuously at a constant rate.",
+      "Their volumes expand at identical rates."
     ],
-    "answer": "Orthogonal Frequency Division Multiplexing (OFDM)",
-    "explanation": "OFDM is a digital modulation technique that divides the available frequency spectrum into multiple orthogonal subcarriers[cite: 184]. This parallel transmission method provides robustness against multipath interference[cite: 185, 186]."
+    "answer": "They could transfer heat between each other, but do not.",
+    "explanation": "Two systems are in thermal equilibrium if they could transfer heat between each other, but do not[cite: 120]."
   },
   {
-    "question": "Which of the following frequency bands is widely used for TV broadcasting because it provides better signal propagation characteristics and increased channel capacity compared to VHF?",
+    "question": "The Zeroth Law of Thermodynamics fundamentally implies that which of the following is a quantity worth measuring?",
     "type": "multiple-choice",
+    "options": ["Entropy", "Temperature", "Kinetic Energy", "Volume"],
+    "answer": "Temperature",
+    "explanation": "The Zeroth Law of Thermodynamics implies that temperature is a quantity worth measuring[cite: 121]."
+  },
+  {
+    "question": "The operation of all thermometers relies on placing the thermometer in contact with a system until what occurs?",
+    "type": "multiple-choice",
+    "options": [
+      "Phase change",
+      "Mechanical equilibrium",
+      "Thermal equilibrium",
+      "Chemical equilibrium"
+    ],
+    "answer": "Thermal equilibrium",
+    "explanation": "Thermometers rely on reaching thermal equilibrium with a system to determine the temperature, allowing the reading to be compared[cite: 125, 126, 128]."
+  },
+  {
+    "question": "Which of the following is NOT listed as a standard temperature-measuring device based on the Zeroth Law?",
+    "type": "multiple-choice",
+    "options": [
+      "Thermocouples",
+      "Liquid-in-glass thermometers",
+      "Calorimetric diffusers",
+      "Resistance temperature detectors (RTDs)"
+    ],
+    "answer": "Calorimetric diffusers",
+    "explanation": "Devices listed include liquid-in-glass thermometers, gas thermometers, thermocouples, and resistance temperature detectors (RTDs). Calorimetric diffusers are not mentioned[cite: 129]."
+  },
+  {
+    "question": "When a thermometer reaches equilibrium with a system, it relies on a measurable property that varies with temperature. Which of the following is an example of such a property?",
+    "type": "multiple-choice",
     "options": [
-      "Super High Frequency (SHF) Band",
-      "Ultra High Frequency (UHF) Band",
-      "Medium Wave (MW) Band",
-      "Very High Frequency (VHF) Low Band"
+      "Electrical resistance",
+      "Molar mass",
+      "Specific gravity",
+      "Chemical potential"
     ],
-    "answer": "Ultra High Frequency (UHF) Band",
-    "explanation": "The UHF band, which ranges from 300 MHz to 3 GHz, provides better signal propagation characteristics and increased channel capacity compared to VHF[cite: 193, 194]."
+    "answer": "Electrical resistance",
+    "explanation": "A measurable property such as volume, electrical resistance, or voltage varies with temperature when the thermometer reaches equilibrium[cite: 130]."
   },
   {
-    "question": "Which analog TV broadcast standard, predominantly used in Europe and Australia, utilizes a 625-line, 50 fields per second video encoding with a color subcarrier frequency of 4.43 MHz?",
+    "question": "To ensure uniformity across different instruments, thermometers are calibrated using fixed reference points. What are the common reference points used for water?",
     "type": "multiple-choice",
     "options": [
-      "NTSC",
-      "SECAM",
-      "ATSC",
-      "PAL"
+      "Triple point and saturation point",
+      "Ice point and steam point",
+      "Critical point and fusion point",
+      "Condensation point and dew point"
     ],
-    "answer": "PAL",
-    "explanation": "The Phase Alternating Line (PAL) standard is predominantly used in Europe and Australia[cite: 210]. It uses a 625-line, 50 fields per second standard [cite: 211] and a YUV color model with a color subcarrier frequency of 4.43 MHz[cite: 212]."
+    "answer": "Ice point and steam point",
+    "explanation": "Thermometers are calibrated using fixed reference points like the ice point and steam point of water[cite: 133]."
   },
   {
-    "question": "In a TV receiver, what is the specific role of the demodulator?",
+    "question": "Without the Zeroth Law, what fundamental measurement issue would arise?",
     "type": "multiple-choice",
     "options": [
-      "It selects and tunes into a specific broadcast channel or frequency.",
-      "It captures the transmitted electromagnetic waves using an antenna.",
-      "It extracts the audio and video signals from the modulated carrier wave.",
-      "It adjusts color balance, contrast, and brightness of the decoded signals."
+      "Energy would not be conserved in closed systems.",
+      "It would be impossible to guarantee two instruments measure the same temperature under identical conditions.",
+      "Heat would always flow from cold bodies to hot bodies.",
+      "Thermodynamic work could not be converted into enthalpy."
     ],
-    "answer": "It extracts the audio and video signals from the modulated carrier wave.",
-    "explanation": "The demodulator in a TV receiver extracts the audio and video signals from the modulated carrier wave by reversing the modulation process applied during transmission[cite: 240, 241]."
+    "answer": "It would be impossible to guarantee two instruments measure the same temperature under identical conditions.",
+    "explanation": "Without the Zeroth Law, it would not be possible to guarantee that two instruments measure the same temperature under identical conditions[cite: 135]."
   },
   {
-    "question": "What standard, widely used in North America, uses digital modulation (such as 8VSB for terrestrial broadcasting) and supports high-definition resolutions like 1080i and 720p?",
+    "question": "In industrial engineering systems like heat exchangers, the concept of thermal equilibrium helps determine:",
     "type": "multiple-choice",
     "options": [
-      "DVB",
-      "ISDB",
-      "ATSC",
-      "NTSC"
+      "The total molar mass of the substance",
+      "When no further heat transfer occurs and steady state is reached",
+      "The rate at which mass diffuses through boundaries",
+      "The physical boundaries of an isolated system"
     ],
-    "answer": "ATSC",
-    "explanation": "The Advanced Television Systems Committee (ATSC) standard is widely used in North America[cite: 216, 217]. It uses digital modulation for various resolutions including 1080i and 720p [cite: 218] and employs 8VSB for terrestrial transmission[cite: 220]."
+    "answer": "When no further heat transfer occurs and steady state is reached",
+    "explanation": "In systems such as heat exchangers, the Zeroth Law helps determine when no further heat transfer occurs and the system has reached a steady state[cite: 138]."
   },
   {
-    "question": "During the television transmission process, what is the purpose of multiplexing after the audio and video signals have been encoded?",
+    "question": "Thermal equilibrium forms the basis for constructing which important engineering references?",
     "type": "multiple-choice",
     "options": [
-      "To amplify the signals to a power level appropriate for long-distance travel.",
-      "To separate the audio and video signals into distinct, parallel carrier waves.",
-      "To combine the encoded signals into a single stream for efficient transmission.",
-      "To dissipate the heat generated by the RF amplifier during operation."
+      "Thermodynamic property tables",
+      "Kinetic motion charts",
+      "Process path trajectories",
+      "Chemical gradient maps"
     ],
-    "answer": "To combine the encoded signals into a single stream for efficient transmission.",
-    "explanation": "During transmission, the encoded audio and video signals are multiplexed together to combine them into a single stream for efficient transmission[cite: 156, 157]."
+    "answer": "Thermodynamic property tables",
+    "explanation": "Thermal equilibrium forms the basis for the construction of thermodynamic property tables, where properties are measured under equilibrium conditions[cite: 140]."
   },
   {
-    "question": "Which of the following is true regarding Frequency Modulation (FM) in radio broadcasting?",
+    "question": "What is the primary focus of thermodynamics as defined in the text?",
     "type": "multiple-choice",
     "options": [
-      "The frequency of the carrier wave remains constant while the amplitude changes.",
-      "The amplitude of the carrier wave remains constant while the frequency changes.",
-      "Both the frequency and the amplitude of the carrier wave change simultaneously.",
-      "The frequency of the audio signal remains constant to prevent multipath interference."
+      "The precise rate at which chemical reactions reach equilibrium states.",
+      "The absolute microscopic kinetic energy of atomic particles.",
+      "The energy transferred either as heat or as work.",
+      "The structural integrity of materials under thermal stress."
     ],
-    "answer": "The amplitude of the carrier wave remains constant while the frequency changes.",
-    "explanation": "In FM modulation, the amplitude of the carrier wave remains constant while the frequency changes in proportion to the audio signal[cite: 275, 276]."
+    "answer": "The energy transferred either as heat or as work.",
+    "explanation": "Thermodynamics is the investigation of the energy transferred either as heat (which occurs when thermal equilibrium is sought) or as work (which describes any other transfer of energy)."
   },
   {
-    "question": "Why is AM broadcasting often preferred over FM for talk radio, news, and sports stations in certain regions?",
+    "question": "In the context of thermodynamic systems, how is an isolated system defined?",
     "type": "multiple-choice",
     "options": [
-      "AM provides superior audio quality and fidelity compared to FM.",
-      "AM is highly resistant to electrical noise and atmospheric interference.",
-      "AM allows for a longer transmission range due to lower frequencies and ionospheric reflection.",
-      "AM utilizes the Very High Frequency (VHF) band, allowing for perfect line-of-sight transmission."
+      "Energy is freely transferred but mass remains strictly constant.",
+      "Both mass and energy are permitted to cross the system boundary.",
+      "Mass can enter or leave, but heat transfer is prevented.",
+      "There is no energy or mass transferred to or from the system."
     ],
-    "answer": "AM allows for a longer transmission range due to lower frequencies and ionospheric reflection.",
-    "explanation": "AM broadcasting operates in the Medium Wave band utilizing lower frequencies, which allows for a longer transmission range and nighttime signal propagation due to ionospheric reflection[cite: 283, 296]. FM offers better audio quality but has a shorter, line-of-sight range[cite: 286, 299]."
+    "answer": "There is no energy or mass transferred to or from the system.",
+    "explanation": "A subcategory of the closed system is the isolated system, in which there is no mass transferred and no energy transferred to or from the system."
   },
   {
-    "question": "In FM radio broadcasting, what is the standard frequency separation typically maintained between channels?",
+    "question": "According to the zeroth law of thermodynamics, if two media are in thermal equilibrium with a third medium, what is the direct implication?",
     "type": "multiple-choice",
     "options": [
-      "10 kHz",
-      "50 kHz",
-      "200 kHz",
-      "1.705 MHz"
+      "They share the exact same internal energy.",
+      "They have equality of temperature.",
+      "They must have identical volumes and pressures.",
+      "They will exchange heat until their volumes perfectly equalize."
     ],
-    "answer": "200 kHz",
-    "explanation": "FM broadcasting typically uses frequency channels with a separation of 200 kHz (e.g., 88.1 MHz, 88.3 MHz, etc.)[cite: 305, 306]."
+    "answer": "They have equality of temperature.",
+    "explanation": "The zeroth law states that if two media are in thermal equilibrium with a third medium, then they are in thermal equilibrium with each other. This implies equality of temperature."
   },
   {
-    "question": "In a radio broadcasting transmitter, what is the function of the audio processing unit?",
+    "question": "The first law of thermodynamics is recognized as the fundamental law of:",
     "type": "multiple-choice",
     "options": [
-      "It converts the electrical signals directly into electromagnetic waves for the antenna.",
-      "It modulates the audio signals onto a carrier frequency.",
-      "It uses equalizers, compressors, and limiters to enhance and optimize audio quality before modulation.",
-      "It amplifies the modulated RF signals to ensure wide coverage."
+      "Entropy increase and irreversibility.",
+      "Absolute zero unattainable states.",
+      "Conservation and conversion of energy.",
+      "Thermal equilibrium and specific heat."
     ],
-    "answer": "It uses equalizers, compressors, and limiters to enhance and optimize audio quality before modulation.",
-    "explanation": "The audio processing unit in a transmitter may include equalizers, compressors, and limiters to enhance and optimize the audio quality before it is modulated and transmitted[cite: 262, 263]."
+    "answer": "Conservation and conversion of energy.",
+    "explanation": "The law of conservation and conversion of energy is the fundamental general law of nature. It is also referred to as the first law of thermodynamics."
   },
   {
-    "question": "What is the frequency range commonly associated with the Medium Wave (MW) band used for AM radio broadcasting?",
+    "question": "In the general energy equation for a closed system, \\(\\Delta E = Q - W\\), what does a positive 'W' represent?",
     "type": "multiple-choice",
     "options": [
-      "88 MHz to 108 MHz",
-      "30 MHz to 300 MHz",
-      "535 kHz to 1705 kHz",
-      "2 MHz to 30 MHz"
+      "Work is done on the system by the surroundings.",
+      "Heat is lost to the external environment.",
+      "The system's total mass is increasing.",
+      "Work is done by the system."
     ],
-    "answer": "535 kHz to 1705 kHz",
-    "explanation": "AM radio broadcasting typically operates in the Medium Wave (MW) band, which ranges from approximately 535 kHz to 1705 kHz[cite: 294, 295]."
+    "answer": "Work is done by the system.",
+    "explanation": "The convention is to define heat input to the system as positive and to regard work as positive when it is done by the system."
   },
   {
-    "question": "Which radio receiver component is explicitly designed to increase the volume of the extracted audio signals to a level suitable for a speaker or headphones?",
+    "question": "For most closed systems, changes in kinetic and potential energies are negligible. How does this simplify the first law differential equation?",
     "type": "multiple-choice",
     "options": [
-      "The Demodulator",
-      "The Audio Amplifier",
-      "The Tuner",
-      "The Antenna"
+      "dU = \\delta Q + \\delta W",
+      "dU = \\delta Q - \\delta W",
+      "dU = 0",
+      "\\Delta U = Q + W"
     ],
-    "answer": "The Audio Amplifier",
-    "explanation": "The audio amplifier amplifies the weak audio signals received from the demodulator, increasing the volume to a suitable level for playback through the speaker or headphone output[cite: 318, 319]."
+    "answer": "dU = \\delta Q - \\delta W",
+    "explanation": "Most closed systems do not experience changes in their kinetic and potential forms of energy, causing the differential change in energy 'dE' to simply become 'dU'."
+  },
+  {
+    "question": "In an isothermal process for an ideal monatomic gas, the change in internal energy (\\(\\Delta U\\)) is zero. What does this dictate about heat and work?",
+    "type": "multiple-choice",
+    "options": ["Q = 0", "W = 0", "Q = W", "Q = -W"],
+    "answer": "Q = W",
+    "explanation": "Because the internal energy of an ideal monatomic gas is a function of the absolute temperature, if \\(\\Delta T = 0\\) then \\(\\Delta U = 0\\). Therefore, the work done by the system must be equal to the heat added (\\(W=Q\\))."
   },
   {
-    "question": "Which regulatory body is mentioned as overseeing the allocation and management of radio frequency bands specifically in Nigeria?",
+    "question": "What happens to the internal energy and temperature of a system during an adiabatic compression?",
     "type": "multiple-choice",
     "options": [
-      "International Telecommunication Union (ITU)",
-      "Advanced Television Systems Committee (ATSC)",
-      "Nigeria Communications Commission (NCC)",
-      "National Television System Committee (NTSC)"
+      "They both decrease simultaneously.",
+      "Internal energy increases but temperature drops.",
+      "They remain completely constant.",
+      "They both increase."
     ],
-    "answer": "Nigeria Communications Commission (NCC)",
-    "explanation": "The Nigeria Communications Commission (NCC) oversees the allocation and management of radio frequency bands in Nigeria[cite: 308]."
+    "answer": "They both increase.",
+    "explanation": "In an adiabatic process, heat does not move into or out of the system. As such, when work is done on it (compression), internal energy and temperature increase."
   },
   {
-    "question": "Which mobile telephony standard generation introduced General Packet Radio Service (GPRS) for packet-switched data transmission, acting as a bridge before 3G?",
+    "question": "During an isochoric process, why is the work done on or by the system exactly zero?",
     "type": "multiple-choice",
     "options": [
-      "1G",
-      "2G",
-      "2.5G",
-      "4G"
+      "The system is perfectly thermally insulated.",
+      "The internal pressure drops to absolute zero.",
+      "The volume is held strictly constant.",
+      "The temperature remains entirely uniform."
     ],
-    "answer": "2.5G",
-    "explanation": "The 2.5G standard acted as an intermediate step between 2G and 3G networks, introducing enhanced data services over 2G networks, specifically GPRS for packet-switched data transmission[cite: 400, 401]."
+    "answer": "The volume is held strictly constant.",
+    "explanation": "In an isochoric process, volume is held constant. Since work is the integral of P dV, and there is no change in volume, work done is zero."
   },
   {
-    "question": "In the transmitter circuitry of a mobile telephone, what is the primary role of the Analog-to-Digital Converter (ADC)?",
+    "question": "For a cyclic process, the total heat input to the system is directly proportional to what resulting quantity?",
     "type": "multiple-choice",
     "options": [
-      "It processes digital voice signals and performs tasks like error correction.",
-      "It converts incoming RF signals from the mobile network into electrical signals.",
-      "It amplifies the RF signals to an appropriate level for transmission through the antenna.",
-      "It converts analog electrical signals from the microphone into digital signals for network processing."
+      "Total enthalpy change",
+      "Total internal energy",
+      "Total work output",
+      "Total volumetric expansion"
     ],
-    "answer": "It converts analog electrical signals from the microphone into digital signals for network processing.",
-    "explanation": "The Analog-to-Digital Converter (ADC) converts the analog electrical signals originating from the microphone into digital signals so they can be processed and transmitted over the mobile network[cite: 354]."
+    "answer": "Total work output",
+    "explanation": "For a cyclic process, \\(dE=0\\), yielding \\(\\oint \\delta Q = \\oint \\delta W\\), meaning total heat input is proportional or equal to total work output."
   },
   {
-    "question": "Which receiver component in a mobile telephone is responsible for converting processed digital signals back into analog audio signals so they can be heard through the speaker?",
+    "question": "The equation \\(W = \\int P dV\\) evaluates the work done by a closed system. Which condition must be met to strictly use this equation?",
     "type": "multiple-choice",
     "options": [
-      "Digital Signal Processor (DSP)",
-      "Low-Noise Amplifier (LNA)",
-      "Digital-to-Analog Converter (DAC)",
-      "Analog-to-Digital Converter (ADC)"
+      "The system must experience significant kinetic energy changes.",
+      "Electric and magnetic fields are absent and there is no chemical work.",
+      "The pressure must remain absolute constant throughout the entire path.",
+      "Heat transfer must be exactly zero across the system boundary."
     ],
-    "answer": "Digital-to-Analog Converter (DAC)",
-    "explanation": "The Digital-to-Analog Converter (DAC) in the receiver component converts the processed digital signals back into analog audio signals, which the speaker then reproduces as sound waves[cite: 362, 363]."
+    "answer": "Electric and magnetic fields are absent and there is no chemical work.",
+    "explanation": "This equation applies when 'W' is due only to expansion or contraction of the system, meaning electric and magnetic fields are absent and there is no chemical work."
   },
   {
-    "question": "Within a cellular network architecture, which element acts as a central hub, connecting base stations to the core network and interfacing with the Public Switched Telephone Network (PSTN)?",
+    "question": "In an isobaric process, how can the heat transfer 'Q' be concisely evaluated using thermodynamic properties?",
     "type": "multiple-choice",
     "options": [
-      "Base Station Controller (BSC)",
-      "Mobile Switching Center (MSC)",
-      "Home Location Register (HLR)",
-      "Authentication Center (AuC)"
+      "Q = \\Delta U",
+      "Q = \\Delta(PV)",
+      "Q = \\Delta H",
+      "Q = \\Delta S"
     ],
-    "answer": "Mobile Switching Center (MSC)",
-    "explanation": "The Mobile Switching Center (MSC) acts as a central hub, connecting base stations to the core network. It performs call routing and interfaces with networks like the PSTN to enable communication between cellular and landline phones[cite: 375, 376, 377]."
+    "answer": "Q = \\Delta H",
+    "explanation": "For an isobaric process, \\(W = P\\Delta V = \\Delta(PV)\\). Thus \\(Q = \\Delta U + \\Delta(PV) = \\Delta(U + PV) = \\Delta H\\)."
   },
   {
-    "question": "In a cellular network, what is the distinct difference between the Home Location Register (HLR) and the Visitor Location Register (VLR)?",
+    "question": "Mathematically, heat capacity (the heat a body can retain in the form of energy) is defined as:",
     "type": "multiple-choice",
     "options": [
-      "The HLR stores temporary subscriber data, while the VLR stores permanent data like phone numbers.",
-      "The HLR authenticates SIM cards, while the VLR routes packet-switched data.",
-      "The HLR stores permanent subscriber data, while the VLR stores temporary data for users currently within a specific service area.",
-      "The HLR interfaces with the PSTN, while the VLR manages call handoffs between base stations."
+      "C = \\Delta U / \\Delta P",
+      "C = dH / dV",
+      "C = T / ds",
+      "C = \\delta Q / dT"
     ],
-    "answer": "The HLR stores permanent subscriber data, while the VLR stores temporary data for users currently within a specific service area.",
-    "explanation": "The HLR contains permanent subscriber data such as phone numbers and service profiles[cite: 379]. The VLR stores temporary subscriber data for users currently within a specific service area to facilitate call routing and mobility management[cite: 380]."
+    "answer": "C = \\delta Q / dT",
+    "explanation": "The heat capacity is mathematically defined as \\(C = \\frac{\\delta Q}{dT}\\)."
   },
   {
-    "question": "Which component in a cellular network manages and controls multiple base stations within a given area, handling tasks such as call handoff and radio resource allocation?",
+    "question": "Why do modern scientists prefer to define specific heat \\(C_v\\) as \\((\\partial u / \\partial T)_v\\) rather than using its historical definition?",
     "type": "multiple-choice",
     "options": [
-      "Mobile Equipment",
-      "Gateway Mobile Switching Center (GMSC)",
-      "Base Station Controller (BSC)",
-      "Serving GPRS Support Node (SGSN)"
+      "Because heat transfer is a perfectly exact differential.",
+      "To define it in terms of state properties only, without reference to heat transfer paths.",
+      "Because temperature cannot be accurately tracked during rapid heat transfer.",
+      "To ensure the definition strictly applies only to open flow systems."
     ],
-    "answer": "Base Station Controller (BSC)",
-    "explanation": "The Base Station Controller (BSC) manages and controls multiple base stations within a given area, handling tasks like call setup, call handoff (transferring a call as a user moves), and allocating radio resources[cite: 372, 373]."
+    "answer": "To define it in terms of state properties only, without reference to heat transfer paths.",
+    "explanation": "Historically it was defined as heat necessary to raise the temperature in a constant-volume process, but today scientists prefer definitions in terms of properties only, without reference to heat transfer."
   },
   {
-    "question": "Which of the following is true regarding 1G mobile telephony standards?",
+    "question": "For an ideal gas, what is the foundational relationship between constant pressure heat capacity (\\(C_p\\)) and constant volume heat capacity (\\(C_v\\))?",
     "type": "multiple-choice",
     "options": [
-      "They were digital cellular networks introduced in the early 1990s.",
-      "They provided high-speed packet-switched data transmission globally.",
-      "They were analog networks introduced in the 1980s and included standards like AMPS and NMT.",
-      "They utilized massive MIMO and millimeter-wave spectrum for basic voice calling."
+      "C_p + C_v = R",
+      "C_p / C_v = R",
+      "C_p - C_v = R",
+      "C_v - C_p = R"
     ],
-    "answer": "They were analog networks introduced in the 1980s and included standards like AMPS and NMT.",
-    "explanation": "1G was the first generation of analog cellular networks introduced in the 1980s. Standards included Advanced Mobile Phone System (AMPS) in North America and Nordic Mobile Telephone (NMT) in Europe, providing basic voice calling with limited features[cite: 394, 395, 396]."
+    "answer": "C_p - C_v = R",
+    "explanation": "Using the ideal gas equation of state and the definitions of \\(C_p\\) and \\(C_v\\), the relationship mathematically reduces to \\(C_p - C_v = R\\)."
   },
   {
-    "question": "In cellular networks supporting packet-switched data, which node acts as the gateway between the cellular network and external packet data networks like the internet?",
+    "question": "How is the work \\(W\\) calculated for a mechanically reversible, isothermal expansion of an ideal gas?",
     "type": "multiple-choice",
     "options": [
-      "Serving GPRS Support Node (SGSN)",
-      "Gateway GPRS Support Node (GGSN)",
-      "Gateway Mobile Switching Center (GMSC)",
-      "Authentication Center (AuC)"
+      "W = R(T_2 - T_1)",
+      "W = P(V_2 - V_1)",
+      "W = C_v \\Delta T",
+      "W = RT \\ln(V_2 / V_1)"
     ],
-    "answer": "Gateway GPRS Support Node (GGSN)",
-    "explanation": "The Gateway GPRS Support Node (GGSN) acts as a gateway between the cellular network and external packet data networks, such as the internet[cite: 387, 389]. Conversely, the SGSN handles internal packet routing and mobility[cite: 388]."
+    "answer": "W = RT \\ln(V_2 / V_1)",
+    "explanation": "For an isothermal process, the work is evaluated as \\(W = \\int_{V_1}^{V_2} (RT/V) dV = RT \\ln(V_2/V_1)\\)."
   },
   {
-    "question": "What advanced technologies are utilized by 5G (Fifth Generation) mobile telephony to enable ultra-fast data rates and massive device connectivity?",
+    "question": "What is a principal characteristic of the mechanical work done in any adiabatic process where \\(Q=0\\)?",
     "type": "multiple-choice",
     "options": [
-      "Analog signal compression and vestigial sideband modulation.",
-      "Millimeter-wave spectrum, massive MIMO, and network slicing.",
-      "General Packet Radio Service (GPRS) and basic SMS.",
-      "Code Division Multiple Access (CDMA) and standard WiMAX."
+      "It perfectly matches the heat inputted at constant pressure.",
+      "It is path independent and relies only on initial and final states.",
+      "It equals the total change in the system's enthalpy.",
+      "It inevitably requires constant pressure to evaluate properly."
     ],
-    "answer": "Millimeter-wave spectrum, massive MIMO, and network slicing.",
-    "explanation": "5G utilizes advanced technologies like millimeter-wave spectrum, massive MIMO (Multiple-Input Multiple-Output), and network slicing to offer ultra-fast data rates, low latency, and massive device connectivity[cite: 408, 410]."
+    "answer": "It is path independent and relies only on initial and final states.",
+    "explanation": "Work done in any adiabatic (\\(Q=0\\)) process is path independent because \\(\\Delta U = -W\\), and internal energy is a state function."
+  },
+  {
+    "question": "The thermodynamic property known as \"enthalpy\" (\\(h\\)) is explicitly defined as a combination of which state variables?",
+    "type": "multiple-choice",
+    "options": ["u - pv", "u + pv", "u + Ts", "u - Ts"],
+    "answer": "u + pv",
+    "explanation": "The combination \\(u + pv\\) shows up frequently, so it is given the name \"enthalpy\" (\\(h = u + pv\\))."
+  },
+  {
+    "question": "During the adiabatic throttling of a gas through a flow resistance, which specific thermodynamic property remains constant?",
+    "type": "multiple-choice",
+    "options": ["Internal energy", "Entropy", "Enthalpy", "Kinetic energy"],
+    "answer": "Enthalpy",
+    "explanation": "During adiabatic throttling, \\(Q=0\\) and equating work yields \\(U_2 + p_2 V_2 = U_1 + p_1 V_1\\), resulting in \\(H_2 = H_1\\) (constant enthalpy)."
   },
   {
-    "question": "Which receiver component in a mobile phone amplifies weak incoming electrical signals from the antenna while actively working to minimize noise and interference?",
+    "question": "For a thermally perfect gas to be fully considered an \"ideal gas\" in thermodynamics, its internal energy and enthalpy must be functions of:",
     "type": "multiple-choice",
     "options": [
-      "Digital Signal Processor (DSP)",
-      "Low-Noise Amplifier (LNA)",
-      "Power Amplifier",
-      "Receiver Circuitry Demodulator"
+      "Pressure only",
+      "Volume only",
+      "Temperature only",
+      "Entropy only"
     ],
-    "answer": "Low-Noise Amplifier (LNA)",
-    "explanation": "The Low-Noise Amplifier (LNA) in a mobile phone receiver amplifies the weak incoming electrical signals from the antenna while minimizing noise and interference[cite: 359]."
+    "answer": "Temperature only",
+    "explanation": "If a thermally perfect gas obeys \\(pv=RT\\), it is called an ideal gas if \\(u=u(T)\\) only, and \\(h=h(T)\\) only."
+  },
+  {
+    "question": "The ratio of specific heats, denoted by the Greek letter \\(\\gamma\\) (gamma), is defined mathematically as:",
+    "type": "multiple-choice",
+    "options": ["C_v / C_p", "C_p / C_v", "C_p - C_v", "R / C_p"],
+    "answer": "C_p / C_v",
+    "explanation": "The ratio of specific heats is explicitly defined as \\(\\gamma = C_p / C_v\\)."
   },
   {
-    "question": "Which generation of mobile telephony standards was the first to introduce video calling and mobile internet access by providing faster data rates and improved voice quality?",
+    "question": "For an ideal gas undergoing a quasi-static, adiabatic process, the continuous relationship between pressure and volume is expressed as:",
     "type": "multiple-choice",
     "options": [
-      "2G",
-      "2.5G",
-      "3G",
-      "4G"
+      "pv = constant",
+      "p / v^\\gamma = constant",
+      "pv^\\gamma = constant",
+      "p^\\gamma v = constant"
     ],
-    "answer": "3G",
-    "explanation": "3G (Third Generation), introduced in the early 2000s, provided faster data rates, improved voice quality, and introduced video calling and mobile internet access[cite: 401, 402, 403]."
+    "answer": "pv^\\gamma = constant",
+    "explanation": "Through differential integration of the first law for an ideal gas, the very useful expression \\(pv^\\gamma = \\text{constant}\\) is derived."
   },
   {
-    "question": "What is the function of the Authentication Center (AuC) within a cellular network?",
+    "question": "Based directly on the Clausius statement of the Second Law of Thermodynamics, heat cannot spontaneously flow in which direction?",
     "type": "multiple-choice",
     "options": [
-      "It manages packet-switched data routing for internet access.",
-      "It authenticates and validates the identities of mobile subscribers to ensure secure network access.",
-      "It converts the base station's analog signals into secure digital packets.",
-      "It tracks the temporary location of a visitor to facilitate call handoffs."
+      "From a hotter body to a colder body without external work.",
+      "From a colder body to a hotter body without external work.",
+      "Between two identically massive bodies at the exact same temperature.",
+      "Into useful mechanical work under any isolated environmental conditions."
     ],
-    "answer": "It authenticates and validates the identities of mobile subscribers to ensure secure network access.",
-    "explanation": "The Authentication Center (AuC) is responsible for authenticating and validating the identities of mobile subscribers (such as verifying SIM card info) to ensure secure network access and prevent unauthorized usage[cite: 383, 384]."
+    "answer": "From a colder body to a hotter body without external work.",
+    "explanation": "The Clausius Statement asserts that heat cannot spontaneously flow from a colder body to a hotter body without external work."
   },
   {
-    "question": "In a television transmitter, which component ensures the transmitter does not overheat during the amplification process?",
+    "question": "The Kelvin-Planck statement of the Second Law dictates a strict physical limit implying that:",
     "type": "multiple-choice",
     "options": [
-      "Modulation Unit",
-      "Power Supply",
-      "Cooling System",
-      "Antenna Array"
+      "Entropy always decreases in an artificially closed system.",
+      "Absolute zero is a highly attainable state for perfect metallic crystals.",
+      "No heat engine can convert all the heat it absorbs completely into work.",
+      "All natural energy transfer processes are completely mechanically reversible."
     ],
-    "answer": "Cooling System",
-    "explanation": "TV transmitters generate heat during operation due to the amplification process. Cooling systems, such as fans or liquid cooling systems, are employed to dissipate this heat and maintain optimal operating temperatures[cite: 140, 141]."
+    "answer": "No heat engine can convert all the heat it absorbs completely into work.",
+    "explanation": "The Kelvin-Planck Statement notes that no heat engine can convert all the heat it absorbs into work; some energy must always be rejected as waste heat."
   },
   {
-    "question": "Regarding digital TV broadcast standards, which standard is commonly used in Japan and Brazil and utilizes COFDM modulation?",
+    "question": "According to Nernst's theorem (the Third Law of Thermodynamics), what occurs to a perfect crystal at absolute zero (0 K)?",
     "type": "multiple-choice",
     "options": [
-      "Integrated Services Digital Broadcasting (ISDB)",
-      "Advanced Television Systems Committee (ATSC)",
-      "Digital Video Broadcasting (DVB)",
-      "Phase Alternating Line (PAL)"
+      "Its entropy becomes infinite due to microscopic structural collapse.",
+      "Its specific heat capacity perfectly matches the universal gas constant.",
+      "Its total enthalpy equals its intrinsic internal energy exactly.",
+      "Its entropy in equilibrium approaches precisely zero."
     ],
-    "answer": "Integrated Services Digital Broadcasting (ISDB)",
-    "explanation": "The Integrated Services Digital Broadcasting (ISDB) standard is used in Japan, Brazil, and some other countries[cite: 225]. It utilizes COFDM modulation similar to DVB[cite: 228]."
+    "answer": "Its entropy in equilibrium approaches precisely zero.",
+    "explanation": "The Third Law states that the entropy of a system in equilibrium approaches zero as the absolute temperature approaches zero, giving a perfect crystal an entropy of zero."
   },
   {
-    "question": "What is the primary difference between a base station and a Mobile Switching Center (MSC) in a cellular network?",
+    "question": "In generating data for thermodynamic analysis, which of the following property pairs can be measured directly through physical experimentation?",
     "type": "multiple-choice",
     "options": [
-      "The MSC is the physical antenna tower, while the base station routes calls to the PSTN.",
-      "The base station provides wireless coverage to a specific cell area, while the MSC acts as the central hub managing call routing across the network.",
-      "The base station stores permanent subscriber data, while the MSC stores temporary subscriber data.",
-      "The MSC converts digital voice signals to analog, while the base station amplifies the RF signal."
+      "Entropy and internal energy",
+      "Enthalpy and Gibbs free energy",
+      "Specific volume and pressure",
+      "Helmholtz free energy and absolute entropy"
     ],
-    "answer": "The base station provides wireless coverage to a specific cell area, while the MSC acts as the central hub managing call routing across the network.",
-    "explanation": "A base station serves as a physical infrastructure/central point for communication within a specific cell area[cite: 369]. The MSC acts as a central hub connecting base stations to the core network and performing call routing, switching, and mobility management[cite: 375, 376]."
+    "answer": "Specific volume and pressure",
+    "explanation": "Mass, pressure, temperature, specific heat capacity, and specific volume can be measured experimentally, whereas internal energy, enthalpy, and entropy cannot."
+  },
+  {
+    "question": "The specific Gibbs free energy (\\(g\\)) is an extensive property mathematically formulated using which combination?",
+    "type": "multiple-choice",
+    "options": ["g = h + Ts", "g = u - Ts", "g = h - Ts", "g = u + pv"],
+    "answer": "g = h - Ts",
+    "explanation": "The specific Gibbs free energy is mathematically defined by the equation \\(g = h - Ts\\)."
+  },
+  {
+    "question": "The Helmholtz free energy, frequently referred to as the work function, is thermodynamically defined by the equation:",
+    "type": "multiple-choice",
+    "options": ["A = U + TS", "A = H - TS", "A = U - TS", "A = G + PV"],
+    "answer": "A = U - TS",
+    "explanation": "The Helmholtz free energy also called the work function is an extensive property defined by \\(A = U - TS\\)."
+  },
+  {
+    "question": "Differentiating the specific enthalpy equation yields \\(dh = Tds + vdP\\). If a thermodynamic process strictly maintains constant pressure, this reduces to:",
+    "type": "multiple-choice",
+    "options": ["dh = vdP", "dh = Tds", "dh = 0", "dh = -sdT"],
+    "answer": "dh = Tds",
+    "explanation": "If the process is at constant pressure, \\(dP = 0\\), leaving the equation simplified as \\(dh = Tds\\)."
   },
   {
-    "question": "Which modulation technique combined amplitude and phase modulation to allow the transmission of multiple bits per symbol, and is widely used in digital TV broadcasting like ATSC?",
+    "question": "In the specific context of heat capacities, what characteristic scientifically defines an incompressible medium?",
     "type": "multiple-choice",
     "options": [
-      "Vestigial Sideband (VSB) Modulation",
-      "Orthogonal Frequency Division Multiplexing (OFDM)",
-      "Frequency Modulation (FM)",
-      "Quadrature Amplitude Modulation (QAM)"
+      "A fluid whose total enthalpy always naturally equals its internal energy.",
+      "A gas that structurally resists thermal expansion regardless of boundary.",
+      "A liquid or solid whose mass density is essentially insensitive to pressure changes.",
+      "A perfect crystal situated statically at exactly absolute zero Kelvin."
     ],
-    "answer": "Quadrature Amplitude Modulation (QAM)",
-    "explanation": "Quadrature Amplitude Modulation (QAM) is a digital modulation technique that combines amplitude and phase modulation, allowing the transmission of multiple bits per symbol. It is widely used in digital TV broadcasting like ATSC[cite: 181, 182, 183]."
+    "answer": "A liquid or solid whose mass density is essentially insensitive to pressure changes.",
+    "explanation": "An incompressible medium is defined as a liquid or a solid with a mass density or specific volume which is insensitive to pressure changes."
   },
   {
-    "question": "In a radio broadcasting receiver, which component is responsible for selecting the specific frequency to listen to?",
+    "question": "Maxwell's relations, which are crucial for thermodynamic data generation, are mathematically derived by:",
     "type": "multiple-choice",
     "options": [
-      "The Demodulator",
-      "The Tuner",
-      "The Antenna",
-      "The Audio Amplifier"
+      "Measuring the absolute zero point of perfect crystals in a controlled laboratory.",
+      "Cross-differentiating the first partial derivatives of exact differential state functions.",
+      "Applying the empirical ideal gas equation of state to heavily non-ideal boundary conditions.",
+      "Finding the strict limits of reversible heat engines using the Kelvin-Planck statement."
     ],
-    "answer": "The Tuner",
-    "explanation": "The tuner is responsible for selecting and tuning into specific radio frequencies or channels, allowing users to choose the desired station[cite: 314, 315]."
+    "answer": "Cross-differentiating the first partial derivatives of exact differential state functions.",
+    "explanation": "Maxwell's relations are derived by taking the exact differentials of properties like \\(u\\) and \\(h\\), and cross-differentiating their first partial derivatives."
   },
   {
-    "question": "What distinct feature separated 4G from its predecessors?",
+    "question": "Which specific Maxwell relation is derived directly from cross-differentiating the exact differential of the Helmholtz free energy (\\(da = -sdT - Pdv\\))?",
     "type": "multiple-choice",
     "options": [
-      "It introduced basic analog voice calling with limited features.",
-      "It was the first generation to introduce SMS and digital cellular networking.",
-      "It offered significantly faster data speeds, low latency, and enabled high-quality video streaming and mobile gaming.",
-      "It introduced massive MIMO and autonomous vehicle connectivity as its baseline."
+      "(\\partial T / \\partial v)_s = -(\\partial P / \\partial s)_v",
+      "(\\partial T / \\partial p)_s = (\\partial v / \\partial s)_p",
+      "(\\partial P / \\partial T)_v = (\\partial s / \\partial v)_T",
+      "(\\partial v / \\partial T)_p = -(\\partial s / \\partial p)_T"
     ],
-    "answer": "It offered significantly faster data speeds, low latency, and enabled high-quality video streaming and mobile gaming.",
-    "explanation": "4G networks offered significantly faster data speeds and low latency, enabling high-quality video streaming, mobile gaming, and advanced multimedia services[cite: 405, 406]. (Massive MIMO is a feature of 5G [cite: 410], and SMS was introduced in 2G [cite: 399])."
+    "answer": "(\\partial P / \\partial T)_v = (\\partial s / \\partial v)_T",
+    "explanation": "Cross-differentiating the first partial derivatives from the Helmholtz free energy equation yields \\((\\partial P / \\partial T)_v = (\\partial s / \\partial v)_T\\)."
   },
   {
-    "question": "When considering the function of a TV receiver, what does the signal decoding process primarily entail?",
+    "question": "When configuring thermodynamic working relationships for direct data generation, the primary mathematical goal is almost always to eliminate derivatives involving which unmeasurable property?",
     "type": "multiple-choice",
     "options": [
-      "Capturing electromagnetic waves using a terrestrial antenna.",
-      "Reversing the modulation process to extract the raw carrier wave.",
-      "Interpreting encoded information such as image data, audio samples, and synchronization signals.",
-      "Adjusting aspects like color balance, contrast, and brightness on the screen."
+      "Absolute Temperature (T)",
+      "Specific volume (v)",
+      "Entropy (S)",
+      "System Pressure (P)"
     ],
-    "answer": "Interpreting encoded information such as image data, audio samples, and synchronization signals.",
-    "explanation": "Signal decoding in a TV receiver involves interpreting the encoded information, such as image data, audio samples, synchronization signals, and metadata into a format understood by display and audio systems[cite: 242, 243]. Adjusting contrast/brightness falls under audio and video processing[cite: 244, 245]."
+    "answer": "Entropy (S)",
+    "explanation": "Of the four properties in Maxwell's relations (T, v, P, S), only S cannot be measured experimentally. Thus, relationships are set up to eliminate derivatives involving S."
   },
   {
-    "question": "Why is Shortwave (SW) radio broadcasting typically utilized?",
+    "question": "The formulated relation \\(du = C_v dT + [T(\\partial P / \\partial T)_v - P]dv\\) demonstrates that comprehensive internal energy data can be generated strictly using:",
     "type": "multiple-choice",
     "options": [
-      "Because it operates below AM frequencies, avoiding line-of-sight limitations.",
-      "Because it covers frequencies between 2 MHz and 30 MHz, allowing for long-distance transmission and global coverage.",
-      "Because it is immune to multipath interference and provides high-definition stereo sound.",
-      "Because it uses purely digital modulation for highly local, low-power broadcasts."
+      "Absolute entropy values of perfect crystalline structures at 0 K.",
+      "Helmholtz and Gibbs free energy limits matched against heat transfer rates.",
+      "P-v-T data combined with experimental data relating \\(C_v\\) to T and v.",
+      "The specific mathematical ratios of isobaric and isochoric specific heats (\\(\\gamma\\))."
     ],
-    "answer": "Because it covers frequencies between 2 MHz and 30 MHz, allowing for long-distance transmission and global coverage.",
-    "explanation": "Shortwave radio broadcasts cover frequencies typically between 2 MHz and 30 MHz, allowing for long-distance transmission and global coverage[cite: 300, 301]."
+    "answer": "P-v-T data combined with experimental data relating \\(C_v\\) to T and v.",
+    "explanation": "The equation shows that P-v-T data and experimental data relating \\(C_v\\) to T and v are all that is fundamentally needed to generate data on \\(u\\)."
   },
   {
-    "question": "In a mobile phone's transmitter circuitry, what is the role of the Digital Signal Processor (DSP)?",
+    "question": "By utilizing the thermodynamic relations for specific entropy, the partial derivative \\((\\partial s / \\partial T)_P\\) is mathematically proven to be equivalent to:",
     "type": "multiple-choice",
+    "options": ["C_p / T", "C_v / T", "R / P", "T / C_p"],
+    "answer": "C_p / T",
+    "explanation": "From the equation differentiating enthalpy, \\((\\partial h / \\partial T)_P = T(\\partial s / \\partial T)_P\\). Since \\((\\partial h / \\partial T)_P = C_p\\), it yields \\((\\partial s / \\partial T)_P = C_p / T\\)."
+  },
+  {
+    "question": "The general property equation is \\(C_p - C_v = T(\\partial P / \\partial T)_v (\\partial v / \\partial T)_p\\). What does this inherently imply about \\(C_p\\) and \\(C_v\\) for a truly incompressible substance?",
+    "type": "multiple-choice",
     "options": [
-      "It amplifies the final RF signal before it reaches the antenna.",
-      "It converts the analog sound waves from the microphone into a digital stream.",
-      "It performs tasks on the digitized voice signals such as compression, filtering, and modulation.",
-      "It authenticates the user's SIM card with the mobile network's core system."
+      "C_p logically becomes undefined due to a zero denominator.",
+      "C_p is always mathematically exactly twice the value of C_v.",
+      "C_p and C_v are equivalent because the volume is rigidly constant with temperature change.",
+      "C_v immediately approaches infinity during any attempted thermal expansion."
     ],
-    "answer": "It performs tasks on the digitized voice signals such as compression, filtering, and modulation.",
-    "explanation": "In the transmitter, the Digital Signal Processor (DSP) performs various signal processing tasks on the digitized voice signals, such as compression, filtering, and modulation[cite: 355]."
+    "answer": "C_p and C_v are equivalent because the volume is rigidly constant with temperature change.",
+    "explanation": "For an completely incompressible medium, the derivative \\((\\partial v / \\partial T)_p = 0\\), which makes \\(C_p - C_v = 0\\), and therefore \\(C_p = C_v\\)."
   },
   {
-    "question": "How did the transition from analog to digital television broadcasting affect frequency spectrum usage?",
+    "question": "In a completely closed thermodynamic cycle visually represented on a P-V diagram, what does the internal area enclosed by the cycle line represent?",
     "type": "multiple-choice",
     "options": [
-      "It forced broadcasters to completely abandon the UHF band in favor of SHF microwaves.",
-      "It allowed for more efficient use of available spectrum, enabling multiple digital subchannels within a single broadcast channel.",
-      "It required each channel to use 10 times more bandwidth to support discrete binary data.",
-      "It made frequency allocation obsolete since digital signals do not require specific bands."
+      "The absolute entropy of the system at its maximum attained temperature.",
+      "The precise heat transfer logged during the adiabatic phases alone.",
+      "The absolute peak internal energy state achieved by the entire system.",
+      "The net work done by the system during the entirety of the cycle."
     ],
-    "answer": "It allowed for more efficient use of available spectrum, enabling multiple digital subchannels within a single broadcast channel.",
-    "explanation": "The transition to digital television broadcasting has allowed for more efficient use of available frequency spectrum [cite: 203], enabling broadcasters to carry multiple digital subchannels through multiplexing techniques to provide a greater number of channels and services[cite: 198, 199, 204]."
+    "answer": "The net work done by the system during the entirety of the cycle.",
+    "explanation": "On a P-V diagram for a closed-system, the bounded area within a cyclic path represents the net thermodynamic work done by the gas."
   },
   {
-    "question": "Which of the following describes the behavioral relationship between applied voltage and current in a semiconductor diode?",
+    "question": "According to the ideal gas application equations provided, the calculation for the work term 'W' for an isobaric expansion process can be explicitly expressed as:",
     "type": "multiple-choice",
     "options": [
-      "It follows a strict linear progression defined by Ohm's law.",
-      "It exhibits an exponential relationship.",
-      "It behaves linearly only when a forward bias is applied.",
-      "It displays an inverse proportional relationship similar to insulators."
+      "-R(T_2 - T_1)",
+      "R \\ln(P_1 / P_2)",
+      "C_p \\Delta T",
+      "C_v \\Delta T"
     ],
-    "answer": "It exhibits an exponential relationship.",
-    "explanation": "Unlike a resistor, a diode has an exponential current-voltage relationship."
+    "answer": "-R(T_2 - T_1)",
+    "explanation": "For an isobaric process, the text specifies the work equation as \\(W = -\\int_{V_1}^{V_2} P dV = -P(V_2 - V_1) = -R(T_2 - T_1)\\)."
   },
   {
-    "question": "What is the primary factor that causes some materials to act as good electrical insulators?",
+    "question": "Why is reaching absolute zero considered virtually unattainable in practical real-world thermodynamic systems according to the provided text?",
     "type": "multiple-choice",
     "options": [
-      "They possess an abundance of free electrons floating within their crystal lattice.",
-      "Their atomic nuclei are exceptionally small, allowing electrons to drift away easily.",
-      "The electrons in their outer valence shell are strongly attracted by the positively charged inner nucleus.",
-      "They are always completely immune to normal temperature changes and voltage stimulation."
+      "All fluid molecules naturally disintegrate entirely at 0 K making measurement literally impossible.",
+      "The first law of thermodynamics explicitly forbids dropping below the universal gas constant baseline.",
+      "Real substances with defects or disorder naturally retain some residual entropy even near 0 K.",
+      "Intrinsic internal energy predictably becomes infinitely large as absolute temperature decreases."
     ],
-    "answer": "The electrons in their outer valence shell are strongly attracted by the positively charged inner nucleus.",
-    "explanation": "This strong attraction prevents the creation of free electrons, giving them insulating properties."
+    "answer": "Real substances with defects or disorder naturally retain some residual entropy even near 0 K.",
+    "explanation": "While the Third Law sets the zero-entropy baseline for a perfect crystal, real substances with defects or disorder retain some residual entropy even near 0 K, explaining why absolute zero is unattainable."
   },
   {
-    "question": "Which of the following statements accurately describes a chemically pure, intrinsic semiconductor material like Silicon?",
+    "question": "Which of the following exact differential equations accurately corresponds to the specific Gibbs free energy (\\(dg\\))?",
     "type": "multiple-choice",
     "options": [
-      "It is electrically unbalanced due to its four outer valence electrons.",
-      "It possesses high conductivity at absolute zero due to the lack of impurities.",
-      "It shares valence electrons with neighboring atoms to form full orbitals of eight electrons.",
-      "It naturally contains an equal number of donor and acceptor atoms to maintain equilibrium."
+      "dg = Tds + vdP",
+      "dg = -sdT - Pdv",
+      "dg = -sdT + vdP",
+      "dg = C_p dT - vdP"
     ],
-    "answer": "It shares valence electrons with neighboring atoms to form full orbitals of eight electrons.",
-    "explanation": "Intrinsic silicon atoms share their four valence electrons covalently to create stable, full orbitals."
+    "answer": "dg = -sdT + vdP",
+    "explanation": "Employing the definition of specific Gibbs free energy (\\(g = h - Ts\\)) and taking its differential step-by-step yields \\(dg = -sdT + vdP\\)."
   },
   {
-    "question": "When Phosphorus is added to a pure Silicon crystal during the doping process, what is the primary resulting effect?",
+    "question": "On a PT diagram for a pure substance, which curve separates the solid and gas regions?",
     "type": "multiple-choice",
     "options": [
-      "It introduces a trivalent impurity that creates an abundance of positively charged holes.",
-      "It allows four of its five orbital electrons to bond, leaving one free electron to become mobile.",
-      "It turns the previously neutral Silicon crystal into a material with a massive net negative electrical charge.",
-      "It forces the Silicon atoms to release their innermost electrons to maintain lattice stability."
+      "Fusion curve",
+      "Vaporization curve",
+      "Sublimation curve",
+      "Saturation curve"
     ],
-    "answer": "It allows four of its five orbital electrons to bond, leaving one free electron to become mobile.",
-    "explanation": "Phosphorus is a pentavalent impurity (donor), providing an extra free electron for conduction."
+    "answer": "Sublimation curve",
+    "explanation": "Line 1-2, known as the sublimation curve, separates the solid and gas regions[cite: 4]."
   },
   {
-    "question": "What is the overall electrical charge of an N-type semiconductor material on its own?",
+    "question": "What is the defining characteristic of the critical point on a vaporization curve?",
     "type": "multiple-choice",
     "options": [
-      "It is heavily negatively charged because it contains a large majority of free electrons.",
-      "It is positively charged because the donor atoms lose an electron.",
-      "It is electrically neutral.",
-      "It oscillates between positive and negative depending on the ambient temperature."
+      "It is the point where solid, liquid, and gas phases coexist simultaneously in a state of perfect equilibrium.",
+      "It is the highest pressure and temperature at which a pure chemical species can exist in vapor/liquid equilibrium.",
+      "It marks the exact temperature at which all real gases transition perfectly into ideal gas behavior.",
+      "It indicates the lowest possible temperature for the condensation of a subcooled liquid."
     ],
-    "answer": "It is electrically neutral.",
-    "explanation": "Both P-type and N-type semiconductor materials are electrically neutral on their own."
+    "answer": "It is the highest pressure and temperature at which a pure chemical species can exist in vapor/liquid equilibrium.",
+    "explanation": "The coordinates of this point are the critical pressure and the critical temperature, which are the highest pressure and temperature at which a pure chemical species can exist in vapor/liquid equilibrium[cite: 8, 9]."
   },
   {
-    "question": "In a P-type semiconductor, why do the 'holes' appear to move as a positive charge through the crystal structure?",
+    "question": "According to the definitions provided in the text, how is a vapor distinguished from a general gas?",
     "type": "multiple-choice",
     "options": [
-      "The holes themselves physically carry a positive proton through the lattice.",
-      "Because trivalent impurity atoms constantly repel each other across the covalent bonds.",
-      "An electron moving to fill one hole leaves another hole behind it, creating a chain reaction.",
-      "The external voltage directly pushes the positively charged nuclei of the Boron atoms."
+      "A vapor is explicitly a gas that exists at temperatures greater than the critical temperature.",
+      "A vapor can be condensed either by compression at constant temperature or by cooling at constant pressure.",
+      "A vapor cannot be condensed into a liquid under any circumstances involving isothermal compression.",
+      "A vapor is a gas that behaves perfectly according to the ideal-gas law at all pressure ranges."
     ],
-    "answer": "An electron moving to fill one hole leaves another hole behind it, creating a chain reaction.",
-    "explanation": "The apparent movement of holes is actually the sequential jumping of valence electrons from one vacancy to another."
+    "answer": "A vapor can be condensed either by compression at constant temperature or by cooling at constant pressure.",
+    "explanation": "A gas to the left of the critical temperature vertical line, which can be condensed either by compression at constant temperature or by cooling at constant pressure, is called a vapor[cite: 37, 38]."
   },
   {
-    "question": "When an N-type and P-type material are first joined, what causes the immediate transfer of electrons and holes across the junction?",
+    "question": "On a PV diagram, what does the horizontal segment of an isotherm represent?",
     "type": "multiple-choice",
     "options": [
-      "A very large density gradient between both sides of the junction.",
-      "The inherent repulsive force of the trivalent and pentavalent nuclei.",
-      "The spontaneous generation of a high-voltage avalanche breakdown at room temperature.",
-      "The immediate application of an external forward-biasing voltage source."
+      "All possible mixtures of liquid and vapor in equilibrium.",
+      "The strict transition boundary from a solid to a liquid.",
+      "A continuous phase consisting exclusively of superheated vapor.",
+      "The critical point where liquid and vapor become indistinguishable."
     ],
-    "answer": "A very large density gradient between both sides of the junction.",
-    "explanation": "This density difference forces carriers to migrate to areas of lower concentration via diffusion."
+    "answer": "All possible mixtures of liquid and vapor in equilibrium.",
+    "explanation": "The horizontal segment of each isotherm represents all possible mixtures of liquid and vapor in equilibrium, ranging from 100% liquid at the left end to 100% vapor at the right end[cite: 49]."
   },
   {
-    "question": "As electrons and holes migrate across the newly formed PN junction, what is created on the N-side of the junction?",
+    "question": "Why are isotherms in the subcooled-liquid region on a PV diagram characterized as being very steep?",
     "type": "multiple-choice",
     "options": [
-      "A dense region of free electrons that acts as an insulator.",
-      "A layer of negatively charged acceptor ions.",
-      "Positively charged donor ions that are left behind.",
-      "A highly conductive channel known as the dynamic equilibrium zone."
+      "Because liquid volumes expand exponentially when subcooled.",
+      "Because temperature variations have no effect on liquid volume.",
+      "Because liquid volumes change little with large changes in pressure.",
+      "Because subcooled liquids are highly compressible at high pressures."
     ],
-    "answer": "Positively charged donor ions that are left behind.",
-    "explanation": "When free electrons migrate away from the N-side, they leave behind fixed, positively charged donor ions."
+    "answer": "Because liquid volumes change little with large changes in pressure.",
+    "explanation": "Isotherms in the subcooled-liquid region are very steep, because liquid volumes change little with large changes in pressure[cite: 80]."
   },
   {
-    "question": "Which of the following defines the condition necessary to maintain charge neutrality around the PN junction's depletion layer?",
+    "question": "Which of the following statements about the ideal-gas law is fundamentally correct?",
     "type": "multiple-choice",
     "options": [
-      "The penetration depth on the positive side must be precisely equal to the penetration depth on the negative side.",
-      "The product of penetration depth and acceptor density on the P-side must equal the product of penetration depth and donor density on the N-side.",
-      "The total number of minority carriers must exceed the total number of majority carriers.",
-      "The applied zero bias voltage must exactly match the internal thermal voltage."
+      "It is mathematically derived from quantum mechanical principles.",
+      "It requires temperature to be measured in Celsius for all calculations.",
+      "It is strictly a theoretical concept with no basis in experimental data.",
+      "It is not derived; it is the result of experimental observations."
     ],
-    "answer": "The product of penetration depth and acceptor density on the P-side must equal the product of penetration depth and donor density on the N-side.",
-    "explanation": "This relationship ensures the total charge on each side remains equal and opposite."
+    "answer": "It is not derived; it is the result of experimental observations.",
+    "explanation": "The ideal-gas law is not derived; it is the result of experimental observations[cite: 91]."
   },
   {
-    "question": "What is the approximate potential barrier voltage for a silicon diode at room temperature?",
+    "question": "What specifically does the compressibility factor (Z) measure for a given gas?",
     "type": "multiple-choice",
     "options": [
-      "0.3 volts",
-      "0.7 volts",
-      "1.2 volts",
-      "26 millivolts"
+      "The ratio of specific heat capacities at constant pressure and constant volume.",
+      "The transition point where a liquid becomes indistinguishable from a vapor.",
+      "The departure of the behavior of a gas from ideal gas behavior.",
+      "The absolute density of a gas mixture at critical temperature constraints."
     ],
-    "answer": "0.7 volts",
-    "explanation": "Silicon diodes typically require about 0.6 to 0.7 volts to overcome the built-in potential barrier."
+    "answer": "The departure of the behavior of a gas from ideal gas behavior.",
+    "explanation": "The departure of the behavior of a gas from ideal gas behavior is measured by the deviation of its compressibility factor from one[cite: 260]."
   },
   {
-    "question": "In a Zero Biased PN Junction diode, what establishes the state of 'Dynamic Equilibrium'?",
+    "question": "What is the core premise of the principle of corresponding states?",
     "type": "multiple-choice",
     "options": [
-      "When the external voltage perfectly matches the internal barrier potential.",
-      "When the flow of majority carriers crossing the junction completely ceases.",
-      "When the movement of majority carriers in one direction equals the movement of minority carriers in the opposite direction.",
-      "When the depletion layer entirely collapses due to thermal fluctuations."
+      "All gases at the same critical temperature and critical pressure have identical volumes.",
+      "All gases have exactly the same universal gas constant.",
+      "All substances reach a critical compressibility factor of exactly 1.0.",
+      "All gases at the same reduced temperature and reduced pressure have essentially the same Z."
     ],
-    "answer": "When the movement of majority carriers in one direction equals the movement of minority carriers in the opposite direction.",
-    "explanation": "Equilibrium is reached when the forward current (majority carriers) exactly equals the reverse current (minority carriers), yielding zero net current."
+    "answer": "All gases at the same reduced temperature and reduced pressure have essentially the same Z.",
+    "explanation": "The fact that all gases at the same reduced temperature and pressure have essentially the same compressibility factor Z is referred to as the principle of corresponding states[cite: 274]."
   },
   {
-    "question": "How is a diode connected in a circuit to achieve a Reverse Bias condition?",
+    "question": "When utilizing the virial equation of state truncated to two terms at low pressures, which specific form is preferred due to convenience?",
     "type": "multiple-choice",
     "options": [
-      "Positive voltage to the P-type material and negative voltage to the N-type material.",
-      "Positive voltage to the N-type material and negative voltage to the P-type material.",
-      "Both terminals are shorted together to ground.",
-      "Alternating current is applied directly to the Anode."
+      "Z = 1 + B/V",
+      "Z = 1 + B'P",
+      "Z = 1 + B/V + C/V^2",
+      "Z = PV/RT - 1"
     ],
-    "answer": "Positive voltage to the N-type material and negative voltage to the P-type material.",
-    "explanation": "This pulls electrons and holes away from the junction, widening the depletion layer."
+    "answer": "Z = 1 + B'P",
+    "explanation": "While both Z = 1 + B/V and Z = 1 + B'P can be used, Z = 1 + B'P (Eq. 3.37) is more convenient in application and is preferred when the virial equation is truncated to two terms[cite: 231, 232]."
   },
   {
-    "question": "What happens to the depletion layer of a PN junction when a reverse bias voltage is applied?",
+    "question": "For a given pure gas, what are the virial coefficients (such as B and C) strictly a function of?",
     "type": "multiple-choice",
     "options": [
-      "It becomes extremely narrow, allowing maximum current flow.",
-      "It completely disappears, turning the diode into a pure conductor.",
-      "It grows wider due to a lack of electrons and holes near the junction.",
-      "It remains unchanged but the potential barrier decreases slightly."
+      "Pressure only",
+      "Temperature only",
+      "Volume and Pressure",
+      "Density and Temperature"
     ],
-    "answer": "It grows wider due to a lack of electrons and holes near the junction.",
-    "explanation": "The external voltage pulls carriers away, expanding the region lacking charge carriers and increasing resistance."
+    "answer": "Temperature only",
+    "explanation": "For a given gas the virial coefficients are functions of temperature only[cite: 218]."
   },
   {
-    "question": "If the reverse bias voltage across a standard diode is increased far beyond its normal operating limits, what is the most likely outcome?",
+    "question": "When applying a virial equation truncated to three terms for higher pressures, which expansion format provides far superior results?",
     "type": "multiple-choice",
     "options": [
-      "The diode will begin to act as a perfect insulator with infinite resistance indefinitely.",
-      "The diode will suffer an avalanche breakdown, likely overheating and failing.",
-      "The depletion layer will safely absorb the excess energy and shrink.",
-      "The diode will instantly transform into an N-type semiconductor."
+      "The expansion formulated in terms of pressure P.",
+      "The expansion formulated in terms of 1/V.",
+      "The linear expression combining critical and reduced temperature.",
+      "The cubic expansion utilizing solely the critical pressure."
     ],
-    "answer": "The diode will suffer an avalanche breakdown, likely overheating and failing.",
-    "explanation": "Excessive reverse voltage causes the avalanche effect, leading to a massive current spike and thermal destruction."
+    "answer": "The expansion formulated in terms of 1/V.",
+    "explanation": "For pressures below the critical pressure, the virial equation truncated to three terms often provides excellent results, and the expansion in 1/V is far superior to the expansion in pressure[cite: 237, 238]."
   },
   {
-    "question": "Which type of specialized diode takes advantage of the reverse breakdown region to provide a fixed voltage output?",
+    "question": "In the Van der Waals equation of state, setting the correction parameters 'a' and 'b' to zero results in what outcome?",
     "type": "multiple-choice",
     "options": [
-      "A Light Emitting Diode (LED)",
-      "A Silicon Controlled Rectifier (SCR)",
-      "A Signal Diode",
-      "A Zener Diode"
+      "It converts the equation into the original Redlich-Kwong equation.",
+      "It makes the equation unsolvable due to division by zero.",
+      "It converts the equation to the ideal gas equation of state.",
+      "It strictly defines the behavior of a subcooled liquid."
     ],
-    "answer": "A Zener Diode",
-    "explanation": "Zener diodes are intentionally designed to operate safely in the reverse breakdown region for voltage stabilization."
+    "answer": "It converts the equation to the ideal gas equation of state.",
+    "explanation": "Setting a = b = 0 converts the Van der Waals equation to the ideal gas equation of state[cite: 287]."
   },
   {
-    "question": "During Forward Bias, what represents the point on the static I-V characteristics curve where a sudden, high increase in current takes place?",
+    "question": "How is the pure component pressure of a constituent in an ideal gas mixture related to its partial pressure?",
     "type": "multiple-choice",
     "options": [
-      "The dynamic equilibrium zone",
-      "The avalanche breakdown point",
-      "The 'knee' point",
-      "The saturation threshold"
+      "The pure component pressure is always exponentially higher than the partial pressure.",
+      "The pure component pressure is equal to the partial pressure for each constituent.",
+      "The pure component pressure equals the partial pressure multiplied by the mixture's total volume.",
+      "The pure component pressure is entirely independent of the partial pressure."
     ],
-    "answer": "The 'knee' point",
-    "explanation": "The 'knee' is where the external voltage overcomes the potential barrier, causing current to spike upwards."
+    "answer": "The pure component pressure is equal to the partial pressure for each constituent.",
+    "explanation": "Thus, for an ideal gas, the pure component volume and the pure component pressure are respectively equal to the partial volume and partial pressure for each constituent[cite: 377]."
   },
   {
-    "question": "Why is it usually necessary to place a resistor in series with a forward-biased diode in a practical circuit?",
+    "question": "In the Pitzer correlation for the compressibility factor (Z = Z^0 + \u03c9 Z^1), what does an acentric factor (\u03c9) of 0 indicate?",
     "type": "multiple-choice",
     "options": [
-      "To increase the width of the depletion layer artificially.",
-      "Because the diode acts almost like a short circuit past the knee point and would draw infinite current.",
-      "To force the diode into an avalanche breakdown state.",
-      "To convert the direct current (DC) back into alternating current (AC)."
+      "A highly polar fluid",
+      "A simple fluid",
+      "A fluid trapped in the solid phase",
+      "A fluid with unknown critical parameters"
     ],
-    "answer": "Because the diode acts almost like a short circuit past the knee point and would draw infinite current.",
-    "explanation": "Without a limiting resistor, the minimal resistance of the diode after the knee point would allow a destructive amount of current to flow."
+    "answer": "A simple fluid",
+    "explanation": "When \u03c9 = 0, as is the case for simple fluids, the second term disappears, and Z\u00b0 becomes identical with Z[cite: 411]."
   },
   {
-    "question": "In the general diode characteristic equation, what does 'Is' represent?",
+    "question": "The Lee/Kesler generalized compressibility-factor correlation is known to provide the most reliable results for which category of gases?",
     "type": "multiple-choice",
     "options": [
-      "The forward bias surge current.",
-      "The reverse saturation current.",
-      "The intrinsic silicon temperature coefficient.",
-      "The minimum holding current for conduction."
+      "Highly polar gases",
+      "Gases that exhibit strong molecular association",
+      "Nonpolar or only slightly polar gases",
+      "Quantum gases at ultra-low temperatures"
     ],
-    "answer": "The reverse saturation current.",
-    "explanation": "This small leakage current occurs under reverse bias and is a foundational factor in the equation."
+    "answer": "Nonpolar or only slightly polar gases",
+    "explanation": "The Lee/Kesler correlation provides reliable results for gases which are nonpolar or only slightly polar, with errors of no more than 2 or 3 percent indicated[cite: 420]."
   },
   {
-    "question": "Structurally, a Silicon Controlled Rectifier (SCR) is fundamentally composed of how many alternating semiconductor layers?",
+    "question": "When utilizing corresponding-states correlations, how are quantum gases such as hydrogen typically accommodated?",
     "type": "multiple-choice",
     "options": [
-      "Two layers forming a single junction.",
-      "Three layers, similar to a standard NPN transistor.",
-      "Four layers arranged as PNPN.",
-      "Five layers for high voltage regulation."
+      "By assigning them a fixed compressibility factor of exactly 1.0.",
+      "By ignoring the critical pressure and solely using critical volume.",
+      "By utilizing temperature-dependent effective critical parameters.",
+      "By applying the Van der Waals equation explicitly without correction."
     ],
-    "answer": "Four layers arranged as PNPN.",
-    "explanation": "An SCR is a four-layer, three-junction device (p-n-p-n)."
+    "answer": "By utilizing temperature-dependent effective critical parameters.",
+    "explanation": "Their treatment by the usual correlations is sometimes accommodated by use of temperature-dependent effective critical parameters[cite: 422, 423]."
   },
   {
-    "question": "Which of the following correctly identifies the three terminals of a Silicon Controlled Rectifier?",
+    "question": "Which of the following defines a key restriction on heat engines based on thermodynamic observations?",
     "type": "multiple-choice",
     "options": [
-      "Emitter, Base, Collector",
-      "Anode, Cathode, Gate",
-      "Source, Drain, Gate",
-      "Main Terminal 1, Main Terminal 2, Gate"
+      "Work can only be converted to heat using special cyclic devices.",
+      "Heat can be converted directly and completely to work.",
+      "Converting heat to work requires the use of special devices.",
+      "Heat engines can run continuously without rejecting any waste heat."
     ],
-    "answer": "Anode, Cathode, Gate",
-    "explanation": "The outer p-type is the Anode, the outer n-type is the Cathode, and the inner p-type is the Gate."
+    "answer": "Converting heat to work requires the use of special devices.",
+    "explanation": "Work can be converted to heat directly and completely, but converting heat to work requires the use of some special devices called heat engines[cite: 578, 579]."
   },
   {
-    "question": "In the equivalent circuit model of an SCR, the device is visualized as:",
+    "question": "Gas turbines and car engines are often classified broadly as heat engines, yet they differ from steam power plants in what specific way?",
     "type": "multiple-choice",
     "options": [
-      "Two diodes connected back-to-back in parallel.",
-      "A single NPN transistor paired with a high-power resistor.",
-      "One PNP transistor and one NPN transistor interconnected.",
-      "Three NPN transistors in a cascading sequence."
+      "They operate in a mechanical cycle but not in a thermodynamic cycle.",
+      "They do not consume any work internally to maintain continuous operation.",
+      "They do not reject any waste heat to a low-temperature sink.",
+      "They convert 100% of their heat directly into rotating shaft work."
     ],
-    "answer": "One PNP transistor and one NPN transistor interconnected.",
-    "explanation": "The base of one transistor is connected to the collector of the other, creating a positive feedback loop."
+    "answer": "They operate in a mechanical cycle but not in a thermodynamic cycle.",
+    "explanation": "These devices operate in a mechanical cycle but not in a thermodynamic cycle since the working fluid (the combustion gases) does not undergo a complete cycle[cite: 611]."
   },
   {
-    "question": "When an SCR is connected to a power source with the Anode kept positive relative to the Cathode, but the Gate is left open (no voltage), what is the state of its internal junctions?",
+    "question": "For a steam power plant operating on a thermodynamic cycle, the net work output of the system is fundamentally equal to:",
     "type": "multiple-choice",
     "options": [
-      "All three junctions are reverse biased.",
-      "Junctions J1 and J3 are forward biased, while junction J2 is reverse biased.",
-      "Junction J2 is forward biased, causing immediate conduction.",
-      "Junctions J1 and J3 break down simultaneously to allow leakage current."
+      "The total heat input plus the total heat output.",
+      "The total work input divided by the thermal efficiency.",
+      "The net heat transfer to the system (Qin - Qout).",
+      "The work input minus the heat rejected to the sink."
     ],
-    "answer": "Junctions J1 and J3 are forward biased, while junction J2 is reverse biased.",
-    "explanation": "The positive anode forward biases J1, and the negative cathode forward biases J3, leaving the middle junction J2 reverse biased."
+    "answer": "The net heat transfer to the system (Qin - Qout).",
+    "explanation": "For a closed system undergoing a cycle, the net work output of the system is also equal to the net heat transfer to the system: Wnet,out = Qin - Qout[cite: 650, 651]."
   },
   {
-    "question": "What is the specific purpose of applying a small positive voltage to the Gate of an SCR?",
+    "question": "Why is it practically impossible for the thermal efficiency of a heat engine to reach 100 percent?",
     "type": "multiple-choice",
     "options": [
-      "It instantly reduces the supply voltage to zero.",
-      "It turns the SCR completely off by expanding the depletion layer at J2.",
-      "It forces junction J2 to break down at a much lower applied anode-cathode voltage.",
-      "It acts as a permanent power source to keep the SCR conducting continuously."
+      "Because all high-temperature sources eventually run out of energy.",
+      "Because a heat engine cannot operate without a condenser.",
+      "Because friction eliminates all potential net work output.",
+      "Because the heat rejected to the low-temperature sink (Qout) is never zero."
     ],
-    "answer": "It forces junction J2 to break down at a much lower applied anode-cathode voltage.",
-    "explanation": "The gate current initiates a feedback loop that causes the reverse-biased J2 to break down rapidly, closing the switch."
+    "answer": "Because the heat rejected to the low-temperature sink (Qout) is never zero.",
+    "explanation": "Qout is never zero; thus, the net work output of a heat engine is always less than the amount of heat input, meaning thermal efficiency is always less than unity[cite: 656, 681]."
   },
   {
-    "question": "Once an SCR starts conducting heavily (turned ON), what happens if you completely remove the Gate voltage?",
+    "question": "The Kelvin-Planck expression of the second law of thermodynamics is based on which fundamental requirement?",
     "type": "multiple-choice",
     "options": [
-      "The SCR immediately stops conducting and turns OFF.",
-      "The anode current drops proportionally to the missing gate current.",
-      "The SCR begins to conduct in the reverse direction.",
-      "The SCR continues to conduct as the Gate loses all control."
+      "Energy can change from one form to another but is never completely destroyed.",
+      "A heat engine must exchange heat with at least two reservoirs for continuous operation.",
+      "Work can be converted completely to heat without any loss.",
+      "The compressibility factor of a simple fluid is always equal to 1.0."
     ],
-    "answer": "The SCR continues to conduct as the Gate loses all control.",
-    "explanation": "Once the internal positive feedback loop is established, the SCR remains ON regardless of gate voltage."
+    "answer": "A heat engine must exchange heat with at least two reservoirs for continuous operation.",
+    "explanation": "The requirement that a heat engine exchange heat with at least two reservoirs for continuous operation forms the basis for the Kelvin-Planck expression of the second law of thermodynamics[cite: 745]."
+  },
+  {
+    "question": "If a heat engine receives 80 MW of heat from a furnace and rejects 50 MW to a river, what is its net power output?",
+    "type": "multiple-choice",
+    "options": ["130 MW", "30 MW", "1.6 MW", "0.625 MW"],
+    "answer": "30 MW",
+    "explanation": "The net power output of this heat engine is determined by subtracting the rate of waste heat from the rate of heat supplied: Wnet,out = 80 MW - 50 MW = 30 MW[cite: 772]."
   },
   {
-    "question": "What is the only reliable way to bring a conducting SCR back to its OFF condition?",
+    "question": "Which set of main components makes up the most frequently used vapor-compression refrigeration cycle?",
     "type": "multiple-choice",
     "options": [
-      "Apply a massive negative voltage spike to the Gate terminal.",
-      "Reduce the main supply voltage across the Anode and Cathode to almost zero.",
-      "Physically disconnect the Gate terminal from the control circuit.",
-      "Increase the load resistance to exactly double its original value."
+      "Boiler, turbine, condenser, and pump.",
+      "Compressor, condenser, expansion valve, and evaporator.",
+      "Furnace, combustion chamber, piston, and exhaust valve.",
+      "Heat pump, mixing chamber, capillary tube, and throttle."
     ],
-    "answer": "Reduce the main supply voltage across the Anode and Cathode to almost zero.",
-    "explanation": "Dropping the anode current below the holding current breaks the internal feedback loop, turning the SCR off."
+    "answer": "Compressor, condenser, expansion valve, and evaporator.",
+    "explanation": "The most frequently used refrigeration cycle is the vapor-compression refrigeration cycle, which involves four main components: a compressor, a condenser, an expansion valve, and an evaporator[cite: 814]."
   },
   {
-    "question": "How does the 'accumulative action' work in the two-transistor equivalent circuit of an SCR?",
+    "question": "In a household refrigerator, what component serves the function of the evaporator?",
     "type": "multiple-choice",
     "options": [
-      "The base current of T1 cancels out the collector current of T2, creating a safe equilibrium.",
-      "An increase of current in one transistor directly causes an increase of current in the other, driving both to saturation.",
-      "The emitter of T1 directly absorbs excess heat from T2, preventing thermal runaway.",
-      "It slowly builds up resistance until the circuit safely shuts itself down."
+      "The warm coils situated on the back of the refrigerator.",
+      "The expansion valve that drops the pressure drastically.",
+      "The internal compressor motor.",
+      "The freezer compartment where heat is absorbed by the refrigerant."
     ],
-    "answer": "An increase of current in one transistor directly causes an increase of current in the other, driving both to saturation.",
-    "explanation": "The collector of one feeds the base of the other, creating a positive feedback loop that rapidly saturates both."
+    "answer": "The freezer compartment where heat is absorbed by the refrigerant.",
+    "explanation": "In a household refrigerator, the freezer compartment where heat is absorbed by the refrigerant serves as the evaporator[cite: 838]."
   },
   {
-    "question": "The 'Breakover Voltage' of an SCR refers to:",
+    "question": "While refrigerators and heat pumps share the same thermodynamic cycle, how do their core objectives fundamentally differ?",
     "type": "multiple-choice",
     "options": [
-      "The maximum reverse voltage it can withstand before avalanche breakdown occurs.",
-      "The voltage at which the physical silicon lattice shatters.",
-      "The minimum forward supply voltage required to turn the SCR ON when the gate is completely open.",
-      "The exact voltage applied to the gate to trigger conduction."
+      "A refrigerator's objective is to extract net work, while a heat pump's objective is to absorb net work.",
+      "A refrigerator removes heat from a low-temperature space, while a heat pump maintains a heated space at a high temperature.",
+      "A refrigerator operates strictly below freezing, while a heat pump only operates above room temperature.",
+      "A refrigerator requires a compressor, while a heat pump relies entirely on an expansion valve."
     ],
-    "answer": "The minimum forward supply voltage required to turn the SCR ON when the gate is completely open.",
-    "explanation": "Without gate current, the SCR relies purely on a high forward voltage to force junction J2 to break down."
+    "answer": "A refrigerator removes heat from a low-temperature space, while a heat pump maintains a heated space at a high temperature.",
+    "explanation": "The objective of a refrigerator is to maintain the refrigerated space at a low temperature by removing heat from it, whereas the objective of a heat pump is to maintain a heated space at a high temperature[cite: 869, 871]."
   },
   {
-    "question": "Why is 'Peak Reverse Voltage' (PRV) a critical rating when using an SCR in an alternating current (AC) circuit?",
+    "question": "For fixed values of low-temperature heat (QL) and high-temperature heat (QH), how is the coefficient of performance of a heat pump (COP_HP) mathematically related to that of a refrigerator (COP_R)?",
     "type": "multiple-choice",
     "options": [
-      "Because an SCR requires alternating reverse pulses to maintain conduction.",
-      "Because during the negative half-cycle, the SCR is reverse-biased, and exceeding PRV will destroy it.",
-      "Because it dictates the exact moment the gate will trigger in the next cycle.",
-      "Because AC circuits inherently lack resistance, making PRV the only current limiting factor."
+      "COP_HP = COP_R - 1",
+      "COP_HP = COP_R + 1",
+      "COP_HP = 1 / COP_R",
+      "COP_HP = QL / COP_R"
     ],
-    "answer": "Because during the negative half-cycle, the SCR is reverse-biased, and exceeding PRV will destroy it.",
-    "explanation": "In AC circuits, the SCR acts as a rectifier and must safely block the entire negative half-cycle voltage without suffering avalanche breakdown."
+    "answer": "COP_HP = COP_R + 1",
+    "explanation": "A comparison of equations reveals that COP_HP = COP_R + 1 for fixed values of QL and QH[cite: 880, 881]."
   },
   {
-    "question": "What is the definition of the 'Holding Current' of an SCR?",
+    "question": "The mathematical relationship COP_HP = COP_R + 1 inherently implies what about the COP of a heat pump?",
     "type": "multiple-choice",
     "options": [
-      "The continuous current required at the Gate terminal to keep the device ON.",
-      "The minimum load current needed before the SCR can be initially triggered.",
-      "The maximum steady-state anode current the device can safely carry indefinitely.",
-      "The specific minimum anode current level below which the SCR will turn OFF."
+      "It is always less than the COP of a refrigerator.",
+      "It can fluctuate into negative values under extreme cold.",
+      "It is always greater than unity.",
+      "It operates perfectly as a resistance heater at all times."
     ],
-    "answer": "The specific minimum anode current level below which the SCR will turn OFF.",
-    "explanation": "If the current drops below this tiny threshold, the internal transistors drop out of saturation and the device opens."
+    "answer": "It is always greater than unity.",
+    "explanation": "This relation implies that the coefficient of performance of a heat pump is always greater than unity since COP_R is a positive quantity[cite: 883]."
   },
   {
-    "question": "The 'Circuit Fusing Rating' of an SCR is used primarily to indicate:",
+    "question": "When the outside air temperature is excessively low, the COP of an air-source heat pump might drop below unity. How does the system typically respond?",
     "type": "multiple-choice",
     "options": [
-      "Its ability to act as a permanent replacement for a standard household fuse.",
-      "Its maximum capability to withstand short-duration forward surge currents without excessive power dissipation damage.",
-      "The exact delay time between gate triggering and heavy load conduction.",
-      "The highest AC frequency the SCR can accurately rectify."
+      "It reverses the flow of the refrigerant entirely to cool the space.",
+      "It ceases all operations to prevent damage to the compressor.",
+      "It usually switches to a resistance heating mode.",
+      "It bypasses the expansion valve to generate higher pressure."
     ],
-    "answer": "Its maximum capability to withstand short-duration forward surge currents without excessive power dissipation damage.",
-    "explanation": "The rating measures the thermal energy a surge deposits; exceeding it destroys the device."
+    "answer": "It usually switches to a resistance heating mode.",
+    "explanation": "When this happens, the system usually switches to a resistance heating mode, acting as a resistance heater[cite: 886]."
   },
   {
-    "question": "If an SCR has a breakover voltage of 400V, and a supply voltage of 200V is applied with the gate completely disconnected, what is the state of the SCR?",
+    "question": "Despite higher installation costs, why are geothermal heat pumps often preferred over air-source heat pumps in cold climates?",
     "type": "multiple-choice",
     "options": [
-      "It is conducting heavily because 200V is sufficient to drive the forward bias.",
-      "It remains in an open, non-conducting state.",
-      "It is conducting a moderate load current equal to exactly half its maximum rating.",
-      "It is operating in the avalanche breakdown region."
+      "They are completely immune to any thermodynamic losses.",
+      "They function without the need for electricity.",
+      "Their efficiency does not drop considerably like air-source pumps, making them up to 45% more efficient.",
+      "They operate without a refrigerant, minimizing environmental hazards."
     ],
-    "answer": "It remains in an open, non-conducting state.",
-    "explanation": "Since the applied 200V is less than the 400V breakover threshold and there is no gate signal, it will block current."
+    "answer": "Their efficiency does not drop considerably like air-source pumps, making them up to 45% more efficient.",
+    "explanation": "Air-source heat pumps drop considerably in efficiency below freezing. Geothermal heat pumps use the ground as the heat source; they are more expensive to install, but they are also more efficient (up to 45 percent more efficient)[cite: 910, 911, 913]."
   },
   {
-    "question": "In the context of doping, what are 'Majority Carriers' in a P-type semiconductor?",
+    "question": "What specifically does the Energy Efficiency Rating (EER) of an air conditioner measure?",
     "type": "multiple-choice",
     "options": [
-      "Free electrons donated by pentavalent impurities.",
-      "Positively charged holes generated by trivalent impurities.",
-      "The static nuclei of the pure silicon atoms.",
-      "Negative ions residing inside the depletion layer."
+      "The total electrical work input required in Watts for every Joule of heat absorbed.",
+      "The amount of heat removed from the cooled space in Btu's for 1 Wh of electricity consumed.",
+      "The seasonal ratio of heat expelled to the outdoors versus heat retained.",
+      "The exact same metric as the thermal efficiency percentage of a heat engine."
     ],
-    "answer": "Positively charged holes generated by trivalent impurities.",
-    "explanation": "Acceptor impurities create a deficit of electrons (holes), making them the dominant charge carrier in P-type material."
+    "answer": "The amount of heat removed from the cooled space in Btu's for 1 Wh of electricity consumed.",
+    "explanation": "The EER is the amount of heat removed from the cooled space in Btu's for 1 Wh (watt-hour) of electricity consumed[cite: 920]."
   },
   {
-    "question": "Which of the following elements is frequently used as a Pentavalent impurity?",
+    "question": "If an air-conditioning unit possesses a coefficient of performance (COP) of 1, what would its exact Energy Efficiency Rating (EER) be?",
     "type": "multiple-choice",
+    "options": ["1.0", "3.412", "12.0", "0.293"],
+    "answer": "3.412",
+    "explanation": "Considering that 1 kWh = 3412 Btu and thus 1 Wh = 3.412 Btu, a unit that removes 1 kWh of heat for each kWh of electricity it consumes (COP=1) will have an EER of 3.412[cite: 921]."
+  },
+  {
+    "question": "Why is it considered a poor economic practice to refrigerate items to a lower temperature than strictly necessary?",
+    "type": "multiple-choice",
     "options": [
-      "Boron",
-      "Aluminum",
-      "Antimony",
-      "Indium"
+      "Because the heat capacity of the refrigerated air increases drastically.",
+      "Because the COP of a refrigerator decreases with decreasing refrigeration temperature.",
+      "Because variable-speed compressors cannot operate at low temperatures.",
+      "Because the expansion valve tends to freeze solid below certain limits."
     ],
-    "answer": "Antimony",
-    "explanation": "Antimony has 5 valence electrons, making it a pentavalent donor impurity."
+    "answer": "Because the COP of a refrigerator decreases with decreasing refrigeration temperature.",
+    "explanation": "The EER or COP of a refrigerator decreases with decreasing refrigeration temperature. Therefore, it is not economical to refrigerate to a lower temperature than needed[cite: 928, 929]."
   },
   {
-    "question": "Which equation correctly defines Resistivity?",
+    "question": "If an ordinary window air conditioner is placed with its door open to the cold outside air and its coils facing the inside of a room, what function will it serve?",
     "type": "multiple-choice",
     "options": [
-      "Resistivity is Resistance multiplied by Length divided by Area.",
-      "Resistivity is Voltage divided by Current.",
-      "Resistivity is Resistance multiplied by Area divided by Length.",
-      "Resistivity is Resistance multiplied by Area multiplied by Length."
+      "It will perfectly simulate an ideal gas expansion process.",
+      "It will function strictly as a condenser, failing to cool the outside.",
+      "It will function as a heat pump, absorbing heat from outside and rejecting it into the house.",
+      "It will shut down immediately due to the Kelvin-Planck violation."
     ],
-    "answer": "Resistivity is Resistance multiplied by Area divided by Length.",
-    "explanation": "Resistivity equals Resistance times cross-sectional Area divided by length."
+    "answer": "It will function as a heat pump, absorbing heat from outside and rejecting it into the house.",
+    "explanation": "An ordinary refrigerator placed with its door open to the cold outside air will function as a heat pump since it will try to cool the outside by absorbing heat from it and rejecting this heat into the house through the coils behind it[cite: 873]."
   },
   {
-    "question": "An SCR in a circuit is subjected to a 100 A surge. If the SCR's circuit fusing rating is 50 A^2s, what is the maximum duration this surge can safely last?",
+    "question": "Why is it easier to mathematically represent the PV product for a gas or vapor along an isotherm compared to either property individually?",
     "type": "multiple-choice",
     "options": [
-      "50 milliseconds",
-      "2 milliseconds",
-      "5 milliseconds",
-      "0.5 seconds"
+      "Because the specific volume inherently scales precisely with temperature variations.",
+      "Because the PV product remains much more nearly constant than either P or V as pressure increases.",
+      "Because the virial coefficients nullify the effects of pressure entirely.",
+      "Because the ideal gas constant R forces the product to be zero."
     ],
-    "answer": "5 milliseconds",
-    "explanation": "Using maximum time = (Circuit fusing rating) / (Surge current squared), we get 50 / 10000 = 0.005 seconds, which is 5ms."
+    "answer": "Because the PV product remains much more nearly constant than either P or V as pressure increases.",
+    "explanation": "Along a vapor-phase isotherm, V decreases as P increases. The PV product for a gas or vapor should therefore be much more nearly constant than either of its members, and hence more easily represented[cite: 194, 195, 196]."
+  },
+  {
+    "question": "In the Benedict-Webb-Rubin (BWR) equation of state, how many empirical parameters are involved in its original form?",
+    "type": "multiple-choice",
+    "options": ["Two", "Three", "Five", "Eight"],
+    "answer": "Eight",
+    "explanation": "There are eight empirical parameters involved in the equation (some extensions have up to 20 parameters)[cite: 308]."
   },
   {
-    "question": "Which component does the Gate terminal of an SCR physically connect to in its multi-layer structure?",
+    "question": "If a heat engine operates with a thermal efficiency of 37.5%, what does this percentage directly represent?",
     "type": "multiple-choice",
     "options": [
-      "The outer P-type material near the Anode.",
-      "The inner N-type material.",
-      "The outer N-type material near the Cathode.",
-      "The inner P-type material."
+      "The engine converts 37.5 percent of the heat it receives into useful net work.",
+      "The engine rejects 37.5 percent of its total energy to the sink.",
+      "The engine operates at 37.5% of the ideal gas efficiency limit.",
+      "The engine loses 37.5% of its output due to internal mechanical friction."
     ],
-    "answer": "The inner P-type material.",
-    "explanation": "The gate terminal is attached to the inner P-type layer, adjacent to the N-type cathode."
+    "answer": "The engine converts 37.5 percent of the heat it receives into useful net work.",
+    "explanation": "Thermal efficiency is the fraction of the heat input that is converted to net work output, so it means the heat engine converts 37.5 percent of the heat it receives to work[cite: 658, 775]."
   },
   {
-    "question": "What historic device is considered the vacuum-tube equivalent of the solid-state SCR?",
+    "question": "When assessing the compressibility factor chart for a pure substance, at which condition does the two-phase region vanish and liquid and vapor become indistinguishable?",
     "type": "multiple-choice",
     "options": [
-      "The Magnetron",
-      "The Triode",
-      "The Thyratron",
-      "The Klystron"
+      "At the triple point",
+      "At any temperature below the critical temperature",
+      "At the critical point",
+      "At temperatures within the supercooled fluid region"
     ],
-    "answer": "The Thyratron",
-    "explanation": "The SCR acts as a solid-state equivalent to the gas-filled thyratron tube, matching its grid, plate, and cathode behavior."
+    "answer": "At the critical point",
+    "explanation": "The distinction cannot always be sharply drawn, because the two phases become indistinguishable at the critical point[cite: 10]."
   },
   {
-    "question": "If an SCR has a 'Forward current rating' of 40A, what does this specification strictly mean?",
+    "question": "Based on the concept of the principle of corresponding states, which parameters are predominantly used to formulate generalized compressibility charts?",
     "type": "multiple-choice",
     "options": [
-      "It requires exactly 40A to trigger the ON state.",
-      "It can safely conduct a maximum of 40A without suffering destructive overheating.",
-      "It will automatically turn OFF if the current drops below 40A.",
-      "It acts as a current amplifier, boosting input signals by a factor of 40."
+      "Specific volume and specific heat.",
+      "Absolute pressure and absolute temperature solely.",
+      "Reduced pressure (Pr) and reduced temperature (Tr).",
+      "The acentric factor and the universal gas constant."
     ],
-    "answer": "It can safely conduct a maximum of 40A without suffering destructive overheating.",
-    "explanation": "This rating defines the upper limit of continuous current the device junctions can survive."
+    "answer": "Reduced pressure (Pr) and reduced temperature (Tr).",
+    "explanation": "Generalized compressibility factor charts have been developed giving Z as a function of Pr for various values of Tr, taking advantage of the principle of corresponding states[cite: 275]."
   },
   {
-    "question": "Why are Trivalent impurities known as 'Acceptors'?",
+    "question": "In the context of the Redlich-Kwong EOS, how are the parameters generally determined if experimental P-v-T data are completely absent?",
     "type": "multiple-choice",
     "options": [
-      "Because they naturally accept positive protons from the silicon lattice.",
-      "Because they accept an extra free electron from a neighboring atom to complete their bond, generating a moving hole.",
-      "Because they accept excess thermal energy to prevent avalanche breakdown.",
-      "Because they freely accept donor atoms into their nucleus."
+      "By assigning them a default value of zero.",
+      "By utilizing solely the acentric factor of the substance.",
+      "By defining them in terms of the substance's critical properties (Tc and Pc).",
+      "By interpolating values from the ideal gas tables."
     ],
-    "answer": "Because they accept an extra free electron from a neighboring atom to complete their bond, generating a moving hole.",
-    "explanation": "Having only 3 valence electrons, they 'accept' an electron to form a stable 4-bond structure, leaving a positive hole behind."
+    "answer": "By defining them in terms of the substance's critical properties (Tc and Pc).",
+    "explanation": "The parameters a and b may be defined in terms of critical properties by using the fact that the isotherm T=Tc has a point of inflection at the critical point on the P-v diagram[cite: 294]."
   },
   {
-    "question": "When comparing the width of the depletion layer to the N and P type materials further away from the junction, what defines the depletion layer?",
+    "question": "According to the ideal gas model calculation example provided in the text for inflating a tire, what critical conversion must be made regarding pressure before using the PV=mRT equation?",
     "type": "multiple-choice",
     "options": [
-      "It is completely filled with a dense cloud of highly mobile minority carriers.",
-      "It becomes a highly conductive metallic strip due to ion clustering.",
-      "It contains only pure, intrinsic silicon with no doping atoms present.",
-      "It is completely depleted of any free charge carriers."
+      "Gage pressure must be converted to absolute pressure by adding atmospheric pressure.",
+      "Atmospheric pressure must be subtracted from the gage pressure.",
+      "Pressure must be strictly converted into Pascals, neglecting atmospheric contributions.",
+      "Pressure must be squared to account for ideal gas deviations."
     ],
-    "answer": "It is completely depleted of any free charge carriers.",
-    "explanation": "The diffusion process leaves this area empty of free electrons and holes, containing only fixed ions."
+    "answer": "Gage pressure must be converted to absolute pressure by adding atmospheric pressure.",
+    "explanation": "In the ideal-gas equation, PV = mRT, we use absolute pressure and absolute temperature. Thus, P = P_gage + P_atm[cite: 184, 185]."
   }
 ]
