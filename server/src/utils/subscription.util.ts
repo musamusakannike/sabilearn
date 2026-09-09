@@ -4,9 +4,8 @@ import { ISubscription } from '../models/subscription.model';
 export const MANUAL_SUBSCRIPTION_DAYS = 30;
 
 /**
- * A 'recurring' (card) subscription is trusted on its `status` alone — Paystack's
- * subscription/invoice webhooks keep that in sync. A 'manual' subscription has no
- * such webhook, so it's only active while `currentPeriodEnd` hasn't passed yet.
+ * Recurring Paystack is kept current by webhooks. Manual Paystack and IAP both
+ * expire at `currentPeriodEnd` when that date is set.
  */
 export const isSubscriptionActive = (subscription: Pick<ISubscription, 'status' | 'currentPeriodEnd'> | null | undefined): boolean => {
   if (!subscription || subscription.status !== 'active') return false;

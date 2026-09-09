@@ -13,7 +13,7 @@ AI-powered personalized learning platform. Generate structured courses, explanat
 - **Practice Quizzes** — Auto-generated multiple choice, true/false, and fill-in-the-blank questions
 - **AI Tutor** — Ask anything and get answers adapted to your level and learning style
 - **Document Analysis** — Upload PDFs and documents to generate courses and quizzes from your own material
-- **Billing** — Free tier (10 generations/day) and Premium tier (₦1,500/month) via Paystack
+- **Billing** — Website: Paystack. iOS/Android: App Store / Google Play In-App Purchases (RevenueCat)
 
 ## Project Structure
 
@@ -32,7 +32,7 @@ sabilearn/
 | Database | MongoDB |
 | Auth | Firebase + JWT |
 | AI | DeepSeek API |
-| Payments | Paystack |
+| Payments | Paystack (web), RevenueCat + IAP (mobile) |
 | Storage | Cloudflare R2 (with local fallback) |
 | Video | Remotion |
 

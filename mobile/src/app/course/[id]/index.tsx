@@ -37,16 +37,12 @@ import { ACCENT, INK, PAGE, TINT_GLASS } from '@/theme/brand';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import GlassSurface from '@/components/ui/GlassSurface';
 import GlassIconButton from '@/components/common/GlassIconButton';
-import { useAppReview } from '@/hooks/useAppReview';
-import { NotInReview, ReviewGuard } from '@/components/common/ReviewGuard';
 import CoursePaywall from '@/components/payments/CoursePaywall';
-import { formatKobo } from '@/lib/money';
 import * as haptics from '@/lib/haptics';
 
 export default function CourseDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
-  const { inReview } = useAppReview();
   const colors = {
     textPrimary: INK,
     textSecondary: '#6B6B80',
@@ -117,7 +113,6 @@ export default function CourseDetailScreen() {
   }, [loadData]);
 
   const hasAccess =
-    inReview ||
     !course ||
     course.isFree ||
     paymentStatus?.subscription?.status === 'active' ||
@@ -196,28 +191,21 @@ export default function CourseDetailScreen() {
             <Badge>{course.category}</Badge>
             <Badge variant={course.difficulty}>{course.difficulty}</Badge>
             {!course.isFree && (
-              <ReviewGuard
-                inReviewContent={<Badge variant="success">Review Access</Badge>}
-                productionContent={
-                  <Badge variant={hasAccess ? 'success' : 'default'}>
-                    {hasAccess ? 'Unlocked' : 'Premium'}
-                  </Badge>
-                }
-              />
+              <Badge variant={hasAccess ? 'success' : 'default'}>
+                {hasAccess ? 'Unlocked' : 'Premium'}
+              </Badge>
             )}
           </View>
 
           {/* Title */}
           <Text style={s.title}>{course.title}</Text>
-          <NotInReview>
-            {!course.isFree ? (
-              <Text style={s.priceLine}>
-                {hasAccess ? 'Included in your access' : formatKobo(course.price)}
-              </Text>
-            ) : (
-              <Text style={s.priceLine}>Free</Text>
-            )}
-          </NotInReview>
+          {!course.isFree ? (
+            <Text style={s.priceLine}>
+              {hasAccess ? 'Included in your access' : 'Included with Premium'}
+            </Text>
+          ) : (
+            <Text style={s.priceLine}>Free</Text>
+          )}
 
           {/* Authors */}
           {authors.length > 0 && (

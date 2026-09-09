@@ -1,16 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl, Alert, Linking, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { IconCheck, IconCreditCard, IconBuildingBank, IconSparkles } from '@tabler/icons-react-native';
+import { IconCheck, IconSparkles } from '@tabler/icons-react-native';
 import { paymentApi } from '@/lib/api';
-import { formatKobo } from '@/lib/money';
-import { SUBSCRIPTION_PRICE_KOBO } from '@/lib/paystack';
-import { PaymentStatus, VerifyResponse } from '@/lib/types';
-import { useAppReview } from '@/hooks/useAppReview';
-import { usePaystackPayment } from '@/hooks/usePaystackPayment';
-import { NotInReview } from '@/components/common/ReviewGuard';
-import PaystackCheckoutModal from '@/components/payments/PaystackCheckoutModal';
+import { PaymentStatus } from '@/lib/types';
+import { useIapPurchase } from '@/hooks/useIapPurchase';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import ScreenHeader from '@/components/common/ScreenHeader';
 import GlassSurface from '@/components/ui/GlassSurface';
@@ -23,13 +17,12 @@ import * as haptics from '@/lib/haptics';
 
 const PERKS = [
   'Every premium course, current and future',
-  'No per-course purchases — one flat monthly price',
+  'Billed through Apple or Google — cancel anytime in your store account',
 ];
 
 export default function SubscribeScreen() {
   const insets = useSafeAreaInsets();
-  const { inReview } = useAppReview();
-  const { session, busy, verifying, initialize, closeSession, verifyReference } = usePaystackPayment();
+  const { priceString, busy, loadingOffer, purchase, restore, reload } = useIapPurchase();
   const [status, setStatus] = useState<PaymentStatus | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -46,145 +39,119 @@ export default function SubscribeScreen() {
   }, []);
 
   useEffect(() => {
-    if (inReview) {
-      router.replace('/(tabs)/profile');
-      return;
-    }
     void load();
-  }, [inReview, load]);
+  }, [load]);
 
   const onRefresh = useCallback(async () => {
     haptics.light();
     setRefreshing(true);
-    await load();
+    await Promise.all([load(), reload()]);
     setRefreshing(false);
-  }, [load]);
+  }, [load, reload]);
 
-  const handleVerified = useCallback(
-    async (result: VerifyResponse | null) => {
-      if (result?.status === 'success') {
-        Alert.alert('Payment successful', 'You now have all-access. It may take a few seconds to show everywhere.');
-        await load();
-      } else if (result?.status === 'pending') {
-        Alert.alert('Payment pending', "We're still waiting for confirmation. Pull to refresh in a moment.");
-      } else if (result?.status === 'failed') {
-        Alert.alert('Payment failed', "Your payment wasn't completed. No charge should have been made.");
-      }
-    },
-    [load]
-  );
-
-  const start = (kind: 'manual' | 'recurring') => {
-    void initialize(kind, { amountKobo: SUBSCRIPTION_PRICE_KOBO }, handleVerified);
+  const onPurchase = async () => {
+    const ok = await purchase();
+    if (ok) {
+      Alert.alert('You are Premium', 'All premium courses are unlocked.');
+      await load();
+    }
   };
 
-  if (inReview) return null;
+  const onRestore = async () => {
+    const ok = await restore();
+    if (ok) {
+      Alert.alert('Restored', 'Your subscription is active on this account.');
+      await load();
+    }
+  };
+
+  const openManage = () => {
+    const url =
+      Platform.OS === 'ios'
+        ? 'https://apps.apple.com/account/subscriptions'
+        : 'https://play.google.com/store/account/subscriptions';
+    void Linking.openURL(url);
+  };
+
   if (isLoading) return <LoadingSpinner />;
 
   const sub = status?.subscription;
   const isActive = sub?.status === 'active';
-  const isManual = sub?.billingType === 'manual';
-  const daysLeft =
-    sub?.currentPeriodEnd != null
-      ? Math.max(0, Math.ceil((new Date(sub.currentPeriodEnd).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
-      : null;
+  const isIap = sub?.billingType === 'iap';
+  const isWebBilled = sub?.billingType === 'manual' || sub?.billingType === 'recurring';
 
   return (
-    <NotInReview>
-      <View style={styles.container}>
-        <ScreenBackdrop />
-        <ScrollView
-          contentContainerStyle={[styles.scroll, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + spacing['4xl'] }]}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={ACCENT} />}
-          showsVerticalScrollIndicator={false}
-        >
-          <ScreenHeader title="All-access" subtitle="Unlock every premium course for one monthly price." showBack />
+    <View style={styles.container}>
+      <ScreenBackdrop />
+      <ScrollView
+        contentContainerStyle={[styles.scroll, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + spacing['4xl'] }]}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={ACCENT} />}
+        showsVerticalScrollIndicator={false}
+      >
+        <ScreenHeader title="All-access" subtitle="Unlock every premium course with an App Store or Google Play subscription." showBack />
 
-          {isActive && (
-            <GlassSurface style={styles.card} tintColor={TINT_ORANGE}>
-              <Badge variant="success">Active</Badge>
-              <Text style={styles.body}>
-                You have all-access.
-                {sub?.currentPeriodEnd ? (
-                  <>
-                    {' '}
-                    {isManual ? 'Access ends' : 'Renews'} on {new Date(sub.currentPeriodEnd).toLocaleDateString()}
-                    {isManual && daysLeft != null ? ` (${daysLeft} day${daysLeft === 1 ? '' : 's'} left)` : ''}.
-                  </>
-                ) : null}
-              </Text>
-              {isManual ? (
-                <Text style={styles.hint}>This plan doesn't auto-renew — pay again before it ends to keep access.</Text>
+        {isActive && (
+          <GlassSurface style={styles.card} tintColor={TINT_ORANGE}>
+            <Badge variant="success">Active</Badge>
+            <Text style={styles.body}>
+              You have all-access.
+              {sub?.currentPeriodEnd ? (
+                <>
+                  {' '}
+                  {isWebBilled ? 'Access ends' : 'Renews'} on {new Date(sub.currentPeriodEnd).toLocaleDateString()}.
+                </>
               ) : null}
-            </GlassSurface>
-          )}
-
-          {(!isActive || isManual) && (
-            <GlassSurface style={styles.card} tintColor={TINT_GLASS}>
-              <View style={styles.priceRow}>
-                <Text style={styles.price}>{formatKobo(SUBSCRIPTION_PRICE_KOBO)}</Text>
-                <Text style={styles.per}>/month</Text>
-              </View>
-              {sub?.status === 'expired' && (
-                <Text style={styles.warn}>Your subscription expired — pay again to restore access.</Text>
-              )}
-              {sub?.status === 'past_due' && (
-                <Text style={styles.warn}>Your last card payment failed — resubscribe to restore access.</Text>
-              )}
-
-              {PERKS.map((perk) => (
-                <View key={perk} style={styles.perkRow}>
-                  <IconCheck size={16} color="#1F9D55" />
-                  <Text style={styles.perk}>{perk}</Text>
-                </View>
-              ))}
-              <View style={styles.perkRow}>
-                <IconSparkles size={16} color="#1F9D55" />
-                <Text style={styles.perk}>Prefer to pay once? Each course also has a one-off price on its page.</Text>
-              </View>
-
-              <Button
-                fullWidth
-                loading={busy === 'manual' || verifying}
-                disabled={busy === 'recurring'}
-                onPress={() => start('manual')}
-                icon={<IconBuildingBank size={18} color={INK} />}
-              >
-                {isManual ? 'Renew now' : 'Subscribe'} with bank transfer / USSD
+            </Text>
+            {isWebBilled ? (
+              <Text style={styles.hint}>
+                This plan was started on the website. Renew there, or subscribe in the app with Apple/Google when it ends.
+              </Text>
+            ) : null}
+            {isIap ? (
+              <Button fullWidth variant="secondary" onPress={openManage}>
+                Manage subscription
               </Button>
-              <Text style={styles.hint}>No card needed — pays instantly, renew manually each month.</Text>
+            ) : null}
+          </GlassSurface>
+        )}
 
-              <View style={styles.dividerRow}>
-                <View style={styles.line} />
-                <Text style={styles.or}>or</Text>
-                <View style={styles.line} />
+        {(!isActive || isWebBilled) && (
+          <GlassSurface style={styles.card} tintColor={TINT_GLASS}>
+            <View style={styles.priceRow}>
+              <Text style={styles.price}>{loadingOffer ? '…' : priceString || 'Premium'}</Text>
+              {priceString ? <Text style={styles.per}>/month</Text> : null}
+            </View>
+            {sub?.status === 'expired' && (
+              <Text style={styles.warn}>Your subscription expired — subscribe again to restore access.</Text>
+            )}
+            {sub?.status === 'past_due' && (
+              <Text style={styles.warn}>There is a billing issue — update payment in your store account.</Text>
+            )}
+
+            {PERKS.map((perk) => (
+              <View key={perk} style={styles.perkRow}>
+                <IconCheck size={16} color="#1F9D55" />
+                <Text style={styles.perk}>{perk}</Text>
               </View>
+            ))}
+            <View style={styles.perkRow}>
+              <IconSparkles size={16} color="#1F9D55" />
+              <Text style={styles.perk}>Payment is processed by Apple or Google. You can cancel anytime.</Text>
+            </View>
 
-              <Button
-                fullWidth
-                variant="secondary"
-                loading={busy === 'recurring'}
-                disabled={busy === 'manual' || verifying}
-                onPress={() => start('recurring')}
-                icon={<IconCreditCard size={18} color={INK} />}
-              >
-                Subscribe with card (auto-renews)
-              </Button>
-            </GlassSurface>
-          )}
-        </ScrollView>
-
-        <PaystackCheckoutModal
-          visible={!!session}
-          authorizationUrl={session?.authorizationUrl ?? null}
-          fallbackReference={session?.reference ?? null}
-          onClose={closeSession}
-          onSettled={(reference) => {
-            void verifyReference(reference).then(handleVerified);
-          }}
-        />
-      </View>
-    </NotInReview>
+            <Button fullWidth loading={busy} disabled={loadingOffer} onPress={() => void onPurchase()}>
+              Subscribe{priceString ? ` · ${priceString}` : ''}
+            </Button>
+            <Button fullWidth variant="secondary" loading={busy} onPress={() => void onRestore()}>
+              Restore purchases
+            </Button>
+            <Text style={styles.hint}>
+              Subscriptions auto-renew unless cancelled at least 24 hours before the period ends. Individual courses can still be bought on sabilearn.online.
+            </Text>
+          </GlassSurface>
+        )}
+      </ScrollView>
+    </View>
   );
 }
 
@@ -200,7 +167,4 @@ const styles = StyleSheet.create({
   warn: { fontSize: 12, fontFamily: fontFamilies.sansMedium, color: '#E5484D', textAlign: 'center' },
   perkRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm },
   perk: { flex: 1, fontSize: 14, fontFamily: fontFamilies.sans, color: MUTED, lineHeight: 20 },
-  dividerRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, paddingVertical: 4 },
-  line: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: '#E8E8EE' },
-  or: { fontSize: 12, fontFamily: fontFamilies.sans, color: MUTED },
 });

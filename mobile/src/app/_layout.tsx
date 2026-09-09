@@ -24,7 +24,7 @@ import {
 } from '@/lib/notifications';
 import { syncQueuedSessions } from '@/lib/offlineSync';
 import { Image as ExpoImage } from 'expo-image';
-import PaystackAppProvider from '@/components/payments/PaystackAppProvider';
+import { identifyPurchasesUser } from '@/lib/iap';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -86,6 +86,12 @@ function AppContent() {
 
   // Push registration happens only after auth — iOS's one-shot permission
   // prompt is too valuable to burn before the user has seen any value.
+  useEffect(() => {
+    if (isAuthenticated && user?._id) {
+      void identifyPurchasesUser(user._id);
+    }
+  }, [isAuthenticated, user?._id]);
+
   useEffect(() => {
     if (!isAuthenticated) return;
 
@@ -162,9 +168,7 @@ function AppContent() {
 export default function RootLayout() {
   return (
     <ThemeProvider>
-      <PaystackAppProvider>
-        <AppContent />
-      </PaystackAppProvider>
+      <AppContent />
     </ThemeProvider>
   );
 }

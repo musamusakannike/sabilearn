@@ -4,8 +4,6 @@ import { IconBook2, IconArrowRight } from "@tabler/icons-react-native";
 import { fontFamilies, fontSizes, spacing } from "@/theme";
 import { ACCENT, FAINT, INK, MUTED, TINT_GLASS } from "@/theme/brand";
 import { Course } from "@/lib/types";
-import { formatKobo } from "@/lib/money";
-import { NotInReview } from "@/components/common/ReviewGuard";
 import GlassSurface from "./GlassSurface";
 
 interface CourseCardProps {
@@ -49,17 +47,9 @@ export default function CourseCard({ course, onPress }: CourseCardProps) {
           <View style={styles.footerRow}>
             <Text style={styles.category}>{course.category}</Text>
             <View style={styles.continueLink}>
-              <NotInReview
-                fallback={
-                  <Text style={styles.continueLinkText}>
-                    {course.topicCount ?? 0} topics
-                  </Text>
-                }
-              >
-                <Text style={styles.continueLinkText}>
-                  {course.isFree ? "Free" : formatKobo(course.price)}
-                </Text>
-              </NotInReview>
+              <Text style={styles.continueLinkText}>
+                {course.isFree ? "Free" : "Premium"}
+              </Text>
               <IconArrowRight size={14} color={ACCENT} />
             </View>
           </View>

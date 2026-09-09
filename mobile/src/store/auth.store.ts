@@ -9,6 +9,7 @@ import { getToken, saveToken, deleteToken } from '@/lib/secureStorage';
 import { User, IUserSettings } from '@/lib/types';
 import { useOnboardingStore } from './onboarding.store';
 import { scheduleLocalDailyReminder, registerForPushNotifications } from '@/lib/notifications';
+import { resetPurchasesUser } from '@/lib/iap';
 
 interface AuthState {
   user: User | null;
@@ -244,6 +245,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         }
       }
     } finally {
+      await resetPurchasesUser();
       set({ user: null, isAuthenticated: false, isLoading: false });
     }
   },

@@ -40,7 +40,7 @@ const TransactionSchema: Schema = new Schema<ITransaction>(
     },
     billingType: {
       type: String,
-      enum: ['recurring', 'manual'],
+      enum: ['recurring', 'manual', 'iap'],
     },
     course: {
       type: Schema.Types.ObjectId,

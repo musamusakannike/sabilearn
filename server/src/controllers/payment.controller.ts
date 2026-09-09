@@ -10,6 +10,13 @@ import {
   verifyTransaction as verifyPaystackTransaction,
   verifyWebhookSignature,
 } from '../services/paystack.service';
+import {
+  getSubscriber,
+  isPremiumActive,
+  mapStore,
+  verifyRevenueCatWebhookAuth,
+} from '../services/revenuecat.service';
+import User from '../models/user.model';
 
 const generateReference = (prefix: string) => `${prefix}_${crypto.randomBytes(12).toString('hex')}`;
 
@@ -257,12 +264,10 @@ export const getMyPaymentStatus = async (
       status: 'success',
     }).select('course');
 
-    // 'expired' only makes sense for the manual, non-webhook-backed billing type —
-    // a recurring subscription's `status` is already kept current by Paystack's webhooks.
-    const isExpiredManual =
+    const isExpiredPeriod =
       !!subscription &&
       subscription.status === 'active' &&
-      subscription.billingType === 'manual' &&
+      (subscription.billingType === 'manual' || subscription.billingType === 'iap') &&
       !isSubscriptionActive(subscription);
 
     res.status(200).json({
@@ -270,9 +275,10 @@ export const getMyPaymentStatus = async (
       data: {
         subscription: subscription
           ? {
-              status: isExpiredManual ? 'expired' : subscription.status,
+              status: isExpiredPeriod ? 'expired' : subscription.status,
               billingType: subscription.billingType,
               currentPeriodEnd: subscription.currentPeriodEnd,
+              store: subscription.store,
             }
           : { status: 'none' },
         purchasedCourseIds: purchasedCourses.map((t) => t.course),
@@ -395,4 +401,125 @@ const handleInvoicePaymentFailed = async (data: any) => {
     { paystackCustomerCode: data.customer?.customer_code },
     { status: 'past_due' }
   );
+};
+
+const applyIapSubscription = async (opts: {
+  userId: string;
+  active: boolean;
+  expiresAt?: Date;
+  store?: string;
+  eventType?: string;
+}) => {
+  const store = mapStore(opts.store);
+  let status: 'active' | 'cancelled' | 'past_due' | 'none' = opts.active ? 'active' : 'none';
+  if (!opts.active && (opts.eventType === 'CANCELLATION' || opts.eventType === 'EXPIRATION')) {
+    status = 'cancelled';
+  }
+  if (opts.eventType === 'BILLING_ISSUE') {
+    status = 'past_due';
+  }
+
+  await Subscription.findOneAndUpdate(
+    { user: opts.userId },
+    {
+      user: opts.userId,
+      billingType: 'iap',
+      rcAppUserId: opts.userId,
+      status,
+      currentPeriodEnd: opts.expiresAt,
+      ...(store ? { store } : {}),
+    },
+    { upsert: true }
+  );
+};
+
+export const syncIapEntitlement = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const user = req.user!;
+    const appUserId = String(user._id);
+    const subscriber = await getSubscriber(appUserId);
+    const { active, expiresAt } = isPremiumActive(subscriber);
+    await applyIapSubscription({ userId: appUserId, active, expiresAt });
+
+    const subscription = await Subscription.findOne({ user: user._id });
+    res.status(200).json({
+      success: true,
+      data: {
+        status: active ? 'success' : 'failed',
+        type: 'subscription',
+        subscription: subscription
+          ? {
+              status: active ? 'active' : subscription.status,
+              billingType: subscription.billingType,
+              currentPeriodEnd: subscription.currentPeriodEnd,
+              store: subscription.store,
+            }
+          : { status: 'none' },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const handleRevenueCatWebhook = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  if (!verifyRevenueCatWebhookAuth(req.headers.authorization)) {
+    res.status(401).json({ success: false, message: 'Invalid authorization.' });
+    return;
+  }
+
+  res.status(200).json({ received: true });
+
+  const event = (req.body as { event?: Record<string, unknown> })?.event;
+  if (!event || typeof event.type !== 'string') return;
+
+  const type = event.type;
+  const appUserId = typeof event.app_user_id === 'string' ? event.app_user_id : undefined;
+  if (!appUserId) return;
+
+  const user = await User.findById(appUserId);
+  if (!user) {
+    console.warn(`[RevenueCat] No user for app_user_id ${appUserId}`);
+    return;
+  }
+
+  try {
+    const expirationMs = typeof event.expiration_at_ms === 'number' ? event.expiration_at_ms : undefined;
+    const expiresAt = expirationMs ? new Date(expirationMs) : undefined;
+    const store = typeof event.store === 'string' ? event.store : undefined;
+
+    const grantTypes = new Set([
+      'INITIAL_PURCHASE',
+      'RENEWAL',
+      'PRODUCT_CHANGE',
+      'UNCANCELLATION',
+      'NON_RENEWING_PURCHASE',
+      'CANCELLATION',
+    ]);
+
+    if (grantTypes.has(type)) {
+      const stillActive = !expiresAt || expiresAt.getTime() > Date.now();
+      await applyIapSubscription({
+        userId: String(user._id),
+        active: stillActive,
+        expiresAt,
+        store,
+        eventType: stillActive ? type : 'CANCELLATION',
+      });
+    } else if (type === 'EXPIRATION' || type === 'BILLING_ISSUE') {
+      await applyIapSubscription({
+        userId: String(user._id),
+        active: false,
+        expiresAt,
+        store,
+        eventType: type,
+      });
+    }
+  } catch (error) {
+    console.error(`[RevenueCat Webhook] Failed to process ${type}:`, error);
+  }
 };

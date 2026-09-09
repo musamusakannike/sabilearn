@@ -157,6 +157,7 @@ export const paymentApi = {
     api.post('/payments/subscription/manual/initialize', { callbackUrl: PAYMENT_CALLBACK_URL }),
   verify: (reference: string) => api.get(`/payments/verify/${reference}`),
   me: () => api.get('/payments/me'),
+  syncIap: () => api.post('/payments/iap/sync'),
 };
 
 const AI_TIMEOUT_MS = 120000;

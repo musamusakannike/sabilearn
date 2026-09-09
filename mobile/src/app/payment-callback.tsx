@@ -5,7 +5,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IconCircleCheck, IconCircleX, IconClock } from '@tabler/icons-react-native';
 import { paymentApi } from '@/lib/api';
 import { VerifyResponse } from '@/lib/types';
-import { useAppReview } from '@/hooks/useAppReview';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import ScreenHeader from '@/components/common/ScreenHeader';
 import GlassSurface from '@/components/ui/GlassSurface';
@@ -16,7 +15,6 @@ import { INK, MUTED, TINT_GLASS } from '@/theme/brand';
 
 export default function PaymentCallbackScreen() {
   const insets = useSafeAreaInsets();
-  const { inReview } = useAppReview();
   const params = useLocalSearchParams<{ reference?: string; trxref?: string }>();
   const reference = params.reference || params.trxref;
   const [result, setResult] = useState<VerifyResponse | null>(null);
@@ -24,10 +22,6 @@ export default function PaymentCallbackScreen() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (inReview) {
-      router.replace('/(tabs)');
-      return;
-    }
     if (!reference) {
       setIsLoading(false);
       setError('Missing payment reference.');
@@ -44,7 +38,7 @@ export default function PaymentCallbackScreen() {
         setIsLoading(false);
       }
     })();
-  }, [reference, inReview]);
+  }, [reference]);
 
   return (
     <View style={styles.container}>

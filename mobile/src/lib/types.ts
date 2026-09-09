@@ -151,13 +151,14 @@ export interface Course {
 }
 
 export type SubscriptionStatus = 'active' | 'cancelled' | 'past_due' | 'none' | 'expired';
-export type SubscriptionBillingType = 'recurring' | 'manual';
+export type SubscriptionBillingType = 'recurring' | 'manual' | 'iap';
 
 export interface PaymentStatus {
   subscription: {
     status: SubscriptionStatus;
     billingType?: SubscriptionBillingType;
     currentPeriodEnd?: string;
+    store?: 'app_store' | 'play_store' | 'web';
   };
   purchasedCourseIds: string[];
 }
