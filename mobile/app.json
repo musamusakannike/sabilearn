@@ -2,7 +2,7 @@
   "expo": {
     "name": "SabiLearn",
     "slug": "sabilearn",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "sabilearn",
@@ -81,7 +81,7 @@
     },
     "extra": {
       "apiUrl": "https://api.sabilearn.online/api/v1",
-      "revenueCatIosApiKey": "appl_REPLACE_ME",
+      "revenueCatIosApiKey": "appl_OGbQqYOkkBtcJissQRMTsbSIMKf",
       "revenueCatAndroidApiKey": "goog_REPLACE_ME",
       "router": {},
       "eas": {

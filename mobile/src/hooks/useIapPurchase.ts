@@ -3,7 +3,7 @@ import { Alert, Platform } from 'react-native';
 import Purchases, { PurchasesPackage } from 'react-native-purchases';
 import { useAuthStore } from '@/store/auth.store';
 import { paymentApi } from '@/lib/api';
-import { configurePurchases, IAP_ENTITLEMENT, identifyPurchasesUser } from '@/lib/iap';
+import { appUserId, configurePurchases, IAP_ENTITLEMENT, identifyPurchasesUser } from '@/lib/iap';
 import * as haptics from '@/lib/haptics';
 
 function apiErrorMessage(err: unknown, fallback: string): string {
@@ -14,6 +14,7 @@ function apiErrorMessage(err: unknown, fallback: string): string {
 
 export function useIapPurchase() {
   const user = useAuthStore((s) => s.user);
+  const uid = appUserId(user);
   const [pkg, setPkg] = useState<PurchasesPackage | null>(null);
   const [priceString, setPriceString] = useState<string | null>(null);
   const [loadingOffer, setLoadingOffer] = useState(true);
@@ -30,7 +31,7 @@ export function useIapPurchase() {
         setPriceString(null);
         return;
       }
-      if (user?._id) await identifyPurchasesUser(user._id);
+      if (uid) await identifyPurchasesUser(uid);
       const offerings = await Purchases.getOfferings();
       const monthly =
         offerings.current?.monthly ??
@@ -45,7 +46,7 @@ export function useIapPurchase() {
     } finally {
       setLoadingOffer(false);
     }
-  }, [user?._id]);
+  }, [uid]);
 
   useEffect(() => {
     void loadOffering();
@@ -57,7 +58,7 @@ export function useIapPurchase() {
   }, []);
 
   const purchase = useCallback(async (): Promise<boolean> => {
-    if (!user?._id) {
+    if (!uid) {
       Alert.alert('Sign in required', 'Sign in to subscribe.');
       return false;
     }
@@ -72,7 +73,7 @@ export function useIapPurchase() {
     }
     setBusy(true);
     try {
-      await identifyPurchasesUser(user._id);
+      await identifyPurchasesUser(uid);
       const { customerInfo } = await Purchases.purchasePackage(pkg);
       const entitled = typeof customerInfo.entitlements.active[IAP_ENTITLEMENT] !== 'undefined';
       if (entitled) {
@@ -91,16 +92,16 @@ export function useIapPurchase() {
     } finally {
       setBusy(false);
     }
-  }, [pkg, syncServer, user?._id]);
+  }, [pkg, syncServer, uid]);
 
   const restore = useCallback(async (): Promise<boolean> => {
-    if (!user?._id) {
+    if (!uid) {
       Alert.alert('Sign in required', 'Sign in to restore purchases.');
       return false;
     }
     setBusy(true);
     try {
-      await identifyPurchasesUser(user._id);
+      await identifyPurchasesUser(uid);
       const info = await Purchases.restorePurchases();
       const entitled = typeof info.entitlements.active[IAP_ENTITLEMENT] !== 'undefined';
       await syncServer();
@@ -117,7 +118,7 @@ export function useIapPurchase() {
     } finally {
       setBusy(false);
     }
-  }, [syncServer, user?._id]);
+  }, [syncServer, uid]);
 
   return {
     pkg,

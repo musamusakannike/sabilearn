@@ -1,15 +1,22 @@
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import Purchases, { LOG_LEVEL } from 'react-native-purchases';
+import type { User } from '@/lib/types';
 
 const extra = (Constants.expoConfig?.extra ?? {}) as Record<string, unknown>;
 
-export const REVENUECAT_IOS_KEY =
-  (typeof extra.revenueCatIosApiKey === 'string' && extra.revenueCatIosApiKey) || '';
+export const REVENUECAT_IOS_KEY = 'appl_OGbQqYOkkBtcJissQRMTsbSIMKf';
 export const REVENUECAT_ANDROID_KEY =
   (typeof extra.revenueCatAndroidApiKey === 'string' && extra.revenueCatAndroidApiKey) || '';
 
 export const IAP_ENTITLEMENT = 'premium';
+
+/** Auth payloads use `id`; some Mongo-shaped objects still have `_id`. */
+export function appUserId(user: User | null | undefined): string | undefined {
+  if (!user) return undefined;
+  const id = user.id || user._id;
+  return id ? String(id) : undefined;
+}
 
 let configured = false;
 

@@ -24,7 +24,7 @@ import {
 } from '@/lib/notifications';
 import { syncQueuedSessions } from '@/lib/offlineSync';
 import { Image as ExpoImage } from 'expo-image';
-import { identifyPurchasesUser } from '@/lib/iap';
+import { appUserId, identifyPurchasesUser } from '@/lib/iap';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -87,10 +87,11 @@ function AppContent() {
   // Push registration happens only after auth — iOS's one-shot permission
   // prompt is too valuable to burn before the user has seen any value.
   useEffect(() => {
-    if (isAuthenticated && user?._id) {
-      void identifyPurchasesUser(user._id);
+    const uid = appUserId(user);
+    if (isAuthenticated && uid) {
+      void identifyPurchasesUser(uid);
     }
-  }, [isAuthenticated, user?._id]);
+  }, [isAuthenticated, user]);
 
   useEffect(() => {
     if (!isAuthenticated) return;
