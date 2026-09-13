@@ -182,13 +182,82 @@ export const appReviewApi = {
     api.put('/app-review', data),
 };
 
+export interface ExplainLessonParams {
+  mode: 'eli5' | 'analogy' | 'custom';
+  topicTitle?: string;
+  stepTitle?: string;
+  stepContent?: string;
+  question?: string;
+}
+
 export const aiApi = {
   summarize: (text: string, stream: boolean = false) => api.post('/ai/summarize', { text, stream }),
   generateQuiz: (topic: string, count: number = 5, stream: boolean = false) => api.post('/ai/generate-quiz', { topic, count, stream }),
   generateFlashcards: (topic: string, count: number = 5, stream: boolean = false) => api.post('/ai/generate-flashcards', { topic, count, stream }),
   qa: (question: string, context?: string, stream: boolean = false) => api.post('/ai/qa', { question, context, stream }),
+  explain: (data: ExplainLessonParams & { stream?: boolean }) => api.post('/ai/explain', data),
   history: (params?: { type?: string; page?: number; limit?: number }) => api.get('/ai/history', { params }),
   getHistoryById: (id: string) => api.get(`/ai/history/${id}`),
   deleteHistory: (id: string) => api.delete(`/ai/history/${id}`),
 };
+
+export async function streamAiExplain(
+  params: ExplainLessonParams,
+  onChunk: (chunk: string) => void,
+  signal?: AbortSignal
+): Promise<string> {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('sabilearn_token') : null;
+  const url = `${API_URL}/ai/explain`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify({ ...params, stream: true }),
+    signal,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => null);
+    throw new Error(errorData?.message || `AI request failed with status ${response.status}`);
+  }
+
+  if (!response.body) {
+    throw new Error('No readable stream available in response.');
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder('utf-8');
+  let accumulated = '';
+  let buffer = '';
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    buffer = lines.pop() || '';
+
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed === 'data: [DONE]') continue;
+      if (trimmed.startsWith('data: ')) {
+        try {
+          const parsed = JSON.parse(trimmed.slice(6));
+          if (parsed.chunk) {
+            accumulated += parsed.chunk;
+            onChunk(parsed.chunk);
+          }
+        } catch {
+          // ignore partial JSON chunks
+        }
+      }
+    }
+  }
+
+  return accumulated;
+}
 

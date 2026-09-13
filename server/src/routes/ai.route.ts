@@ -4,6 +4,7 @@ import {
   generateQuiz,
   generateFlashcards,
   qa,
+  explainLesson,
   generateCourseQuiz,
   generateTopicQuiz,
   getHistory,
@@ -17,6 +18,7 @@ import {
   validateGenerateQuiz,
   validateGenerateFlashcards,
   validateQA,
+  validateExplainLesson,
   validateCourseQuiz,
   validateTopicQuiz,
 } from '../validations/ai.validation';
@@ -26,11 +28,12 @@ const router = Router();
 // Protect all AI routes
 router.use(protect);
 
-// Homepage AI Features
+// Homepage & Study AI Features
 router.post('/summarize', validateSummarize, summarize);
 router.post('/generate-quiz', validateGenerateQuiz, generateQuiz);
 router.post('/generate-flashcards', validateGenerateFlashcards, generateFlashcards);
 router.post('/qa', validateQA, qa);
+router.post('/explain', validateExplainLesson, explainLesson);
 
 // Course & Topic Quiz Features
 router.post('/courses/:courseId/quiz', requireCourseAccess(resolveCourseIdFromParam('courseId')), validateCourseQuiz, generateCourseQuiz);

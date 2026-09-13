@@ -180,6 +180,12 @@ export class DeepSeekService {
         null,
         2
       );
+    } else if (systemPrompt.includes('TUTOR_ELI5')) {
+      fullResponse = `### In Simple Terms (ELI5)\n\nImagine you have a magic box that remembers whatever you put inside it, even after you close the lid.\n\n- **The Big Idea**: That's essentially what is happening here! Instead of getting lost in technical definitions, think of this concept as a way to keep things organized and reachable whenever needed.\n- **Why it matters**: It prevents mistakes and keeps your work clean.\n- **Quick takeaway**: Master the core rule first, and the rest becomes straightforward.`;
+    } else if (systemPrompt.includes('TUTOR_ANALOGY')) {
+      fullResponse = `### Real-World Analogy\n\nThink of this like **ordering food at a restaurant kitchen**:\n\n1. **The Order Ticket**: When you place an order, the waiter writes it down and pins it up.\n2. **The Chef's Workflow**: The chef doesn't need to know who ordered it or why; they just execute the recipe step-by-step according to that ticket.\n3. **The Connection**: In the same way, this concept separates the request from the execution so each part does its specific job smoothly without chaos.\n\n*Takeaway*: Keep each step isolated, just like a well-run kitchen!`;
+    } else if (systemPrompt.includes('TUTOR_CUSTOM')) {
+      fullResponse = `### In-Lesson AI Tutor\n\nHere is what you need to know about that:\n\n1. **Context**: Based on this step of the lesson, the key detail is understanding how the components interact.\n2. **Direct Answer**: Focus on the inputs and the expected outcome.\n3. **Practical Tip**: When in doubt, break down complex parts into smaller 1-minute steps.`;
     } else if (systemPrompt.includes('QA_AI')) {
       fullResponse = `### Explanation for: "${lastUserMessage}"\n\nGreat question! In modern concepts, **${lastUserMessage.slice(0, 30)}** works by establishing clear boundaries and rules.\n\n1. **Core Concept**: It defines how data or operations flow.\n2. **Best Practice**: Always structure your logic cleanly and write tests to verify behavior.`;
     } else {
@@ -338,6 +344,78 @@ Output strictly valid JSON in the format:
         role: 'user',
         content: context ? `Context:\n${context}\n\nQuestion: ${question}` : question,
       },
+    ];
+
+    return this.streamChatCompletion(messages, onChunk || (() => {}));
+  }
+
+  /**
+   * In-Lesson Contextual AI Tutor: Explain simply (ELI5), relatable analogy, or custom question.
+   */
+  public static async explainLessonStep(
+    options: {
+      mode: 'eli5' | 'analogy' | 'custom';
+      topicTitle?: string;
+      stepTitle?: string;
+      stepContent: string;
+      question?: string;
+    },
+    onChunk?: (chunk: string) => void
+  ): Promise<string> {
+    const { mode, topicTitle, stepTitle, stepContent, question } = options;
+
+    let systemPrompt = '';
+    let userPrompt = '';
+
+    if (mode === 'eli5') {
+      systemPrompt = `You are TUTOR_ELI5 on SabiLearn, an empathetic and gifted educator.
+Your task is to provide an "Explain Simply (ELI5)" breakdown of the given lesson content.
+Guidelines:
+- Explain the core concept in plain, simple English without confusing technical jargon.
+- Use a friendly, encouraging tone.
+- Format with clean, structured Markdown (use headings like ### Key Idea, bullet points for steps, bold for important terms).
+- Keep it concise (2-4 short paragraphs or bulleted takeaways) so it is fast and delightful to read during a lesson.
+- DO NOT use sparkles emojis or filler phrases like "Sure! I can explain that!". Jump straight into the clear explanation.`;
+
+      userPrompt = `LESSON TOPIC: ${topicTitle || 'General Lesson'}
+STEP TITLE: ${stepTitle || 'Current Step'}
+CONTENT TO EXPLAIN:
+${stepContent}`;
+    } else if (mode === 'analogy') {
+      systemPrompt = `You are TUTOR_ANALOGY on SabiLearn, an expert at making abstract or difficult concepts crystal clear using real-world analogies.
+Your task is to explain the given lesson concept through an imaginative, relatable, and memorable everyday analogy (e.g., cooking, traffic lights, backpacks, smartphones, sports, or bank accounts).
+Guidelines:
+- Start directly with the analogy.
+- Clearly connect the elements of the analogy back to the real concept (e.g., "The chef is like the function, the order ticket is like the arguments...").
+- Format using clean Markdown with clear headings and bulleted mappings.
+- Conclude with a 1-sentence "Mental Hook" takeaway.
+- DO NOT use sparkles emojis or conversational fluff.`;
+
+      userPrompt = `LESSON TOPIC: ${topicTitle || 'General Lesson'}
+STEP TITLE: ${stepTitle || 'Current Step'}
+CONTENT TO ANALOGIZE:
+${stepContent}`;
+    } else {
+      systemPrompt = `You are TUTOR_CUSTOM on SabiLearn, an encouraging, sharp, and concise in-lesson AI tutor.
+Your task is to answer the student's question specifically in the context of the current lesson step.
+Guidelines:
+- Answer directly and accurately.
+- Relate your explanation directly to the step content provided.
+- Use clean, structured Markdown with code blocks if applicable.
+- DO NOT use sparkles emojis. Keep the answer direct and actionable.`;
+
+      userPrompt = `LESSON TOPIC: ${topicTitle || 'General Lesson'}
+STEP TITLE: ${stepTitle || 'Current Step'}
+LESSON CONTEXT:
+${stepContent}
+
+STUDENT QUESTION:
+${question || 'Can you clarify how this works?'}`;
+    }
+
+    const messages: DeepSeekMessage[] = [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
     ];
 
     return this.streamChatCompletion(messages, onChunk || (() => {}));

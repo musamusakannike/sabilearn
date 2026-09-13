@@ -73,3 +73,26 @@ export const validateTopicQuiz = (req: Request, res: Response, next: NextFunctio
   }
   next();
 };
+
+export const validateExplainLesson = (req: Request, res: Response, next: NextFunction): void => {
+  const { mode, stepContent, question } = req.body;
+  const validModes = ['eli5', 'analogy', 'custom'];
+
+  if (!mode || !validModes.includes(mode)) {
+    res.status(400).json({
+      success: false,
+      message: 'A valid mode is required: "eli5", "analogy", or "custom".',
+    });
+    return;
+  }
+
+  if (!stepContent && !question) {
+    res.status(400).json({
+      success: false,
+      message: 'Either stepContent or question must be provided.',
+    });
+    return;
+  }
+
+  next();
+};

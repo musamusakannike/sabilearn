@@ -286,6 +286,91 @@ export const qa = async (
 };
 
 /**
+ * POST /api/v1/ai/explain
+ * In-Lesson Contextual AI Tutor
+ */
+export const explainLesson = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { mode, topicTitle, stepTitle, stepContent, question } = req.body;
+    const userId = req.user!._id;
+    const stream = isStreamRequested(req);
+
+    const titlePrefix =
+      mode === 'eli5'
+        ? 'ELI5 Explanation'
+        : mode === 'analogy'
+        ? 'Relatable Analogy'
+        : 'In-Lesson Q&A';
+
+    if (stream) {
+      setupSSEHeaders(res);
+      let accumulated = '';
+
+      await DeepSeekService.explainLessonStep(
+        { mode, topicTitle, stepTitle, stepContent, question },
+        (chunk) => {
+          accumulated += chunk;
+          res.write(`data: ${JSON.stringify({ chunk })}\n\n`);
+        }
+      );
+
+      const history = await AiHistory.create({
+        user: userId,
+        type: 'tutor_explain',
+        title: `${titlePrefix}: ${stepTitle || topicTitle || 'Step'}`,
+        prompt: question || `${mode.toUpperCase()} explanation for ${stepTitle || topicTitle}`,
+        metadata: { mode, topicTitle, stepTitle, stepContentSnippet: stepContent?.slice(0, 150) },
+        result: accumulated,
+      });
+
+      res.write(
+        `data: ${JSON.stringify({
+          done: true,
+          historyId: history._id,
+          result: accumulated,
+        })}\n\n`
+      );
+      res.write('data: [DONE]\n\n');
+      res.end();
+    } else {
+      const result = await DeepSeekService.explainLessonStep({
+        mode,
+        topicTitle,
+        stepTitle,
+        stepContent,
+        question,
+      });
+
+      const history = await AiHistory.create({
+        user: userId,
+        type: 'tutor_explain',
+        title: `${titlePrefix}: ${stepTitle || topicTitle || 'Step'}`,
+        prompt: question || `${mode.toUpperCase()} explanation for ${stepTitle || topicTitle}`,
+        metadata: { mode, topicTitle, stepTitle, stepContentSnippet: stepContent?.slice(0, 150) },
+        result,
+      });
+
+      res.status(200).json({
+        success: true,
+        data: {
+          historyId: history._id,
+          type: history.type,
+          prompt: history.prompt,
+          result,
+          createdAt: history.createdAt,
+        },
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * POST /api/v1/ai/courses/:courseId/quiz
  */
 export const generateCourseQuiz = async (

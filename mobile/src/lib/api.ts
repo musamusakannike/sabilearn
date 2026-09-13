@@ -166,6 +166,14 @@ export const appReviewApi = {
   getStatus: (os?: string, version?: string) => api.get('/app-review/status', { params: { os, version } }),
 };
 
+export interface ExplainLessonParams {
+  mode: 'eli5' | 'analogy' | 'custom';
+  topicTitle?: string;
+  stepTitle?: string;
+  stepContent?: string;
+  question?: string;
+}
+
 export const aiApi = {
   summarize: (text: string, stream: boolean = false) =>
     api.post('/ai/summarize', { text, stream }, { timeout: AI_TIMEOUT_MS }),
@@ -175,8 +183,85 @@ export const aiApi = {
     api.post('/ai/generate-flashcards', { topic, count, stream }, { timeout: AI_TIMEOUT_MS }),
   qa: (question: string, context?: string, stream: boolean = false) =>
     api.post('/ai/qa', { question, context, stream }, { timeout: AI_TIMEOUT_MS }),
+  explain: (data: ExplainLessonParams & { stream?: boolean }) =>
+    api.post('/ai/explain', data, { timeout: AI_TIMEOUT_MS }),
   history: (params?: { type?: string; page?: number; limit?: number }) => api.get('/ai/history', { params }),
   getHistoryById: (id: string) => api.get(`/ai/history/${id}`),
   deleteHistory: (id: string) => api.delete(`/ai/history/${id}`),
 };
+
+export function streamAiExplainMobile(
+  params: ExplainLessonParams,
+  onChunk: (chunk: string) => void,
+  onDone?: (fullText: string) => void,
+  onError?: (err: any) => void
+): () => void {
+  let isCancelled = false;
+  const xhr = new XMLHttpRequest();
+
+  (async () => {
+    try {
+      const token = await getToken();
+      xhr.open('POST', `${API_BASE_URL}/ai/explain`, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      if (token) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      }
+
+      let lastIndex = 0;
+      let fullText = '';
+
+      xhr.onprogress = () => {
+        if (isCancelled) return;
+        const newText = xhr.responseText.slice(lastIndex);
+        lastIndex = xhr.responseText.length;
+
+        const lines = newText.split('\n');
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed === 'data: [DONE]') continue;
+          if (trimmed.startsWith('data: ')) {
+            try {
+              const parsed = JSON.parse(trimmed.slice(6));
+              if (parsed.chunk) {
+                fullText += parsed.chunk;
+                onChunk(parsed.chunk);
+              }
+            } catch {
+              // ignore partial json
+            }
+          }
+        }
+      };
+
+      xhr.onload = () => {
+        if (isCancelled) return;
+        if (xhr.status >= 200 && xhr.status < 300) {
+          if (onDone) onDone(fullText);
+        } else {
+          try {
+            const errJson = JSON.parse(xhr.responseText);
+            if (onError) onError(new Error(errJson.message || `Request failed with status ${xhr.status}`));
+          } catch {
+            if (onError) onError(new Error(`Request failed with status ${xhr.status}`));
+          }
+        }
+      };
+
+      xhr.onerror = () => {
+        if (isCancelled) return;
+        if (onError) onError(new Error('Network request failed'));
+      };
+
+      xhr.send(JSON.stringify({ ...params, stream: true }));
+    } catch (err) {
+      if (onError) onError(err);
+    }
+  })();
+
+  return () => {
+    isCancelled = true;
+    xhr.abort();
+  };
+}
 

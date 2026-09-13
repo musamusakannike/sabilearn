@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { View, Text, Pressable, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, Pressable, StyleSheet, ScrollView, Alert, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
@@ -12,6 +12,7 @@ import * as haptics from '@/lib/haptics';
 import InfoStepBlock from './InfoStepBlock';
 import QuizStep from './QuizStep';
 import ExerciseRunner from './ExerciseRunner';
+import InLessonAiTutor from './InLessonAiTutor';
 
 export default function StepPlayer({
   topic,
@@ -27,7 +28,25 @@ export default function StepPlayer({
   const [finished, setFinished] = useState(false);
   const [hasCompleted, setHasCompleted] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
+  const [isScrollingDown, setIsScrollingDown] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
+  const lastScrollY = useRef(0);
+  const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const currentY = event.nativeEvent.contentOffset.y;
+    if (currentY > lastScrollY.current && currentY > 40) {
+      setIsScrollingDown(true);
+    } else {
+      setIsScrollingDown(false);
+    }
+    lastScrollY.current = currentY;
+
+    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    scrollTimeout.current = setTimeout(() => {
+      setIsScrollingDown(false);
+    }, 400);
+  };
 
   const { saveContentPosition, fetchTopicProgress } = useProgressStore();
   const total = steps.length;
@@ -207,6 +226,8 @@ export default function StepPlayer({
         ref={scrollRef}
         contentContainerStyle={styles.body}
         showsVerticalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
       >
         {/* Step Title Row with '...' button */}
         <View style={styles.titleRow}>
@@ -243,6 +264,24 @@ export default function StepPlayer({
           </View>
         )}
       </ScrollView>
+
+      {/* Floating In-Lesson Contextual AI Tutor */}
+      {step && (
+        <InLessonAiTutor
+          topicTitle={topic.title}
+          stepTitle={displayTitle}
+          stepContent={
+            step.type === 'quiz' && step.quiz
+              ? `Quiz Question: ${step.quiz.question}\nOptions: ${step.quiz.options?.map((o, i) => `${i + 1}. ${o.text}`).join(', ') || ''}\nExplanation: ${step.quiz.explanation || ''}`
+              : step.type === 'exercise' && step.exercise
+                ? `Exercise: ${step.title || 'Practice'}\nInstructions: ${step.exercise.instructions || ''}\nStarter Code:\n${step.exercise.starterCode || ''}`
+                : step.type === 'group' && step.blocks
+                  ? step.blocks.map((b) => b.content || '').join('\n\n')
+                  : step.content || topic.description || ''
+          }
+          isScrollingDown={isScrollingDown}
+        />
+      )}
 
       {/* Sticky Bottom Action Bar */}
       <View style={[styles.footer, { borderTopColor: colors.borderSubtle }]}>
