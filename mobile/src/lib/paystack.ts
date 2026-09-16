@@ -3,7 +3,7 @@ import Constants from 'expo-constants';
 const extra = (Constants.expoConfig?.extra ?? {}) as Record<string, unknown>;
 
 export const PAYSTACK_PUBLIC_KEY =
-  (typeof extra.paystackPublicKey === 'string' && extra.paystackPublicKey) || '';
+  (typeof extra.paystackPublicKey === 'string' && extra.paystackPublicKey) || 'pk_live_0a6cd813f6db93dc88bd7c4657cc27ca5ba07941';
 
 export const SUBSCRIPTION_AMOUNT_KOBO =
   typeof extra.subscriptionAmountKobo === 'number' ? extra.subscriptionAmountKobo : 300000;
