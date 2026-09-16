@@ -43,6 +43,7 @@
     "react-native-gesture-handler": "~2.32.0",
     "react-native-markdown-display": "^7.0.2",
     "react-native-pager-view": "8.0.2",
+    "react-native-paystack-webview": "^5.1.0",
     "react-native-purchases": "^10.9.0",
     "react-native-reanimated": "4.5.1",
     "react-native-safe-area-context": "~5.7.0",

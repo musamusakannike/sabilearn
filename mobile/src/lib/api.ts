@@ -149,12 +149,21 @@ export const searchApi = {
 export const PAYMENT_CALLBACK_URL = 'sabilearn://payment-callback';
 
 export const paymentApi = {
-  initializeCoursePurchase: (courseId: string) =>
-    api.post(`/payments/courses/${courseId}/initialize`, { callbackUrl: PAYMENT_CALLBACK_URL }),
-  initializeSubscription: () =>
-    api.post('/payments/subscription/initialize', { callbackUrl: PAYMENT_CALLBACK_URL }),
-  initializeManualSubscription: () =>
-    api.post('/payments/subscription/manual/initialize', { callbackUrl: PAYMENT_CALLBACK_URL }),
+  initializeCoursePurchase: (courseId: string, opts?: { clientCheckout?: boolean }) =>
+    api.post(`/payments/courses/${courseId}/initialize`, {
+      callbackUrl: PAYMENT_CALLBACK_URL,
+      clientCheckout: opts?.clientCheckout,
+    }),
+  initializeSubscription: (opts?: { clientCheckout?: boolean }) =>
+    api.post('/payments/subscription/initialize', {
+      callbackUrl: PAYMENT_CALLBACK_URL,
+      clientCheckout: opts?.clientCheckout,
+    }),
+  initializeManualSubscription: (opts?: { clientCheckout?: boolean }) =>
+    api.post('/payments/subscription/manual/initialize', {
+      callbackUrl: PAYMENT_CALLBACK_URL,
+      clientCheckout: opts?.clientCheckout,
+    }),
   verify: (reference: string) => api.get(`/payments/verify/${reference}`),
   me: () => api.get('/payments/me'),
   syncIap: () => api.post('/payments/iap/sync'),

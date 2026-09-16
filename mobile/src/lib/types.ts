@@ -164,9 +164,10 @@ export interface PaymentStatus {
 }
 
 export interface CheckoutInitResponse {
-  authorizationUrl: string;
-  accessCode: string;
+  authorizationUrl?: string;
+  accessCode?: string;
   reference: string;
+  amount?: number;
 }
 
 export type TransactionStatus = 'pending' | 'success' | 'failed';

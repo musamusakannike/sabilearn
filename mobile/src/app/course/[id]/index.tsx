@@ -38,11 +38,13 @@ import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import GlassSurface from '@/components/ui/GlassSurface';
 import GlassIconButton from '@/components/common/GlassIconButton';
 import CoursePaywall from '@/components/payments/CoursePaywall';
+import { useAppReview } from '@/hooks/useAppReview';
 import * as haptics from '@/lib/haptics';
 
 export default function CourseDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
+  const { inReview } = useAppReview();
   const colors = {
     textPrimary: INK,
     textSecondary: '#6B6B80',
@@ -161,6 +163,9 @@ export default function CourseDetailScreen() {
 
   if (isLoading) return <LoadingSpinner />;
   if (!course) return <EmptyState title="Course not found" />;
+  if (inReview && !course.isFree) {
+    return <EmptyState title="Course not available" description="This course is not available right now." />;
+  }
 
   const authors = course.authors || [];
   const s = makeStyles(colors);

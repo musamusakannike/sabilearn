@@ -25,6 +25,8 @@ export function getRevenueCatApiKey(): string {
 }
 
 export async function configurePurchases(): Promise<boolean> {
+  // Android billing is Paystack, not Play Billing / RevenueCat.
+  if (Platform.OS !== 'ios') return false;
   const apiKey = getRevenueCatApiKey();
   if (!apiKey || apiKey.startsWith('appl_REPLACE') || apiKey.startsWith('goog_REPLACE')) {
     return false;

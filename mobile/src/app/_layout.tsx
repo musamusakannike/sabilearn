@@ -25,6 +25,8 @@ import {
 import { syncQueuedSessions } from '@/lib/offlineSync';
 import { Image as ExpoImage } from 'expo-image';
 import { appUserId, identifyPurchasesUser } from '@/lib/iap';
+import { PaystackProvider } from 'react-native-paystack-webview';
+import { PAYSTACK_CHANNELS, PAYSTACK_PUBLIC_KEY } from '@/lib/paystack';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -169,7 +171,13 @@ function AppContent() {
 export default function RootLayout() {
   return (
     <ThemeProvider>
-      <AppContent />
+      <PaystackProvider
+        publicKey={PAYSTACK_PUBLIC_KEY || 'pk_live_unconfigured'}
+        currency="NGN"
+        defaultChannels={PAYSTACK_CHANNELS}
+      >
+        <AppContent />
+      </PaystackProvider>
     </ThemeProvider>
   );
 }

@@ -83,6 +83,8 @@
       "apiUrl": "https://api.sabilearn.online/api/v1",
       "revenueCatIosApiKey": "appl_OGbQqYOkkBtcJissQRMTsbSIMKf",
       "revenueCatAndroidApiKey": "goog_REPLACE_ME",
+      "paystackPublicKey": "pk_live_REPLACE_ME",
+      "subscriptionAmountKobo": 300000,
       "router": {},
       "eas": {
         "projectId": "424de974-a590-4b82-90c4-c390a80163c1"

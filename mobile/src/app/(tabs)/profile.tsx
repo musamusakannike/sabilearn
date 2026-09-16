@@ -12,6 +12,7 @@ import GlassSurface from '@/components/ui/GlassSurface';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import ScreenHeader from '@/components/common/ScreenHeader';
 import * as haptics from '@/lib/haptics';
+import { NotInReview } from '@/components/common/ReviewGuard';
 import type { ReactNode } from 'react';
 
 export default function ProfileScreen() {
@@ -84,11 +85,13 @@ export default function ProfileScreen() {
         </Pressable>
 
         <View style={styles.menu}>
-          <MenuRow
-            icon={<IconSparkles size={20} color={INK} />}
-            label="Subscription"
-            onPress={() => router.push('/subscribe')}
-          />
+          <NotInReview>
+            <MenuRow
+              icon={<IconSparkles size={20} color={INK} />}
+              label="Subscription"
+              onPress={() => router.push('/subscribe')}
+            />
+          </NotInReview>
           <MenuRow icon={<IconSettings size={20} color={INK} />} label="Settings" onPress={() => router.push('/settings')} />
           <MenuRow icon={<IconLogout size={20} color="#E5484D" />} label="Sign out" danger onPress={handleLogout} />
         </View>

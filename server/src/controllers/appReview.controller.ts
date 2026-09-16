@@ -13,7 +13,7 @@ const DEFAULT_OS_CONFIGS: Record<SupportedOS, { inReview: boolean; reviewVersion
     inReview: false,
     reviewVersion: '',
     notes: 'Default Android review configuration',
-    hiddenComponents: [],
+    hiddenComponents: ['subscription_paywall', 'paid_courses', 'code_playground'],
     customFlags: {},
   },
 };

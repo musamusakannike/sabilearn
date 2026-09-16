@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import crypto from 'crypto';
 import Course from '../models/course.model';
-import Transaction from '../models/transaction.model';
+import Transaction, { ITransaction } from '../models/transaction.model';
 import Subscription from '../models/subscription.model';
 import { AuthenticatedRequest } from '../middlewares/auth.middleware';
 import { isSubscriptionActive, MANUAL_SUBSCRIPTION_DAYS } from '../utils/subscription.util';
@@ -70,6 +70,18 @@ export const initializeCoursePurchase = async (
       status: 'pending',
     });
 
+    const clientCheckout = req.body?.clientCheckout === true;
+    if (clientCheckout) {
+      res.status(200).json({
+        success: true,
+        data: {
+          reference: transaction.reference,
+          amount: course.price,
+        },
+      });
+      return;
+    }
+
     const paystackRes = await initializeTransaction({
       email: user.email,
       amount: course.price,
@@ -88,6 +100,7 @@ export const initializeCoursePurchase = async (
         authorizationUrl: paystackRes.data.authorization_url,
         accessCode: paystackRes.data.access_code,
         reference: transaction.reference,
+        amount: course.price,
       },
     });
   } catch (error) {
@@ -127,6 +140,15 @@ export const initializeSubscription = async (
       status: 'pending',
     });
 
+    const clientCheckout = req.body?.clientCheckout === true;
+    if (clientCheckout) {
+      res.status(200).json({
+        success: true,
+        data: { reference, amount },
+      });
+      return;
+    }
+
     const paystackRes = await initializeTransaction({
       email: user.email,
       amount,
@@ -145,6 +167,7 @@ export const initializeSubscription = async (
         authorizationUrl: paystackRes.data.authorization_url,
         accessCode: paystackRes.data.access_code,
         reference,
+        amount,
       },
     });
   } catch (error) {
@@ -190,6 +213,15 @@ export const initializeManualSubscription = async (
       status: 'pending',
     });
 
+    const clientCheckout = req.body?.clientCheckout === true;
+    if (clientCheckout) {
+      res.status(200).json({
+        success: true,
+        data: { reference, amount },
+      });
+      return;
+    }
+
     const paystackRes = await initializeTransaction({
       email: user.email,
       amount,
@@ -208,6 +240,7 @@ export const initializeManualSubscription = async (
         authorizationUrl: paystackRes.data.authorization_url,
         accessCode: paystackRes.data.access_code,
         reference,
+        amount,
       },
     });
   } catch (error) {
@@ -236,9 +269,11 @@ export const verifyReference = async (
 
     if (transaction.status === 'pending') {
       const paystackRes = await verifyPaystackTransaction(reference);
-      if (paystackRes.data.status === 'success' || paystackRes.data.status === 'failed') {
-        // Reflects the latest state for the UI; the webhook independently performs the actual grant.
-        transaction.status = paystackRes.data.status === 'success' ? 'success' : 'failed';
+      if (paystackRes.data.status === 'success') {
+        // Grant immediately so the mobile WebView isn't stuck waiting on the webhook.
+        await grantSuccessfulCharge(transaction, paystackRes.data);
+      } else if (paystackRes.data.status === 'failed') {
+        transaction.status = 'failed';
         await transaction.save();
       }
     }
@@ -332,21 +367,19 @@ export const handleWebhook = async (req: AuthenticatedRequest, res: Response): P
   }
 };
 
-const handleChargeSuccess = async (data: any) => {
-  const reference: string = data.reference;
-
-  const transaction = await Transaction.findOne({ reference });
-  if (!transaction || transaction.status === 'success') return; // already processed (idempotency)
-
-  transaction.status = 'success';
-  transaction.paystackPayload = data;
-  await transaction.save();
+const grantSuccessfulCharge = async (transaction: ITransaction, data?: any) => {
+  if (transaction.status !== 'success') {
+    transaction.status = 'success';
+    if (data) transaction.paystackPayload = data;
+    await transaction.save();
+  }
 
   if (transaction.type === 'subscription' && transaction.billingType === 'manual') {
     const existing = await Subscription.findOne({ user: transaction.user });
-    // Renewing before expiry extends from the current end date rather than from
-    // "now", so paying a few days early doesn't cost the user those days.
-    const base = existing?.currentPeriodEnd && existing.currentPeriodEnd.getTime() > Date.now() ? existing.currentPeriodEnd : new Date();
+    const base =
+      existing?.currentPeriodEnd && existing.currentPeriodEnd.getTime() > Date.now()
+        ? existing.currentPeriodEnd
+        : new Date();
     const currentPeriodEnd = new Date(base.getTime() + MANUAL_SUBSCRIPTION_DAYS * 24 * 60 * 60 * 1000);
 
     await Subscription.findOneAndUpdate(
@@ -360,21 +393,27 @@ const handleChargeSuccess = async (data: any) => {
       { upsert: true }
     );
   } else if (transaction.type === 'subscription') {
-    // Recurring (card, Paystack Plan) charge — subscription.create carries the
-    // subscription/plan codes, this just flips access on immediately.
     await Subscription.findOneAndUpdate(
       { user: transaction.user },
       {
         user: transaction.user,
         billingType: 'recurring',
-        planCode: data.plan?.plan_code || process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE,
-        paystackCustomerCode: data.customer?.customer_code,
+        planCode: data?.plan?.plan_code || process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE,
+        paystackCustomerCode: data?.customer?.customer_code,
         status: 'active',
       },
       { upsert: true }
     );
   }
-  // course_purchase access is derived from Transaction.status === 'success', no further write needed.
+};
+
+const handleChargeSuccess = async (data: any) => {
+  const reference: string = data.reference;
+
+  const transaction = await Transaction.findOne({ reference });
+  if (!transaction || transaction.status === 'success') return;
+
+  await grantSuccessfulCharge(transaction, data);
 };
 
 const handleSubscriptionCreate = async (data: any) => {

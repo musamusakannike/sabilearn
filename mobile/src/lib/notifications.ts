@@ -228,7 +228,7 @@ export function setupNotificationHandlers(
 }
 
 /**
- * Schedules an on-device daily reminder as a backstop.
+ * Schedules an on-device reminder as a backstop every 5 days.
  *
  * The server drives the real reminders, but a local one still fires when the
  * device is offline, the push token has been invalidated, or the backend is
@@ -236,13 +236,16 @@ export function setupNotificationHandlers(
  * the fixed identifier keeps exactly one scheduled at a time.
  */
 export async function scheduleLocalDailyReminder(
-  hour: number,
-  minute: number
+  hour?: number,
+  minute?: number
 ): Promise<void> {
   if (Platform.OS === 'web') return;
   if (!(await hasNotificationPermission())) return;
 
   await cancelLocalDailyReminder();
+
+  // 5 days interval in seconds (5 * 24 * 60 * 60 = 432,000s)
+  const FIVE_DAYS_SECONDS = 5 * 24 * 60 * 60;
 
   await Notifications.scheduleNotificationAsync({
     identifier: LOCAL_REMINDER_ID,
@@ -253,9 +256,9 @@ export async function scheduleLocalDailyReminder(
       ...(Platform.OS === 'android' ? { channelId: 'reminders' } : {}),
     },
     trigger: {
-      type: Notifications.SchedulableTriggerInputTypes.DAILY,
-      hour,
-      minute,
+      type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+      seconds: FIVE_DAYS_SECONDS,
+      repeats: true,
     },
   });
 }

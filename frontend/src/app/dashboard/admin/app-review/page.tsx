@@ -32,6 +32,8 @@ import { toast } from 'sonner';
 
 const PRESET_HIDDEN_COMPONENTS = [
   { id: 'subscription_paywall', label: 'Subscription / Paywall Prompts', desc: 'Hides direct payment walls and premium pricing banners' },
+  { id: 'paid_courses', label: 'Paid / Premium Courses', desc: 'Hides non-free courses from listings while in review' },
+  { id: 'code_playground', label: 'Code Playground', desc: 'Hides the homepage code playground' },
   { id: 'external_payment', label: 'External Payment Gateways', desc: 'Replaces external checkout with standard access or sandbox flows' },
   { id: 'external_links', label: 'External Web Links & Socials', desc: 'Prevents navigation to third-party domains outside app store policy' },
   { id: 'delete_account_prompt', label: 'Account Deletion Banner', desc: 'Displays prominent account deletion compliance notice' },
@@ -55,7 +57,7 @@ export default function AppReviewAdminPage() {
       reviewVersion: '',
       minVersion: '',
       notes: '',
-      hiddenComponents: ['subscription_paywall', 'external_payment'],
+      hiddenComponents: ['subscription_paywall', 'paid_courses', 'code_playground', 'external_payment'],
       customFlags: {},
     },
   });

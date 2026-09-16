@@ -8,7 +8,7 @@ import {
   sendStreakRiskReminder,
 } from '../services/notification.service';
 import { expireLapsedStreaks } from '../services/streak.service';
-import { localDayKey, localHour, localMinute, startOfLocalDay } from '../utils/time.util';
+import { daysBetweenKeys, localDayKey, localHour, localMinute, startOfLocalDay } from '../utils/time.util';
 
 /**
  * Recurring engagement jobs.
@@ -18,6 +18,9 @@ import { localDayKey, localHour, localMinute, startOfLocalDay } from '../utils/t
  * ever scaled past one instance, move these to a locked job queue or two
  * replicas will both fire the sweep.
  */
+
+/** Cadence in days between scheduled study reminders for a user. */
+const STUDY_REMINDER_CADENCE_DAYS = 5;
 
 /** Local hour at which the "your streak is at risk" nudge goes out. */
 const STREAK_RISK_HOUR = 20;
@@ -51,10 +54,9 @@ function pushableUsersQuery(): Record<string, unknown> {
 }
 
 /**
- * Daily study reminder. Runs every 15 minutes and picks out the users whose
- * chosen local time has just come around, skipping anyone who already studied
- * — a reminder that arrives after you've done the thing teaches people to
- * ignore the app's notifications entirely.
+ * 5-day study reminder. Runs every 15 minutes and picks out the users whose
+ * chosen local time has just come around, ensuring at least 5 days have passed
+ * since their last reminder (or account creation), and skipping anyone who already studied today.
  */
 export async function runStudyReminders(now = new Date()): Promise<number> {
   const users = await User.find({
@@ -75,6 +77,23 @@ export async function runStudyReminders(now = new Date()): Promise<number> {
     if (await hasStudiedToday(user)) continue;
 
     const dayKey = localDayKey(now, offset);
+
+    // Ensure at least 5 days have elapsed since the user's last study reminder
+    const lastReminder = await Notification.findOne({
+      user: user._id,
+      category: 'reminder',
+    }).sort({ createdAt: -1 });
+
+    if (lastReminder) {
+      const lastReminderDayKey = localDayKey(lastReminder.createdAt, offset);
+      const daysSince = daysBetweenKeys(lastReminderDayKey, dayKey);
+      if (daysSince < STUDY_REMINDER_CADENCE_DAYS) continue;
+    } else if (user.createdAt) {
+      const userCreatedDayKey = localDayKey(user.createdAt, offset);
+      const daysSinceCreation = daysBetweenKeys(userCreatedDayKey, dayKey);
+      if (daysSinceCreation < STUDY_REMINDER_CADENCE_DAYS) continue;
+    }
+
     const streak = user.currentStreak;
     const message =
       streak > 0

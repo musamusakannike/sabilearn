@@ -26,6 +26,7 @@ import EmptyState from '@/components/ui/EmptyState';
 import AIToolDialog, { AIToolKind } from '@/components/ai/AIToolDialogs';
 import OfflineBanner from '@/components/common/OfflineBanner';
 import { NotInReview } from '@/components/common/ReviewGuard';
+import { useAppReview } from '@/hooks/useAppReview';
 import OnboardingSpeechBubble from '@/components/auth/OnboardingSpeechBubble';
 import GlassSurface, { GlassCluster } from '@/components/ui/GlassSurface';
 import HomeBackdrop from '@/components/home/HomeBackdrop';
@@ -46,6 +47,7 @@ function greetingForHour(hour: number): string {
 export default function DashboardHome() {
   const insets = useSafeAreaInsets();
   const { user, fetchMe } = useAuthStore();
+  const { inReview } = useAppReview();
   const { dashboard, isLoading, fetchDashboard } = useProgressStore();
   const [popularCourses, setPopularCourses] = useState<Course[]>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -91,7 +93,12 @@ export default function DashboardHome() {
     return <LoadingSpinner />;
   }
 
-  const continueStudying = dashboard?.continueStudying || [];
+  const continueStudying = (dashboard?.continueStudying || []).filter((progress) => {
+    if (!inReview) return true;
+    const course = typeof progress.course === 'object' ? (progress.course as Course) : null;
+    return !course || course.isFree;
+  });
+  const visiblePopular = inReview ? popularCourses.filter((c) => c.isFree) : popularCourses;
   const firstName = user?.firstName?.trim();
   const hour = new Date().getHours();
   const streak = dashboard?.streak ?? user?.currentStreak ?? 0;
@@ -338,7 +345,7 @@ export default function DashboardHome() {
               <Text style={styles.viewAllLink}>View all</Text>
             </Pressable>
           </View>
-          {popularCourses.length === 0 ? (
+          {visiblePopular.length === 0 ? (
             <EmptyState
               icon={<IconBook size={44} color={FAINT} />}
               title="No courses available yet"
@@ -346,7 +353,7 @@ export default function DashboardHome() {
             />
           ) : (
             <View style={styles.cardList}>
-              {popularCourses.map((course) => (
+              {visiblePopular.map((course) => (
                 <Pressable
                   key={course._id}
                   onPress={() => {

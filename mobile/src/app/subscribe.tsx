@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, RefreshControl, Alert, Linking, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 import { IconCheck, IconSparkles } from '@tabler/icons-react-native';
 import { paymentApi } from '@/lib/api';
 import { PaymentStatus } from '@/lib/types';
 import { useIapPurchase } from '@/hooks/useIapPurchase';
+import { usePaystackPurchase } from '@/hooks/usePaystackPurchase';
+import { useAppReview } from '@/hooks/useAppReview';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import ScreenHeader from '@/components/common/ScreenHeader';
 import GlassSurface from '@/components/ui/GlassSurface';
@@ -15,14 +18,22 @@ import { fontFamilies, spacing } from '@/theme';
 import { ACCENT, INK, MUTED, TINT_GLASS, TINT_ORANGE } from '@/theme/brand';
 import * as haptics from '@/lib/haptics';
 
-const PERKS = [
+const IOS_PERKS = [
   'Every premium course, current and future',
-  'Billed through Apple or Google — cancel anytime in your store account',
+  'Billed through Apple — cancel anytime in your store account',
+];
+
+const ANDROID_PERKS = [
+  'Every premium course, current and future',
+  'Pay with card, bank transfer or USSD via Paystack',
 ];
 
 export default function SubscribeScreen() {
   const insets = useSafeAreaInsets();
-  const { priceString, busy, loadingOffer, purchase, restore, reload } = useIapPurchase();
+  const { inReview } = useAppReview();
+  const iap = useIapPurchase();
+  const paystack = usePaystackPurchase();
+  const isAndroid = Platform.OS === 'android';
   const [status, setStatus] = useState<PaymentStatus | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -39,18 +50,22 @@ export default function SubscribeScreen() {
   }, []);
 
   useEffect(() => {
+    if (inReview) {
+      router.replace('/(tabs)/profile');
+      return;
+    }
     void load();
-  }, [load]);
+  }, [inReview, load]);
 
   const onRefresh = useCallback(async () => {
     haptics.light();
     setRefreshing(true);
-    await Promise.all([load(), reload()]);
+    await Promise.all([load(), isAndroid ? Promise.resolve() : iap.reload()]);
     setRefreshing(false);
-  }, [load, reload]);
+  }, [load, iap, isAndroid]);
 
   const onPurchase = async () => {
-    const ok = await purchase();
+    const ok = isAndroid ? await paystack.purchaseSubscription() : await iap.purchase();
     if (ok) {
       Alert.alert('You are Premium', 'All premium courses are unlocked.');
       await load();
@@ -58,7 +73,7 @@ export default function SubscribeScreen() {
   };
 
   const onRestore = async () => {
-    const ok = await restore();
+    const ok = await iap.restore();
     if (ok) {
       Alert.alert('Restored', 'Your subscription is active on this account.');
       await load();
@@ -66,19 +81,20 @@ export default function SubscribeScreen() {
   };
 
   const openManage = () => {
-    const url =
-      Platform.OS === 'ios'
-        ? 'https://apps.apple.com/account/subscriptions'
-        : 'https://play.google.com/store/account/subscriptions';
-    void Linking.openURL(url);
+    void Linking.openURL('https://apps.apple.com/account/subscriptions');
   };
 
+  if (inReview) return null;
   if (isLoading) return <LoadingSpinner />;
 
   const sub = status?.subscription;
   const isActive = sub?.status === 'active';
   const isIap = sub?.billingType === 'iap';
   const isWebBilled = sub?.billingType === 'manual' || sub?.billingType === 'recurring';
+  const busy = isAndroid ? paystack.busy : iap.busy;
+  const priceString = isAndroid ? paystack.priceString : iap.priceString;
+  const loadingOffer = isAndroid ? false : iap.loadingOffer;
+  const perks = isAndroid ? ANDROID_PERKS : IOS_PERKS;
 
   return (
     <View style={styles.container}>
@@ -88,7 +104,15 @@ export default function SubscribeScreen() {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={ACCENT} />}
         showsVerticalScrollIndicator={false}
       >
-        <ScreenHeader title="All-access" subtitle="Unlock every premium course with an App Store or Google Play subscription." showBack />
+        <ScreenHeader
+          title="All-access"
+          subtitle={
+            isAndroid
+              ? 'Unlock every premium course with Paystack.'
+              : 'Unlock every premium course with an App Store subscription.'
+          }
+          showBack
+        />
 
         {isActive && (
           <GlassSurface style={styles.card} tintColor={TINT_ORANGE}>
@@ -98,16 +122,16 @@ export default function SubscribeScreen() {
               {sub?.currentPeriodEnd ? (
                 <>
                   {' '}
-                  {isWebBilled ? 'Access ends' : 'Renews'} on {new Date(sub.currentPeriodEnd).toLocaleDateString()}.
+                  {isWebBilled || isAndroid ? 'Access ends' : 'Renews'} on {new Date(sub.currentPeriodEnd).toLocaleDateString()}.
                 </>
               ) : null}
             </Text>
-            {isWebBilled ? (
+            {isWebBilled && !isAndroid ? (
               <Text style={styles.hint}>
-                This plan was started on the website. Renew there, or subscribe in the app with Apple/Google when it ends.
+                This plan was started on the website. Renew there, or subscribe in the app with Apple when it ends.
               </Text>
             ) : null}
-            {isIap ? (
+            {isIap && !isAndroid ? (
               <Button fullWidth variant="secondary" onPress={openManage}>
                 Manage subscription
               </Button>
@@ -125,10 +149,10 @@ export default function SubscribeScreen() {
               <Text style={styles.warn}>Your subscription expired — subscribe again to restore access.</Text>
             )}
             {sub?.status === 'past_due' && (
-              <Text style={styles.warn}>There is a billing issue — update payment in your store account.</Text>
+              <Text style={styles.warn}>There is a billing issue — update your payment method and try again.</Text>
             )}
 
-            {PERKS.map((perk) => (
+            {perks.map((perk) => (
               <View key={perk} style={styles.perkRow}>
                 <IconCheck size={16} color="#1F9D55" />
                 <Text style={styles.perk}>{perk}</Text>
@@ -136,17 +160,25 @@ export default function SubscribeScreen() {
             ))}
             <View style={styles.perkRow}>
               <IconSparkles size={16} color="#1F9D55" />
-              <Text style={styles.perk}>Payment is processed by Apple or Google. You can cancel anytime.</Text>
+              <Text style={styles.perk}>
+                {isAndroid
+                  ? 'Payment is processed by Paystack. Access lasts 30 days per payment.'
+                  : 'Payment is processed by Apple. You can cancel anytime.'}
+              </Text>
             </View>
 
             <Button fullWidth loading={busy} disabled={loadingOffer} onPress={() => void onPurchase()}>
               Subscribe{priceString ? ` · ${priceString}` : ''}
             </Button>
-            <Button fullWidth variant="secondary" loading={busy} onPress={() => void onRestore()}>
-              Restore purchases
-            </Button>
+            {!isAndroid && (
+              <Button fullWidth variant="secondary" loading={busy} onPress={() => void onRestore()}>
+                Restore purchases
+              </Button>
+            )}
             <Text style={styles.hint}>
-              Subscriptions auto-renew unless cancelled at least 24 hours before the period ends. Individual courses can still be bought on sabilearn.online.
+              {isAndroid
+                ? 'This is a one-month all-access pass. It does not auto-renew. Individual courses can also be bought in the app.'
+                : 'Subscriptions auto-renew unless cancelled at least 24 hours before the period ends. Individual courses can still be bought on sabilearn.online.'}
             </Text>
           </GlassSurface>
         )}

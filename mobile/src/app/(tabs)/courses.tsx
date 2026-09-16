@@ -11,6 +11,7 @@ import { router } from "expo-router";
 import { IconSearch, IconBook } from "@tabler/icons-react-native";
 import { courseApi } from "@/lib/api";
 import { Course } from "@/lib/types";
+import { useAppReview } from "@/hooks/useAppReview";
 import { cacheCourses, getCachedCourses } from "@/lib/offlineSync";
 import CourseCard from "@/components/ui/CourseCard";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -24,6 +25,7 @@ import * as haptics from "@/lib/haptics";
 
 export default function CoursesScreen() {
   const insets = useSafeAreaInsets();
+  const { inReview } = useAppReview();
   const [courses, setCourses] = useState<Course[]>([]);
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -54,9 +56,10 @@ export default function CoursesScreen() {
     setRefreshing(false);
   }, [loadCourses]);
 
-  const filtered = courses.filter((c) =>
-    c.title.toLowerCase().includes(query.toLowerCase()),
-  );
+  const filtered = courses.filter((c) => {
+    if (inReview && !c.isFree) return false;
+    return c.title.toLowerCase().includes(query.toLowerCase());
+  });
 
   if (isLoading) return <LoadingSpinner />;
 
