@@ -429,7 +429,7 @@ export default function StepPlayer({
             step.type === "quiz" && step.quiz
               ? `Quiz Question: ${step.quiz.question}\nOptions: ${step.quiz.options?.map((o, i) => `${i + 1}. ${o.text}`).join(", ") || ""}\nExplanation: ${step.quiz.explanation || ""}`
               : step.type === "exercise" && step.exercise
-                ? `Exercise: ${step.exercise.title || ""}\nPrompt: ${step.exercise.prompt || ""}\nStarter Code:\n${step.exercise.starterCode || ""}`
+                ? `Exercise: ${step.exercise.instructions || ""}\nStarter Code:\n${step.exercise.starterCode || ""}`
                 : step.type === "group" && step.blocks
                   ? step.blocks.map((b) => b.content || "").join("\n\n")
                   : step.content || topic.description || ""

@@ -43,6 +43,9 @@ export interface TopicExercise {
   language: string;
   expectedOutput?: string;
   solution?: string;
+  // Legacy aliases — server stores exercise as Mixed, older content may use these
+  title?: string;
+  prompt?: string;
 }
 
 export interface Question {
