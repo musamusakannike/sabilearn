@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pyodide runtime</title>
+</head>
+<body>
+<script>
+(function () {
+  var pyodide = null;
+  var pyodideLoading = null;
+
+  function postToParent(message) {
+    if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+      window.ReactNativeWebView.postMessage(JSON.stringify(message));
+    }
+  }
+
+  function ensurePyodide() {
+    if (pyodide) return Promise.resolve(pyodide);
+    if (pyodideLoading) return pyodideLoading;
+    postToParent({ type: 'status', state: 'loading' });
+    pyodideLoading = new Promise(function (resolve, reject) {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/pyodide/v0.28.3/full/pyodide.js';
+      script.onload = function () {
+        loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.28.3/full/' })
+          .then(function (inst) {
+            pyodide = inst;
+            postToParent({ type: 'ready' });
+            resolve(pyodide);
+          })
+          .catch(reject);
+      };
+      script.onerror = function () {
+        reject(new Error('Could not load the Python runtime. Check your connection and try again.'));
+      };
+      document.body.appendChild(script);
+    });
+    return pyodideLoading;
+  }
+
+  function runPython(code) {
+    var stdout = '';
+    var stderr = '';
+    postToParent({ type: 'status', state: 'running' });
+    ensurePyodide()
+      .then(function (py) {
+        py.setStdout({ batched: function (s) { stdout += s + '\n'; } });
+        py.setStderr({ batched: function (s) { stderr += s + '\n'; } });
+        return py.runPythonAsync(code || '');
+      })
+      .then(function () {
+        postToParent({ type: 'result', stdout: stdout, stderr: stderr, ok: true });
+      })
+      .catch(function (err) {
+        var msg = String(err && err.message ? err.message : err);
+        stderr += msg + '\n';
+        postToParent({ type: 'result', stdout: stdout, stderr: stderr, ok: false });
+      });
+  }
+
+  function handleIncoming(event) {
+    var data = event.data;
+    if (typeof data === 'string') {
+      try { data = JSON.parse(data); } catch (e) { return; }
+    }
+    if (!data || typeof data !== 'object') return;
+    if (data.type === 'run') runPython(data.code);
+    if (data.type === 'warmup') ensurePyodide().catch(function (err) {
+      postToParent({ type: 'result', stdout: '', stderr: String(err), ok: false });
+    });
+  }
+
+  window.addEventListener('message', handleIncoming);
+  document.addEventListener('message', handleIncoming);
+  postToParent({ type: 'booted' });
+})();
+</script>
+</body>
+</html>

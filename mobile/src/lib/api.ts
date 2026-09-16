@@ -145,6 +145,27 @@ export const searchApi = {
   global: (q: string) => api.get('/search', { params: { q } }),
 };
 
+export const playgroundApi = {
+  list: (opts?: { full?: boolean; includeDeleted?: boolean }) =>
+    api.get('/playground/projects', {
+      params: {
+        full: opts?.full ? 1 : undefined,
+        includeDeleted: opts?.includeDeleted ? 1 : undefined,
+      },
+    }),
+  get: (id: string) => api.get(`/playground/projects/${id}`),
+  upsert: (data: {
+    localId: string;
+    name: string;
+    kind: string;
+    files: Record<string, string>;
+    updatedAt: string;
+    deletedAt?: string | null;
+  }) => api.put('/playground/projects', data),
+  rename: (id: string, name: string) => api.patch(`/playground/projects/${id}`, { name }),
+  remove: (id: string) => api.delete(`/playground/projects/${id}`),
+};
+
 // Payment callback URL scheme
 export const PAYMENT_CALLBACK_URL = 'sabilearn://payment-callback';
 
