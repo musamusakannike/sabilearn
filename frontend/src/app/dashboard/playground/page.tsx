@@ -31,7 +31,8 @@ export default function PlaygroundPage() {
     return projects.filter((p) => {
       if (filter !== 'all' && p.kind !== filter) return false;
       if (!q) return true;
-      return p.name.toLowerCase().includes(q) || p.kind.includes(q);
+      const name = p.name || (p.kind === 'python' ? 'Untitled python' : 'Untitled web');
+      return name.toLowerCase().includes(q) || p.kind.includes(q);
     });
   }, [projects, query, filter]);
 

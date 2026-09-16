@@ -9,7 +9,11 @@ export async function loadProjects(): Promise<PlaygroundProject[]> {
   if (!raw) return [];
   try {
     const parsed = JSON.parse(raw) as PlaygroundProject[];
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map((p) => ({
+      ...p,
+      name: p.name?.trim() || (p.kind === 'python' ? 'Untitled python' : 'Untitled web'),
+    }));
   } catch {
     return [];
   }

@@ -80,11 +80,12 @@ export default function PlaygroundIdeScreen() {
         ]);
         return;
       }
-      setProject(found);
+      const projName = found.name || (found.kind === 'python' ? 'Untitled python' : 'Untitled web');
+      setProject({ ...found, name: projName });
       setFiles(found.files);
       filesRef.current = found.files;
       setActiveFile(found.kind === 'python' ? 'main.py' : 'index.html');
-      setRenameValue(found.name);
+      setRenameValue(projName);
     })();
   }, [id]);
 
@@ -221,7 +222,7 @@ export default function PlaygroundIdeScreen() {
       <ScreenBackdrop />
       <View style={[styles.headerPad, { paddingTop: insets.top + 8 }]}>
         <ScreenHeader
-          title={project.name}
+          title={project.name || (project.kind === 'python' ? 'Untitled python' : 'Untitled web')}
           subtitle={dirty ? 'Saved on device · pending sync' : project.syncState === 'synced' ? 'Synced' : 'On this device'}
           showBack
           onBack={() => router.back()}

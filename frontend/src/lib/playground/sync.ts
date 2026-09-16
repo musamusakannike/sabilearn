@@ -7,7 +7,7 @@ function asProject(raw: PlaygroundProject & { id?: string }): PlaygroundProject 
   return {
     id: raw.id,
     localId: raw.localId,
-    name: raw.name,
+    name: raw.name?.trim() || (raw.kind === 'python' ? 'Untitled python' : 'Untitled web'),
     kind: raw.kind,
     files: raw.files || {},
     deletedAt: raw.deletedAt ?? null,
@@ -36,9 +36,10 @@ export async function pushProject(project: PlaygroundProject): Promise<{
 } | null> {
   if (typeof navigator !== 'undefined' && !navigator.onLine) return null;
   try {
+    const name = project.name?.trim() || (project.kind === 'python' ? 'Untitled python' : 'Untitled web');
     const res = await api.put('/playground/projects', {
       localId: project.localId,
-      name: project.name,
+      name,
       kind: project.kind,
       files: project.files,
       updatedAt: project.updatedAt,

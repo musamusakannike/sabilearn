@@ -30,6 +30,7 @@ export default function PlaygroundLibraryScreen() {
   const insets = useSafeAreaInsets();
   const { projects, hydrate, syncNow, syncing, createProject, duplicateProject, deleteProject, updateProject, lastConflict } =
     usePlaygroundStore();
+  console.log("PROJECTS: ", JSON.stringify(projects, null, 2))
   const [query, setQuery] = useState('');
   const [createOpen, setCreateOpen] = useState(false);
   const [renameTarget, setRenameTarget] = useState<PlaygroundProject | null>(null);
@@ -48,7 +49,10 @@ export default function PlaygroundLibraryScreen() {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return projects;
-    return projects.filter((p) => p.name.toLowerCase().includes(q) || p.kind.includes(q));
+    return projects.filter((p) => {
+      const name = p.name || (p.kind === 'python' ? 'Untitled python' : 'Untitled web');
+      return name.toLowerCase().includes(q) || p.kind.includes(q);
+    });
   }, [projects, query]);
 
   const onCreate = async (kind: PlaygroundKind, name: string) => {
@@ -59,12 +63,13 @@ export default function PlaygroundLibraryScreen() {
 
   const openMenu = (project: PlaygroundProject) => {
     haptics.light();
-    Alert.alert(project.name, undefined, [
+    const projName = project.name || (project.kind === 'python' ? 'Untitled python' : 'Untitled web');
+    Alert.alert(projName, undefined, [
       {
         text: 'Rename',
         onPress: () => {
           setRenameTarget(project);
-          setRenameValue(project.name);
+          setRenameValue(projName);
         },
       },
       {
@@ -78,7 +83,7 @@ export default function PlaygroundLibraryScreen() {
         text: 'Delete',
         style: 'destructive',
         onPress: () => {
-          Alert.alert('Delete project', `Delete “${project.name}”? This cannot be undone on this device.`, [
+          Alert.alert('Delete project', `Delete “${projName}”? This cannot be undone on this device.`, [
             { text: 'Cancel', style: 'cancel' },
             {
               text: 'Delete',

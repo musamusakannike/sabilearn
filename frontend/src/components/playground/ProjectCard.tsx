@@ -30,7 +30,9 @@ export default function ProjectCard({ project, onOpen, onMenu }: Props) {
             {isWeb ? <Globe className="size-5" /> : <Terminal className="size-5" />}
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="truncate text-[15px] font-semibold text-[var(--ink-900)]">{project.name}</h3>
+            <h3 className="truncate text-[15px] font-semibold text-[var(--ink-900)]">
+              {project.name || (project.kind === 'python' ? 'Untitled python' : 'Untitled web')}
+            </h3>
             <p className="mt-0.5 flex items-center gap-1.5 text-xs text-[var(--ink-500)]">
               <span
                 className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide uppercase ring-1 ${

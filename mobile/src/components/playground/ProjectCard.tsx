@@ -32,7 +32,7 @@ export default function ProjectCard({ project, onPress, onMenu }: Props) {
         </View>
         <View style={{ flex: 1 }}>
           <Text style={styles.name} numberOfLines={1}>
-            {project.name}
+            {project.name || (project.kind === 'python' ? 'Untitled python' : 'Untitled web')}
           </Text>
           <Text style={styles.meta}>
             {python ? 'Python' : 'Web'} · {relativeTime(project.updatedAt)}
