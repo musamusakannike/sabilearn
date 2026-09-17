@@ -170,6 +170,58 @@ export default function CourseDetailScreen() {
   const authors = course.authors || [];
   const s = makeStyles(colors);
 
+  // Flatten the three info blocks into one list so dividers between them
+  // (rather than three separate boxed cards) are trivial to render.
+  const accordionSections: { key: keyof typeof accordionState; title: string; body: React.ReactNode }[] = [];
+
+  if (course.whatYouWillLearn && course.whatYouWillLearn.length > 0) {
+    accordionSections.push({
+      key: 'learn',
+      title: "What you'll learn",
+      body: (
+        <View style={s.accordionBody}>
+          {course.whatYouWillLearn.map((item, i) => (
+            <View key={i} style={s.bulletRow}>
+              <View style={s.bulletIcon}>
+                <IconCheck size={12} color={colors.brandPrimaryHover} />
+              </View>
+              <Text style={s.bulletText}>{item}</Text>
+            </View>
+          ))}
+        </View>
+      ),
+    });
+  }
+
+  accordionSections.push({
+    key: 'prerequisites',
+    title: 'Prerequisites',
+    body: (
+      <View style={s.accordionBody}>
+        {course.prerequisites && course.prerequisites.length > 0 ? (
+          course.prerequisites.map((prereq, idx) => (
+            <View key={idx} style={s.bulletRow}>
+              <View style={s.dot} />
+              <Text style={s.bulletText}>{prereq}</Text>
+            </View>
+          ))
+        ) : (
+          <Text style={s.emptyPrereq}>No prior prerequisites required. Perfect for beginners!</Text>
+        )}
+      </View>
+    ),
+  });
+
+  accordionSections.push({
+    key: 'description',
+    title: 'Description',
+    body: (
+      <View style={s.accordionBody}>
+        <Text style={s.descText}>{course.longDescription || course.description}</Text>
+      </View>
+    ),
+  });
+
   return (
     <View collapsable={false} style={s.container}>
       <ScreenBackdrop />
@@ -186,12 +238,12 @@ export default function CourseDetailScreen() {
           </GlassIconButton>
         </View>
 
+        {/* Hero stays a real panel — it's the cover, not a content card */}
         <GlassSurface style={s.heroCard} tintColor={TINT_GLASS}>
           {course.banner ? (
             <Image source={{ uri: course.banner }} style={s.banner} resizeMode="cover" />
           ) : null}
 
-          {/* Badges */}
           <View style={s.badgeRow}>
             <Badge>{course.category}</Badge>
             <Badge variant={course.difficulty}>{course.difficulty}</Badge>
@@ -202,17 +254,13 @@ export default function CourseDetailScreen() {
             )}
           </View>
 
-          {/* Title */}
           <Text style={s.title}>{course.title}</Text>
           {!course.isFree ? (
-            <Text style={s.priceLine}>
-              {hasAccess ? 'Included in your access' : 'Included with Premium'}
-            </Text>
+            <Text style={s.priceLine}>{hasAccess ? 'Included in your access' : 'Included with Premium'}</Text>
           ) : (
             <Text style={s.priceLine}>Free</Text>
           )}
 
-          {/* Authors */}
           {authors.length > 0 && (
             <View style={s.authorsRow}>
               <View style={s.avatarGroup}>
@@ -221,9 +269,7 @@ export default function CourseDetailScreen() {
                     {author.avatar ? (
                       <Image source={{ uri: author.avatar }} style={s.authorAvatarImg} />
                     ) : (
-                      <Text style={s.authorAvatarInitial}>
-                        {author.name.charAt(0).toUpperCase()}
-                      </Text>
+                      <Text style={s.authorAvatarInitial}>{author.name.charAt(0).toUpperCase()}</Text>
                     )}
                   </View>
                 ))}
@@ -238,10 +284,7 @@ export default function CourseDetailScreen() {
                     <>
                       {authors[0].name}
                       {authors.length > 1 && (
-                        <Text
-                          onPress={() => setExpandedAuthors(!expandedAuthors)}
-                          style={s.moreAuthors}
-                        >
+                        <Text onPress={() => setExpandedAuthors(!expandedAuthors)} style={s.moreAuthors}>
                           {' '}+{authors.length - 1} more
                         </Text>
                       )}
@@ -252,9 +295,9 @@ export default function CourseDetailScreen() {
             </View>
           )}
 
-          {/* Stats Row */}
+          {/* Stats row: one hairline-divided strip instead of three boxed tiles */}
           <View style={s.statsRow}>
-            <View style={s.statBox}>
+            <View style={s.statCol}>
               <View style={s.statIconRow}>
                 <IconBook size={14} color={colors.brandPrimaryHover} />
                 <Text style={s.statLabel}>Lessons</Text>
@@ -262,7 +305,9 @@ export default function CourseDetailScreen() {
               <Text style={s.statValue}>{course.lessonCount || 0}</Text>
             </View>
 
-            <View style={s.statBox}>
+            <View style={s.statDivider} />
+
+            <View style={s.statCol}>
               <View style={s.statIconRow}>
                 <IconUsers size={14} color={colors.brandPrimaryHover} />
                 <Text style={s.statLabel}>Learners</Text>
@@ -270,14 +315,14 @@ export default function CourseDetailScreen() {
               <Text style={s.statValue}>{course.registeredUsersCount || 0}</Text>
             </View>
 
-            <View style={s.statBox}>
+            <View style={s.statDivider} />
+
+            <View style={s.statCol}>
               <View style={s.statIconRow}>
                 <IconBolt size={14} color="#F59E0B" />
                 <Text style={s.statLabel}>Total XP</Text>
               </View>
-              <Text style={[s.statValue, { color: '#D97706' }]}>
-                +{course.totalObtainableXp || 0}
-              </Text>
+              <Text style={[s.statValue, { color: '#D97706' }]}>+{course.totalObtainableXp || 0}</Text>
             </View>
           </View>
         </GlassSurface>
@@ -286,89 +331,21 @@ export default function CourseDetailScreen() {
           <CoursePaywall course={course} paymentStatus={paymentStatus} onUnlocked={() => void loadData()} />
         )}
 
-        {/* 3 Collapsible Accordions */}
+        {/* Info accordions — one flat block, hairline dividers between sections, no per-item box */}
         <View style={s.accordionGroup}>
-          {/* What you'll learn */}
-          {course.whatYouWillLearn && course.whatYouWillLearn.length > 0 && (
-            <View style={s.accordionCard}>
-              <Pressable
-                onPress={() => toggleAccordion('learn')}
-                style={s.accordionHeader}
-              >
-                <Text style={s.accordionTitle}>What you&apos;ll learn</Text>
-                {accordionState.learn ? (
+          {accordionSections.map((section, idx) => (
+            <View key={section.key} style={[idx > 0 && s.accordionDivider]}>
+              <Pressable onPress={() => toggleAccordion(section.key)} style={s.accordionHeader}>
+                <Text style={s.accordionTitle}>{section.title}</Text>
+                {accordionState[section.key] ? (
                   <IconChevronUp size={18} color={colors.textTertiary} />
                 ) : (
                   <IconChevronDown size={18} color={colors.textTertiary} />
                 )}
               </Pressable>
-              {accordionState.learn && (
-                <View style={s.accordionBody}>
-                  {course.whatYouWillLearn.map((item, i) => (
-                    <View key={i} style={s.bulletRow}>
-                      <View style={s.bulletIcon}>
-                        <IconCheck size={12} color={colors.brandPrimaryHover} />
-                      </View>
-                      <Text style={s.bulletText}>{item}</Text>
-                    </View>
-                  ))}
-                </View>
-              )}
+              {accordionState[section.key] && section.body}
             </View>
-          )}
-
-          {/* Prerequisites */}
-          <View style={s.accordionCard}>
-            <Pressable
-              onPress={() => toggleAccordion('prerequisites')}
-              style={s.accordionHeader}
-            >
-              <Text style={s.accordionTitle}>Prerequisites</Text>
-              {accordionState.prerequisites ? (
-                <IconChevronUp size={18} color={colors.textTertiary} />
-              ) : (
-                <IconChevronDown size={18} color={colors.textTertiary} />
-              )}
-            </Pressable>
-            {accordionState.prerequisites && (
-              <View style={s.accordionBody}>
-                {course.prerequisites && course.prerequisites.length > 0 ? (
-                  course.prerequisites.map((prereq, idx) => (
-                    <View key={idx} style={s.bulletRow}>
-                      <View style={s.dot} />
-                      <Text style={s.bulletText}>{prereq}</Text>
-                    </View>
-                  ))
-                ) : (
-                  <Text style={s.emptyPrereq}>
-                    No prior prerequisites required. Perfect for beginners!
-                  </Text>
-                )}
-              </View>
-            )}
-          </View>
-
-          {/* Description */}
-          <View style={s.accordionCard}>
-            <Pressable
-              onPress={() => toggleAccordion('description')}
-              style={s.accordionHeader}
-            >
-              <Text style={s.accordionTitle}>Description</Text>
-              {accordionState.description ? (
-                <IconChevronUp size={18} color={colors.textTertiary} />
-              ) : (
-                <IconChevronDown size={18} color={colors.textTertiary} />
-              )}
-            </Pressable>
-            {accordionState.description && (
-              <View style={s.accordionBody}>
-                <Text style={s.descText}>
-                  {course.longDescription || course.description}
-                </Text>
-              </View>
-            )}
-          </View>
+          ))}
         </View>
 
         {/* Course Structure (Chapters & Topics) */}
@@ -388,12 +365,17 @@ export default function CourseDetailScreen() {
                 const isLocked = chapter.status === 'locked';
                 const isCompleted = chapter.status === 'completed';
                 const isInProgress = chapter.status === 'inprogress';
+                const isLastChapter = cIdx === chapters.length - 1;
+                const topics = chapter.topics || [];
+                const exercise = chapter.exercise;
+                const hasExercise = !!(exercise && exercise.questions && exercise.questions.length > 0);
 
                 return (
                   <View
                     key={chapter._id}
                     style={[
-                      s.chapterCard,
+                      s.chapterRow,
+                      !isLastChapter && s.chapterDivider,
                       isLocked && s.chapterLocked,
                     ]}
                   >
@@ -402,9 +384,7 @@ export default function CourseDetailScreen() {
                       <View style={{ flex: 1 }}>
                         <View style={s.chapterBadgeRow}>
                           <Text style={s.chapterOverline}>Chapter {cIdx + 1}</Text>
-                          <Badge
-                            variant={isCompleted ? 'success' : isLocked ? 'default' : 'intermediate'}
-                          >
+                          <Badge variant={isCompleted ? 'success' : isLocked ? 'default' : 'intermediate'}>
                             {isCompleted ? 'Completed' : isLocked ? 'Locked' : 'In Progress'}
                           </Badge>
                         </View>
@@ -422,12 +402,7 @@ export default function CourseDetailScreen() {
                         )}
                       </View>
 
-                      {/* Dropdown toggle */}
-                      <Pressable
-                        onPress={() => toggleChapterDropdown(chapter._id)}
-                        style={s.chevronBtn}
-                        hitSlop={10}
-                      >
+                      <Pressable onPress={() => toggleChapterDropdown(chapter._id)} style={s.chevronBtn} hitSlop={10}>
                         {isOpen ? (
                           <IconChevronUp size={20} color={colors.textSecondary} />
                         ) : (
@@ -436,7 +411,7 @@ export default function CourseDetailScreen() {
                       </Pressable>
                     </View>
 
-                    {/* Chapter Action Button */}
+                    {/* Chapter Action Button — the one place a filled control earns its keep */}
                     <View style={s.chapterActionRow}>
                       {isLocked ? (
                         <View style={s.lockedBtn}>
@@ -446,8 +421,8 @@ export default function CourseDetailScreen() {
                       ) : isCompleted ? (
                         <Pressable
                           onPress={() => {
-                            if (chapter.topics && chapter.topics.length > 0) {
-                              handleOpenTopic(chapter, chapter.topics[0]);
+                            if (topics.length > 0) {
+                              handleOpenTopic(chapter, topics[0]);
                             }
                           }}
                           style={s.retakeBtn}
@@ -458,7 +433,7 @@ export default function CourseDetailScreen() {
                       ) : (
                         <Pressable
                           onPress={() => {
-                            const firstUnlocked = (chapter.topics || []).find((t) => t.isUnlocked);
+                            const firstUnlocked = topics.find((t) => t.isUnlocked);
                             if (firstUnlocked) {
                               handleOpenTopic(chapter, firstUnlocked);
                             }
@@ -471,12 +446,13 @@ export default function CourseDetailScreen() {
                       )}
                     </View>
 
-                    {/* Topics Dropdown List */}
-                    {isOpen && chapter.topics && chapter.topics.length > 0 && (
+                    {/* Topics — flat rows divided by hairlines, not stacked boxes */}
+                    {isOpen && topics.length > 0 && (
                       <View style={s.topicsContainer}>
-                        {chapter.topics.map((topic, tIdx) => {
+                        {topics.map((topic, tIdx) => {
                           const tUnlocked = !!topic.isUnlocked;
                           const tCompleted = !!topic.isCompleted;
+                          const isLastRow = tIdx === topics.length - 1 && !hasExercise;
 
                           return (
                             <Pressable
@@ -485,6 +461,7 @@ export default function CourseDetailScreen() {
                               onPress={() => handleOpenTopic(chapter, topic)}
                               style={[
                                 s.topicItem,
+                                !isLastRow && s.topicDivider,
                                 !tUnlocked && s.topicItemLocked,
                               ]}
                             >
@@ -492,22 +469,13 @@ export default function CourseDetailScreen() {
                                 <View
                                   style={[
                                     s.topicNumCircle,
-                                    tCompleted
-                                      ? s.topicNumCompleted
-                                      : tUnlocked
-                                      ? s.topicNumUnlocked
-                                      : s.topicNumLocked,
+                                    tCompleted ? s.topicNumCompleted : tUnlocked ? s.topicNumUnlocked : s.topicNumLocked,
                                   ]}
                                 >
                                   {tCompleted ? (
                                     <IconCheck size={12} color="#059669" />
                                   ) : (
-                                    <Text
-                                      style={[
-                                        s.topicNumText,
-                                        tUnlocked && { color: colors.brandPrimaryHover },
-                                      ]}
-                                    >
+                                    <Text style={[s.topicNumText, tUnlocked && { color: colors.brandPrimaryHover }]}>
                                       {tIdx + 1}
                                     </Text>
                                   )}
@@ -515,10 +483,7 @@ export default function CourseDetailScreen() {
 
                                 <View style={{ flex: 1 }}>
                                   <Text
-                                    style={[
-                                      s.topicItemTitle,
-                                      !tUnlocked && { color: colors.textTertiary },
-                                    ]}
+                                    style={[s.topicItemTitle, !tUnlocked && { color: colors.textTertiary }]}
                                     numberOfLines={1}
                                   >
                                     {topic.title}
@@ -549,8 +514,8 @@ export default function CourseDetailScreen() {
                           );
                         })}
 
-                        {/* Chapter Capstone Assessment */}
-                        {chapter.exercise && chapter.exercise.questions && chapter.exercise.questions.length > 0 && (
+                        {/* Chapter Capstone Assessment — the one deliberate callout, kept tinted but hairline-bordered */}
+                        {hasExercise && exercise && (
                           <Pressable
                             disabled={isLocked || !hasAccess}
                             onPress={() => {
@@ -560,40 +525,26 @@ export default function CourseDetailScreen() {
                                 params: { id, chapterId: chapter._id },
                               } as any);
                             }}
-                            style={[
-                              s.topicItem,
-                              {
-                                borderColor: '#FDE68A',
-                                backgroundColor: 'rgba(254, 243, 199, 0.45)',
-                              },
-                              (isLocked || !hasAccess) && s.topicItemLocked,
-                            ]}
+                            style={[s.assessmentItem, (isLocked || !hasAccess) && s.topicItemLocked]}
                           >
                             <View style={s.topicLeft}>
-                              <View
-                                style={[
-                                  s.topicNumCircle,
-                                  { backgroundColor: '#FEF3C7' },
-                                ]}
-                              >
+                              <View style={[s.topicNumCircle, { backgroundColor: '#FEF3C7' }]}>
                                 <IconAward size={16} color="#D97706" />
                               </View>
 
                               <View style={{ flex: 1 }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                                  <Text
-                                    style={[
-                                      s.topicItemTitle,
-                                      { fontWeight: '700' },
-                                      (isLocked || !hasAccess) && { color: colors.textTertiary },
-                                    ]}
-                                    numberOfLines={1}
-                                  >
-                                    {chapter.exercise.title || 'Chapter Capstone Assessment'}
-                                  </Text>
-                                </View>
+                                <Text
+                                  style={[
+                                    s.topicItemTitle,
+                                    { fontWeight: '700' },
+                                    (isLocked || !hasAccess) && { color: colors.textTertiary },
+                                  ]}
+                                  numberOfLines={1}
+                                >
+                                  {exercise.title || 'Chapter Capstone Assessment'}
+                                </Text>
                                 <Text style={s.topicItemDesc} numberOfLines={1}>
-                                  {chapter.exercise.questions.length} questions • Test your chapter mastery
+                                  {exercise.questions.length} questions • Test your chapter mastery
                                 </Text>
                               </View>
                             </View>
@@ -602,7 +553,7 @@ export default function CourseDetailScreen() {
                               <View style={s.topicXpBadge}>
                                 <IconBolt size={10} color="#F59E0B" />
                                 <Text style={s.topicXpText}>
-                                  +{chapter.exercise.questions.reduce((sum, q) => sum + (q.xp || 20), 0)} XP
+                                  +{exercise.questions.reduce((sum, q) => sum + (q.xp || 20), 0)} XP
                                 </Text>
                               </View>
 
@@ -637,32 +588,8 @@ function makeStyles(c: any) {
       justifyContent: 'space-between',
       paddingVertical: spacing.xs,
     },
-    backBtn: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 4,
-    },
-    backText: {
-      fontSize: fontSizes.sm,
-      fontFamily: fontFamilies.sansMedium,
-      color: c.textSecondary,
-    },
-    shareBtn: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 4,
-      backgroundColor: c.surfaceSunken,
-      paddingHorizontal: spacing.base,
-      paddingVertical: 6,
-      borderRadius: radii.md,
-      borderWidth: 1,
-      borderColor: c.borderSubtle,
-    },
-    shareText: {
-      fontSize: fontSizes.xs,
-      fontFamily: fontFamilies.sansSemiBold,
-      color: c.textPrimary,
-    },
+
+    // Hero — the one panel that keeps its own radius/overflow, since it's a cover, not content
     heroCard: {
       borderRadius: 20,
       padding: spacing.base,
@@ -695,7 +622,7 @@ function makeStyles(c: any) {
       flexDirection: 'row',
       alignItems: 'center',
       gap: spacing.sm,
-      borderTopWidth: 1,
+      borderTopWidth: StyleSheet.hairlineWidth,
       borderTopColor: c.borderSubtle,
       paddingTop: spacing.sm,
     },
@@ -733,19 +660,24 @@ function makeStyles(c: any) {
       color: c.brandPrimaryHover,
       fontFamily: fontFamilies.sansSemiBold,
     },
+
+    // Stats — flat strip, hairline dividers instead of three boxed tiles
     statsRow: {
       flexDirection: 'row',
-      gap: spacing.sm,
-      borderTopWidth: 1,
+      alignItems: 'center',
+      borderTopWidth: StyleSheet.hairlineWidth,
       borderTopColor: c.borderSubtle,
       paddingTop: spacing.sm,
     },
-    statBox: {
+    statCol: {
       flex: 1,
-      backgroundColor: c.surfaceSunken,
-      borderRadius: radii.md,
-      padding: spacing.sm,
       alignItems: 'center',
+      gap: 2,
+    },
+    statDivider: {
+      width: StyleSheet.hairlineWidth,
+      height: 26,
+      backgroundColor: c.borderSubtle,
     },
     statIconRow: {
       flexDirection: 'row',
@@ -764,22 +696,16 @@ function makeStyles(c: any) {
       color: c.textPrimary,
     },
 
-    // Accordions
-    accordionGroup: {
-      gap: spacing.xs,
-    },
-    accordionCard: {
-      backgroundColor: 'rgba(255,255,255,0.72)',
-      borderRadius: 18,
-      borderWidth: 1.5,
-      borderColor: '#E8E8EE',
-      overflow: 'hidden',
+    // Accordions — one flat block, hairline dividers between sections, no per-item box
+    accordionGroup: {},
+    accordionDivider: {
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: c.borderSubtle,
     },
     accordionHeader: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingHorizontal: spacing.base,
       paddingVertical: spacing.sm,
     },
     accordionTitle: {
@@ -788,9 +714,7 @@ function makeStyles(c: any) {
       color: c.textPrimary,
     },
     accordionBody: {
-      borderTopWidth: 1,
-      borderTopColor: c.borderSubtle,
-      padding: spacing.base,
+      paddingBottom: spacing.sm,
       gap: spacing.xs,
     },
     bulletRow: {
@@ -833,7 +757,7 @@ function makeStyles(c: any) {
       lineHeight: fontSizes.xs * 1.6,
     },
 
-    // Structure
+    // Structure — one flat list, hairline dividers between chapters instead of stacked cards
     structureSection: {
       gap: spacing.sm,
       marginTop: spacing.xs,
@@ -843,19 +767,18 @@ function makeStyles(c: any) {
       fontFamily: fontFamilies.displaySemiBold,
       color: c.textPrimary,
     },
-    chapterList: {
-      gap: spacing.md,
-    },
-    chapterCard: {
-      backgroundColor: 'rgba(255,255,255,0.72)',
-      borderRadius: 20,
-      borderWidth: 1.5,
-      borderColor: '#E8E8EE',
-      padding: spacing.base,
+    chapterList: {},
+    chapterRow: {
+      paddingVertical: spacing.md,
       gap: spacing.sm,
+      marginBottom: spacing['xl'],
+    },
+    chapterDivider: {
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: c.borderSubtle,
     },
     chapterLocked: {
-      opacity: 0.7,
+      opacity: 0.65,
     },
     chapterTop: {
       flexDirection: 'row',
@@ -913,7 +836,6 @@ function makeStyles(c: any) {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 6,
-      backgroundColor: c.surfaceSunken,
       paddingHorizontal: spacing.base,
       paddingVertical: spacing.xs,
       borderRadius: radii.md,
@@ -929,10 +851,8 @@ function makeStyles(c: any) {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 4,
-      backgroundColor: c.surfaceSunken,
       paddingHorizontal: spacing.sm,
       paddingVertical: spacing.xs,
-      borderRadius: radii.md,
     },
     lockedBtnText: {
       fontSize: fontSizes.xs,
@@ -940,22 +860,21 @@ function makeStyles(c: any) {
       color: c.textTertiary,
     },
 
-    // Topics list
+    // Topics list — flat rows, hairline dividers, no per-row box
     topicsContainer: {
-      borderTopWidth: 1,
+      borderTopWidth: StyleSheet.hairlineWidth,
       borderTopColor: c.borderSubtle,
-      paddingTop: spacing.sm,
-      gap: spacing.xs,
+      paddingTop: spacing.xs,
     },
     topicItem: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      backgroundColor: c.surfaceSunken,
-      borderRadius: radii.md,
-      padding: spacing.sm,
-      borderWidth: 1,
-      borderColor: c.borderSubtle,
+      paddingVertical: spacing.sm,
+    },
+    topicDivider: {
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: c.borderSubtle,
     },
     topicItemLocked: {
       opacity: 0.6,
@@ -1023,6 +942,19 @@ function makeStyles(c: any) {
       fontSize: fontSizes.xs,
       fontFamily: fontFamilies.sansSemiBold,
       color: c.brandPrimaryHover,
+    },
+
+    // Capstone assessment — the one deliberate callout kept, but hairline-bordered, not boxed like before
+    assessmentItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: 'rgba(254, 243, 199, 0.45)',
+      borderWidth: 1,
+      borderColor: '#FDE68A',
+      borderRadius: radii.md,
+      padding: spacing.sm,
+      marginTop: spacing.xs,
     },
   });
 }
