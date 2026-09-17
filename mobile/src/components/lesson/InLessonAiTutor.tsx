@@ -12,7 +12,15 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { IconX, IconChevronUp, IconArrowUp, IconRotate } from '@tabler/icons-react-native';
+import {
+  IconX,
+  IconArrowUp,
+  IconRotate,
+  IconChevronDown,
+  IconBook,
+  IconMessageDots,
+  IconHelp,
+} from '@tabler/icons-react-native';
 import { useTheme, fontFamilies, fontSizes, radii, spacing, shadows } from '@/theme';
 import * as haptics from '@/lib/haptics';
 import { streamAiExplainMobile, ExplainLessonParams } from '@/lib/api';
@@ -31,11 +39,10 @@ export default function InLessonAiTutor({
   topicTitle,
   stepTitle,
   stepContent,
-  isScrollingDown = false,
 }: InLessonAiTutorProps) {
   const { colors } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const [isDismissed, setIsDismissed] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeMode, setActiveMode] = useState<ExplanationMode>('eli5');
   const [customQuestion, setCustomQuestion] = useState('');
 
@@ -124,102 +131,120 @@ export default function InLessonAiTutor({
 
   return (
     <>
-      {/* Floating Pill Widget */}
-      {!isOpen && (
-        <View
-          pointerEvents={isScrollingDown ? 'none' : 'auto'}
-          style={[
-            styles.floatingContainer,
-            isScrollingDown && styles.floatingHidden,
-          ]}
+      {/* AI Tutor Dropdown Header Button */}
+      <Pressable
+        onPress={() => {
+          haptics.selection();
+          setIsDropdownOpen((prev) => !prev);
+        }}
+        hitSlop={8}
+        style={({ pressed }) => [
+          styles.headerCounterBtn,
+          { backgroundColor: pressed ? colors.surfaceSunken : 'transparent' },
+        ]}
+        accessibilityLabel="AI Tutor Options"
+      >
+        <IconChevronDown
+          size={18}
+          color={colors.textPrimary}
+          style={{ transform: [{ rotate: isDropdownOpen ? '180deg' : '0deg' }] }}
+        />
+      </Pressable>
+
+      {/* Header Dropdown Menu Popover Modal */}
+      <Modal
+        visible={isDropdownOpen}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setIsDropdownOpen(false)}
+      >
+        <Pressable
+          style={styles.dropdownOverlay}
+          onPress={() => setIsDropdownOpen(false)}
         >
-          {isDismissed ? (
-            /* Minimized edge tab */
-            <Pressable
-              onPress={() => {
-                haptics.selection();
-                setIsDismissed(false);
-              }}
-              style={[
-                styles.minimizedTab,
-                { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
-                shadows.sm,
-              ]}
-              accessibilityLabel="Show AI Tutor"
-            >
-              <View style={styles.goldDot} />
-              <Text style={[styles.minimizedLabel, { color: colors.textPrimary }]}>AI Tutor</Text>
-            </Pressable>
-          ) : (
-            /* Active Floating Action Pill */
-            <View
-              style={[
-                styles.floatingPill,
-                {
-                  backgroundColor: colors.surfaceCard,
-                  borderColor: colors.borderSubtle,
-                },
-                shadows.md,
-              ]}
-            >
-              {/* Quick Action: Explain Simply */}
+          <View
+            style={[
+              styles.dropdownCard,
+              { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
+              shadows.lg,
+            ]}
+          >
+            <View style={[styles.dropdownHeader, { borderBottomColor: colors.borderSubtle }]}>
+              <View style={styles.dropdownTitleRow}>
+                <Text style={[styles.dropdownTitle, { color: colors.textPrimary }]}>
+                  AI Tutor Assistant
+                </Text>
+              </View>
+              <Text style={[styles.dropdownSub, { color: colors.textTertiary }]}>
+                Ask about this step
+              </Text>
+            </View>
+
+            <View style={styles.dropdownMenuOptions}>
               <Pressable
-                onPress={() => requestExplanation('eli5')}
+                onPress={() => {
+                  setIsDropdownOpen(false);
+                  requestExplanation('eli5');
+                }}
                 style={({ pressed }) => [
-                  styles.quickBtn,
-                  { backgroundColor: colors.surfaceSunken, opacity: pressed ? 0.8 : 1 },
+                  styles.dropdownItem,
+                  { backgroundColor: pressed ? colors.surfaceSunken : 'transparent' },
                 ]}
               >
-                <Text style={[styles.quickBtnText, { color: colors.textPrimary }]}>
-                  Explain Simply
-                </Text>
-                <View style={styles.eli5Tag}>
-                  <Text style={styles.eli5TagText}>ELI5</Text>
+                <View style={styles.dropdownItemLeft}>
+                  <IconBook size={18} color="#FF8A00" />
+                  <Text style={[styles.dropdownItemText, { color: colors.textPrimary }]}>
+                    Explain Simply
+                  </Text>
+                </View>
+                <View style={styles.eli5Badge}>
+                  <Text style={styles.eli5BadgeText}>ELI5</Text>
                 </View>
               </Pressable>
 
-              {/* Quick Action: Analogy */}
-              <Pressable
-                onPress={() => requestExplanation('analogy')}
-                style={({ pressed }) => [
-                  styles.quickBtn,
-                  { backgroundColor: colors.surfaceSunken, opacity: pressed ? 0.8 : 1 },
-                ]}
-              >
-                <Text style={[styles.quickBtnText, { color: colors.textPrimary }]}>Analogy</Text>
-              </Pressable>
-
-              {/* Open full sheet button */}
               <Pressable
                 onPress={() => {
+                  setIsDropdownOpen(false);
+                  requestExplanation('analogy');
+                }}
+                style={({ pressed }) => [
+                  styles.dropdownItem,
+                  { backgroundColor: pressed ? colors.surfaceSunken : 'transparent' },
+                ]}
+              >
+                <View style={styles.dropdownItemLeft}>
+                  <IconMessageDots size={18} color="#0084FE" />
+                  <Text style={[styles.dropdownItemText, { color: colors.textPrimary }]}>
+                    Relatable Analogy
+                  </Text>
+                </View>
+              </Pressable>
+
+              <Pressable
+                onPress={() => {
+                  setIsDropdownOpen(false);
                   haptics.selection();
                   setIsOpen(true);
                   if (!fullBuffer) {
                     requestExplanation('eli5');
                   }
                 }}
-                style={styles.openTutorBtn}
+                style={({ pressed }) => [
+                  styles.dropdownItem,
+                  { backgroundColor: pressed ? colors.surfaceSunken : 'transparent' },
+                ]}
               >
-                <Text style={styles.openTutorText}>AI Tutor</Text>
-                <IconChevronUp size={14} color="#FFFFFF" strokeWidth={2.5} />
-              </Pressable>
-
-              {/* Dismiss button */}
-              <Pressable
-                onPress={() => {
-                  haptics.light();
-                  setIsDismissed(true);
-                }}
-                hitSlop={10}
-                style={styles.dismissBtn}
-                accessibilityLabel="Dismiss AI Tutor"
-              >
-                <IconX size={14} color={colors.textTertiary} />
+                <View style={styles.dropdownItemLeft}>
+                  <IconHelp size={18} color="#16A34A" />
+                  <Text style={[styles.dropdownItemText, { color: colors.textPrimary }]}>
+                    Ask Custom Question
+                  </Text>
+                </View>
               </Pressable>
             </View>
-          )}
-        </View>
-      )}
+          </View>
+        </Pressable>
+      </Modal>
 
       {/* Tutor Modal Bottom Sheet */}
       <Modal
@@ -392,85 +417,93 @@ export default function InLessonAiTutor({
 }
 
 const styles = StyleSheet.create({
-  floatingContainer: {
-    position: 'absolute',
-    bottom: 86,
-    right: spacing.base,
-    zIndex: 25,
+  headerCounterBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: radii.md,
   },
-  floatingHidden: {
-    opacity: 0.25,
-    transform: [{ translateY: 8 }],
+  counterText: {
+    fontSize: fontSizes.sm,
+    fontFamily: fontFamilies.sansBold || fontFamilies.sansSemiBold,
+    fontWeight: '800',
   },
-  minimizedTab: {
+  dropdownOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
+    paddingTop: Platform.OS === 'ios' ? 56 : 48,
+    paddingRight: 16,
+  },
+  dropdownCard: {
+    width: 230,
+    borderRadius: radii.xl,
+    borderWidth: 1,
+    overflow: 'hidden',
+    padding: spacing.xs,
+  },
+  dropdownHeader: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs + 2,
+    borderBottomWidth: 1,
+    marginBottom: spacing.xs,
+  },
+  dropdownTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: radii.full,
-    borderWidth: 1,
   },
-  minimizedLabel: {
+  dropdownTitle: {
+    fontSize: fontSizes.xs,
+    fontFamily: fontFamilies.sansBold || fontFamilies.sansSemiBold,
+    fontWeight: '800',
+  },
+  dropdownSub: {
+    fontSize: 10,
+    fontFamily: fontFamilies.sans,
+    marginTop: 2,
+  },
+  dropdownMenuOptions: {
+    gap: 2,
+  },
+  dropdownItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 9,
+    borderRadius: radii.md,
+  },
+  dropdownItemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  dropdownItemText: {
     fontSize: fontSizes.xs,
     fontFamily: fontFamilies.sansSemiBold,
-    fontWeight: '700',
+    fontWeight: '600',
+  },
+  eli5Badge: {
+    backgroundColor: 'rgba(255, 138, 0, 0.15)',
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderRadius: 4,
+  },
+  eli5BadgeText: {
+    color: '#FF8A00',
+    fontSize: 9,
+    fontFamily: fontFamilies.sansBold || fontFamilies.sansSemiBold,
+    fontWeight: '800',
   },
   goldDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
     backgroundColor: '#FF8A00',
-  },
-  floatingPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    padding: 6,
-    borderRadius: radii.xl,
-    borderWidth: 1,
-  },
-  quickBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 10,
-    paddingVertical: 7,
-    borderRadius: radii.md,
-  },
-  quickBtnText: {
-    fontSize: fontSizes.xs,
-    fontFamily: fontFamilies.sansSemiBold,
-    fontWeight: '600',
-  },
-  eli5Tag: {
-    backgroundColor: 'rgba(0, 0, 0, 0.08)',
-    paddingHorizontal: 4,
-    paddingVertical: 1,
-    borderRadius: 4,
-  },
-  eli5TagText: {
-    fontSize: 9,
-    fontFamily: fontFamilies.sansBold || fontFamilies.sansSemiBold,
-    fontWeight: '800',
-  },
-  openTutorBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 3,
-    backgroundColor: '#FF8A00',
-    paddingHorizontal: 10,
-    paddingVertical: 7,
-    borderRadius: radii.md,
-  },
-  openTutorText: {
-    color: '#FFFFFF',
-    fontSize: fontSizes.xs,
-    fontFamily: fontFamilies.sansBold || fontFamilies.sansSemiBold,
-    fontWeight: '700',
-  },
-  dismissBtn: {
-    padding: 4,
   },
   modalBackdrop: {
     flex: 1,

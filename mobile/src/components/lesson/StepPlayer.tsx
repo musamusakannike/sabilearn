@@ -218,7 +218,22 @@ export default function StepPlayer({
           })}
         </View>
 
-
+        {/* Hearts / Live counter (AI Tutor Dropdown) */}
+        {step && (
+          <InLessonAiTutor
+            topicTitle={topic.title}
+            stepTitle={displayTitle}
+            stepContent={
+              step.type === 'quiz' && step.quiz
+                ? `Quiz Question: ${step.quiz.question}\nOptions: ${step.quiz.options?.map((o, i) => `${i + 1}. ${o.text}`).join(', ') || ''}\nExplanation: ${step.quiz.explanation || ''}`
+                : step.type === 'exercise' && step.exercise
+                  ? `Exercise: ${step.title || 'Practice'}\nInstructions: ${step.exercise.instructions || ''}\nStarter Code:\n${step.exercise.starterCode || ''}`
+                  : step.type === 'group' && step.blocks
+                    ? step.blocks.map((b) => b.content || '').join('\n\n')
+                    : step.content || topic.description || ''
+            }
+          />
+        )}
       </View>
 
       {/* Main Content Scroll Area */}
@@ -264,24 +279,6 @@ export default function StepPlayer({
           </View>
         )}
       </ScrollView>
-
-      {/* Floating In-Lesson Contextual AI Tutor */}
-      {step && (
-        <InLessonAiTutor
-          topicTitle={topic.title}
-          stepTitle={displayTitle}
-          stepContent={
-            step.type === 'quiz' && step.quiz
-              ? `Quiz Question: ${step.quiz.question}\nOptions: ${step.quiz.options?.map((o, i) => `${i + 1}. ${o.text}`).join(', ') || ''}\nExplanation: ${step.quiz.explanation || ''}`
-              : step.type === 'exercise' && step.exercise
-                ? `Exercise: ${step.title || 'Practice'}\nInstructions: ${step.exercise.instructions || ''}\nStarter Code:\n${step.exercise.starterCode || ''}`
-                : step.type === 'group' && step.blocks
-                  ? step.blocks.map((b) => b.content || '').join('\n\n')
-                  : step.content || topic.description || ''
-          }
-          isScrollingDown={isScrollingDown}
-        />
-      )}
 
       {/* Sticky Bottom Action Bar */}
       <View style={[styles.footer, { borderTopColor: colors.borderSubtle }]}>

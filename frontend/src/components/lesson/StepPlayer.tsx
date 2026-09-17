@@ -323,10 +323,22 @@ export default function StepPlayer({
             })}
           </div>
 
-          {/* Hearts / Lives Counter */}
-          <div className="flex items-center gap-1.5 font-bold select-none pl-1">
-            <ChevronDown className="text-[var(--ink-900)]" size={32} />
-          </div>
+          {/* Hearts / Lives Counter (In-Lesson AI Tutor Dropdown) */}
+          {step && (
+            <InLessonAiTutor
+              topicTitle={topic.title}
+              stepTitle={displayTitle}
+              stepContent={
+                step.type === "quiz" && step.quiz
+                  ? `Quiz Question: ${step.quiz.question}\nOptions: ${step.quiz.options?.map((o, i) => `${i + 1}. ${o.text}`).join(", ") || ""}\nExplanation: ${step.quiz.explanation || ""}`
+                  : step.type === "exercise" && step.exercise
+                    ? `Exercise: ${step.exercise.instructions || ""}\nStarter Code:\n${step.exercise.starterCode || ""}`
+                    : step.type === "group" && step.blocks
+                      ? step.blocks.map((b) => b.content || "").join("\n\n")
+                      : step.content || topic.description || ""
+              }
+            />
+          )}
         </div>
       </header>
 
@@ -419,23 +431,6 @@ export default function StepPlayer({
           </button>
         </div>
       </footer>
-
-      {/* Floating In-Lesson Contextual AI Tutor */}
-      {step && (
-        <InLessonAiTutor
-          topicTitle={topic.title}
-          stepTitle={displayTitle}
-          stepContent={
-            step.type === "quiz" && step.quiz
-              ? `Quiz Question: ${step.quiz.question}\nOptions: ${step.quiz.options?.map((o, i) => `${i + 1}. ${o.text}`).join(", ") || ""}\nExplanation: ${step.quiz.explanation || ""}`
-              : step.type === "exercise" && step.exercise
-                ? `Exercise: ${step.exercise.instructions || ""}\nStarter Code:\n${step.exercise.starterCode || ""}`
-                : step.type === "group" && step.blocks
-                  ? step.blocks.map((b) => b.content || "").join("\n\n")
-                  : step.content || topic.description || ""
-          }
-        />
-      )}
     </div>
   );
 }

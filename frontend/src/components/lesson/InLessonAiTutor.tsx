@@ -1,7 +1,17 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { X, ChevronUp, ArrowRight, CornerDownLeft, RotateCcw } from 'lucide-react';
+import {
+  X,
+  ChevronDown,
+  CornerDownLeft,
+  RotateCcw,
+  Heart,
+  Sparkles,
+  BookOpen,
+  MessageSquare,
+  HelpCircle,
+} from 'lucide-react';
 import { streamAiExplain, ExplainLessonParams } from '@/lib/api';
 import MarkdownContent from '@/components/ui/MarkdownContent';
 
@@ -19,11 +29,10 @@ export default function InLessonAiTutor({
   stepContent,
 }: InLessonAiTutorProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDismissed, setIsDismissed] = useState(false);
-  const [isScrollingDown, setIsScrollingDown] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeMode, setActiveMode] = useState<ExplanationMode>('eli5');
   const [customQuestion, setCustomQuestion] = useState('');
-  
+
   // Streaming and typewriter text animation states
   const [fullBuffer, setFullBuffer] = useState('');
   const [displayedText, setDisplayedText] = useState('');
@@ -31,40 +40,26 @@ export default function InLessonAiTutor({
   const [error, setError] = useState<string | null>(null);
 
   const abortControllerRef = useRef<AbortController | null>(null);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastScrollY = useRef(0);
-  const animationFrameRef = useRef<number | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const responseEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Scroll detection: collapse floating widget while actively scrolling down
+  // Close dropdown menu when clicking outside
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY || document.documentElement.scrollTop;
-      if (currentScrollY > lastScrollY.current && currentScrollY > 60) {
-        setIsScrollingDown(true);
-      } else {
-        setIsScrollingDown(false);
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
       }
-      lastScrollY.current = currentScrollY;
-
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-      scrollTimeoutRef.current = setTimeout(() => {
-        setIsScrollingDown(false);
-      }, 400);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-    };
-  }, []);
+    }
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isDropdownOpen]);
 
   // Progressive typewriter animation effect: smoothly increases displayed characters
   useEffect(() => {
     if (displayedText.length < fullBuffer.length) {
       const remaining = fullBuffer.length - displayedText.length;
-      // Dynamically adjust step size: small smooth steps, speeds up if buffer is large
       const step = remaining > 100 ? 5 : remaining > 40 ? 3 : 1;
       const delay = remaining > 100 ? 12 : remaining > 40 ? 16 : 22;
 
@@ -143,89 +138,81 @@ export default function InLessonAiTutor({
   };
 
   return (
-    <>
-      {/* Floating Action Widget */}
-      {!isOpen && (
-        <aside
-          aria-label="In-Lesson AI Tutor"
-          className={`fixed z-30 transition-all duration-300 pointer-events-auto ${
-            isDismissed
-              ? 'bottom-20 right-4'
-              : 'bottom-20 right-4 sm:right-6 sm:bottom-22'
+    <div className="relative" ref={dropdownRef}>
+      {/* Hearts / Live Counter + AI Tutor Dropdown Trigger */}
+      <button
+        type="button"
+        onClick={() => setIsDropdownOpen((prev) => !prev)}
+        className="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-bold transition-all hover:bg-[var(--surface-sunken)] active:scale-95 cursor-pointer text-[var(--ink-900)] select-none"
+        title="In-Lesson AI Tutor Options"
+      >
+        <Heart className="size-5 fill-rose-500 text-rose-500 shrink-0" />
+        <span className="text-sm font-extrabold text-[var(--ink-900)]">5</span>
+        <ChevronDown
+          className={`size-4 text-[var(--ink-900)] transition-transform duration-200 ${
+            isDropdownOpen ? 'rotate-180' : ''
           }`}
-        >
-          {isDismissed ? (
-            /* Re-open mini dock badge */
+        />
+      </button>
+
+      {/* Dropdown Menu */}
+      {isDropdownOpen && (
+        <div className="absolute right-0 top-full mt-2 z-40 w-60 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-2 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+          <div className="px-3 py-2 border-b border-[var(--line)]/60 mb-1">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-extrabold text-[var(--ink-900)]">AI Tutor Assistant</span>
+            </div>
+            <p className="text-[10px] text-[var(--text-muted)] mt-0.5 truncate">
+              Ask about this step
+            </p>
+          </div>
+
+          <div className="space-y-1">
             <button
-              onClick={() => setIsDismissed(false)}
-              className="group flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface-card)] px-3.5 py-2 shadow-lg shadow-black/10 backdrop-blur-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
-              title="Show AI Tutor"
               type="button"
+              onClick={() => {
+                setIsDropdownOpen(false);
+                requestExplanation('eli5');
+              }}
+              className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-[var(--ink-900)] hover:bg-[var(--surface-sunken)] transition-colors text-left group cursor-pointer"
             >
-              <span className="size-2 rounded-full bg-[#FF8A00]" />
-              <span className="text-xs font-bold text-[var(--ink-900)] tracking-tight">
-                AI Tutor
+              <div className="flex items-center gap-2.5">
+                <BookOpen className="size-4 text-[#FF8A00] group-hover:scale-110 transition-transform" />
+                <span>Explain Simply</span>
+              </div>
+              <span className="rounded bg-amber-500/15 dark:bg-amber-400/20 px-1.5 py-0.5 text-[10px] font-bold text-[#FF8A00]">
+                ELI5
               </span>
             </button>
-          ) : (
-            /* Floating action pill with on-scroll collapse animation */
-            <div
-              className={`flex items-center gap-1.5 rounded-2xl border border-[var(--line)] bg-[var(--surface-card)]/95 p-1.5 shadow-xl shadow-black/10 backdrop-blur-md transition-all duration-300 ${
-                isScrollingDown
-                  ? 'opacity-40 scale-90 translate-y-2 pointer-events-none sm:opacity-80 sm:pointer-events-auto'
-                  : 'opacity-100 scale-100 translate-y-0'
-              }`}
+
+            <button
+              type="button"
+              onClick={() => {
+                setIsDropdownOpen(false);
+                requestExplanation('analogy');
+              }}
+              className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-[var(--ink-900)] hover:bg-[var(--surface-sunken)] transition-colors text-left group cursor-pointer"
             >
-              {/* Contextual Action: Explain Simply (ELI5) */}
-              <button
-                onClick={() => requestExplanation('eli5')}
-                type="button"
-                className="flex items-center gap-1.5 rounded-xl bg-[var(--surface-sunken)] px-3 py-2 text-xs font-semibold text-[var(--ink-900)] transition-all hover:bg-[#FF8A00] hover:text-white cursor-pointer active:scale-95"
-              >
-                <span>Explain Simply</span>
-                <span className="rounded bg-black/10 dark:bg-white/10 px-1 py-0.2 text-[10px] font-bold">
-                  ELI5
-                </span>
-              </button>
+              <MessageSquare className="size-4 text-[#0084FE] group-hover:scale-110 transition-transform" />
+              <span>Relatable Analogy</span>
+            </button>
 
-              {/* Contextual Action: Relatable Analogy */}
-              <button
-                onClick={() => requestExplanation('analogy')}
-                type="button"
-                className="hidden sm:flex items-center gap-1.5 rounded-xl bg-[var(--surface-sunken)] px-3 py-2 text-xs font-semibold text-[var(--ink-900)] transition-all hover:bg-[#0084FE] hover:text-white cursor-pointer active:scale-95"
-              >
-                <span>Analogy</span>
-              </button>
-
-              {/* Open full drawer / Ask button */}
-              <button
-                onClick={() => {
-                  setIsOpen(true);
-                  if (!fullBuffer) {
-                    requestExplanation('eli5');
-                  }
-                }}
-                type="button"
-                className="flex items-center gap-1 rounded-xl bg-[#FF8A00] px-3 py-2 text-xs font-bold text-white shadow-xs transition-all hover:brightness-105 active:scale-95 cursor-pointer"
-                title="Open AI Tutor"
-              >
-                <span>AI Tutor</span>
-                <ChevronUp className="size-3.5 stroke-[2.5]" />
-              </button>
-
-              {/* Temporary dismiss button */}
-              <button
-                onClick={() => setIsDismissed(true)}
-                type="button"
-                className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--ink-900)] hover:bg-[var(--surface-sunken)] transition-colors cursor-pointer"
-                title="Hide AI Tutor temporarily"
-                aria-label="Dismiss tutor temporarily"
-              >
-                <X className="size-3.5" />
-              </button>
-            </div>
-          )}
-        </aside>
+            <button
+              type="button"
+              onClick={() => {
+                setIsDropdownOpen(false);
+                setIsOpen(true);
+                if (!fullBuffer) {
+                  requestExplanation('eli5');
+                }
+              }}
+              className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-[var(--ink-900)] hover:bg-[var(--surface-sunken)] transition-colors text-left group cursor-pointer"
+            >
+              <HelpCircle className="size-4 text-emerald-500 group-hover:scale-110 transition-transform" />
+              <span>Ask Custom Question</span>
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Tutor Slide-over / Modal Panel */}
@@ -356,6 +343,6 @@ export default function InLessonAiTutor({
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
