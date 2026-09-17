@@ -1,0 +1,114 @@
+diff --git a/node_modules/@rivascva/react-native-code-editor/lib/commonjs/CodeEditor.js b/node_modules/@rivascva/react-native-code-editor/lib/commonjs/CodeEditor.js
+index 0c37f18..c767c55 100644
+--- a/node_modules/@rivascva/react-native-code-editor/lib/commonjs/CodeEditor.js
++++ b/node_modules/@rivascva/react-native-code-editor/lib/commonjs/CodeEditor.js
+@@ -151,6 +151,9 @@ const CodeEditor = props => {
+ 
+   const handleSelectionChange = e => {
+     inputSelection.current = e.nativeEvent.selection;
++    if (props.onSelectionChange) {
++      props.onSelectionChange(e);
++    }
+   };
+ 
+   return /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+@@ -178,6 +181,7 @@ const CodeEditor = props => {
+       paddingLeft: lineNumbersPadding
+     }],
+     value: value,
++    selection: props.selection,
+     onChangeText: handleChangeText,
+     onScroll: handleScroll,
+     onKeyPress: handleKeyPress,
+diff --git a/node_modules/@rivascva/react-native-code-editor/lib/module/CodeEditor.js b/node_modules/@rivascva/react-native-code-editor/lib/module/CodeEditor.js
+index bec18b9..bdb4951 100644
+--- a/node_modules/@rivascva/react-native-code-editor/lib/module/CodeEditor.js
++++ b/node_modules/@rivascva/react-native-code-editor/lib/module/CodeEditor.js
+@@ -133,6 +133,9 @@ const CodeEditor = props => {
+ 
+   const handleSelectionChange = e => {
+     inputSelection.current = e.nativeEvent.selection;
++    if (props.onSelectionChange) {
++      props.onSelectionChange(e);
++    }
+   };
+ 
+   return /*#__PURE__*/React.createElement(View, {
+@@ -160,6 +163,7 @@ const CodeEditor = props => {
+       paddingLeft: lineNumbersPadding
+     }],
+     value: value,
++    selection: props.selection,
+     onChangeText: handleChangeText,
+     onScroll: handleScroll,
+     onKeyPress: handleKeyPress,
+diff --git a/node_modules/@rivascva/react-native-code-editor/lib/typescript/CodeEditor.d.ts b/node_modules/@rivascva/react-native-code-editor/lib/typescript/CodeEditor.d.ts
+index 5c1f47c..9fac59e 100644
+--- a/node_modules/@rivascva/react-native-code-editor/lib/typescript/CodeEditor.d.ts
++++ b/node_modules/@rivascva/react-native-code-editor/lib/typescript/CodeEditor.d.ts
+@@ -71,6 +71,17 @@ declare type Props = {
+      * Focus the code editor on component mount.
+      */
+     autoFocus?: boolean;
++    /**
++     * Selection range or position.
++     */
++    selection?: {
++        start: number;
++        end: number;
++    };
++    /**
++     * Callback when selection changes.
++     */
++    onSelectionChange?: (e: import('react-native').NativeSyntheticEvent<import('react-native').TextInputSelectionChangeEventData>) => void;
+ };
+ declare const CodeEditorWithForwardRef: React.ForwardRefExoticComponent<Props & React.RefAttributes<TextInput>>;
+ export default CodeEditorWithForwardRef;
+diff --git a/node_modules/@rivascva/react-native-code-editor/src/CodeEditor.tsx b/node_modules/@rivascva/react-native-code-editor/src/CodeEditor.tsx
+index fc44a54..0b65e65 100644
+--- a/node_modules/@rivascva/react-native-code-editor/src/CodeEditor.tsx
++++ b/node_modules/@rivascva/react-native-code-editor/src/CodeEditor.tsx
+@@ -103,6 +103,16 @@ type Props = {
+      * Focus the code editor on component mount.
+      */
+     autoFocus?: boolean;
++
++    /**
++     * Selection range or position.
++     */
++    selection?: { start: number; end: number };
++
++    /**
++     * Callback when selection changes.
++     */
++    onSelectionChange?: (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => void;
+ };
+ 
+ type PropsWithForwardRef = Props & {
+@@ -126,6 +136,8 @@ const CodeEditor = (props: PropsWithForwardRef): JSX.Element => {
+         readOnly = false,
+         autoFocus = true,
+         forwardedRef,
++        selection,
++        onSelectionChange,
+     } = props;
+ 
+     const {
+@@ -235,6 +247,9 @@ const CodeEditor = (props: PropsWithForwardRef): JSX.Element => {
+ 
+     const handleSelectionChange = (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
+         inputSelection.current = e.nativeEvent.selection;
++        if (onSelectionChange) {
++            onSelectionChange(e);
++        }
+     };
+ 
+     return (
+@@ -263,6 +278,7 @@ const CodeEditor = (props: PropsWithForwardRef): JSX.Element => {
+                     },
+                 ]}
+                 value={value}
++                selection={selection}
+                 onChangeText={handleChangeText}
+                 onScroll={handleScroll}
+                 onKeyPress={handleKeyPress}

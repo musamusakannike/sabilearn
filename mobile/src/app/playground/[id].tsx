@@ -12,6 +12,8 @@ import {
   TextInput,
   LayoutAnimation,
   UIManager,
+  type NativeSyntheticEvent,
+  type TextInputSelectionChangeEventData,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -21,6 +23,10 @@ import {
   IconDots,
   IconArrowsMaximize,
   IconArrowsMinimize,
+  IconChevronLeft,
+  IconChevronRight,
+  IconChevronUp,
+  IconChevronDown,
 } from '@tabler/icons-react-native';
 import { fontFamilies, fontSizes, radii, spacing } from '@/theme';
 import { INK, MUTED } from '@/theme/brand';
@@ -65,6 +71,9 @@ export default function PlaygroundIdeScreen() {
   const pyodideRef = useRef<PyodideRuntimeHandle>(null);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const filesRef = useRef<Record<string, string>>({});
+  // Forwarded to the underlying TextInput so cursor buttons can refocus it
+  // after moving the selection.
+  const editorRef = useRef<any>(null);
   const { updateProject, deleteProject, duplicateProject, syncNow, lastConflict } = usePlaygroundStore();
 
   const [project, setProject] = useState<PlaygroundProject | null>(null);
@@ -74,6 +83,7 @@ export default function PlaygroundIdeScreen() {
   const [keyboardUp, setKeyboardUp] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
+  const [selection, setSelection] = useState({ start: 0, end: 0 });
   const [stdout, setStdout] = useState('');
   const [stderr, setStderr] = useState('');
   const [pythonStatus, setPythonStatus] = useState('Ready');
@@ -153,6 +163,65 @@ export default function PlaygroundIdeScreen() {
 
   const fileList = project?.kind === 'python' ? [...PYTHON_FILES] : [...WEB_FILES];
 
+  useEffect(() => {
+    setSelection({ start: 0, end: 0 });
+  }, [activeFile]);
+
+  const handleSelectionChange = useCallback(
+    (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
+      setSelection(e.nativeEvent.selection);
+    },
+    []
+  );
+
+  // Moves the cursor left/right by `delta` characters, clamped to the text bounds.
+  const moveCursorHorizontal = useCallback(
+    (delta: number) => {
+      const text = filesRef.current[activeFile] || '';
+      setSelection((sel) => {
+        const base = delta < 0 ? sel.start : sel.end;
+        const next = Math.max(0, Math.min(text.length, base + delta));
+        editorRef.current?.setNativeProps?.({ selection: { start: next, end: next } });
+        return { start: next, end: next };
+      });
+      editorRef.current?.focus?.();
+    },
+    [activeFile]
+  );
+
+  // Moves the cursor up/down a line, preserving column position where possible.
+  const moveCursorVertical = useCallback(
+    (dir: 1 | -1) => {
+      const text = filesRef.current[activeFile] || '';
+      const lines = text.split('\n');
+      setSelection((sel) => {
+        let offset = 0;
+        let lineIndex = 0;
+        let column = 0;
+        for (let i = 0; i < lines.length; i++) {
+          const lineLength = lines[i].length;
+          if (sel.start <= offset + lineLength) {
+            lineIndex = i;
+            column = sel.start - offset;
+            break;
+          }
+          offset += lineLength + 1;
+        }
+        const targetLine = lineIndex + dir;
+        if (targetLine < 0 || targetLine >= lines.length) return sel;
+        const targetColumn = Math.min(column, lines[targetLine].length);
+        let newPos = 0;
+        for (let i = 0; i < targetLine; i++) newPos += lines[i].length + 1;
+        newPos += targetColumn;
+        const clampedPos = Math.max(0, Math.min(text.length, newPos));
+        editorRef.current?.setNativeProps?.({ selection: { start: clampedPos, end: clampedPos } });
+        return { start: clampedPos, end: clampedPos };
+      });
+      editorRef.current?.focus?.();
+    },
+    [activeFile]
+  );
+
   const onChangeCode = (value: string) => {
     const next = { ...filesRef.current, [activeFile]: value };
     filesRef.current = next;
@@ -231,6 +300,7 @@ export default function PlaygroundIdeScreen() {
   const editor = useMemo(
     () => (
       <CodeEditor
+        ref={editorRef}
         key={activeFile}
         style={editorStyle}
         language={language}
@@ -238,11 +308,13 @@ export default function PlaygroundIdeScreen() {
         showLineNumbers
         initialValue={files[activeFile] || ''}
         onChange={onChangeCode}
+        onSelectionChange={handleSelectionChange}
+        selection={selection}
         autoFocus={false}
       />
     ),
     // remount on file switch so initialValue applies
-    [activeFile, language]
+    [activeFile, language, handleSelectionChange, selection]
   );
 
   if (!project) {
@@ -407,15 +479,52 @@ export default function PlaygroundIdeScreen() {
           style={[styles.keyboardBarWrap, { bottom: keyboardHeight }]}
         >
           <View style={[styles.keyboardBar, { paddingBottom: Platform.OS === 'android' ? spacing.sm : 0 }]}>
-            <Pressable onPress={toggleFullscreen} style={styles.kbIconBtn} accessibilityLabel="Toggle full screen">
-              <FullscreenIcon size={18} color={INK} />
-            </Pressable>
-            <Pressable onPress={run} style={styles.kbIconBtn} accessibilityLabel="Run">
-              <IconPlayerPlay size={18} color={INK} />
-            </Pressable>
-            <Pressable onPress={() => Keyboard.dismiss()} style={styles.kbDoneBtn}>
-              <Text style={styles.kbDoneText}>Done</Text>
-            </Pressable>
+            <View style={styles.cursorPad}>
+              <Pressable
+                onPress={() => moveCursorHorizontal(-1)}
+                style={styles.kbIconBtn}
+                accessibilityLabel="Move cursor left"
+              >
+                <IconChevronLeft size={18} color={INK} />
+              </Pressable>
+              <View style={styles.cursorPadStack}>
+                <Pressable
+                  onPress={() => moveCursorVertical(-1)}
+                  style={[styles.kbIconBtn, styles.kbIconBtnSmall]}
+                  accessibilityLabel="Move cursor up"
+                >
+                  <IconChevronUp size={16} color={INK} />
+                </Pressable>
+                <Pressable
+                  onPress={() => moveCursorVertical(1)}
+                  style={[styles.kbIconBtn, styles.kbIconBtnSmall]}
+                  accessibilityLabel="Move cursor down"
+                >
+                  <IconChevronDown size={16} color={INK} />
+                </Pressable>
+              </View>
+              <Pressable
+                onPress={() => moveCursorHorizontal(1)}
+                style={styles.kbIconBtn}
+                accessibilityLabel="Move cursor right"
+              >
+                <IconChevronRight size={18} color={INK} />
+              </Pressable>
+            </View>
+
+            <View style={styles.kbDivider} />
+
+            <View style={styles.headerActions}>
+              <Pressable onPress={toggleFullscreen} style={styles.kbIconBtn} accessibilityLabel="Toggle full screen">
+                <FullscreenIcon size={18} color={INK} />
+              </Pressable>
+              <Pressable onPress={run} style={styles.kbIconBtn} accessibilityLabel="Run">
+                <IconPlayerPlay size={18} color={INK} />
+              </Pressable>
+              <Pressable onPress={() => Keyboard.dismiss()} style={styles.kbDoneBtn}>
+                <Text style={styles.kbDoneText}>Done</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       )}
@@ -482,13 +591,26 @@ const styles = StyleSheet.create({
   keyboardBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     gap: spacing.sm,
     paddingHorizontal: spacing.md,
     paddingTop: spacing.sm,
     backgroundColor: 'rgba(246,244,238,0.98)',
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: '#E2DED2',
+  },
+  cursorPad: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  cursorPadStack: {
+    gap: 2,
+  },
+  kbDivider: {
+    width: StyleSheet.hairlineWidth,
+    height: 24,
+    backgroundColor: '#E2DED2',
   },
   kbIconBtn: {
     width: 32,
@@ -498,6 +620,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#ECE8DF',
     marginRight: spacing.xs,
+  },
+  kbIconBtnSmall: {
+    width: 28,
+    height: 16,
+    marginRight: 0,
   },
   kbDoneBtn: {
     paddingHorizontal: spacing.md,

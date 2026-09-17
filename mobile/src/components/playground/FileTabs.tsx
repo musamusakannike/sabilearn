@@ -7,22 +7,23 @@ interface Props {
   files: string[];
   active: string;
   onChange: (file: string) => void;
+  compact?: boolean;
 }
 
-export default function FileTabs({ files, active, onChange }: Props) {
+export default function FileTabs({ files, active, onChange, compact }: Props) {
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={[styles.row, compact && styles.rowCompact]}>
       {files.map((file) => {
         const selected = file === active;
         return (
           <Pressable
             key={file}
             onPress={() => onChange(file)}
-            style={[styles.tab, selected && styles.tabOn]}
+            style={[styles.tab, compact && styles.tabCompact, selected && styles.tabOn]}
             accessibilityRole="tab"
             accessibilityState={{ selected }}
           >
-            <Text style={[styles.label, selected && styles.labelOn]}>{fileLabel(file)}</Text>
+            <Text style={[styles.label, compact && styles.labelCompact, selected && styles.labelOn]}>{fileLabel(file)}</Text>
           </Pressable>
         );
       })}
@@ -39,8 +40,14 @@ const styles = StyleSheet.create({
     borderRadius: radii.md,
     alignItems: 'center',
   },
+  rowCompact: {
+    padding: 2,
+    gap: 2,
+  },
   tab: { paddingVertical: 7, paddingHorizontal: 14, borderRadius: radii.sm },
+  tabCompact: { paddingVertical: 4, paddingHorizontal: 8 },
   tabOn: { backgroundColor: '#FFFFFF' },
   label: { fontFamily: fontFamilies.sansSemiBold, fontSize: fontSizes.sm, color: MUTED },
+  labelCompact: { fontSize: fontSizes.xs },
   labelOn: { color: INK },
 });
