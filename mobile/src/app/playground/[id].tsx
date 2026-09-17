@@ -10,11 +10,18 @@ import {
   Alert,
   Modal,
   TextInput,
+  LayoutAnimation,
+  UIManager,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import CodeEditor, { CodeEditorSyntaxStyles, type CodeEditorStyleType } from '@rivascva/react-native-code-editor';
-import { IconPlayerPlay, IconDots } from '@tabler/icons-react-native';
+import {
+  IconPlayerPlay,
+  IconDots,
+  IconArrowsMaximize,
+  IconArrowsMinimize,
+} from '@tabler/icons-react-native';
 import { fontFamilies, fontSizes, radii, spacing } from '@/theme';
 import { INK, MUTED } from '@/theme/brand';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
@@ -40,6 +47,18 @@ const editorStyle: CodeEditorStyleType = {
   padding: 12,
 };
 
+// Android needs this opt-in once per app lifecycle for LayoutAnimation to work.
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+const FULLSCREEN_ANIM = {
+  duration: 220,
+  create: { type: LayoutAnimation.Types.easeInEaseOut, property: LayoutAnimation.Properties.opacity },
+  update: { type: LayoutAnimation.Types.easeInEaseOut },
+  delete: { type: LayoutAnimation.Types.easeInEaseOut, property: LayoutAnimation.Properties.opacity },
+};
+
 export default function PlaygroundIdeScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
@@ -53,6 +72,8 @@ export default function PlaygroundIdeScreen() {
   const [activeFile, setActiveFile] = useState('index.html');
   const [pane, setPane] = useState<Pane>('code');
   const [keyboardUp, setKeyboardUp] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [fullscreen, setFullscreen] = useState(false);
   const [stdout, setStdout] = useState('');
   const [stderr, setStderr] = useState('');
   const [pythonStatus, setPythonStatus] = useState('Ready');
@@ -61,12 +82,24 @@ export default function PlaygroundIdeScreen() {
   const [renameValue, setRenameValue] = useState('');
   const [dirty, setDirty] = useState(false);
 
+  // Track keyboard height ourselves so we can float a bar exactly above it,
+  // and so Android (which doesn't get the same KeyboardAvoidingView behavior
+  // as iOS by default) still avoids covering the editor.
   useEffect(() => {
-    const show = Keyboard.addListener('keyboardDidShow', () => setKeyboardUp(true));
-    const hide = Keyboard.addListener('keyboardDidHide', () => setKeyboardUp(false));
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSub = Keyboard.addListener(showEvent, (e) => {
+      setKeyboardUp(true);
+      setKeyboardHeight(e?.endCoordinates?.height ?? 0);
+    });
+    const hideSub = Keyboard.addListener(hideEvent, () => {
+      setKeyboardUp(false);
+      setKeyboardHeight(0);
+    });
     return () => {
-      show.remove();
-      hide.remove();
+      showSub.remove();
+      hideSub.remove();
     };
   }, []);
 
@@ -148,6 +181,12 @@ export default function PlaygroundIdeScreen() {
     persist(next);
   };
 
+  const toggleFullscreen = useCallback(() => {
+    haptics.medium();
+    LayoutAnimation.configureNext(FULLSCREEN_ANIM);
+    setFullscreen((f) => !f);
+  }, []);
+
   const openMenu = () => {
     Alert.alert(project?.name || 'Project', undefined, [
       { text: 'Rename', onPress: () => setRenameOpen(true) },
@@ -214,19 +253,26 @@ export default function PlaygroundIdeScreen() {
     );
   }
 
+  const FullscreenIcon = fullscreen ? IconArrowsMinimize : IconArrowsMaximize;
+
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+    <View style={styles.container}>
       <ScreenBackdrop />
-      <View style={[styles.headerPad, { paddingTop: insets.top + 8 }]}>
-        <ScreenHeader
-          title={project.name || (project.kind === 'python' ? 'Untitled python' : 'Untitled web')}
-          subtitle={dirty ? 'Saved on device · pending sync' : project.syncState === 'synced' ? 'Synced' : 'On this device'}
-          showBack
-          onBack={() => router.back()}
-          right={
+
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        // Android's 'height' behavior needs zero offset; iOS 'padding' is
+        // measured from the top of this view, which already sits at 0.
+        keyboardVerticalOffset={0}
+      >
+        {fullscreen ? (
+          // Minimal chrome: just enough to exit fullscreen and act on the file.
+          <View style={[styles.fullscreenBar, { paddingTop: insets.top + 8 }]}>
+            <GlassIconButton onPress={toggleFullscreen} accessibilityLabel="Exit full screen">
+              <IconArrowsMinimize size={20} color={INK} />
+            </GlassIconButton>
+            <FileTabs files={fileList} active={activeFile} onChange={setActiveFile} compact />
             <View style={styles.headerActions}>
               <GlassIconButton onPress={run} accessibilityLabel="Run">
                 <IconPlayerPlay size={20} color={INK} />
@@ -235,77 +281,145 @@ export default function PlaygroundIdeScreen() {
                 <IconDots size={20} color={INK} />
               </GlassIconButton>
             </View>
-          }
-        />
-        <FileTabs files={fileList} active={activeFile} onChange={setActiveFile} />
-        <View style={styles.viewSwitch}>
-          <Pressable onPress={() => setPane('code')} style={[styles.switchBtn, pane === 'code' && styles.switchOn]}>
-            <Text style={[styles.switchLabel, pane === 'code' && styles.switchLabelOn]}>Code</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => setPane('output')}
-            style={[styles.switchBtn, pane === 'output' && styles.switchOn]}
-          >
-            <Text style={[styles.switchLabel, pane === 'output' && styles.switchLabelOn]}>
-              {project.kind === 'python' ? 'Output' : 'Preview'}
-            </Text>
-          </Pressable>
-        </View>
-      </View>
-
-      <GlassSurface style={styles.workspace} tintColor="rgba(255,255,255,0.45)">
-        {(pane === 'code' || keyboardUp) && <View style={styles.editorPane}>{editor}</View>}
-        {showOutput && project.kind === 'web' && (
-          <WebPreview html={previewHtml} css={previewCss} js={previewJs} />
-        )}
-        {showOutput && project.kind === 'python' && (
-          <View style={{ flex: 1 }}>
-            <Text style={styles.pyStatus}>{running ? 'Running…' : pythonStatus}</Text>
-            <PythonConsole stdout={stdout} stderr={stderr} />
+          </View>
+        ) : (
+          <View style={[styles.headerPad, { paddingTop: insets.top + 8 }]}>
+            <ScreenHeader
+              title={project.name || (project.kind === 'python' ? 'Untitled python' : 'Untitled web')}
+              subtitle={dirty ? 'Saved on device · pending sync' : project.syncState === 'synced' ? 'Synced' : 'On this device'}
+              showBack
+              onBack={() => router.back()}
+              right={
+                <View style={styles.headerActions}>
+                  <GlassIconButton onPress={run} accessibilityLabel="Run">
+                    <IconPlayerPlay size={20} color={INK} />
+                  </GlassIconButton>
+                  <GlassIconButton onPress={toggleFullscreen} accessibilityLabel="Enter full screen">
+                    <FullscreenIcon size={20} color={INK} />
+                  </GlassIconButton>
+                  <GlassIconButton onPress={openMenu} accessibilityLabel="Project options">
+                    <IconDots size={20} color={INK} />
+                  </GlassIconButton>
+                </View>
+              }
+            />
+            <FileTabs files={fileList} active={activeFile} onChange={setActiveFile} />
+            <View style={styles.viewSwitch}>
+              <Pressable onPress={() => setPane('code')} style={[styles.switchBtn, pane === 'code' && styles.switchOn]}>
+                <Text style={[styles.switchLabel, pane === 'code' && styles.switchLabelOn]}>Code</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => setPane('output')}
+                style={[styles.switchBtn, pane === 'output' && styles.switchOn]}
+              >
+                <Text style={[styles.switchLabel, pane === 'output' && styles.switchLabelOn]}>
+                  {project.kind === 'python' ? 'Output' : 'Preview'}
+                </Text>
+              </Pressable>
+            </View>
           </View>
         )}
-      </GlassSurface>
 
-      {project.kind === 'python' && (
-        <PyodideRuntime
-          ref={pyodideRef}
-          onStatus={(state) => {
-            if (state === 'loading') setPythonStatus('Loading Python runtime…');
-            if (state === 'running') setPythonStatus('Running…');
-          }}
-          onReady={() => setPythonStatus('Ready')}
-          onResult={(result) => {
-            setRunning(false);
-            setStdout(result.stdout);
-            setStderr(result.stderr);
-            setPythonStatus(result.ok ? 'Finished' : 'Error');
-          }}
-        />
-      )}
+        <GlassSurface
+          style={[
+            styles.workspace,
+            fullscreen && styles.workspaceFullscreen,
+            // Give the editor a little breathing room above our floating
+            // keyboard bar so the last line being edited is never hidden.
+            keyboardUp && { marginBottom: spacing.sm },
+          ]}
+          tintColor="rgba(255,255,255,0.45)"
+        >
+          {fullscreen && (
+            <View style={styles.fullscreenSwitch}>
+              <Pressable onPress={() => setPane('code')} style={[styles.switchBtn, pane === 'code' && styles.switchOn]}>
+                <Text style={[styles.switchLabel, pane === 'code' && styles.switchLabelOn]}>Code</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => setPane('output')}
+                style={[styles.switchBtn, pane === 'output' && styles.switchOn]}
+              >
+                <Text style={[styles.switchLabel, pane === 'output' && styles.switchLabelOn]}>
+                  {project.kind === 'python' ? 'Output' : 'Preview'}
+                </Text>
+              </Pressable>
+            </View>
+          )}
+          {(pane === 'code' || keyboardUp) && <View style={styles.editorPane}>{editor}</View>}
+          {showOutput && project.kind === 'web' && (
+            <WebPreview html={previewHtml} css={previewCss} js={previewJs} />
+          )}
+          {showOutput && project.kind === 'python' && (
+            <View style={{ flex: 1 }}>
+              <Text style={styles.pyStatus}>{running ? 'Running…' : pythonStatus}</Text>
+              <PythonConsole stdout={stdout} stderr={stderr} />
+            </View>
+          )}
+        </GlassSurface>
 
-      <Modal visible={renameOpen} transparent animationType="fade" onRequestClose={() => setRenameOpen(false)}>
-        <Pressable style={styles.modalBg} onPress={() => setRenameOpen(false)}>
-          <Pressable style={styles.renameCard} onPress={() => {}}>
-            <Text style={styles.renameTitle}>Rename project</Text>
-            <TextInput value={renameValue} onChangeText={setRenameValue} style={styles.renameInput} autoFocus maxLength={80} />
-            <Pressable
-              style={styles.saveName}
-              onPress={() => {
-                const next = renameValue.trim();
-                if (next && id) {
-                  setProject({ ...project, name: next });
-                  void updateProject(id, { name: next });
-                  void syncNow();
-                }
-                setRenameOpen(false);
-              }}
-            >
-              <Text style={styles.saveNameText}>Save name</Text>
+        {project.kind === 'python' && (
+          <PyodideRuntime
+            ref={pyodideRef}
+            onStatus={(state) => {
+              if (state === 'loading') setPythonStatus('Loading Python runtime…');
+              if (state === 'running') setPythonStatus('Running…');
+            }}
+            onReady={() => setPythonStatus('Ready')}
+            onResult={(result) => {
+              setRunning(false);
+              setStdout(result.stdout);
+              setStderr(result.stderr);
+              setPythonStatus(result.ok ? 'Finished' : 'Error');
+            }}
+          />
+        )}
+
+        <Modal visible={renameOpen} transparent animationType="fade" onRequestClose={() => setRenameOpen(false)}>
+          <Pressable style={styles.modalBg} onPress={() => setRenameOpen(false)}>
+            <Pressable style={styles.renameCard} onPress={() => {}}>
+              <Text style={styles.renameTitle}>Rename project</Text>
+              <TextInput value={renameValue} onChangeText={setRenameValue} style={styles.renameInput} autoFocus maxLength={80} />
+              <Pressable
+                style={styles.saveName}
+                onPress={() => {
+                  const next = renameValue.trim();
+                  if (next && id) {
+                    setProject({ ...project, name: next });
+                    void updateProject(id, { name: next });
+                    void syncNow();
+                  }
+                  setRenameOpen(false);
+                }}
+              >
+                <Text style={styles.saveNameText}>Save name</Text>
+              </Pressable>
             </Pressable>
           </Pressable>
-        </Pressable>
-      </Modal>
-    </KeyboardAvoidingView>
+        </Modal>
+      </KeyboardAvoidingView>
+
+      {/* Floating accessory bar: sits exactly above the keyboard regardless of
+          the KeyboardAvoidingView's own padding, so it's always reachable and
+          never overlaps what's being typed. */}
+      {keyboardUp && (
+        <View
+          pointerEvents="box-none"
+          style={[styles.keyboardBarWrap, { bottom: keyboardHeight }]}
+        >
+          <View style={[styles.keyboardBar, { paddingBottom: Platform.OS === 'android' ? spacing.sm : 0 }]}>
+            <Pressable onPress={toggleFullscreen} style={styles.kbIconBtn} accessibilityLabel="Toggle full screen">
+              <FullscreenIcon size={18} color={INK} />
+            </Pressable>
+            <Pressable onPress={run} style={styles.kbIconBtn} accessibilityLabel="Run">
+              <IconPlayerPlay size={18} color={INK} />
+            </Pressable>
+            <Pressable onPress={() => Keyboard.dismiss()} style={styles.kbDoneBtn}>
+              <Text style={styles.kbDoneText}>Done</Text>
+            </Pressable>
+          </View>
+        </View>
+      )}
+    </View>
   );
 }
 
@@ -313,7 +427,22 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FFFFFF' },
   headerPad: { paddingHorizontal: spacing.lg, gap: spacing.sm },
   headerActions: { flexDirection: 'row', gap: spacing.sm },
+  fullscreenBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.sm,
+  },
   viewSwitch: {
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    backgroundColor: '#ECE8DF',
+    padding: 3,
+    borderRadius: radii.md,
+    marginBottom: spacing.sm,
+  },
+  fullscreenSwitch: {
     flexDirection: 'row',
     alignSelf: 'flex-start',
     backgroundColor: '#ECE8DF',
@@ -333,12 +462,53 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: spacing.sm,
   },
+  workspaceFullscreen: {
+    marginHorizontal: spacing.sm,
+    marginBottom: spacing.sm,
+    borderRadius: 14,
+  },
   editorPane: { flex: 1, minHeight: 180 },
   pyStatus: {
     fontFamily: fontFamilies.sansMedium,
     fontSize: fontSizes.xs,
     color: MUTED,
     marginBottom: spacing.sm,
+  },
+  keyboardBarWrap: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+  },
+  keyboardBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    gap: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.sm,
+    backgroundColor: 'rgba(246,244,238,0.98)',
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: '#E2DED2',
+  },
+  kbIconBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: radii.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ECE8DF',
+    marginRight: spacing.xs,
+  },
+  kbDoneBtn: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: 6,
+    borderRadius: radii.sm,
+    backgroundColor: '#F2A900',
+  },
+  kbDoneText: {
+    fontFamily: fontFamilies.sansSemiBold,
+    fontSize: fontSizes.xs,
+    color: INK,
   },
   modalBg: {
     flex: 1,
