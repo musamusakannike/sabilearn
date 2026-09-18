@@ -72,8 +72,8 @@ function CoursesContent() {
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <div>
-        <h1 className="mb-1 text-2xl font-bold text-[var(--ink-900)]">Courses</h1>
-        <p className="text-sm text-[var(--text-muted)]">Browse full SabiLearn catalog and free public interactive courses</p>
+        <h1 className="mb-1 text-2xl font-bold text-foreground">Courses</h1>
+        <p className="text-sm text-(--text-muted)">Browse full SabiLearn catalog and free public interactive courses</p>
       </div>
 
       {/* Free Public Featured Course Section */}
@@ -105,12 +105,12 @@ function CoursesContent() {
 
       <div className="flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-[var(--ink-300)]" />
+          <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-(--ink-300)" />
           <input
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
             placeholder="Search courses…"
-            className="w-full rounded-[var(--radius-md)] border border-[var(--line)] bg-[var(--surface-card)] py-2.5 pr-4 pl-10 text-sm text-[var(--ink-900)] outline-none focus:border-[var(--ink-900)]"
+            className="w-full rounded-md border border-(--line) bg-(--surface-card) py-2.5 pr-4 pl-10 text-sm text-foreground outline-none focus:border-foreground"
           />
         </div>
         <div className="w-full sm:w-52">
@@ -151,7 +151,7 @@ function CoursesContent() {
                 <button
                   key={p}
                   onClick={() => setPage(p)}
-                  className={`size-9 rounded-[var(--radius-md)] text-sm font-semibold ${p === page ? 'bg-[var(--brand-gold)] text-[var(--ink-900)]' : 'border border-[var(--line)] bg-[var(--surface-card)] text-[var(--text-muted)]'}`}
+                  className={`size-9 rounded-md text-sm font-semibold ${p === page ? 'bg-(--brand-gold) text-foreground' : 'border border-(--line) bg-(--surface-card) text-(--text-muted)'}`}
                 >
                   {p}
                 </button>
