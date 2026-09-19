@@ -1,9 +1,39 @@
-:root{
---font-display:'Space Grotesk',system-ui,sans-serif;
---font-body:'Space Grotesk',system-ui,sans-serif;
---font-mono:'Space Mono','Space Grotesk',monospace;
---text-xs:12px;--text-sm:14px;--text-base:16px;--text-md:18px;--text-lg:20px;
---text-xl:24px;--text-2xl:30px;--text-3xl:38px;--text-4xl:48px;--text-5xl:60px;
---leading-tight:1.1;--leading-snug:1.25;--leading-normal:1.5;--leading-relaxed:1.65;
---tracking-tight:-0.02em;--tracking-normal:0em;--tracking-wide:0.04em;
+:root {
+  /* ==========================================================================
+     Font Families
+     ========================================================================== */
+  --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-body: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Space Mono', 'Space Grotesk', monospace;
+
+  /* ==========================================================================
+     Font Sizes
+     ========================================================================== */
+  --text-xs: 12px;   /* Captions & small badges */
+  --text-sm: 14px;   /* Helper text, secondary buttons, card descriptions */
+  --text-base: 16px; /* Standard body text, primary buttons */
+  --text-md: 18px;   /* Large body text */
+  --text-lg: 20px;   /* Lead body text, intro paragraphs */
+  --text-xl: 24px;   /* H4 Card Titles */
+  --text-2xl: 30px;  /* H3 Sub-section headers */
+  --text-3xl: 42px;  /* H2 Feature & Section titles */
+  --text-4xl: 48px;  /* Price figures (800 ExtraBold) */
+  --text-5xl: 62px;  /* H1 Hero Display Headline */
+
+  /* ==========================================================================
+     Line Heights
+     ========================================================================== */
+  --leading-none: 1.0;
+  --leading-tight: 1.08;   /* H1 Display */
+  --leading-snug: 1.15;    /* H2 Display */
+  --leading-normal: 1.40;  /* Card titles & compact text */
+  --leading-relaxed: 1.65; /* Standard paragraphs & lead text */
+
+  /* ==========================================================================
+     Letter Spacing / Tracking
+     ========================================================================== */
+  --tracking-tighter: -0.03em; /* H1 Hero tracking */
+  --tracking-tight: -0.02em;   /* H2 Section tracking */
+  --tracking-normal: 0em;
+  --tracking-wide: 0.04em;
 }

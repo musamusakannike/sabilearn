@@ -1,12 +1,60 @@
-:root{
---ink-900:#0E0E1A;--ink-700:#35354A;--ink-500:#6B6B80;--ink-300:#A9A9BC;--ink-100:#DEDAD0;
---surface-page:#faf9f7;--surface-card:#FFFFFF;--surface-sunken:#ECE8DF;--surface-inverse:#0E0E1A;
---line:#DEDAD0;--line-strong:#C7C2B6;
---brand-gold:#F2A900;--brand-gold-600:#D89400;--brand-gold-100:#FBDDB0;
---brand-violet:#5B4FE8;--brand-violet-600:#4A3FD1;--brand-violet-100:#E7E3FB;
---success:#1F9D55;--success-100:#DDF3E4;
---danger:#E5484D;--danger-100:#FBE1E2;
---warning:#E8890C;--warning-100:#FBEAD2;
---text-body:var(--ink-700);--text-heading:var(--ink-900);--text-muted:var(--ink-500);--text-inverse:#FFFFFF;
---surface-primary:var(--brand-gold);--surface-ai:var(--brand-violet);
+:root {
+  /* ==========================================================================
+     Inks & Neutrals
+     ========================================================================== */
+  --ink-900: #0E0E1A; /* Primary display text, headings, structural 2px borders, dark footer */
+  --ink-700: #35354A; /* Primary body copy, navigational links */
+  --ink-500: #6B6B80; /* Secondary text, subtitle copy */
+  --ink-300: #A9A9BC; /* Muted text, footer secondary links */
+  --ink-100: #DEDAD0; /* Warm subtle borders, light line dividers */
+
+  /* ==========================================================================
+     Surfaces & Backgrounds
+     ========================================================================== */
+  --surface-page: #FAF9F7;    /* Main warm canvas page background */
+  --surface-card: #FFFFFF;    /* Elevated white surface for cards and modals */
+  --surface-sunken: #ECE8DF;  /* Sunken neutral for input fields and hover fills */
+  --surface-inverse: #0E0E1A; /* Inverted dark container surface */
+
+  /* ==========================================================================
+     Borders & Dividers
+     ========================================================================== */
+  --line: #DEDAD0;            /* Warm 1px divider and card outline */
+  --line-strong: #0E0E1A;     /* Heavy 2px structural border */
+  --line-muted: #E5E0D5;      /* Subtle interior card lines */
+
+  /* ==========================================================================
+     Brand Primary Accent: Golden Amber
+     ========================================================================== */
+  --brand-gold: #F8BE43;      /* Primary brand CTA, highlights, tab active fill */
+  --brand-gold-dark: #F2A900; /* Deep amber gold, gradient end-stops, modal primary button */
+  --brand-gold-600: #D89400; /* Hover state for primary gold */
+  --brand-gold-100: #FBDDB0; /* Soft gold background tint, selection highlight */
+
+  /* ==========================================================================
+     Brand Secondary Accent: AI Violet
+     ========================================================================== */
+  --brand-violet: #5B4FE8;     /* AI study assistant highlights, secondary CTAs */
+  --brand-violet-600: #4A3FD1; /* AI hover state */
+  --brand-violet-100: #E7E3FB; /* AI soft badge background */
+
+  /* ==========================================================================
+     Feedback & Semantic Colors
+     ========================================================================== */
+  --success: #10B981;     /* Validation green, completed indicators */
+  --success-100: #D1FAE5; /* Light success background */
+  --danger: #E5484D;      /* Destructive actions, error alerts */
+  --danger-100: #FEE2E2;  /* Light error background */
+  --warning: #E8890C;     /* Warning alerts, cautionary badges */
+  --warning-100: #FEF3C7; /* Light warning background */
+
+  /* ==========================================================================
+     Semantic Aliases
+     ========================================================================== */
+  --text-body: var(--ink-700);
+  --text-heading: var(--ink-900);
+  --text-muted: var(--ink-500);
+  --text-inverse: #FFFFFF;
+  --surface-primary: var(--brand-gold);
+  --surface-ai: var(--brand-violet);
 }
