@@ -118,7 +118,6 @@ export default function SwepHub({
                 key={course._id}
                 id={course._id}
                 image={course.banner}
-                level={course.difficulty}
                 title={course.title}
                 category={course.category}
                 description={course.description}
