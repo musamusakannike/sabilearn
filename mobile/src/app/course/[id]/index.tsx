@@ -24,6 +24,7 @@ import {
   IconPlayerPlay,
   IconCircleCheck,
   IconAward,
+  IconCode,
 } from '@tabler/icons-react-native';
 import { courseApi, chapterApi, progressApi, paymentApi } from '@/lib/api';
 import { Course, Chapter, Topic, PaymentStatus, Exercise } from '@/lib/types';
@@ -365,54 +366,74 @@ export default function CourseDetailScreen() {
                 const isLocked = chapter.status === 'locked';
                 const isCompleted = chapter.status === 'completed';
                 const isInProgress = chapter.status === 'inprogress';
-                const isLastChapter = cIdx === chapters.length - 1;
                 const topics = chapter.topics || [];
                 const exercise = chapter.exercise;
                 const hasExercise = !!(exercise && exercise.questions && exercise.questions.length > 0);
+                const progressPct = isCompleted ? 100 : (chapter.progressPercent || 0);
 
                 return (
                   <View
                     key={chapter._id}
                     style={[
-                      s.chapterRow,
-                      !isLastChapter && s.chapterDivider,
+                      s.chapterCard,
                       isLocked && s.chapterLocked,
                     ]}
                   >
-                    {/* Chapter Header */}
-                    <View style={s.chapterTop}>
-                      <View style={{ flex: 1 }}>
-                        <View style={s.chapterBadgeRow}>
-                          <Text style={s.chapterOverline}>Chapter {cIdx + 1}</Text>
-                          <Badge variant={isCompleted ? 'success' : isLocked ? 'default' : 'intermediate'}>
-                            {isCompleted ? 'Completed' : isLocked ? 'Locked' : 'In Progress'}
-                          </Badge>
+                    {/* Chapter Header Top Row: Number, Title, Badge, and Progress Bar */}
+                    <View style={s.chapterTopRow}>
+                      <View style={s.chapterTopLeft}>
+                        <View style={s.chapterNumBadge}>
+                          <Text style={s.chapterNumText}>{cIdx + 1}</Text>
                         </View>
-                        <Text style={s.chapterTitle}>{chapter.title}</Text>
-                        {chapter.description ? (
-                          <Text style={s.chapterDesc} numberOfLines={1}>
-                            {chapter.description}
-                          </Text>
-                        ) : null}
-
-                        {isInProgress && (
-                          <View style={{ marginTop: spacing.xs }}>
-                            <ProgressBar value={chapter.progressPercent || 0} />
-                          </View>
-                        )}
+                        <Text style={s.chapterTitle} numberOfLines={1}>
+                          {chapter.title}
+                        </Text>
+                        <Badge variant={isCompleted ? 'success' : isLocked ? 'default' : isInProgress ? 'intermediate' : 'default'}>
+                          {isCompleted ? 'Completed' : isLocked ? 'Locked' : isInProgress ? 'In Progress' : 'Available'}
+                        </Badge>
                       </View>
 
-                      <Pressable onPress={() => toggleChapterDropdown(chapter._id)} style={s.chevronBtn} hitSlop={10}>
-                        {isOpen ? (
-                          <IconChevronUp size={20} color={colors.textSecondary} />
-                        ) : (
-                          <IconChevronDown size={20} color={colors.textSecondary} />
-                        )}
-                      </Pressable>
+                      {/* Progress Bar & Percentage */}
+                      <View style={s.chapterProgressContainer}>
+                        <View style={s.progressBarTrack}>
+                          <View
+                            style={[
+                              s.progressBarFill,
+                              { width: `${progressPct}%` },
+                            ]}
+                          />
+                        </View>
+                        <Text style={s.progressPctText}>{progressPct}%</Text>
+                      </View>
                     </View>
 
-                    {/* Chapter Action Button — the one place a filled control earns its keep */}
+                    {/* Chapter Description */}
+                    {chapter.description ? (
+                      <Text style={s.chapterDesc}>
+                        {chapter.description}
+                      </Text>
+                    ) : null}
+
+                    {/* Divider */}
+                    <View style={s.chapterDivider} />
+
+                    {/* Action Row: Hide/Show Chapter Details & Continue Button */}
                     <View style={s.chapterActionRow}>
+                      <Pressable
+                        onPress={() => toggleChapterDropdown(chapter._id)}
+                        style={s.toggleDropdownBtn}
+                        hitSlop={8}
+                      >
+                        <Text style={s.toggleDropdownText}>
+                          {isOpen ? 'Hide Chapter Details' : 'Show Chapter Details'}
+                        </Text>
+                        {isOpen ? (
+                          <IconChevronUp size={16} color={colors.brandPrimaryHover} />
+                        ) : (
+                          <IconChevronDown size={16} color={colors.brandPrimaryHover} />
+                        )}
+                      </Pressable>
+
                       {isLocked ? (
                         <View style={s.lockedBtn}>
                           <IconLock size={14} color={colors.textTertiary} />
@@ -427,141 +448,136 @@ export default function CourseDetailScreen() {
                           }}
                           style={s.retakeBtn}
                         >
-                          <IconPlayerPlay size={14} color={colors.brandPrimaryHover} />
+                          <IconPlayerPlay size={13} color={colors.textPrimary} />
                           <Text style={s.retakeBtnText}>Retake Chapter</Text>
                         </Pressable>
                       ) : (
                         <Pressable
                           onPress={() => {
-                            const firstUnlocked = topics.find((t) => t.isUnlocked);
+                            const firstUnlocked = topics.find((t) => t.isUnlocked) || topics[0];
                             if (firstUnlocked) {
                               handleOpenTopic(chapter, firstUnlocked);
                             }
                           }}
                           style={s.continueBtn}
                         >
-                          <IconPlayerPlay size={14} color={colors.brandOnPrimary} />
-                          <Text style={s.continueBtnText}>Continue Chapter</Text>
+                          <Text style={s.continueBtnText}>
+                            {chapter.progressPercent && chapter.progressPercent > 0 ? 'Continue Chapter' : 'Start Chapter'}
+                          </Text>
                         </Pressable>
                       )}
                     </View>
 
-                    {/* Topics — flat rows divided by hairlines, not stacked boxes */}
-                    {isOpen && topics.length > 0 && (
+                    {/* Topics — clean list matching reference layout */}
+                    {isOpen && (
                       <View style={s.topicsContainer}>
-                        {topics.map((topic, tIdx) => {
-                          const tUnlocked = !!topic.isUnlocked;
-                          const tCompleted = !!topic.isCompleted;
-                          const isLastRow = tIdx === topics.length - 1 && !hasExercise;
+                        {topics.length > 0 ? (
+                          topics.map((topic) => {
+                            const tUnlocked = !hasAccess ? false : !!topic.isUnlocked;
+                            const tCompleted = !!topic.isCompleted;
+                            const hasCode =
+                              topic.contents?.some((c) => c.type === 'code' || c.type === 'exercise') ||
+                              !!topic.exercise ||
+                              topic.title.toLowerCase().includes('command') ||
+                              topic.title.toLowerCase().includes('code') ||
+                              topic.title.toLowerCase().includes('shell') ||
+                              topic.title.toLowerCase().includes('script') ||
+                              topic.title.toLowerCase().includes('terminal');
 
-                          return (
-                            <Pressable
-                              key={topic._id}
-                              disabled={!tUnlocked}
-                              onPress={() => handleOpenTopic(chapter, topic)}
-                              style={[
-                                s.topicItem,
-                                !isLastRow && s.topicDivider,
-                                !tUnlocked && s.topicItemLocked,
-                              ]}
-                            >
-                              <View style={s.topicLeft}>
-                                <View
-                                  style={[
-                                    s.topicNumCircle,
-                                    tCompleted ? s.topicNumCompleted : tUnlocked ? s.topicNumUnlocked : s.topicNumLocked,
-                                  ]}
-                                >
-                                  {tCompleted ? (
-                                    <IconCheck size={12} color="#059669" />
-                                  ) : (
-                                    <Text style={[s.topicNumText, tUnlocked && { color: colors.brandPrimaryHover }]}>
-                                      {tIdx + 1}
-                                    </Text>
-                                  )}
-                                </View>
-
-                                <View style={{ flex: 1 }}>
+                            return (
+                              <Pressable
+                                key={topic._id}
+                                disabled={!tUnlocked && hasAccess}
+                                onPress={() => {
+                                  if (!hasAccess) {
+                                    return;
+                                  }
+                                  if (topic.isUnlocked) {
+                                    handleOpenTopic(chapter, topic);
+                                  }
+                                }}
+                                style={[
+                                  s.topicItem,
+                                  !tUnlocked && s.topicItemLocked,
+                                ]}
+                              >
+                                <View style={s.topicLeft}>
+                                  <View style={s.topicIconWrap}>
+                                    {hasCode ? (
+                                      <IconCode size={15} color={colors.textPrimary} />
+                                    ) : (
+                                      <IconPlayerPlay size={13} color={colors.brandPrimaryHover} />
+                                    )}
+                                  </View>
                                   <Text
                                     style={[s.topicItemTitle, !tUnlocked && { color: colors.textTertiary }]}
                                     numberOfLines={1}
                                   >
                                     {topic.title}
                                   </Text>
-                                  {topic.description ? (
-                                    <Text style={s.topicItemDesc} numberOfLines={1}>
-                                      {topic.description}
-                                    </Text>
-                                  ) : null}
-                                </View>
-                              </View>
-
-                              <View style={s.topicRight}>
-                                <View style={s.topicXpBadge}>
-                                  <IconBolt size={10} color="#F59E0B" />
-                                  <Text style={s.topicXpText}>+{topic.xp || 50} XP</Text>
                                 </View>
 
-                                {!tUnlocked ? (
-                                  <IconLock size={14} color={colors.textTertiary} />
-                                ) : tCompleted ? (
-                                  <IconCircleCheck size={16} color={colors.success} />
-                                ) : (
-                                  <Text style={s.startText}>Start →</Text>
-                                )}
-                              </View>
-                            </Pressable>
-                          );
-                        })}
+                                <View style={s.topicRight}>
+                                  {!hasAccess || !topic.isUnlocked ? (
+                                    <View style={s.topicLockRow}>
+                                      <IconLock size={12} color={colors.textTertiary} />
+                                      <Text style={s.topicXpTextMuted}>{topic.xp || 50} XP</Text>
+                                    </View>
+                                  ) : (
+                                    <View style={s.topicStatusRow}>
+                                      {tCompleted && (
+                                        <IconCheck size={14} color="#10B981" />
+                                      )}
+                                      <Text style={s.topicXpText}>{topic.xp || 50} XP</Text>
+                                    </View>
+                                  )}
+                                </View>
+                              </Pressable>
+                            );
+                          })
+                        ) : (
+                          <Text style={s.noTopicsText}>No topics available yet.</Text>
+                        )}
 
-                        {/* Chapter Capstone Assessment — the one deliberate callout, kept tinted but hairline-bordered */}
+                        {/* Chapter Capstone Assessment */}
                         {hasExercise && exercise && (
                           <Pressable
                             disabled={isLocked || !hasAccess}
                             onPress={() => {
+                              if (!hasAccess) {
+                                return;
+                              }
+                              if (isLocked) return;
                               haptics.light();
                               router.push({
                                 pathname: '/course/[id]/chapter/[chapterId]/assessment',
                                 params: { id, chapterId: chapter._id },
                               } as any);
                             }}
-                            style={[s.assessmentItem, (isLocked || !hasAccess) && s.topicItemLocked]}
+                            style={[s.topicItem, (isLocked || !hasAccess) && s.topicItemLocked]}
                           >
                             <View style={s.topicLeft}>
-                              <View style={[s.topicNumCircle, { backgroundColor: '#FEF3C7' }]}>
+                              <View style={s.topicIconWrap}>
                                 <IconAward size={16} color="#D97706" />
                               </View>
-
-                              <View style={{ flex: 1 }}>
-                                <Text
-                                  style={[
-                                    s.topicItemTitle,
-                                    { fontWeight: '700' },
-                                    (isLocked || !hasAccess) && { color: colors.textTertiary },
-                                  ]}
-                                  numberOfLines={1}
-                                >
-                                  {exercise.title || 'Chapter Capstone Assessment'}
-                                </Text>
-                                <Text style={s.topicItemDesc} numberOfLines={1}>
-                                  {exercise.questions.length} questions • Test your chapter mastery
-                                </Text>
+                              <Text
+                                style={[
+                                  s.topicItemTitle,
+                                  (isLocked || !hasAccess) && { color: colors.textTertiary },
+                                ]}
+                                numberOfLines={1}
+                              >
+                                {exercise.title || 'Chapter Capstone Assessment'}
+                              </Text>
+                              <View style={s.capstoneTag}>
+                                <Text style={s.capstoneTagText}>CAPSTONE</Text>
                               </View>
                             </View>
 
                             <View style={s.topicRight}>
-                              <View style={s.topicXpBadge}>
-                                <IconBolt size={10} color="#F59E0B" />
-                                <Text style={s.topicXpText}>
-                                  +{exercise.questions.reduce((sum, q) => sum + (q.xp || 20), 0)} XP
-                                </Text>
-                              </View>
-
-                              {isLocked || !hasAccess ? (
-                                <IconLock size={14} color={colors.textTertiary} />
-                              ) : (
-                                <Text style={[s.startText, { color: '#B45309' }]}>Take Assessment →</Text>
-                              )}
+                              <Text style={s.topicXpText}>
+                                {exercise.questions.reduce((sum, q) => sum + (q.xp || 20), 0)} XP
+                              </Text>
                             </View>
                           </Pressable>
                         )}
@@ -757,7 +773,7 @@ function makeStyles(c: any) {
       lineHeight: fontSizes.xs * 1.6,
     },
 
-    // Structure — one flat list, hairline dividers between chapters instead of stacked cards
+    // Structure — clean cards matching reference layout
     structureSection: {
       gap: spacing.sm,
       marginTop: spacing.xs,
@@ -767,80 +783,121 @@ function makeStyles(c: any) {
       fontFamily: fontFamilies.displaySemiBold,
       color: c.textPrimary,
     },
-    chapterList: {},
-    chapterRow: {
-      paddingVertical: spacing.md,
-      gap: spacing.sm,
-      marginBottom: spacing['xl'],
+    chapterList: {
+      gap: spacing.md,
     },
-    chapterDivider: {
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: c.borderSubtle,
+    chapterCard: {
+      backgroundColor: c.surfaceCard,
+      borderRadius: radii.xl,
+      borderWidth: 1,
+      borderColor: c.borderSubtle,
+      padding: spacing.md,
+      gap: spacing.xs,
     },
     chapterLocked: {
       opacity: 0.65,
     },
-    chapterTop: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      gap: spacing.sm,
-    },
-    chapterBadgeRow: {
+    chapterTopRow: {
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'space-between',
       gap: spacing.sm,
-      marginBottom: 2,
     },
-    chapterOverline: {
-      fontSize: 10,
-      fontFamily: fontFamilies.sansSemiBold,
-      color: c.brandPrimaryHover,
-      textTransform: 'uppercase',
-      letterSpacing: 0.5,
+    chapterTopLeft: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+      flex: 1,
+    },
+    chapterNumBadge: {
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      backgroundColor: c.surfaceSunken,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    chapterNumText: {
+      fontSize: 11,
+      fontFamily: fontFamilies.sansBold,
+      color: c.textPrimary,
     },
     chapterTitle: {
-      fontSize: fontSizes.base,
-      fontFamily: fontFamilies.sansSemiBold,
+      fontSize: fontSizes.sm,
+      fontFamily: fontFamilies.sansBold,
       color: c.textPrimary,
+      flexShrink: 1,
+    },
+    chapterProgressContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+    },
+    progressBarTrack: {
+      width: 56,
+      height: 6,
+      borderRadius: 3,
+      backgroundColor: c.surfaceSunken,
+      overflow: 'hidden',
+    },
+    progressBarFill: {
+      height: '100%',
+      borderRadius: 3,
+      backgroundColor: c.brandPrimary,
+    },
+    progressPctText: {
+      fontSize: 11,
+      fontFamily: fontFamilies.sansSemiBold,
+      color: c.textSecondary,
     },
     chapterDesc: {
       fontSize: fontSizes.xs,
       fontFamily: fontFamilies.sans,
-      color: c.textTertiary,
+      color: c.textSecondary,
+      lineHeight: fontSizes.xs * 1.5,
       marginTop: 2,
     },
-    chevronBtn: {
-      padding: spacing.xs,
-      borderRadius: radii.full,
+    chapterDivider: {
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: c.borderSubtle,
+      marginVertical: spacing.xs,
     },
     chapterActionRow: {
       flexDirection: 'row',
-      justifyContent: 'flex-end',
-      marginTop: spacing.xs / 2,
+      alignItems: 'center',
+      justifyContent: 'space-between',
     },
-    continueBtn: {
+    toggleDropdownBtn: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 6,
+      gap: 4,
+    },
+    toggleDropdownText: {
+      fontSize: fontSizes.xs,
+      fontFamily: fontFamilies.sansBold,
+      color: c.brandPrimaryHover,
+    },
+    continueBtn: {
       backgroundColor: c.brandPrimary,
       paddingHorizontal: spacing.base,
-      paddingVertical: spacing.xs,
+      paddingVertical: 7,
       borderRadius: radii.md,
     },
     continueBtnText: {
       fontSize: fontSizes.xs,
-      fontFamily: fontFamilies.sansSemiBold,
+      fontFamily: fontFamilies.sansBold,
       color: c.brandOnPrimary,
     },
     retakeBtn: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 6,
+      gap: 4,
       paddingHorizontal: spacing.base,
-      paddingVertical: spacing.xs,
+      paddingVertical: 7,
       borderRadius: radii.md,
       borderWidth: 1,
       borderColor: c.borderSubtle,
+      backgroundColor: c.surfaceSunken,
     },
     retakeBtnText: {
       fontSize: fontSizes.xs,
@@ -852,109 +909,91 @@ function makeStyles(c: any) {
       alignItems: 'center',
       gap: 4,
       paddingHorizontal: spacing.sm,
-      paddingVertical: spacing.xs,
+      paddingVertical: 7,
     },
     lockedBtnText: {
       fontSize: fontSizes.xs,
       fontFamily: fontFamilies.sansMedium,
       color: c.textTertiary,
     },
-
-    // Topics list — flat rows, hairline dividers, no per-row box
     topicsContainer: {
       borderTopWidth: StyleSheet.hairlineWidth,
       borderTopColor: c.borderSubtle,
       paddingTop: spacing.xs,
+      marginTop: spacing.xs,
+      gap: 2,
     },
     topicItem: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingVertical: spacing.sm,
-    },
-    topicDivider: {
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: c.borderSubtle,
+      paddingVertical: 7,
+      paddingHorizontal: 4,
     },
     topicItemLocked: {
-      opacity: 0.6,
+      opacity: 0.5,
     },
     topicLeft: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: spacing.sm,
+      gap: spacing.xs,
       flex: 1,
       marginRight: spacing.sm,
     },
-    topicNumCircle: {
-      width: 24,
-      height: 24,
-      borderRadius: 12,
+    topicIconWrap: {
+      width: 20,
       alignItems: 'center',
       justifyContent: 'center',
     },
-    topicNumUnlocked: {
-      backgroundColor: c.brandPrimarySoft,
-    },
-    topicNumCompleted: {
-      backgroundColor: '#D1FAE5',
-    },
-    topicNumLocked: {
-      backgroundColor: c.borderDefault,
-    },
-    topicNumText: {
-      fontSize: 10,
-      fontFamily: fontFamilies.sansSemiBold,
-      color: c.textTertiary,
-    },
     topicItemTitle: {
       fontSize: fontSizes.xs,
-      fontFamily: fontFamilies.sansSemiBold,
+      fontFamily: fontFamilies.sansBold,
       color: c.textPrimary,
-    },
-    topicItemDesc: {
-      fontSize: 10,
-      fontFamily: fontFamilies.sans,
-      color: c.textTertiary,
+      flexShrink: 1,
     },
     topicRight: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: spacing.xs,
+      gap: 6,
     },
-    topicXpBadge: {
+    topicLockRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 2,
-      backgroundColor: '#FFFBEB',
-      borderWidth: 1,
-      borderColor: '#FDE68A',
-      paddingHorizontal: 6,
-      paddingVertical: 2,
-      borderRadius: radii.full,
+      gap: 4,
+    },
+    topicStatusRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
     },
     topicXpText: {
-      fontSize: 9,
-      fontFamily: fontFamilies.sansSemiBold,
-      color: '#D97706',
-    },
-    startText: {
       fontSize: fontSizes.xs,
       fontFamily: fontFamilies.sansSemiBold,
-      color: c.brandPrimaryHover,
+      color: c.textPrimary,
     },
-
-    // Capstone assessment — the one deliberate callout kept, but hairline-bordered, not boxed like before
-    assessmentItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      backgroundColor: 'rgba(254, 243, 199, 0.45)',
-      borderWidth: 1,
-      borderColor: '#FDE68A',
-      borderRadius: radii.md,
-      padding: spacing.sm,
-      marginTop: spacing.xs,
+    topicXpTextMuted: {
+      fontSize: fontSizes.xs,
+      fontFamily: fontFamilies.sansSemiBold,
+      color: c.textTertiary,
+    },
+    noTopicsText: {
+      fontSize: fontSizes.xs,
+      fontFamily: fontFamilies.sans,
+      color: c.textTertiary,
+      textAlign: 'center',
+      paddingVertical: spacing.sm,
+    },
+    capstoneTag: {
+      backgroundColor: 'rgba(255,138,30,0.16)',
+      paddingHorizontal: 5,
+      paddingVertical: 1,
+      borderRadius: radii.sm,
+      marginLeft: 4,
+    },
+    capstoneTagText: {
+      fontSize: 9,
+      fontFamily: fontFamilies.sansBold,
+      color: c.brandPrimaryHover,
     },
   });
 }

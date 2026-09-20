@@ -146,8 +146,6 @@ export default function InLessonAiTutor({
         className="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-bold transition-all hover:bg-[var(--surface-sunken)] active:scale-95 cursor-pointer text-[var(--ink-900)] select-none"
         title="In-Lesson AI Tutor Options"
       >
-        <Heart className="size-5 fill-rose-500 text-rose-500 shrink-0" />
-        <span className="text-sm font-extrabold text-[var(--ink-900)]">5</span>
         <ChevronDown
           className={`size-4 text-[var(--ink-900)] transition-transform duration-200 ${
             isDropdownOpen ? 'rotate-180' : ''
