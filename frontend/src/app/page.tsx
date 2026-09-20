@@ -10,7 +10,6 @@ import TestimonialsSection from '@/components/landing/TestimonialsSection';
 import CTASection from '@/components/landing/CTASection';
 import Footer from '@/components/ui/Footer';
 import ContinueToDashboardPrompt from '@/components/ui/ContinueToDashboardPrompt';
-import SwepChrome from '@/components/swep/SwepChrome';
 
 export const metadata: Metadata = {
   title: 'SabiLearn — Learn a skill. Sabi it for life.',
@@ -99,7 +98,6 @@ export default function LandingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pageJsonLd) }}
       />
-      <SwepChrome />
       <ContinueToDashboardPrompt />
       <Navbar links={navLinks} />
 
