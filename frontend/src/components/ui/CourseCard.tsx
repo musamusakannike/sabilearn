@@ -7,7 +7,7 @@ import { formatKobo } from '@/lib/money';
 interface CourseCardProps {
   id: string;
   image?: string;
-  level?: string;
+  // level?: string;
   title: string;
   category?: string;
   description?: string;
@@ -21,7 +21,6 @@ interface CourseCardProps {
 export default function CourseCard({
   id,
   image,
-  level = 'Beginner',
   title,
   category,
   description,
