@@ -265,6 +265,38 @@ export default function DashboardHome() {
           </Pressable>
         </NotInReview>
 
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>AI tools</Text>
+          <View style={styles.aiGrid}>
+            {aiTools.map((tool) => (
+              <Pressable
+                key={tool.kind}
+                onPress={() => {
+                  haptics.light();
+                  if (tool.kind === 'quiz') {
+                    router.push('/ai-quiz' as any);
+                  } else if (tool.kind === 'generate-course') {
+                    router.push('/generate-course' as any);
+                  } else {
+                    setAiTool(tool.kind);
+                  }
+                }}
+                style={({ pressed }) => [styles.aiGridItem, pressed && styles.pressed]}
+              >
+                <GlassSurface style={styles.aiCard} tintColor={tool.tint} isInteractive>
+                  <View style={[styles.aiIconWell, { backgroundColor: tool.well }]}>{tool.icon}</View>
+                  <Text numberOfLines={1} style={styles.aiTitle}>
+                    {tool.title}
+                  </Text>
+                  <Text style={styles.aiDescription} numberOfLines={2}>
+                    {tool.description}
+                  </Text>
+                </GlassSurface>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+        
         {continueStudying.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Continue studying</Text>
@@ -317,38 +349,6 @@ export default function DashboardHome() {
             </View>
           </View>
         )}
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>AI tools</Text>
-          <View style={styles.aiGrid}>
-            {aiTools.map((tool) => (
-              <Pressable
-                key={tool.kind}
-                onPress={() => {
-                  haptics.light();
-                  if (tool.kind === 'quiz') {
-                    router.push('/ai-quiz' as any);
-                  } else if (tool.kind === 'generate-course') {
-                    router.push('/generate-course' as any);
-                  } else {
-                    setAiTool(tool.kind);
-                  }
-                }}
-                style={({ pressed }) => [styles.aiGridItem, pressed && styles.pressed]}
-              >
-                <GlassSurface style={styles.aiCard} tintColor={tool.tint} isInteractive>
-                  <View style={[styles.aiIconWell, { backgroundColor: tool.well }]}>{tool.icon}</View>
-                  <Text numberOfLines={1} style={styles.aiTitle}>
-                    {tool.title}
-                  </Text>
-                  <Text style={styles.aiDescription} numberOfLines={2}>
-                    {tool.description}
-                  </Text>
-                </GlassSurface>
-              </Pressable>
-            ))}
-          </View>
-        </View>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
