@@ -211,6 +211,27 @@ export default function GenerateCourseScreen() {
 
   const handleGenerate = async () => {
     if (!canGenerate || generating) return;
+
+    if (quota && !quota.isSubscribed) {
+      Alert.alert(
+        'Subscription required',
+        'AI Course Generation is an exclusive feature for SabiLearn subscribers. Please subscribe to unlock course generation.',
+        [
+          { text: 'Not now', style: 'cancel' },
+          { text: 'Subscribe', onPress: () => router.push('/subscribe' as any) },
+        ]
+      );
+      return;
+    }
+
+    if (quota && quota.isSubscribed && quota.remaining <= 0) {
+      Alert.alert(
+        'Daily limit reached',
+        'You have reached your daily limit of 5 course generations. Please try again tomorrow.'
+      );
+      return;
+    }
+
     haptics.medium();
     setError(null);
     setGenerating(true);
@@ -251,6 +272,9 @@ export default function GenerateCourseScreen() {
           { text: 'Not now', style: 'cancel' },
           { text: 'Subscribe', onPress: () => router.push('/subscribe' as any) },
         ]);
+        setError(message);
+      } else if (status === 429) {
+        Alert.alert('Daily limit reached', message);
         setError(message);
       } else if (status === 401) {
         setError('Sign in to generate a course.');
@@ -329,12 +353,44 @@ export default function GenerateCourseScreen() {
         />
 
         {quota ? (
-          <GlassSurface style={styles.quotaChip} tintColor={TINT_AI}>
-            <IconSparkles size={16} color={AI} />
-            <Text style={styles.quotaText}>
-              {quota.remaining} of {quota.dailyLimit} generations left today
-            </Text>
-          </GlassSurface>
+          !quota.isSubscribed ? (
+            <GlassSurface style={styles.paywallCard} tintColor={TINT_AI}>
+              <View style={styles.paywallRow}>
+                <View style={styles.paywallIconWell}>
+                  <IconSparkles size={20} color={AI} />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.paywallTitle}>Subscription Required</Text>
+                  <Text style={styles.paywallSubtitle}>
+                    AI Course Generation is an exclusive feature for SabiLearn subscribers.
+                  </Text>
+                </View>
+              </View>
+              <View style={{ height: spacing.xs }} />
+              <Button
+                fullWidth
+                variant="ai"
+                size="sm"
+                onPress={() => router.push('/subscribe' as any)}
+              >
+                Subscribe to unlock
+              </Button>
+            </GlassSurface>
+          ) : quota.remaining <= 0 ? (
+            <GlassSurface style={styles.limitCard} tintColor="rgba(245, 158, 11, 0.12)">
+              <IconSparkles size={16} color="#D97706" />
+              <Text style={styles.limitText}>
+                Daily limit reached ({quota.dailyLimit} of {quota.dailyLimit} courses generated today). Resets tomorrow.
+              </Text>
+            </GlassSurface>
+          ) : (
+            <GlassSurface style={styles.quotaChip} tintColor={TINT_AI}>
+              <IconSparkles size={16} color={AI} />
+              <Text style={styles.quotaText}>
+                {quota.remaining} of {quota.dailyLimit} generations left today
+              </Text>
+            </GlassSurface>
+          )
         ) : null}
 
         <Text style={styles.sectionLabel}>What should we teach?</Text>
@@ -427,6 +483,24 @@ export default function GenerateCourseScreen() {
               <Text style={styles.hint}>Creating course modules and personalized lessons…</Text>
             </View>
           </GlassSurface>
+        ) : quota && !quota.isSubscribed ? (
+          <Button
+            fullWidth
+            variant="ai"
+            icon={<IconSparkles size={18} color="#FFFFFF" />}
+            onPress={() => router.push('/subscribe' as any)}
+          >
+            Subscribe to generate course
+          </Button>
+        ) : quota && quota.isSubscribed && quota.remaining <= 0 ? (
+          <Button
+            fullWidth
+            variant="secondary"
+            disabled
+            onPress={() => {}}
+          >
+            Daily limit reached (0/{quota.dailyLimit} left)
+          </Button>
         ) : (
           <Button
             fullWidth
@@ -460,6 +534,54 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: fontFamilies.sansMedium,
     color: AI,
+  },
+  paywallCard: {
+    borderRadius: 20,
+    padding: spacing.base,
+    gap: spacing.sm,
+    overflow: 'hidden',
+  },
+  paywallRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: spacing.md,
+  },
+  paywallIconWell: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(124, 58, 237, 0.12)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 2,
+  },
+  paywallTitle: {
+    fontSize: 14,
+    fontFamily: fontFamilies.sansBold,
+    color: INK,
+  },
+  paywallSubtitle: {
+    fontSize: 12,
+    fontFamily: fontFamilies.sans,
+    color: MUTED,
+    lineHeight: 17,
+    marginTop: 2,
+  },
+  limitCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    borderRadius: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    overflow: 'hidden',
+  },
+  limitText: {
+    flex: 1,
+    fontSize: 12,
+    fontFamily: fontFamilies.sansMedium,
+    color: '#D97706',
+    lineHeight: 17,
   },
   sectionLabel: {
     fontSize: 13,
@@ -577,3 +699,4 @@ const styles = StyleSheet.create({
   },
   pressed: { opacity: 0.9 },
 });
+

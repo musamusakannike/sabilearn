@@ -14,6 +14,7 @@ import {
   X,
   Clock,
   AlertCircle,
+  Sparkles,
 } from 'lucide-react';
 import { courseArchitectApi } from '@/lib/api';
 import { CourseArchitectQuota, GeneratedCourseResult } from '@/lib/types';
@@ -133,6 +134,16 @@ export default function GenerateCoursePage() {
     if (e) e.preventDefault();
     if (!canGenerate || generating) return;
 
+    if (quota && !quota.isSubscribed) {
+      router.push('/dashboard/subscribe');
+      return;
+    }
+
+    if (quota && quota.isSubscribed && quota.remaining <= 0) {
+      setError('Daily limit reached. Subscribed users are allowed up to 5 course generations per day.');
+      return;
+    }
+
     setError(null);
     setGenerating(true);
     startStageLoop();
@@ -165,6 +176,8 @@ export default function GenerateCoursePage() {
 
       if (status === 403) {
         setError(message || 'AI Course Generation is an exclusive feature for subscribed members.');
+      } else if (status === 429) {
+        setError(message || 'Daily limit reached. Subscribed users are allowed up to 5 course generations per day.');
       } else if (status === 401) {
         setError('Sign in to generate a course.');
       } else {
@@ -253,14 +266,41 @@ export default function GenerateCoursePage() {
         </p>
       </div>
 
-      {/* Quota Chip */}
+      {/* Quota / Subscription Banner */}
       {quota ? (
-        <div className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-violet-100)] px-3.5 py-1.5 text-xs font-semibold text-[var(--brand-violet)]">
-          <Clock className="size-3.5" />
-          <span>
-            {quota.remaining} of {quota.dailyLimit} generations left today
-          </span>
-        </div>
+        !quota.isSubscribed ? (
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 rounded-2xl border border-[var(--brand-violet-200)] bg-[var(--brand-violet-100)]/40 p-4 text-xs">
+            <div className="flex items-start gap-2.5">
+              <Sparkles className="size-4 shrink-0 text-[var(--brand-violet)] mt-0.5" />
+              <div>
+                <p className="font-bold text-[var(--ink-900)]">Subscription Required</p>
+                <p className="text-[var(--text-muted)] mt-0.5">
+                  AI Course Generation is an exclusive feature for SabiLearn subscribers.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/dashboard/subscribe"
+              className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-[var(--brand-violet)] px-3.5 py-2 font-bold text-white shadow-xs transition hover:opacity-95"
+            >
+              Subscribe to unlock
+            </Link>
+          </div>
+        ) : quota.remaining <= 0 ? (
+          <div className="flex items-center gap-2.5 rounded-xl border border-[var(--warning-200)] bg-[var(--warning-100)]/60 px-3.5 py-2.5 text-xs font-medium text-[var(--warning-800)]">
+            <Clock className="size-4 shrink-0" />
+            <span>
+              Daily limit reached ({quota.dailyLimit} of {quota.dailyLimit} courses generated today). Resets at midnight UTC.
+            </span>
+          </div>
+        ) : (
+          <div className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-violet-100)] px-3.5 py-1.5 text-xs font-semibold text-[var(--brand-violet)]">
+            <Clock className="size-3.5" />
+            <span>
+              {quota.remaining} of {quota.dailyLimit} generations left today
+            </span>
+          </div>
+        )
       ) : null}
 
       <form onSubmit={handleGenerate} className="space-y-6">
@@ -471,6 +511,31 @@ export default function GenerateCoursePage() {
               </p>
             </div>
           </div>
+        ) : quota && !quota.isSubscribed ? (
+          <Link href="/dashboard/subscribe" className="block w-full">
+            <Button
+              type="button"
+              fullWidth
+              variant="ai"
+              size="lg"
+              className="flex items-center justify-center gap-2"
+            >
+              <Sparkles className="size-4" />
+              <span>Subscribe to unlock course generation</span>
+            </Button>
+          </Link>
+        ) : quota && quota.isSubscribed && quota.remaining <= 0 ? (
+          <Button
+            type="button"
+            fullWidth
+            variant="secondary"
+            size="lg"
+            disabled
+            className="flex items-center justify-center gap-2 opacity-60 cursor-not-allowed"
+          >
+            <Clock className="size-4" />
+            <span>Daily limit reached (0/{quota.dailyLimit} remaining)</span>
+          </Button>
         ) : (
           <Button
             type="submit"

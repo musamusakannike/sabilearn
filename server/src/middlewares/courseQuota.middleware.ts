@@ -1,4 +1,5 @@
 import { Response, NextFunction } from 'express';
+import mongoose from 'mongoose';
 import { AuthenticatedRequest } from './auth.middleware';
 import Subscription from '../models/subscription.model';
 import Course from '../models/course.model';
@@ -23,26 +24,18 @@ export async function getUserQuotaStats(userId: string, userRole = 'user'): Prom
   dailyLimit: number;
   isSubscribed: boolean;
 }> {
-  if (userRole === 'admin') {
-    return {
-      usedToday: 0,
-      remaining: DAILY_COURSE_GENERATION_LIMIT,
-      dailyLimit: DAILY_COURSE_GENERATION_LIMIT,
-      isSubscribed: true,
-    };
-  }
-
   const subscription = await Subscription.findOne({ user: userId }).select('status currentPeriodEnd');
-  const subscribed = isSubscriptionActive(subscription);
+  const subscribed = userRole === 'admin' || isSubscriptionActive(subscription);
 
   const startOfDay = getUtcStartOfDay();
+  const creatorId = mongoose.isValidObjectId(userId) ? new mongoose.Types.ObjectId(userId) : userId;
   const usedToday = await Course.countDocuments({
-    creator: userId,
+    creator: creatorId,
     isAiGenerated: true,
     createdAt: { $gte: startOfDay },
   });
 
-  const remaining = Math.max(0, DAILY_COURSE_GENERATION_LIMIT - usedToday);
+  const remaining = subscribed ? Math.max(0, DAILY_COURSE_GENERATION_LIMIT - usedToday) : 0;
 
   return {
     usedToday,
@@ -103,12 +96,6 @@ export const checkDailyGenerationQuota = async (
       return;
     }
 
-    // Admins bypass the daily cap
-    if (user.role === 'admin') {
-      next();
-      return;
-    }
-
     const startOfDay = getUtcStartOfDay();
     const usedToday = await Course.countDocuments({
       creator: user._id,
@@ -134,3 +121,4 @@ export const checkDailyGenerationQuota = async (
     next(error);
   }
 };
+
