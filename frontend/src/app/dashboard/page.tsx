@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
-  Sparkles,
+  FileText,
   FileQuestion,
   MessageCircleQuestion,
   Play,
@@ -15,7 +15,7 @@ import {
   Zap,
   Target,
   Code2,
-  Layers,
+  BookOpen,
 } from "lucide-react";
 import { courseApi, progressApi } from "@/lib/api";
 import {
@@ -35,10 +35,9 @@ import {
   SummarizerDialog,
   QuizGeneratorDialog,
   QAAIDialog,
-  FlashcardsGeneratorDialog,
 } from "@/components/ai/AIToolDialogs";
 
-type ActiveTool = "summarizer" | "quiz" | "qa" | "flashcards" | null;
+type ActiveTool = "summarizer" | "quiz" | "qa" | "course" | null;
 
 function greetingForHour(hour: number): string {
   if (hour < 12) return "Good morning";
@@ -136,7 +135,7 @@ export default function DashboardHome() {
       kind: "summarizer",
       title: "Summarizer",
       description: "Turn any lecture note into a short summary",
-      icon: <Sparkles className="size-5 text-[#5B4FE8]" />,
+      icon: <FileText className="size-5 text-[#5B4FE8]" />,
     },
     {
       kind: "quiz",
@@ -145,10 +144,10 @@ export default function DashboardHome() {
       icon: <FileQuestion className="size-5 text-[#5B4FE8]" />,
     },
     {
-      kind: "flashcards",
-      title: "Flashcards",
-      description: "Build flashcards from any topic",
-      icon: <Layers className="size-5 text-[#5B4FE8]" />,
+      kind: "course",
+      title: "Course generator",
+      description: "Turn notes or a prompt into a full course",
+      icon: <BookOpen className="size-5 text-[#5B4FE8]" />,
     },
     {
       kind: "qa",
@@ -276,6 +275,8 @@ export default function DashboardHome() {
               onClick={() => {
                 if (tool.kind === "quiz") {
                   router.push("/dashboard/ai/quiz");
+                } else if (tool.kind === "course") {
+                  router.push("/dashboard/ai/course-architect");
                 } else {
                   setActiveTool(tool.kind);
                 }
@@ -503,10 +504,6 @@ export default function DashboardHome() {
       />
       <QAAIDialog
         open={activeTool === "qa"}
-        onClose={() => setActiveTool(null)}
-      />
-      <FlashcardsGeneratorDialog
-        open={activeTool === "flashcards"}
         onClose={() => setActiveTool(null)}
       />
     </div>

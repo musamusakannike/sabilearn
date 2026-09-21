@@ -203,6 +203,26 @@ export const playgroundApi = {
   remove: (id: string) => api.delete(`/playground/projects/${id}`),
 };
 
+const COURSE_GENERATE_TIMEOUT_MS = 10 * 60 * 1000;
+
+export const courseArchitectApi = {
+  quota: () => api.get('/ai/course-architect/quota'),
+  generateFull: (data: FormData) =>
+    api.post('/ai/course-architect/generate-full', data, {
+      timeout: COURSE_GENERATE_TIMEOUT_MS,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+  myCourses: (params?: { page?: number; limit?: number }) =>
+    api.get('/ai/courses/my-courses', { params }),
+  publicCourses: (params?: Record<string, unknown>) =>
+    api.get('/ai/courses/public', { params }),
+  getByIdOrSlug: (idOrSlug: string) =>
+    api.get(`/ai/courses/${idOrSlug}`),
+  updateVisibility: (id: string, visibility: 'public' | 'unlisted' | 'private') =>
+    api.patch(`/ai/courses/${id}/visibility`, { visibility }),
+  deleteCourse: (id: string) => api.delete(`/ai/courses/${id}`),
+};
+
 export interface ExplainLessonParams {
   mode: 'eli5' | 'analogy' | 'custom';
   topicTitle?: string;
