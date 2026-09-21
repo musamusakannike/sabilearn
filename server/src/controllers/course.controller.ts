@@ -20,7 +20,12 @@ export const getCourses = async (req: Request, res: Response, next: NextFunction
     const skip = (page - 1) * limit;
 
     const includeDrafts = req.query.includeDrafts === 'true';
+    const includeAi = req.query.includeAi === 'true';
     const filter: Record<string, unknown> = includeDrafts ? {} : { isPublished: true };
+
+    if (!includeAi) {
+      filter.isAiGenerated = { $ne: true };
+    }
 
     if (req.query.category && req.query.category !== 'all') {
       filter.category = req.query.category;

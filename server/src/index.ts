@@ -22,6 +22,7 @@ import mediaRoutes from './routes/media.route';
 import paymentRoutes from './routes/payment.route';
 import blogRoutes from './routes/blog.route';
 import aiRoutes from './routes/ai.route';
+import courseArchitectRoutes, { aiCoursesRouter } from './routes/courseArchitect.route';
 import chapterRoutes from './routes/chapter.route';
 import leaderboardRoutes from './routes/leaderboard.route';
 import appReviewRoutes from './routes/appReview.route';
@@ -79,6 +80,8 @@ app.use('/api/v1/search', searchRoutes);
 app.use('/api/v1/media', mediaRoutes);
 app.use('/api/v1/blog', blogRoutes);
 app.use('/api/v1/ai', aiRoutes);
+app.use('/api/v1/ai/course-architect', courseArchitectRoutes);
+app.use('/api/v1/ai/courses', aiCoursesRouter);
 app.use('/api/v1/playground', playgroundRoutes);
 app.use('/api/v1/app-review', appReviewRoutes);
 

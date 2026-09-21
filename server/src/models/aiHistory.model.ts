@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export type AIGenerationType = 'summarize' | 'quiz' | 'flashcards' | 'qa' | 'course_quiz' | 'topic_quiz' | 'tutor_explain';
+export type AIGenerationType = 'summarize' | 'quiz' | 'flashcards' | 'qa' | 'course_quiz' | 'topic_quiz' | 'tutor_explain' | 'course_generation';
 
 export interface IAiHistory extends Document {
   user: mongoose.Types.ObjectId;
@@ -31,7 +31,7 @@ const AiHistorySchema: Schema = new Schema<IAiHistory>(
     },
     type: {
       type: String,
-      enum: ['summarize', 'quiz', 'flashcards', 'qa', 'course_quiz', 'topic_quiz', 'tutor_explain'],
+      enum: ['summarize', 'quiz', 'flashcards', 'qa', 'course_quiz', 'topic_quiz', 'tutor_explain', 'course_generation'],
       required: true,
       index: true,
     },
