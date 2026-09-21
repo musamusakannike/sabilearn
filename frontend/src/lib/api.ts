@@ -90,6 +90,7 @@ export const mcqApi = {
 
 export const chapterApi = {
   byCourse: (courseId: string) => api.get(`/chapters/course/${courseId}`),
+  getAssessment: (id: string) => api.get(`/chapters/${id}/assessment`),
   create: (data: Record<string, unknown>) => api.post('/chapters', data),
   update: (id: string, data: Record<string, unknown>) => api.put(`/chapters/${id}`, data),
   remove: (id: string) => api.delete(`/chapters/${id}`),

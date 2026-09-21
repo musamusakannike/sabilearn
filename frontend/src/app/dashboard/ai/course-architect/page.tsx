@@ -119,7 +119,7 @@ export default function GenerateCoursePage() {
     if (stageTimer.current) clearInterval(stageTimer.current);
     stageTimer.current = setInterval(() => {
       setStageIndex((i) => (i + 1) % STAGES.length);
-    }, 8000);
+    }, 1500);
   };
 
   const stopStageLoop = () => {
@@ -467,7 +467,7 @@ export default function GenerateCoursePage() {
                 {STAGES[stageIndex]}
               </p>
               <p className="mt-2 text-xs text-[var(--text-muted)]">
-                Please keep this tab open. This can take a few minutes.
+                Creating course modules and personalized lessons…
               </p>
             </div>
           </div>

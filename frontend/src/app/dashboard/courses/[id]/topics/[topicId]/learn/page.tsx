@@ -38,8 +38,10 @@ export default function LearnPage() {
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--surface-page)]">
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-[var(--surface-page)] p-6 text-center">
         <LoadingSpinner size="lg" />
+        <p className="mt-2 text-sm font-bold text-[var(--ink-900)]">Preparing your lesson…</p>
+        <p className="text-xs text-[var(--text-muted)]">Formatting interactive takeaways and practice check-ins</p>
       </div>
     );
   }

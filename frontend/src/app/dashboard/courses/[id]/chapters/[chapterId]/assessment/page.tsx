@@ -19,10 +19,19 @@ export default function ChapterAssessmentPage() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await chapterApi.byCourse(courseId);
-        const chapters: Chapter[] = res.data.data || [];
+        const [chaptersRes, assessmentRes] = await Promise.all([
+          chapterApi.byCourse(courseId),
+          chapterApi.getAssessment(chapterId).catch(() => null),
+        ]);
+        const chapters: Chapter[] = chaptersRes.data.data || [];
         const found = chapters.find((c) => c._id === chapterId);
-        setChapter(found || null);
+        if (found) {
+          const exerciseData = assessmentRes?.data?.data;
+          if (exerciseData?.questions && exerciseData.questions.length > 0) {
+            found.exercise = exerciseData;
+          }
+          setChapter(found);
+        }
       } catch (e) {
         console.error('Failed to load chapter for assessment:', e);
       } finally {
@@ -35,8 +44,10 @@ export default function ChapterAssessmentPage() {
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--surface-page)]">
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-[var(--surface-page)] p-6 text-center">
         <LoadingSpinner size="lg" />
+        <p className="mt-2 text-sm font-bold text-[var(--ink-900)]">Preparing capstone assessment…</p>
+        <p className="text-xs text-[var(--text-muted)]">Generating challenge questions based on chapter topics</p>
       </div>
     );
   }
