@@ -140,7 +140,7 @@ export default function GenerateCoursePage() {
     }
 
     if (quota && quota.isSubscribed && quota.remaining <= 0) {
-      setError('Daily limit reached. Subscribed users are allowed up to 5 course generations per day.');
+      setError('Daily limit reached. Subscribed users are allowed up to 5 AI generations per day.');
       return;
     }
 
@@ -177,7 +177,7 @@ export default function GenerateCoursePage() {
       if (status === 403) {
         setError(message || 'AI Course Generation is an exclusive feature for subscribed members.');
       } else if (status === 429) {
-        setError(message || 'Daily limit reached. Subscribed users are allowed up to 5 course generations per day.');
+        setError(message || 'Daily limit reached. Subscribed users are allowed up to 5 AI generations per day.');
       } else if (status === 401) {
         setError('Sign in to generate a course.');
       } else {
@@ -290,7 +290,7 @@ export default function GenerateCoursePage() {
           <div className="flex items-center gap-2.5 rounded-xl border border-[var(--warning-200)] bg-[var(--warning-100)]/60 px-3.5 py-2.5 text-xs font-medium text-[var(--warning-800)]">
             <Clock className="size-4 shrink-0" />
             <span>
-              Daily limit reached ({quota.dailyLimit} of {quota.dailyLimit} courses generated today). Resets at midnight UTC.
+              Daily limit reached ({quota.dailyLimit} of {quota.dailyLimit} generations used today). Resets at midnight UTC.
             </span>
           </div>
         ) : (

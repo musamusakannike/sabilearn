@@ -1,6 +1,7 @@
 import { Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from '../middlewares/auth.middleware';
 import { DeepSeekService } from '../services/deepseek.service';
+import { DocumentProcessorService } from '../services/documentProcessor.service';
 import AiHistory from '../models/aiHistory.model';
 import Course from '../models/course.model';
 import Topic from '../models/topic.model';
@@ -148,6 +149,87 @@ export const generateQuiz = async (
         },
       });
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const QUIZ_COUNTS = [3, 5, 10];
+
+interface MaterialsRequest extends AuthenticatedRequest {
+  files?: Express.Multer.File[] | { [fieldname: string]: Express.Multer.File[] };
+}
+
+/**
+ * POST /api/v1/ai/generate-quiz/materials
+ * Standalone quiz from a prompt and/or PDF, DOCX, and images.
+ * Counts toward the shared daily generation quota.
+ */
+export const generateQuizFromMaterials = async (
+  req: MaterialsRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const topic = typeof req.body?.topic === 'string' ? req.body.topic.trim() : '';
+    const requested = Number(req.body?.count);
+    const count = QUIZ_COUNTS.includes(requested) ? requested : 5;
+
+    let files: Express.Multer.File[] = [];
+    if (Array.isArray(req.files)) {
+      files = req.files;
+    } else if (req.files && typeof req.files === 'object') {
+      files = Object.values(req.files).flat();
+    }
+
+    if (!topic && files.length === 0) {
+      res.status(400).json({
+        success: false,
+        message: 'Add a topic or at least one file to generate a quiz.',
+      });
+      return;
+    }
+
+    let processed;
+    try {
+      processed = await DocumentProcessorService.processUploads(files, topic);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not read the uploaded files.';
+      res.status(400).json({ success: false, message });
+      return;
+    }
+
+    const questions = await DeepSeekService.generateQuizFromMaterials({
+      topic,
+      extractedText: processed.extractedText,
+      imageAttachments: processed.imageAttachments,
+      count,
+    });
+
+    const label = topic || files[0]?.originalname || 'your materials';
+    const history = await AiHistory.create({
+      user: req.user!._id,
+      type: 'quiz',
+      title: `Quiz: ${label}`.slice(0, 180),
+      prompt: topic || label,
+      metadata: {
+        count,
+        countsTowardQuota: true,
+        fileSummaries: processed.fileSummaries,
+      },
+      result: questions,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        historyId: history._id,
+        type: history.type,
+        prompt: history.prompt,
+        result: questions,
+        createdAt: history.createdAt,
+      },
+    });
   } catch (error) {
     next(error);
   }

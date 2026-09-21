@@ -289,6 +289,104 @@ Output strictly valid JSON in the following schema format without any markdown f
   }
 
   /**
+   * Quiz grounded in extracted notes and optional page or photo images.
+   */
+  public static async generateQuizFromMaterials(input: {
+    topic: string;
+    extractedText: string;
+    imageAttachments: string[];
+    count: number;
+  }): Promise<QuizQuestionGenerated[]> {
+    const { topic, extractedText, imageAttachments, count } = input;
+    const systemPrompt = `You are QUIZ_GENERATOR, an expert tutor on SabiLearn. Generate exactly ${count} multiple-choice questions that a student can answer from the supplied notes and images.
+Do not invent facts that are not supported by the source. Each question has exactly four options and exactly one option with isCorrect true.
+Output strictly a JSON array (or an object with a "questions" array) in this shape:
+[
+  {
+    "question": "Question text?",
+    "options": [
+      { "text": "Option A", "isCorrect": true },
+      { "text": "Option B", "isCorrect": false },
+      { "text": "Option C", "isCorrect": false },
+      { "text": "Option D", "isCorrect": false }
+    ],
+    "explanation": "Why the correct option follows from the source."
+  }
+]`;
+
+    const userText = [
+      topic.trim() ? `TOPIC OR INSTRUCTIONS:\n${topic.trim()}` : "TOPIC OR INSTRUCTIONS:\nBuild a quiz from the attached materials.",
+      extractedText.trim() ? `SOURCE TEXT:\n${extractedText.trim()}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+
+    if (!imageAttachments.length) {
+      const raw = await this.streamChatCompletion(
+        [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userText },
+        ],
+        () => {},
+      );
+      return this.normalizeQuizQuestions(this.parseQuizResponse(raw), count);
+    }
+
+    const apiKey = this.apiKey;
+    if (!apiKey) {
+      return this.normalizeQuizQuestions(
+        this.parseQuizResponse(
+          await this.simulateDummyStream(
+            [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: userText },
+            ],
+            () => {},
+          ),
+        ),
+        count,
+      );
+    }
+
+    const userMessageContent = [
+      { type: "text", text: userText },
+      ...imageAttachments.map((url) => ({
+        type: "image_url",
+        image_url: { url },
+      })),
+    ];
+
+    const response = await fetch(`${this.baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: this.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userMessageContent },
+        ],
+        temperature: 0.4,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `DeepSeek API request failed with status ${response.status}: ${errorText}`,
+      );
+    }
+
+    const jsonResponse = (await response.json()) as {
+      choices?: Array<{ message?: { content?: string } }>;
+    };
+    const raw = jsonResponse.choices?.[0]?.message?.content || "[]";
+    return this.normalizeQuizQuestions(this.parseQuizResponse(raw), count);
+  }
+
+  /**
    * Generate quiz questions specifically for a course or topic context.
    */
   public static async generateQuizForContext(
@@ -460,6 +558,34 @@ ${question || "Can you clarify how this works?"}`;
     return this.streamChatCompletion(messages, onChunk || (() => {}));
   }
 
+  private static normalizeQuizQuestions(
+    questions: QuizQuestionGenerated[],
+    count: number,
+  ): QuizQuestionGenerated[] {
+    const cleaned = questions
+      .filter((q) => q && typeof q.question === "string" && Array.isArray(q.options))
+      .slice(0, count)
+      .map((q) => {
+        const options = q.options.slice(0, 4).map((option, index) => ({
+          text: String(option?.text || `Option ${index + 1}`),
+          isCorrect: Boolean(option?.isCorrect),
+        }));
+        if (!options.some((option) => option.isCorrect) && options[0]) {
+          options[0].isCorrect = true;
+        }
+        const firstCorrect = options.findIndex((option) => option.isCorrect);
+        return {
+          question: q.question,
+          options: options.map((option, index) => ({
+            ...option,
+            isCorrect: index === firstCorrect,
+          })),
+          explanation: typeof q.explanation === "string" ? q.explanation : "",
+        };
+      });
+    return cleaned.length > 0 ? cleaned : questions.slice(0, count);
+  }
+
   private static parseQuizResponse(raw: string): QuizQuestionGenerated[] {
     try {
       const cleanJson = raw
@@ -468,6 +594,8 @@ ${question || "Can you clarify how this works?"}`;
         .trim();
       const parsed = JSON.parse(cleanJson);
       if (Array.isArray(parsed)) return parsed;
+      if (parsed && Array.isArray(parsed.questions)) return parsed.questions;
+      if (parsed && Array.isArray(parsed.quiz)) return parsed.quiz;
     } catch (e) {
       console.warn(
         "Failed to parse quiz response JSON from AI, fallback returning raw text format",

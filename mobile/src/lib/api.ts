@@ -229,6 +229,12 @@ export const aiApi = {
     api.post('/ai/summarize', { text, stream }, { timeout: AI_TIMEOUT_MS }),
   generateQuiz: (topic: string, count: number = 5, stream: boolean = false) =>
     api.post('/ai/generate-quiz', { topic, count, stream }, { timeout: AI_TIMEOUT_MS }),
+  generateQuizFromMaterials: (data: FormData) =>
+    api.post('/ai/generate-quiz/materials', data, {
+      timeout: COURSE_GENERATE_TIMEOUT_MS,
+      headers: { 'Content-Type': 'multipart/form-data' },
+      transformRequest: (body) => body,
+    }),
   generateFlashcards: (topic: string, count: number = 5, stream: boolean = false) =>
     api.post('/ai/generate-flashcards', { topic, count, stream }, { timeout: AI_TIMEOUT_MS }),
   qa: (question: string, context?: string, stream: boolean = false) =>

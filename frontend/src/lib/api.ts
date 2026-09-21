@@ -235,6 +235,11 @@ export interface ExplainLessonParams {
 export const aiApi = {
   summarize: (text: string, stream: boolean = false) => api.post('/ai/summarize', { text, stream }),
   generateQuiz: (topic: string, count: number = 5, stream: boolean = false) => api.post('/ai/generate-quiz', { topic, count, stream }),
+  generateQuizFromMaterials: (data: FormData) =>
+    api.post('/ai/generate-quiz/materials', data, {
+      timeout: COURSE_GENERATE_TIMEOUT_MS,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
   generateFlashcards: (topic: string, count: number = 5, stream: boolean = false) => api.post('/ai/generate-flashcards', { topic, count, stream }),
   qa: (question: string, context?: string, stream: boolean = false) => api.post('/ai/qa', { question, context, stream }),
   explain: (data: ExplainLessonParams & { stream?: boolean }) => api.post('/ai/explain', data),

@@ -227,7 +227,7 @@ export default function GenerateCourseScreen() {
     if (quota && quota.isSubscribed && quota.remaining <= 0) {
       Alert.alert(
         'Daily limit reached',
-        'You have reached your daily limit of 5 course generations. Please try again tomorrow.'
+        'You have reached your daily limit of 5 AI generations. Please try again tomorrow.'
       );
       return;
     }
@@ -380,7 +380,7 @@ export default function GenerateCourseScreen() {
             <GlassSurface style={styles.limitCard} tintColor="rgba(245, 158, 11, 0.12)">
               <IconSparkles size={16} color="#D97706" />
               <Text style={styles.limitText}>
-                Daily limit reached ({quota.dailyLimit} of {quota.dailyLimit} courses generated today). Resets tomorrow.
+                Daily limit reached ({quota.dailyLimit} of {quota.dailyLimit} generations used today). Resets tomorrow.
               </Text>
             </GlassSurface>
           ) : (
