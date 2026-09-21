@@ -1,8 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import Topic from '../models/topic.model';
+import Chapter from '../models/chapter.model';
+import Course from '../models/course.model';
 import Flashcard from '../models/flashcard.model';
 import MCQ from '../models/mcq.model';
 import UserProgress from '../models/userProgress.model';
+import { CourseArchitectService } from '../services/courseArchitect.service';
 
 export const reorderTopics = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -50,6 +53,39 @@ export const getTopicById = async (req: Request, res: Response, next: NextFuncti
     if (!topic) {
       res.status(404).json({ success: false, message: 'Topic not found.' });
       return;
+    }
+
+    // Lazy / On-Demand Content Generation:
+    // If the topic was created via the fast course architect (empty contents),
+    // generate its full pedagogical contents on first view and cache it to the database.
+    if (!topic.contents || topic.contents.length === 0) {
+      try {
+        const courseDoc = await Course.findById(topic.course).select('title difficulty isAiGenerated');
+        const chapterDoc = topic.chapter ? await Chapter.findById(topic.chapter).select('title') : null;
+
+        if (courseDoc && (courseDoc.isAiGenerated || (topic.subConcepts && topic.subConcepts.length > 0))) {
+          const generatedTopicData = await CourseArchitectService.generateTopicContent({
+            courseTitle: courseDoc.title || 'Course',
+            chapterTitle: chapterDoc?.title || 'Chapter',
+            topicTitle: topic.title,
+            topicDescription: topic.description || '',
+            subConcepts: topic.subConcepts || [],
+            hasCodingTask: topic.hasCodingTask,
+            practiceTaskSummary: topic.practiceTaskSummary,
+            order: topic.order || 0,
+            difficulty: courseDoc.difficulty || 'beginner',
+          });
+
+          if (generatedTopicData?.contents && generatedTopicData.contents.length > 0) {
+            topic.contents = generatedTopicData.contents as any;
+            topic.isGenerated = true;
+            topic.xp = topic.xp || 50;
+            await topic.save();
+          }
+        }
+      } catch (genErr: any) {
+        console.error(`On-demand topic generation error for topic [${topic._id}]:`, genErr.message);
+      }
     }
 
     res.status(200).json({ success: true, data: topic });

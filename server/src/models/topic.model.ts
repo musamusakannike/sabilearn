@@ -18,6 +18,10 @@ export interface ITopic extends Document {
   chapter?: mongoose.Types.ObjectId;
   title: string;
   description: string;
+  subConcepts?: string[];
+  hasCodingTask?: boolean;
+  practiceTaskSummary?: string;
+  isGenerated?: boolean;
   contents: ITopicContent[];
   exercise?: IExercise;
   xp: number;
@@ -87,6 +91,22 @@ const TopicSchema: Schema = new Schema<ITopic>(
       type: String,
       default: '',
       trim: true,
+    },
+    subConcepts: {
+      type: [String],
+      default: [],
+    },
+    hasCodingTask: {
+      type: Boolean,
+      default: false,
+    },
+    practiceTaskSummary: {
+      type: String,
+      default: '',
+    },
+    isGenerated: {
+      type: Boolean,
+      default: false,
     },
     contents: [TopicContentSchema],
     exercise: {

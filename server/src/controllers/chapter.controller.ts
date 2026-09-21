@@ -4,6 +4,7 @@ import Chapter from '../models/chapter.model';
 import Topic from '../models/topic.model';
 import UserProgress from '../models/userProgress.model';
 import Course from '../models/course.model';
+import { CourseArchitectService } from '../services/courseArchitect.service';
 
 interface AuthRequest extends Request {
   user?: {
@@ -165,3 +166,54 @@ export const deleteChapter = async (req: Request, res: Response, next: NextFunct
     next(error);
   }
 };
+
+/**
+ * GET /api/v1/chapters/:id/assessment
+ * Get chapter capstone assessment, generating it on-demand if it hasn't been created yet.
+ */
+export const getChapterAssessment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const chapter = await Chapter.findById(req.params.id);
+    if (!chapter) {
+      res.status(404).json({ success: false, message: 'Chapter not found.' });
+      return;
+    }
+
+    // If assessment already exists, return it
+    if (chapter.exercise && chapter.exercise.questions && chapter.exercise.questions.length > 0) {
+      res.status(200).json({ success: true, data: chapter.exercise });
+      return;
+    }
+
+    // Generate on-demand if AI-generated or has capstoneGoal
+    const course = await Course.findById(chapter.course).select('title difficulty isAiGenerated');
+    const topics = await Topic.find({ chapter: chapter._id }).select('title description');
+
+    if (course && (course.isAiGenerated || chapter.capstoneGoal)) {
+      try {
+        const generatedExercise = await CourseArchitectService.generateCapstoneAssessment({
+          courseTitle: course.title || 'Course',
+          chapterTitle: chapter.title,
+          chapterDescription: chapter.description || '',
+          capstoneGoal: chapter.capstoneGoal || 'Evaluate mastery of chapter topics',
+          topics: topics.map((t) => ({ title: t.title, description: t.description })),
+          difficulty: chapter.capstoneDifficulty || 'medium',
+        });
+
+        if (generatedExercise && generatedExercise.questions?.length > 0) {
+          chapter.exercise = generatedExercise;
+          await chapter.save();
+          res.status(200).json({ success: true, data: chapter.exercise });
+          return;
+        }
+      } catch (genErr: any) {
+        console.error(`On-demand capstone generation error for chapter [${chapter._id}]:`, genErr.message);
+      }
+    }
+
+    res.status(200).json({ success: true, data: chapter.exercise || { title: '', instructions: '', questions: [] } });
+  } catch (error) {
+    next(error);
+  }
+};
+

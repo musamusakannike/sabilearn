@@ -26,6 +26,8 @@ export interface IChapter extends Document {
   title: string;
   description: string;
   order: number;
+  capstoneGoal?: string;
+  capstoneDifficulty?: 'medium' | 'hard';
   exercise?: IExercise;
   createdAt: Date;
   updatedAt: Date;
@@ -80,6 +82,15 @@ const ChapterSchema: Schema = new Schema<IChapter>(
     order: {
       type: Number,
       default: 0,
+    },
+    capstoneGoal: {
+      type: String,
+      default: '',
+    },
+    capstoneDifficulty: {
+      type: String,
+      enum: ['medium', 'hard'],
+      default: 'medium',
     },
     exercise: {
       type: ExerciseSchema,

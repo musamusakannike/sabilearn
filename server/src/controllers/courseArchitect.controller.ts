@@ -400,8 +400,8 @@ export const generateFullCourse = async (
     // 1. Process documents
     const processed = await DocumentProcessorService.processUploads(filesList, userGuidePrompt);
 
-    // 2. Generate full course content
-    const { plan, generatedChapters } = await CourseArchitectService.generateFullCourse({
+    // 2. Generate course plan only (fast, 1 LLM call)
+    const plan = await CourseArchitectService.generatePlan({
       courseTitle,
       userGuidePrompt,
       extractedText: processed.extractedText,
@@ -409,7 +409,30 @@ export const generateFullCourse = async (
       difficulty,
     });
 
-    // 3. Save to database
+    // 3. Pre-generate only the very first topic so the student can start immediately
+    let firstTopicContents: any[] = [];
+    const firstChapterPlan = plan.chapters?.[0];
+    const firstTopicPlan = firstChapterPlan?.topics?.[0];
+    if (firstTopicPlan) {
+      try {
+        const firstTopicData = await CourseArchitectService.generateTopicContent({
+          courseTitle: plan.title,
+          chapterTitle: firstChapterPlan.title,
+          topicTitle: firstTopicPlan.title,
+          topicDescription: firstTopicPlan.description,
+          subConcepts: firstTopicPlan.subConcepts,
+          hasCodingTask: firstTopicPlan.hasCodingTask,
+          practiceTaskSummary: firstTopicPlan.practiceTaskSummary,
+          order: 0,
+          difficulty: plan.difficulty,
+        });
+        firstTopicContents = firstTopicData.contents || [];
+      } catch (e: any) {
+        console.warn('Failed to pre-generate first topic, will generate on-demand:', e.message);
+      }
+    }
+
+    // 4. Save to database
     let bannerUrl = typeof banner === 'string' ? banner : '';
     const bannerFile = filesList.find((f) => f.fieldname === 'banner');
     if (bannerFile) {
@@ -417,7 +440,7 @@ export const generateFullCourse = async (
       bannerUrl = await uploadToR2(bannerFile.buffer, fileKey, bannerFile.mimetype);
     }
 
-    // 4. Create category if needed
+    // 5. Create category if needed
     const categoryName = plan.category || 'General Studies';
     let categoryDoc = await Category.findOne({
       name: { $regex: `^${categoryName.trim()}$`, $options: 'i' },
@@ -471,26 +494,35 @@ export const generateFullCourse = async (
     let totalChapters = 0;
     let totalTopics = 0;
 
-    for (let chIdx = 0; chIdx < generatedChapters.length; chIdx++) {
-      const chData = generatedChapters[chIdx];
+    for (let chIdx = 0; chIdx < plan.chapters.length; chIdx++) {
+      const chData = plan.chapters[chIdx];
       const createdChapter = await Chapter.create({
         course: course._id,
         title: chData.title,
         description: chData.description || '',
         order: chIdx,
-        exercise: chData.exercise,
+        capstoneGoal: chData.capstoneGoal || 'Evaluate mastery of chapter topics',
+        capstoneDifficulty: plan.capstoneDifficulty || 'medium',
       });
       totalChapters++;
 
       for (let tIdx = 0; tIdx < chData.topics.length; tIdx++) {
         const tData = chData.topics[tIdx];
+        const isFirst = chIdx === 0 && tIdx === 0;
+        const contents = isFirst && firstTopicContents.length > 0 ? firstTopicContents : [];
+        const isGenerated = contents.length > 0;
+
         await Topic.create({
           course: course._id,
           chapter: createdChapter._id,
           title: tData.title,
           description: tData.description || '',
+          subConcepts: tData.subConcepts || [],
+          hasCodingTask: Boolean(tData.hasCodingTask),
+          practiceTaskSummary: tData.practiceTaskSummary || '',
           order: tIdx,
-          contents: tData.contents,
+          contents,
+          isGenerated,
           xp: 50,
           isPublished: true,
         });
