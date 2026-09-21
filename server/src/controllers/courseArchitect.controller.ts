@@ -324,9 +324,9 @@ export const saveCourse = async (
         $setOnInsert: {
           user: user._id,
           course: course._id,
-          topic: firstTopic?._id,
+          lastTopic: firstTopic?._id,
           completedTopics: [],
-          progressPercent: 0,
+          percentCompleted: 0,
         },
       },
       { upsert: true, new: true }
@@ -506,9 +506,9 @@ export const generateFullCourse = async (
         $setOnInsert: {
           user: user._id,
           course: course._id,
-          topic: firstTopic?._id,
+          lastTopic: firstTopic?._id,
           completedTopics: [],
-          progressPercent: 0,
+          percentCompleted: 0,
         },
       },
       { upsert: true, new: true }

@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 export interface CoursePlanTopic {
@@ -25,17 +25,17 @@ export interface CoursePlan {
   description: string;
   longDescription: string;
   category: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: "beginner" | "intermediate" | "advanced";
   whatYouWillLearn: string[];
   prerequisites: string[];
   targetProjects: string[];
-  quizFrequency: 'high' | 'medium' | 'low';
-  capstoneDifficulty: 'medium' | 'hard';
+  quizFrequency: "high" | "medium" | "low";
+  capstoneDifficulty: "medium" | "hard";
   chapters: CoursePlanChapter[];
 }
 
 export interface GeneratedTopicBlock {
-  type: 'text' | 'code' | 'latex' | 'image';
+  type: "text" | "code" | "latex" | "image";
   content: string;
   language?: string;
 }
@@ -52,7 +52,7 @@ export interface GeneratedTopicQuiz {
 }
 
 export interface GeneratedTopicContentItem {
-  type: 'group' | 'quiz';
+  type: "group" | "quiz";
   content: string;
   blocks?: GeneratedTopicBlock[];
   quiz?: GeneratedTopicQuiz;
@@ -67,7 +67,7 @@ export interface GeneratedTopicData {
 }
 
 export interface ChapterExerciseQuestion {
-  type: 'mcq' | 'fill_in_blank' | 'code_execution';
+  type: "mcq" | "fill_in_blank" | "code_execution";
   question: string;
   options: string[];
   correctAnswer: string;
@@ -238,7 +238,7 @@ You MUST output ONLY valid JSON matching this schema:
 
 export class CourseArchitectService {
   private static get baseUrl(): string {
-    return process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com';
+    return process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com";
   }
 
   private static get apiKey(): string | undefined {
@@ -246,7 +246,7 @@ export class CourseArchitectService {
   }
 
   private static get model(): string {
-    return process.env.DEEPSEEK_MODEL || 'deepseek-flash';
+    return process.env.DEEPSEEK_MODEL || "deepseek-v4-flash";
   }
 
   /**
@@ -256,12 +256,14 @@ export class CourseArchitectService {
     systemPrompt: string,
     userTextPrompt: string,
     imageAttachments: string[] = [],
-    temperature = 0.4
+    temperature = 0.4,
   ): Promise<T> {
     const apiKey = this.apiKey;
 
     if (!apiKey) {
-      console.warn('DEEPSEEK_API_KEY is not set. Generating mock structured response.');
+      console.warn(
+        "DEEPSEEK_API_KEY is not set. Generating mock structured response.",
+      );
       return this.generateMockResponse<T>(systemPrompt, userTextPrompt);
     }
 
@@ -271,11 +273,11 @@ export class CourseArchitectService {
     if (imageAttachments && imageAttachments.length > 0) {
       userMessageContent = [
         {
-          type: 'text',
+          type: "text",
           text: userTextPrompt,
         },
         ...imageAttachments.map((imgUrl) => ({
-          type: 'image_url',
+          type: "image_url",
           image_url: {
             url: imgUrl,
           },
@@ -284,43 +286,50 @@ export class CourseArchitectService {
     }
 
     const messages = [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: userMessageContent },
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userMessageContent },
     ];
 
     try {
       const response = await fetch(`${this.baseUrl}/chat/completions`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
           model: this.model,
           messages,
           temperature,
-          response_format: { type: 'json_object' },
+          response_format: { type: "json_object" },
         }),
       });
 
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`DeepSeek API error [${response.status}]: ${errorText}`);
-        throw new Error(`DeepSeek API request failed with status ${response.status}: ${errorText}`);
+        throw new Error(
+          `DeepSeek API request failed with status ${response.status}: ${errorText}`,
+        );
       }
 
       const jsonResponse = await response.json();
-      const rawContent = jsonResponse.choices?.[0]?.message?.content || '{}';
+      const rawContent = jsonResponse.choices?.[0]?.message?.content || "{}";
 
       try {
         return JSON.parse(rawContent) as T;
       } catch {
         // Strip any unexpected markdown code fence wrappers
-        const cleaned = rawContent.replace(/```(?:json)?\n?|\n?```/g, '').trim();
+        const cleaned = rawContent
+          .replace(/```(?:json)?\n?|\n?```/g, "")
+          .trim();
         return JSON.parse(cleaned) as T;
       }
     } catch (error: any) {
-      console.warn('DeepSeek call error, falling back to structured generator:', error.message);
+      console.warn(
+        "DeepSeek call error, falling back to structured generator:",
+        error.message,
+      );
       return this.generateMockResponse<T>(systemPrompt, userTextPrompt);
     }
   }
@@ -333,15 +342,15 @@ export class CourseArchitectService {
     userGuidePrompt?: string;
     extractedText?: string;
     imageAttachments?: string[];
-    difficulty?: 'beginner' | 'intermediate' | 'advanced';
+    difficulty?: "beginner" | "intermediate" | "advanced";
     clarificationAnswers?: Record<string, any>;
   }): Promise<CoursePlan> {
     const {
-      courseTitle = '',
-      userGuidePrompt = '',
-      extractedText = '',
+      courseTitle = "",
+      userGuidePrompt = "",
+      extractedText = "",
       imageAttachments = [],
-      difficulty = 'beginner',
+      difficulty = "beginner",
       clarificationAnswers,
     } = options;
 
@@ -374,7 +383,7 @@ export class CourseArchitectService {
       SYSTEM_PLAN_PROMPT,
       userPrompt,
       imageAttachments,
-      0.4
+      0.4,
     );
 
     // Normalize and enforce limits to prevent misuse
@@ -388,10 +397,11 @@ export class CourseArchitectService {
 
       plan.chapters.forEach((ch, chIdx) => {
         ch.id = ch.id || `ch-${chIdx + 1}`;
-        ch.order = typeof ch.order === 'number' ? ch.order : chIdx;
+        ch.order = typeof ch.order === "number" ? ch.order : chIdx;
         ch.title = ch.title || `Chapter ${chIdx + 1}`;
-        ch.description = ch.description || '';
-        ch.capstoneGoal = ch.capstoneGoal || 'Evaluate mastery of chapter topics';
+        ch.description = ch.description || "";
+        ch.capstoneGoal =
+          ch.capstoneGoal || "Evaluate mastery of chapter topics";
 
         if (ch.topics && Array.isArray(ch.topics)) {
           // Limit topics per chapter
@@ -401,13 +411,16 @@ export class CourseArchitectService {
 
           // Enforce global maximum topics
           if (totalTopicsCount + ch.topics.length > MAX_TOTAL_TOPICS_ALLOWED) {
-            ch.topics = ch.topics.slice(0, Math.max(0, MAX_TOTAL_TOPICS_ALLOWED - totalTopicsCount));
+            ch.topics = ch.topics.slice(
+              0,
+              Math.max(0, MAX_TOTAL_TOPICS_ALLOWED - totalTopicsCount),
+            );
           }
           totalTopicsCount += ch.topics.length;
 
           ch.topics.forEach((t, tIdx) => {
             t.id = t.id || `t-${chIdx + 1}-${tIdx + 1}`;
-            t.order = typeof t.order === 'number' ? t.order : tIdx;
+            t.order = typeof t.order === "number" ? t.order : tIdx;
             t.title = t.title || `Topic ${tIdx + 1}`;
             t.subConcepts = Array.isArray(t.subConcepts) ? t.subConcepts : [];
           });
@@ -439,19 +452,19 @@ export class CourseArchitectService {
       topicDescription,
       subConcepts = [],
       hasCodingTask = false,
-      practiceTaskSummary = '',
+      practiceTaskSummary = "",
       order = 0,
     } = options;
 
     const userPrompt = `
 Generate complete, step-by-step SabiLearn lesson content for this topic:
 
-COURSE: "${courseTitle || 'Course'}"
-CHAPTER: "${chapterTitle || 'Chapter'}"
+COURSE: "${courseTitle || "Course"}"
+CHAPTER: "${chapterTitle || "Chapter"}"
 TOPIC TITLE: "${topicTitle}"
 DESCRIPTION: "${topicDescription}"
 SUB-CONCEPTS TO TEACH: ${JSON.stringify(subConcepts)}
-INCLUDES HANDS-ON TASK: ${hasCodingTask ? 'Yes: ' + practiceTaskSummary : 'No'}
+INCLUDES HANDS-ON TASK: ${hasCodingTask ? "Yes: " + practiceTaskSummary : "No"}
 TOPIC ORDER: ${order}
 
 CRITICAL RULES:
@@ -468,7 +481,7 @@ CRITICAL RULES:
       SYSTEM_TOPIC_PROMPT,
       userPrompt,
       [],
-      0.3
+      0.3,
     );
 
     topicData.order = order;
@@ -491,10 +504,10 @@ CRITICAL RULES:
     const {
       courseTitle,
       chapterTitle,
-      chapterDescription = '',
-      capstoneGoal = '',
+      chapterDescription = "",
+      capstoneGoal = "",
       topics = [],
-      difficulty = 'medium',
+      difficulty = "medium",
     } = options;
 
     const userPrompt = `
@@ -503,9 +516,9 @@ Generate a Chapter Capstone Assessment with 8 to 10 MEDIUM and HARD difficulty s
 COURSE: "${courseTitle}"
 CHAPTER: "${chapterTitle}"
 DESCRIPTION: "${chapterDescription}"
-CAPSTONE ASSESSMENT GOAL: "${capstoneGoal || 'Evaluate complete mastery of chapter topics'}"
+CAPSTONE ASSESSMENT GOAL: "${capstoneGoal || "Evaluate complete mastery of chapter topics"}"
 TOPICS COVERED:
-${topics.map((t, i) => `${i + 1}. ${t.title}: ${t.description}`).join('\n')}
+${topics.map((t, i) => `${i + 1}. ${t.title}: ${t.description}`).join("\n")}
 DIFFICULTY LEVEL: ${difficulty.toUpperCase()} (MEDIUM & HARD)
 
 CRITICAL RULES:
@@ -518,7 +531,7 @@ CRITICAL RULES:
       SYSTEM_CAPSTONE_PROMPT,
       userPrompt,
       [],
-      0.3
+      0.3,
     );
 
     return exercise;
@@ -532,20 +545,21 @@ CRITICAL RULES:
     userGuidePrompt?: string;
     extractedText?: string;
     imageAttachments?: string[];
-    difficulty?: 'beginner' | 'intermediate' | 'advanced';
+    difficulty?: "beginner" | "intermediate" | "advanced";
     onProgress?: (progressText: string) => void;
   }): Promise<{ plan: CoursePlan; generatedChapters: GeneratedChapterData[] }> {
     const { onProgress } = options;
 
-    onProgress?.('Generating Course Outline & Curriculum Plan...');
+    onProgress?.("Generating Course Outline & Curriculum Plan...");
     const plan = await this.generatePlan(options);
 
-    const generatedChapters: GeneratedChapterData[] = [];
+    // Parallelize generation across all chapters and topics to drastically reduce latency
+    const chapterPromises = plan.chapters.map(async (ch, chIdx) => {
+      onProgress?.(
+        `Generating Chapter ${chIdx + 1}: "${ch.title}" (${ch.topics.length} topics)...`,
+      );
 
-    for (let chIdx = 0; chIdx < plan.chapters.length; chIdx++) {
-      const ch = plan.chapters[chIdx];
-      onProgress?.(`Generating Chapter ${chIdx + 1}: "${ch.title}" (${ch.topics.length} topics)...`);
-
+      // 1. Generate topics in parallel
       const topicPromises = ch.topics.map((t, tIdx) =>
         this.generateTopicContent({
           courseTitle: plan.title,
@@ -557,107 +571,139 @@ CRITICAL RULES:
           practiceTaskSummary: t.practiceTaskSummary,
           order: tIdx,
           difficulty: plan.difficulty,
-        })
+        }),
       );
 
-      const generatedTopics = await Promise.all(topicPromises);
-
-      onProgress?.(`Generating Capstone Assessment for Chapter ${chIdx + 1}...`);
-      const exercise = await this.generateCapstoneAssessment({
+      // 2. Generate chapter capstone assessment in parallel with topics
+      const capstonePromise = this.generateCapstoneAssessment({
         courseTitle: plan.title,
         chapterTitle: ch.title,
         chapterDescription: ch.description,
         capstoneGoal: ch.capstoneGoal,
-        topics: ch.topics.map((t) => ({ title: t.title, description: t.description })),
-        difficulty: plan.capstoneDifficulty || 'medium',
+        topics: ch.topics.map((t) => ({
+          title: t.title,
+          description: t.description,
+        })),
+        difficulty: plan.capstoneDifficulty || "medium",
       });
 
-      generatedChapters.push({
+      const [generatedTopics, exercise] = await Promise.all([
+        Promise.all(topicPromises),
+        capstonePromise,
+      ]);
+
+      return {
         title: ch.title,
         description: ch.description,
         order: chIdx,
         exercise,
         topics: generatedTopics,
-      });
-    }
+      };
+    });
 
-    onProgress?.('Course generation complete!');
+    const generatedChapters = await Promise.all(chapterPromises);
+
+    onProgress?.("Course generation complete!");
     return { plan, generatedChapters };
   }
 
   /**
    * Realistic fallback mock generator when running locally without an API key.
    */
-  private static generateMockResponse<T>(systemPrompt: string, userPrompt: string): T {
-    if (systemPrompt.includes('Plan Architect')) {
+  private static generateMockResponse<T>(
+    systemPrompt: string,
+    userPrompt: string,
+  ): T {
+    if (systemPrompt.includes("Plan Architect")) {
       const mockPlan: CoursePlan = {
-        title: 'Interactive Foundations: Core Concepts & Practice',
-        description: 'Master core principles through interactive lessons, analogies, and hands-on exercises.',
-        longDescription: 'A comprehensive, beginner-friendly curriculum designed to take you from core basics to practical project mastery with real-world application.',
-        category: 'Computer Science',
-        difficulty: 'beginner',
+        title: "Interactive Foundations: Core Concepts & Practice",
+        description:
+          "Master core principles through interactive lessons, analogies, and hands-on exercises.",
+        longDescription:
+          "A comprehensive, beginner-friendly curriculum designed to take you from core basics to practical project mastery with real-world application.",
+        category: "Computer Science",
+        difficulty: "beginner",
         whatYouWillLearn: [
-          'Foundational concepts and principles',
-          'Practical workflows and best practices',
-          'Debugging and problem-solving techniques',
-          'Building real-world milestone projects',
+          "Foundational concepts and principles",
+          "Practical workflows and best practices",
+          "Debugging and problem-solving techniques",
+          "Building real-world milestone projects",
         ],
-        prerequisites: ['No prior experience required'],
-        targetProjects: ['Personal Portfolio Milestone Project', 'Interactive Utility Tool'],
-        quizFrequency: 'high',
-        capstoneDifficulty: 'medium',
+        prerequisites: ["No prior experience required"],
+        targetProjects: [
+          "Personal Portfolio Milestone Project",
+          "Interactive Utility Tool",
+        ],
+        quizFrequency: "high",
+        capstoneDifficulty: "medium",
         chapters: [
           {
-            id: 'ch-1',
-            title: 'Foundations & Core Principles',
-            description: 'Understand the fundamental building blocks and mental models.',
+            id: "ch-1",
+            title: "Foundations & Core Principles",
+            description:
+              "Understand the fundamental building blocks and mental models.",
             order: 0,
-            capstoneGoal: 'Evaluate understanding of core definitions, syntax, and execution flow.',
+            capstoneGoal:
+              "Evaluate understanding of core definitions, syntax, and execution flow.",
             topics: [
               {
-                id: 't-1-1',
-                title: 'Introduction & Core Mental Models',
-                description: 'Overview of key concepts and practical analogies.',
+                id: "t-1-1",
+                title: "Introduction & Core Mental Models",
+                description:
+                  "Overview of key concepts and practical analogies.",
                 order: 0,
-                subConcepts: ['Core definition', 'Analogy & real-world mapping'],
+                subConcepts: [
+                  "Core definition",
+                  "Analogy & real-world mapping",
+                ],
                 hasCodingTask: true,
-                practiceTaskSummary: 'Run your first interactive example',
+                practiceTaskSummary: "Run your first interactive example",
               },
               {
-                id: 't-1-2',
-                title: 'Working with Data & Variables',
-                description: 'Storing, retrieving, and manipulating essential information.',
+                id: "t-1-2",
+                title: "Working with Data & Variables",
+                description:
+                  "Storing, retrieving, and manipulating essential information.",
                 order: 1,
-                subConcepts: ['Declaring values', 'Data types & transformations'],
+                subConcepts: [
+                  "Declaring values",
+                  "Data types & transformations",
+                ],
                 hasCodingTask: true,
-                practiceTaskSummary: 'Create variables and perform basic operations',
+                practiceTaskSummary:
+                  "Create variables and perform basic operations",
               },
             ],
           },
           {
-            id: 'ch-2',
-            title: 'Control Flow & Logic',
-            description: 'Directing execution pathways and handling different conditions.',
+            id: "ch-2",
+            title: "Control Flow & Logic",
+            description:
+              "Directing execution pathways and handling different conditions.",
             order: 1,
-            capstoneGoal: 'Evaluate problem solving with conditional logic and loops.',
+            capstoneGoal:
+              "Evaluate problem solving with conditional logic and loops.",
             topics: [
               {
-                id: 't-2-1',
-                title: 'Conditional Branching',
-                description: 'Making smart decisions in code.',
+                id: "t-2-1",
+                title: "Conditional Branching",
+                description: "Making smart decisions in code.",
                 order: 0,
-                subConcepts: ['If-else statements', 'Comparison operators'],
+                subConcepts: ["If-else statements", "Comparison operators"],
                 hasCodingTask: true,
-                practiceTaskSummary: 'Write logic to handle user choices',
+                practiceTaskSummary: "Write logic to handle user choices",
               },
               {
-                id: 't-2-2',
-                title: 'Iterative Loops & Sequences',
-                description: 'Automating repetitive actions effectively.',
+                id: "t-2-2",
+                title: "Iterative Loops & Sequences",
+                description: "Automating repetitive actions effectively.",
                 order: 1,
-                subConcepts: ['For and While loops', 'Iterating over collections'],
+                subConcepts: [
+                  "For and While loops",
+                  "Iterating over collections",
+                ],
                 hasCodingTask: true,
-                practiceTaskSummary: 'Process arrays and repeat operations',
+                practiceTaskSummary: "Process arrays and repeat operations",
               },
             ],
           },
@@ -666,40 +712,47 @@ CRITICAL RULES:
       return mockPlan as unknown as T;
     }
 
-    if (systemPrompt.includes('Topic Content Generator')) {
+    if (systemPrompt.includes("Topic Content Generator")) {
       const mockTopic: GeneratedTopicData = {
-        title: 'Core Concept Mastery',
-        description: 'Understand the fundamental ideas with clear analogies and examples.',
+        title: "Core Concept Mastery",
+        description:
+          "Understand the fundamental ideas with clear analogies and examples.",
         order: 0,
         xp: 50,
         contents: [
           {
-            type: 'group',
-            content: 'Core Introduction',
+            type: "group",
+            content: "Core Introduction",
             blocks: [
               {
-                type: 'text',
+                type: "text",
                 content:
-                  'Welcome to this lesson! Let us explore how this concept works in everyday life.\n\nImagine you have a organized storage box where every item has a specific labeled compartment.\n\nRemember: Keeping your data cleanly labeled prevents mistakes and makes your code reliable.',
+                  "Welcome to this lesson! Let us explore how this concept works in everyday life.\n\nImagine you have a organized storage box where every item has a specific labeled compartment.\n\nRemember: Keeping your data cleanly labeled prevents mistakes and makes your code reliable.",
               },
               {
-                type: 'code',
-                content: '// Example declaration\nconst box = "tools";\nconsole.log("Storage item:", box);',
-                language: 'javascript',
+                type: "code",
+                content:
+                  '// Example declaration\nconst box = "tools";\nconsole.log("Storage item:", box);',
+                language: "javascript",
               },
             ],
           },
           {
-            type: 'quiz',
-            content: 'Concept Check-In',
+            type: "quiz",
+            content: "Concept Check-In",
             quiz: {
-              question: 'Why is it important to clearly structure your variables and data?',
+              question:
+                "Why is it important to clearly structure your variables and data?",
               options: [
-                { text: 'It prevents errors and makes logic easy to understand', isCorrect: true },
-                { text: 'It disables error checking', isCorrect: false },
-                { text: 'It forces synchronous blocking', isCorrect: false },
+                {
+                  text: "It prevents errors and makes logic easy to understand",
+                  isCorrect: true,
+                },
+                { text: "It disables error checking", isCorrect: false },
+                { text: "It forces synchronous blocking", isCorrect: false },
               ],
-              explanation: 'Remember: Keeping your data cleanly labeled prevents mistakes and makes your code reliable.',
+              explanation:
+                "Remember: Keeping your data cleanly labeled prevents mistakes and makes your code reliable.",
             },
           },
         ],
@@ -707,22 +760,26 @@ CRITICAL RULES:
       return mockTopic as unknown as T;
     }
 
-    if (systemPrompt.includes('Capstone Assessment')) {
+    if (systemPrompt.includes("Capstone Assessment")) {
       const mockCapstone: ChapterExercise = {
-        title: 'Chapter Capstone Assessment',
-        instructions: 'Test your mastery of chapter concepts with scenario-based questions.',
+        title: "Chapter Capstone Assessment",
+        instructions:
+          "Test your mastery of chapter concepts with scenario-based questions.",
         questions: [
           {
-            type: 'mcq',
-            question: 'Consider a scenario where a variable is referenced outside its declaration scope. What happens?',
+            type: "mcq",
+            question:
+              "Consider a scenario where a variable is referenced outside its declaration scope. What happens?",
             options: [
-              'A ReferenceError is thrown because the variable is not in scope',
-              'The value defaults to null silently',
-              'The program crashes the whole browser',
-              'It automatically becomes a global variable',
+              "A ReferenceError is thrown because the variable is not in scope",
+              "The value defaults to null silently",
+              "The program crashes the whole browser",
+              "It automatically becomes a global variable",
             ],
-            correctAnswer: 'A ReferenceError is thrown because the variable is not in scope',
-            explanation: 'Variables declared inside block scopes cannot be accessed outside of them, resulting in a ReferenceError.',
+            correctAnswer:
+              "A ReferenceError is thrown because the variable is not in scope",
+            explanation:
+              "Variables declared inside block scopes cannot be accessed outside of them, resulting in a ReferenceError.",
             xp: 20,
           },
         ],

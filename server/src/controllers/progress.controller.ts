@@ -264,7 +264,7 @@ export const getDashboard = async (req: AuthenticatedRequest, res: Response, nex
         match: { isPublished: true },
         select: 'title description banner category difficulty isPublished',
       })
-      .populate({ path: 'topic', select: 'title description' })
+      .populate({ path: 'lastTopic', select: 'title description' })
       .sort({ lastStudiedAt: -1 });
 
     const validProgress = progress
@@ -376,7 +376,7 @@ export const getContinueStudying = async (req: AuthenticatedRequest, res: Respon
         match: { isPublished: true },
         select: 'title description banner category difficulty isPublished',
       })
-      .populate({ path: 'topic', select: 'title description' })
+      .populate({ path: 'lastTopic', select: 'title description' })
       .sort({ lastStudiedAt: -1 });
 
     const validProgress = progress.filter((p) => {
