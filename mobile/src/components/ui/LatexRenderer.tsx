@@ -35,7 +35,6 @@ function buildHtml(
   textColor: string,
   bgColor: string,
 ): string {
-  const safe = tex.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
   return `<!DOCTYPE html>
 <html>
 <head>
@@ -48,10 +47,9 @@ function buildHtml(
   #math {
     color: ${textColor};
     font-size: ${fontSize}px;
-    ${displayMode ? 'padding: 4px 0;' : ''}
+    ${displayMode ? 'padding: 12px 8px; text-align: center;' : ''}
     overflow-x: auto;
     overflow-y: hidden;
-    white-space: nowrap;
   }
   #math .katex { font-size: ${fontSize}px; }
   #math .katex-display { margin: 0; }
@@ -61,7 +59,7 @@ function buildHtml(
 <div id="math"></div>
 <script>
   (function () {
-    var tex = ${JSON.stringify(safe)};
+    var tex = ${JSON.stringify(tex)};
     try {
       katex.render(tex, document.getElementById('math'), {
         throwOnError: false,

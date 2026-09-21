@@ -120,7 +120,7 @@ export default function CodeRenderer({ code, language }: CodeRendererProps) {
         originWhitelist={['*']}
         source={{ html }}
         style={[styles.webview, { height }]}
-        scrollEnabled={false}
+        scrollEnabled
         javaScriptEnabled
         domStorageEnabled
         onMessage={onMessage}

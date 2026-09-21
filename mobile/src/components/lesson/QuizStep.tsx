@@ -4,6 +4,7 @@ import { IconCircleCheck, IconCircleX, IconHelpCircle } from '@tabler/icons-reac
 import { useTheme, fontFamilies, fontSizes, radii, spacing } from '@/theme';
 import { TopicQuiz } from '@/lib/types';
 import * as haptics from '@/lib/haptics';
+import RichMathText from '@/components/ui/RichMathText';
 
 function shuffleOptions<T>(options: T[]): T[] {
   if (!options || options.length === 0) return [];
@@ -31,7 +32,7 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
   return (
     <View style={{ gap: spacing.lg }}>
       <View style={{ gap: spacing.sm }}>
-        <Text style={[styles.question, { color: colors.textPrimary }]}>{quiz.question}</Text>
+        <RichMathText text={quiz.question} style={[styles.question, { color: colors.textPrimary }]} color={colors.textPrimary} fontSize={fontSizes.lg} />
       </View>
 
       <View style={{ gap: spacing.md }}>
@@ -72,7 +73,9 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
                 },
               ]}
             >
-              <Text style={[styles.optionText, { color: colors.textPrimary }]}>{opt.text}</Text>
+              <View style={{ flex: 1 }}>
+                <RichMathText text={opt.text} style={[styles.optionText, { color: colors.textPrimary }]} color={colors.textPrimary} fontSize={fontSizes.md} />
+              </View>
               {showState && opt.isCorrect && <IconCircleCheck size={20} color={colors.success} />}
               {showState && isSelected && !opt.isCorrect && <IconCircleX size={20} color={colors.danger} />}
             </Pressable>
@@ -98,9 +101,12 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
         !!quiz.explanation && (
           <View style={[styles.explanation, { backgroundColor: colors.surfaceSunken, borderColor: colors.borderSubtle }]}>
             <Text style={[styles.explanationTitle, { color: colors.textTertiary }]}>EXPLANATION</Text>
-            <Text style={{ color: colors.textPrimary, fontFamily: fontFamilies.sans, fontSize: fontSizes.sm, lineHeight: fontSizes.sm * 1.5 }}>
-              {quiz.explanation}
-            </Text>
+            <RichMathText
+              text={quiz.explanation}
+              style={{ color: colors.textPrimary, fontFamily: fontFamilies.sans, fontSize: fontSizes.sm, lineHeight: fontSizes.sm * 1.5 }}
+              color={colors.textPrimary}
+              fontSize={fontSizes.sm}
+            />
           </View>
         )
       )}

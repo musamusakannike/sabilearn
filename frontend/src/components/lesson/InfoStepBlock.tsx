@@ -4,6 +4,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Copy, Check, Maximize2, X, ExternalLink } from 'lucide-react';
 import { TopicContent } from '@/lib/types';
+import { MathBlock, RichText } from '@/components/lesson/RichText';
 
 function getYouTubeId(url: string) {
   const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
@@ -160,35 +161,9 @@ function FullscreenImage({ src, alt }: { src: string; alt: string }) {
 }
 
 function FormattedParagraph({ text }: { text: string }) {
-  // Support [text](url), **bold/highlight**, and plain text
-  const parts = text.split(/(\[.*?\]\(.*?\)|\*\*.*?\*\*)/g);
   return (
     <p className="text-base sm:text-lg leading-relaxed text-[var(--ink-900)] mb-4 last:mb-0">
-      {parts.map((part, pIdx) => {
-        const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
-        if (linkMatch) {
-          return (
-            <a
-              key={pIdx}
-              href={linkMatch[2]}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-bold text-[#0084FE] hover:underline"
-            >
-              {linkMatch[1]}
-            </a>
-          );
-        }
-        const boldMatch = part.match(/^\*\*(.*?)\*\*$/);
-        if (boldMatch) {
-          return (
-            <span key={pIdx} className="font-bold text-[#0084FE]">
-              {boldMatch[1]}
-            </span>
-          );
-        }
-        return <span key={pIdx}>{part}</span>;
-      })}
+      <RichText text={text} />
     </p>
   );
 }
@@ -207,25 +182,32 @@ export default function InfoStepBlock({ content, index = 0, topicTitle = '' }: {
         </div>
       )}
 
-      {content.type === 'latex' && (
-        <div className="overflow-x-auto rounded-2xl bg-[var(--surface-sunken)] p-6 text-center font-mono text-xl text-[var(--ink-900)] border border-[var(--line)]">
-          {content.content}
-        </div>
-      )}
+      {content.type === 'latex' && <MathBlock tex={content.content} />}
 
       {content.type === 'code' && (
         <div className="overflow-hidden rounded-2xl border border-[var(--line)] shadow-xs">
-          <div className="flex items-center justify-between border-b border-[var(--line)] bg-[var(--surface-sunken)] px-4 py-2 font-mono text-xs text-[var(--ink-500)]">
+          <div className="flex items-center justify-between border-b border-[var(--line)] bg-[var(--surface-sunken)] px-3 py-2 font-mono text-xs text-[var(--ink-500)] sm:px-4">
             <span className="font-semibold uppercase tracking-wider">{content.language || 'code'}</span>
             <CopyButton text={content.content} />
           </div>
-          <SyntaxHighlighter
-            language={content.language || 'text'}
-            style={oneLight}
-            customStyle={{ margin: 0, padding: '1.25rem', fontSize: '14px', lineHeight: '1.6' }}
-          >
-            {content.content}
-          </SyntaxHighlighter>
+          <div className="overflow-x-auto bg-white">
+            <SyntaxHighlighter
+              language={content.language || 'text'}
+              style={oneLight}
+              customStyle={{
+                margin: 0,
+                padding: '1rem',
+                fontSize: '13px',
+                lineHeight: '1.6',
+                background: 'transparent',
+                minWidth: 'min-content',
+              }}
+              codeTagProps={{ style: { fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' } }}
+              wrapLongLines={false}
+            >
+              {content.content}
+            </SyntaxHighlighter>
+          </div>
         </div>
       )}
 

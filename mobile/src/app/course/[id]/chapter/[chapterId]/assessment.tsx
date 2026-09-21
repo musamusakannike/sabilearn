@@ -27,6 +27,7 @@ import {
 import { chapterApi, progressApi } from '@/lib/api';
 import { Chapter, Exercise, Question } from '@/lib/types';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import RichMathText from '@/components/ui/RichMathText';
 import EmptyState from '@/components/ui/EmptyState';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import { fontFamilies, fontSizes, radii, spacing, shadows } from '@/theme';
@@ -445,7 +446,7 @@ export default function ChapterAssessmentScreen() {
           </View>
 
           {/* Question Prompt */}
-          <Text style={s.questionHeading}>{currentQ.question}</Text>
+          <RichMathText text={currentQ.question} style={s.questionHeading} color={INK} fontSize={fontSizes.lg} />
 
           {/* Options / Text Input */}
           {currentQ.type === 'mcq' ? (
@@ -483,7 +484,9 @@ export default function ChapterAssessmentScreen() {
                       <View style={optBadgeStyle}>
                         <Text style={s.optionBadgeText}>{letter}</Text>
                       </View>
-                      <Text style={s.optionText}>{option}</Text>
+                      <View style={{ flex: 1 }}>
+                        <RichMathText text={option} style={s.optionText} color={INK} fontSize={fontSizes.sm} />
+                      </View>
                     </View>
 
                     {isCurrentChecked && option === currentQ.correctAnswer && (
@@ -527,18 +530,21 @@ export default function ChapterAssessmentScreen() {
                 ) : (
                   <>
                     <IconCircleX size={20} color="#DC2626" />
-                    <Text style={s.feedbackTitleWrong}>
-                      Incorrect. Correct: {currentQ.correctAnswer}
-                    </Text>
+                    <View style={{ flex: 1 }}>
+                      <Text style={s.feedbackTitleWrong}>Incorrect. Correct:</Text>
+                      <RichMathText text={currentQ.correctAnswer} style={s.feedbackTitleWrong} color="#DC2626" fontSize={fontSizes.sm} />
+                    </View>
                   </>
                 )}
               </View>
 
               {currentQ.explanation ? (
-                <Text style={s.feedbackExplanation}>
-                  <Text style={{ fontWeight: '700' }}>Why: </Text>
-                  {currentQ.explanation}
-                </Text>
+                <RichMathText
+                  text={`Why: ${currentQ.explanation}`}
+                  style={s.feedbackExplanation}
+                  color={INK}
+                  fontSize={fontSizes.sm}
+                />
               ) : null}
             </View>
           )}

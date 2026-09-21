@@ -5,6 +5,7 @@ import { IconMaximize, IconX } from '@tabler/icons-react-native';
 import { useTheme, fontFamilies, fontSizes, radii, spacing } from '@/theme';
 import { TopicContent } from '@/lib/types';
 import LatexRenderer from '@/components/ui/LatexRenderer';
+import RichMathText from '@/components/ui/RichMathText';
 import CodeRenderer from '@/components/ui/CodeRenderer';
 import YouTubePlayer from '@/components/ui/YouTubePlayer';
 import * as haptics from '@/lib/haptics';
@@ -86,6 +87,16 @@ function FullscreenLessonImage({ uri, title }: { uri: string; title?: string }) 
 }
 
 function FormattedParagraph({ text, colors }: { text: string; colors: any }) {
+  if (/\$\$[\s\S]+?\$\$|\$[^$\n]+?\$/.test(text)) {
+    return (
+      <RichMathText
+        text={text}
+        style={[styles.paragraph, { color: colors.textPrimary }]}
+        color={colors.textPrimary}
+        fontSize={fontSizes.lg}
+      />
+    );
+  }
   // Support [text](url), **bold/highlight**, and plain text
   const parts = text.split(/(\[.*?\]\(.*?\)|\*\*.*?\*\*)/g);
 

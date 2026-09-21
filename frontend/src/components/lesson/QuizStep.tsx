@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { CheckCircle2, XCircle, HelpCircle } from 'lucide-react';
 import { TopicQuiz } from '@/lib/types';
+import { RichText } from '@/components/lesson/RichText';
 
 function shuffleOptions<T>(options: T[]): T[] {
   if (!options || options.length === 0) return [];
@@ -33,7 +34,7 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
           <span>Quick Quiz</span>
         </div>
         <p className="text-xl sm:text-2xl font-bold leading-snug text-[var(--ink-900)]">
-          {quiz.question}
+          <RichText text={quiz.question} />
         </p>
       </div>
 
@@ -58,7 +59,7 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
               disabled={checked}
               className={`flex w-full items-center justify-between gap-4 rounded-2xl border p-4 sm:p-5 text-left transition-all cursor-pointer ${containerStyle}`}
             >
-              <span className="text-base font-semibold text-[var(--ink-900)] flex-1">{opt.text}</span>
+              <span className="text-base font-semibold text-[var(--ink-900)] flex-1"><RichText text={opt.text} /></span>
               {showState && opt.isCorrect && <CheckCircle2 className="size-5 shrink-0 text-emerald-600 dark:text-emerald-400" />}
               {showState && isSelected && !opt.isCorrect && <XCircle className="size-5 shrink-0 text-rose-600 dark:text-rose-400" />}
             </button>
@@ -78,7 +79,7 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
         quiz.explanation && (
           <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface-sunken)] p-4 sm:p-5 space-y-1">
             <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Explanation</span>
-            <p className="text-sm sm:text-base leading-relaxed text-[var(--ink-900)]">{quiz.explanation}</p>
+            <p className="text-sm sm:text-base leading-relaxed text-[var(--ink-900)]"><RichText text={quiz.explanation} /></p>
           </div>
         )
       )}

@@ -9,6 +9,7 @@ import ProgressBar from '@/components/ui/ProgressBar';
 import Button from '@/components/ui/Button';
 import { useTheme, fontFamilies, fontSizes, radii, spacing, shadows } from '@/theme';
 import * as haptics from '@/lib/haptics';
+import RichMathText from '@/components/ui/RichMathText';
 
 interface McqDeckProps {
   courseId: string;
@@ -98,7 +99,7 @@ export default function McqDeck({ courseId, topicId, mcqs, isLoading }: McqDeckP
       <ProgressBar value={progressPct} />
       <Text style={[styles.counter, { color: colors.textTertiary }]}>{index + 1} / {mcqs.length}</Text>
 
-      <Text style={[styles.question, { color: colors.textPrimary }]}>{question.question}</Text>
+      <RichMathText text={question.question} style={[styles.question, { color: colors.textPrimary }]} color={colors.textPrimary} fontSize={fontSizes.lg} />
 
       <View style={{ gap: spacing.sm }}>
         {question.options.map((option, i) => {
@@ -114,7 +115,9 @@ export default function McqDeck({ courseId, topicId, mcqs, isLoading }: McqDeckP
               onPress={() => selectOption(i)}
               style={[styles.option, { backgroundColor: bg, borderColor }]}
             >
-              <Text style={[styles.optionText, { color: colors.textPrimary }]}>{option.text}</Text>
+              <View style={{ flex: 1 }}>
+                <RichMathText text={option.text} style={[styles.optionText, { color: colors.textPrimary }]} color={colors.textPrimary} fontSize={fontSizes.sm} />
+              </View>
               {showCorrect && <IconCheck size={16} color={colors.success} />}
               {showWrong && <IconX size={16} color={colors.danger} />}
             </Pressable>
@@ -124,7 +127,7 @@ export default function McqDeck({ courseId, topicId, mcqs, isLoading }: McqDeckP
 
       {selected !== null && question.explanation ? (
         <View style={[styles.explanationBox, { backgroundColor: colors.surfaceSunken }]}>
-          <Text style={[styles.explanationText, { color: colors.textSecondary }]}>{question.explanation}</Text>
+          <RichMathText text={question.explanation} style={[styles.explanationText, { color: colors.textSecondary }]} color={colors.textSecondary} fontSize={fontSizes.sm} />
         </View>
       ) : null}
 

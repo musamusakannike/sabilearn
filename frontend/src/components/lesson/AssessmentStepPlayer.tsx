@@ -12,6 +12,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { Exercise, Question } from "@/lib/types";
+import { RichText } from "@/components/lesson/RichText";
 import { progressApi } from "@/lib/api";
 
 interface AssessmentStepPlayerProps {
@@ -350,7 +351,7 @@ export default function AssessmentStepPlayer({
                   </div>
 
                   <p className="mt-2 text-sm font-bold text-[var(--ink-900)]">
-                    {q.question}
+                    <RichText text={q.question} />
                   </p>
 
                   <div className="mt-3 space-y-1 text-xs">
@@ -370,7 +371,7 @@ export default function AssessmentStepPlayer({
                           Correct Answer:
                         </span>
                         <span className="font-bold text-emerald-700">
-                          {q.correctAnswer}
+                          <RichText text={q.correctAnswer} />
                         </span>
                       </div>
                     )}
@@ -381,7 +382,7 @@ export default function AssessmentStepPlayer({
                       <span className="font-bold text-[var(--ink-900)]">
                         Explanation:{" "}
                       </span>
-                      {q.explanation}
+                      <RichText text={q.explanation} />
                     </div>
                   )}
                 </div>
@@ -453,7 +454,7 @@ export default function AssessmentStepPlayer({
             </div>
 
             <h1 className="text-lg font-bold text-[var(--ink-900)] sm:text-xl">
-              {currentQ.question}
+              <RichText text={currentQ.question} />
             </h1>
           </div>
 
@@ -501,7 +502,7 @@ export default function AssessmentStepPlayer({
                         {letter}
                       </span>
                       <span className="text-sm font-semibold text-[var(--ink-900)]">
-                        {option}
+                        <RichText text={option} />
                       </span>
                     </div>
 
@@ -570,7 +571,7 @@ export default function AssessmentStepPlayer({
                     <span className="text-sm font-extrabold text-red-800">
                       Not quite. Correct answer:{" "}
                       <span className="underline">
-                        {currentQ.correctAnswer}
+                        <RichText text={currentQ.correctAnswer} />
                       </span>
                     </span>
                   </>
@@ -580,7 +581,7 @@ export default function AssessmentStepPlayer({
               {currentQ.explanation && (
                 <div className="mt-2 border-t border-black/5 pt-2 text-xs leading-relaxed opacity-90">
                   <span className="font-bold">Why: </span>
-                  {currentQ.explanation}
+                  <RichText text={currentQ.explanation} />
                 </div>
               )}
             </div>

@@ -18,6 +18,7 @@ import {
 import { aiApi } from '@/lib/api';
 import { AiHistoryItem, AiQuizQuestion } from '@/lib/types';
 import Button from '@/components/ui/Button';
+import { RichText } from '@/components/lesson/RichText';
 
 export default function AIQuizAttemptPage() {
   const params = useParams();
@@ -224,7 +225,7 @@ export default function AIQuizAttemptPage() {
                 Question {currentIndex + 1}
               </span>
               <h2 className="text-lg leading-snug font-bold text-[var(--ink-900)] sm:text-xl">
-                {currentQuestion.question}
+                <RichText text={currentQuestion.question} />
               </h2>
             </div>
 
@@ -253,7 +254,7 @@ export default function AIQuizAttemptPage() {
                     >
                       {optionLabel}
                     </span>
-                    <span className="text-sm leading-normal font-medium">{opt.text}</span>
+                    <span className="text-sm leading-normal font-medium"><RichText text={opt.text} /></span>
                   </button>
                 );
               })}
@@ -363,7 +364,7 @@ export default function AIQuizAttemptPage() {
                           </span>
                         )}
                       </div>
-                      <h4 className="text-base font-bold text-[var(--ink-900)]">{q.question}</h4>
+                      <h4 className="text-base font-bold text-[var(--ink-900)]"><RichText text={q.question} /></h4>
                     </div>
                   </div>
 
@@ -389,7 +390,7 @@ export default function AIQuizAttemptPage() {
                             <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-white/60 text-xs font-bold">
                               {String.fromCharCode(65 + oIdx)}
                             </span>
-                            <span>{opt.text}</span>
+                            <span><RichText text={opt.text} /></span>
                           </div>
                           {isOptionCorrect && <CheckCircle2 className="size-4 shrink-0 text-[var(--success)]" />}
                           {isOptionSelected && !isOptionCorrect && <XCircle className="size-4 shrink-0 text-[var(--danger)]" />}
@@ -402,7 +403,7 @@ export default function AIQuizAttemptPage() {
                   {q.explanation && (
                     <div className="space-y-1 rounded-[var(--radius-md)] border border-[var(--brand-violet)]/20 bg-[var(--brand-violet-100)] p-4 text-xs text-[var(--ink-900)] sm:text-sm">
                       <span className="block font-bold text-[var(--brand-violet-600)]">💡 Explanation</span>
-                      <p className="leading-relaxed text-[var(--ink-700)]">{q.explanation}</p>
+                      <p className="leading-relaxed text-[var(--ink-700)]"><RichText text={q.explanation} /></p>
                     </div>
                   )}
                 </div>

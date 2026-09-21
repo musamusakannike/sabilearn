@@ -20,6 +20,7 @@ import {
   IconAward,
 } from '@tabler/icons-react-native';
 import { aiApi, progressApi } from '@/lib/api';
+import RichMathText from '@/components/ui/RichMathText';
 import { AiHistoryItem, AiQuizQuestion } from '@/lib/types';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
@@ -224,7 +225,7 @@ export default function MobileAIQuizAttemptScreen() {
             {/* Question Box */}
             <Card>
               <Text style={s.qOverline}>Question {currentIndex + 1}</Text>
-              <Text style={s.qTitle}>{currentQuestion.question}</Text>
+              <RichMathText text={currentQuestion.question} style={s.qTitle} color={colors.textPrimary} fontSize={fontSizes.lg} />
 
               {/* Options */}
               <View style={s.optionsList}>
@@ -243,7 +244,9 @@ export default function MobileAIQuizAttemptScreen() {
                           {label}
                         </Text>
                       </View>
-                      <Text style={[s.optionText, isSelected && s.optionTextSelected]}>{opt.text}</Text>
+                      <View style={{ flex: 1 }}>
+                        <RichMathText text={opt.text} style={[s.optionText, isSelected && s.optionTextSelected]} color={colors.textPrimary} fontSize={fontSizes.sm} />
+                      </View>
                     </Pressable>
                   );
                 })}

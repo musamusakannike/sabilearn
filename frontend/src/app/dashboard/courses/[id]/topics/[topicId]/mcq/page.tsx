@@ -10,6 +10,7 @@ import { useProgressStore } from '@/store/progress.store';
 import ProgressBar from '@/components/ui/ProgressBar';
 import Button from '@/components/ui/Button';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { RichText } from '@/components/lesson/RichText';
 
 type Phase = 'setup' | 'quiz' | 'results';
 
@@ -145,7 +146,7 @@ export default function McqPage() {
           <ProgressBar value={progress} label={`Question ${currentQ + 1} of ${activeMcqs.length}`} />
         </div>
         <div className="mb-4 rounded-[var(--radius-xl)] border border-[var(--line)] bg-[var(--surface-card)] p-6">
-          <p className="mb-6 text-lg font-medium text-[var(--ink-900)]">{mcq.question}</p>
+          <p className="mb-6 text-lg font-medium text-[var(--ink-900)]"><RichText text={mcq.question} /></p>
           <div className="space-y-2">
             {mcq.options.map((option, idx) => {
               const isSelected = selectedOption === idx;
@@ -161,7 +162,7 @@ export default function McqPage() {
               return (
                 <button key={idx} onClick={() => handleSelectOption(idx)} disabled={showFeedback} className={`w-full rounded-[var(--radius-md)] border p-4 text-left transition-all ${cls} ${!showFeedback ? 'cursor-pointer' : ''}`}>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">{option.text}</span>
+                    <span className="text-sm"><RichText text={option.text} /></span>
                     {showFeedback && isCorrect && <Check className="size-4 text-[var(--success)]" />}
                     {showFeedback && isSelected && !isCorrect && <X className="size-4 text-[var(--danger)]" />}
                   </div>
@@ -174,7 +175,7 @@ export default function McqPage() {
         {showFeedback && (
           <div className="mb-4 rounded-[var(--radius-md)] bg-[var(--surface-sunken)] p-4">
             <p className="mb-1 text-xs text-[var(--text-muted)]">Explanation</p>
-            <p className="text-sm text-[var(--ink-900)]">{mcq.explanation || 'No explanation provided.'}</p>
+            <p className="text-sm text-[var(--ink-900)]"><RichText text={mcq.explanation || 'No explanation provided.'} /></p>
           </div>
         )}
 
