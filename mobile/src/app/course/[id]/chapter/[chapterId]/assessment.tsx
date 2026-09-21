@@ -85,13 +85,20 @@ export default function ChapterAssessmentScreen() {
     (async () => {
       try {
         if (!id || !chapterId) return;
-        const res = await chapterApi.byCourse(id);
-        const chapters: Chapter[] = res.data.data || [];
+        const [chaptersRes, assessmentRes] = await Promise.all([
+          chapterApi.byCourse(id),
+          chapterApi.getAssessment(chapterId).catch(() => null),
+        ]);
+        const chapters: Chapter[] = chaptersRes.data.data || [];
         const found = chapters.find((c) => c._id === chapterId);
-        if (found && found.exercise) {
+        const exerciseData = assessmentRes?.data?.data;
+        const ex = exerciseData?.questions && exerciseData.questions.length > 0 ? exerciseData : found?.exercise;
+        if (found) {
           setChapter(found);
-          setExercise(found.exercise);
-          initRandomizedQuestions(found.exercise);
+          if (ex && ex.questions && ex.questions.length > 0) {
+            setExercise(ex);
+            initRandomizedQuestions(ex);
+          }
         }
       } catch (e) {
         console.error('Failed to load assessment in mobile:', e);
@@ -212,7 +219,15 @@ export default function ChapterAssessmentScreen() {
   if (isLoading) {
     return (
       <SafeAreaView style={s.container}>
-        <LoadingSpinner />
+        <View style={s.emptyWrap}>
+          <LoadingSpinner size="large" />
+          <Text style={{ marginTop: 16, fontSize: 16, fontFamily: fontFamilies.sansBold, color: INK, textAlign: 'center' }}>
+            Preparing capstone assessment…
+          </Text>
+          <Text style={{ marginTop: 6, fontSize: 13, fontFamily: fontFamilies.sans, color: '#6B6B80', textAlign: 'center' }}>
+            Generating challenge questions based on chapter topics
+          </Text>
+        </View>
       </SafeAreaView>
     );
   }

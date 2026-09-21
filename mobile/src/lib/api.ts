@@ -79,6 +79,7 @@ export const courseApi = {
 
 export const chapterApi = {
   byCourse: (courseId: string) => api.get(`/chapters/course/${courseId}`),
+  getAssessment: (id: string) => api.get(`/chapters/${id}/assessment`),
 };
 
 export const topicApi = {

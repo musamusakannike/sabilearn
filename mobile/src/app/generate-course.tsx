@@ -199,7 +199,7 @@ export default function GenerateCourseScreen() {
     if (stageTimer.current) clearInterval(stageTimer.current);
     stageTimer.current = setInterval(() => {
       setStageIndex((i) => (i + 1) % STAGES.length);
-    }, 8000);
+    }, 1500);
   };
 
   const stopStageLoop = () => {
@@ -424,7 +424,7 @@ export default function GenerateCourseScreen() {
             <View style={{ flex: 1 }}>
               <Text style={styles.generatingTitle}>Building your course</Text>
               <Text style={styles.generatingStage}>{STAGES[stageIndex]}</Text>
-              <Text style={styles.hint}>Keep the app open. This can take a few minutes.</Text>
+              <Text style={styles.hint}>Creating course modules and personalized lessons…</Text>
             </View>
           </GlassSurface>
         ) : (

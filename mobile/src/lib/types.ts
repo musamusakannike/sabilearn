@@ -90,6 +90,10 @@ export interface Topic {
   chapter?: string;
   title: string;
   description: string;
+  subConcepts?: string[];
+  hasCodingTask?: boolean;
+  practiceTaskSummary?: string;
+  isGenerated?: boolean;
   contents: TopicContent[];
   exercise?: Exercise;
   xp?: number;
@@ -111,6 +115,8 @@ export interface Chapter {
   title: string;
   description: string;
   order: number;
+  capstoneGoal?: string;
+  capstoneDifficulty?: 'medium' | 'hard';
   exercise?: Exercise;
   status?: 'completed' | 'inprogress' | 'locked';
   progressPercent?: number;
