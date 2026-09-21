@@ -100,9 +100,13 @@ Your job is to analyze the user's uploaded materials (text, notes, slides, image
 
 PEDAGOGICAL & ARCHITECTURAL RULES (STRICTLY ENFORCED):
 1. **Structure Caps**: The course outline MUST have between 3 and 5 Chapters (modules). Each chapter must have between 2 and 4 focused Topics.
-2. **Pedagogy**: Designed for absolute clarity and progressive mastery.
-3. **Milestone Projects**: Include 1 to 3 hands-on milestone projects distributed naturally across the chapters.
-4. **Chapter Capstones**: Every chapter must have a clear Capstone Assessment goal evaluating deep comprehension.
+2. **Match the source discipline.** Read the uploaded notes before choosing a shape:
+   - Programming, software, data, or commands: hands-on coding topics, \`hasCodingTask: true\` only on topics that actually practice code.
+   - Mathematics, physics, chemistry, statistics, engineering, or economics: concept → definition → worked symbolic example. \`hasCodingTask\` stays false unless the notes are about computing. \`practiceTaskSummary\` is a worked problem or derivation, not a coding task.
+   - Humanities, law, business, medicine, or other prose subjects: argument, cases, and applied examples. Do not invent programming projects or code tasks.
+3. **Pedagogy**: Progressive mastery. Short topics. One idea per topic.
+4. **Applied work**: Include 1 to 3 milestone applications that fit the subject (a small program, a problem set, a lab-style calculation, a case write-up, or a source analysis). Do not force software projects onto non-coding courses.
+5. **Chapter Capstones**: Every chapter must have a clear Capstone Assessment goal evaluating deep comprehension of THAT subject's skills (debugging for code, symbolic reasoning for quantitative subjects, argument and application for prose subjects).
 
 You MUST reply with ONLY valid JSON conforming to this exact TypeScript schema (no conversational fluff, no surrounding markdown wrappers):
 {
@@ -131,7 +135,7 @@ You MUST reply with ONLY valid JSON conforming to this exact TypeScript schema (
           "order": 0,
           "subConcepts": ["Sub-concept 1", "Sub-concept 2"],
           "hasCodingTask": false,
-          "practiceTaskSummary": "Brief hands-on task summary"
+          "practiceTaskSummary": "Worked example, problem, or coding task — whichever fits this subject"
         }
       ]
     }
@@ -144,19 +148,24 @@ You are the SabiLearn Topic Content Generator.
 Your job is to write detailed, high-quality, beginner-friendly lesson content for ONE specific topic inside a SabiLearn course.
 
 PEDAGOGICAL & FORMATTING RULES (STRICTLY ENFORCED):
-1. **Tone & Language:** Write for an absolute beginner. Use friendly, plain English. NEVER use "big grammar", pretentious vocabulary, or unexplained technical jargon.
+1. **Tone & Language:** Write for an absolute beginner. Use friendly, plain English. NEVER use "big grammar", pretentious vocabulary, or unexplained technical jargon. Define a new term the first time it appears.
 2. **Paragraph Length:** Every paragraph must be SHORT (1 to 3 sentences max) so it is effortless to read on mobile and web screens.
-3. **Real-Life Analogies:** Use vivid, relatable everyday analogies (e.g., cooking recipes, light switches, post offices, cardboard boxes, toolboxes).
+3. **Real-Life Analogies:** Use vivid, relatable everyday analogies when they clarify the idea. Skip forced analogies in formal proofs or definitions.
 4. **Repetition & Remember Formulas:** Every sub-concept text block MUST conclude with a bold takeaway:
    "Remember: [Simple, memorable summary rule repeating the core concept]"
 5. **Flow Structure:** Contents array MUST alternate between:
-   - \`group\` sections containing 2-3 text and/or code blocks.
+   - \`group\` sections containing 2-4 blocks.
    - \`quiz\` items testing the immediate preceding concept.
-6. **Code Blocks:** If the topic involves programming or commands, provide clean, runnable code blocks with comments and step-by-step instructions.
-7. **Quizzes:**
+6. **Choose block types for the subject. Do not default to code.**
+   - Programming, shell, SQL, or markup: \`code\` blocks with a correct \`language\` (javascript, python, sql, html, css, bash, java, cpp, json). Short, commented, runnable snippets. Explain each snippet in a \`text\` block before or after it.
+   - Mathematics, physics, chemistry, statistics, engineering, or economics: \`latex\` blocks for every formula, derivation step, chemical equation, or symbolic worked example. Prose stays in \`text\` blocks. LaTeX content is the expression only (no surrounding $$ or markdown fences). Example content: "E = mc^2" or "\\frac{d}{dx} x^n = n x^{n-1}". Use \`code\` only when the topic is actually about a program.
+   - Humanities, law, business, or medicine: mostly \`text\`. A \`latex\` block only for a symbol or short formula that the notes actually use. No code blocks.
+7. **Inline math in prose or quizzes:** wrap short symbols in single dollars, for example "the slope is $m = \\frac{\\Delta y}{\\Delta x}$". Put long displays in their own \`latex\` block, not inside a paragraph.
+8. **Quizzes:**
    - 1 clear correct answer (\`isCorrect: true\`).
    - 2-3 realistic distractors (\`isCorrect: false\`).
    - An \`explanation\` that explicitly repeats the "Remember: ..." takeaway.
+   - For quantitative topics, the question or an option may include inline \`$...$\` LaTeX. Do not ask the student to debug code unless the topic is about code.
 
 You MUST output ONLY valid JSON matching this schema:
 {
@@ -174,9 +183,8 @@ You MUST output ONLY valid JSON matching this schema:
           "content": "Paragraph 1 explaining idea...\n\nParagraph 2 with relatable analogy...\nRemember: Key takeaway rule here."
         },
         {
-          "type": "code",
-          "content": "// Example code snippet\nconsole.log('hello');",
-          "language": "javascript"
+          "type": "latex",
+          "content": "a^2 + b^2 = c^2"
         }
       ]
     },
@@ -202,12 +210,11 @@ You are the SabiLearn Capstone Assessment Architect.
 Your job is to create a comprehensive Chapter Capstone Assessment consisting of 8 to 10 MEDIUM and HARD level multiple-choice questions.
 
 CRITICAL ASSESSMENT GUIDELINES (MEDIUM & HARD DIFFICULTY):
-- DO NOT ask superficial or trivial definition questions (e.g. "What does HTML stand for?").
-- DO ask:
-  1. **Code Reading & Debugging Scenarios:** "A developer wrote this code snippet [code], but received this unexpected bug. What caused it?"
-  2. **Output Predictions:** "What is printed or returned when this logic executes?"
-  3. **Edge Cases & Subtle Gotchas:** (e.g. boundary conditions, scope, mutability, unexpected errors).
-  4. **Architectural Choices:** "Why is Technique A preferred over Technique B in this situation?"
+- DO NOT ask superficial or trivial definition questions (e.g. "What does HTML stand for?" or "State Newton's second law").
+- Match the question style to the subject:
+  1. **Programming:** code reading, debugging, output prediction, edge cases, and why one approach beats another. Put snippets in the question as plain fenced-free text the student can read.
+  2. **Quantitative (math, physics, chemistry, statistics, engineering, economics):** multi-step reasoning, unit checks, choose the correct next line of a derivation, interpret a result, or spot an invalid step. Write formulas with inline \`$...$\` or display \`$$...$$\` LaTeX inside the question, options, correctAnswer, and explanation strings. The JSON itself must stay valid (escape backslashes).
+  3. **Prose subjects (humanities, law, business, medicine):** apply a concept to a short case, compare two interpretations, or identify the strongest evidence. No code and no decorative formulas.
 - Each question must have:
   - 4 well-crafted, realistic options.
   - Exactly 1 correct answer.
@@ -221,7 +228,7 @@ You MUST output ONLY valid JSON matching this schema:
   "questions": [
     {
       "type": "mcq",
-      "question": "Scenario / code question text...",
+      "question": "Scenario, derivation, or case question. Quantitative formulas use $...$ LaTeX.",
       "options": [
         "Option A text",
         "Option B text",
@@ -431,6 +438,49 @@ export class CourseArchitectService {
     return plan;
   }
 
+  /** Pull display-math out of prose into real latex blocks, and strip delimiters on latex blocks. */
+  private static normalizeBlocks(blocks: GeneratedTopicBlock[] | undefined): GeneratedTopicBlock[] {
+    const out: GeneratedTopicBlock[] = [];
+    for (const block of blocks || []) {
+      if (!block || typeof block.content !== "string") continue;
+      if (block.type === "latex") {
+        const content = block.content
+          .trim()
+          .replace(/^\$\$([\s\S]*)\$\$$/, "$1")
+          .replace(/^\\\[([\s\S]*)\\\]$/, "$1")
+          .replace(/```(?:latex)?/g, "")
+          .trim();
+        if (content) out.push({ type: "latex", content });
+        continue;
+      }
+      if (block.type === "code") {
+        out.push({
+          type: "code",
+          content: block.content.replace(/^```[\w-]*\n?/, "").replace(/```$/, "").trim(),
+          language: (block.language || "text").toLowerCase(),
+        });
+        continue;
+      }
+      if (block.type !== "text" || !/\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\\]/.test(block.content)) {
+        out.push(block);
+        continue;
+      }
+      const re = /\$\$([\s\S]+?)\$\$|\\\[([\s\S]+?)\\\]/g;
+      let last = 0;
+      let match: RegExpExecArray | null;
+      while ((match = re.exec(block.content))) {
+        const before = block.content.slice(last, match.index).trim();
+        if (before) out.push({ type: "text", content: before });
+        const tex = (match[1] ?? match[2] ?? "").trim();
+        if (tex) out.push({ type: "latex", content: tex });
+        last = match.index + match[0].length;
+      }
+      const after = block.content.slice(last).trim();
+      if (after) out.push({ type: "text", content: after });
+    }
+    return out;
+  }
+
   /**
    * Generate rich step-by-step lesson content for a specific topic.
    */
@@ -444,6 +494,7 @@ export class CourseArchitectService {
     practiceTaskSummary?: string;
     order?: number;
     difficulty?: string;
+    category?: string;
   }): Promise<GeneratedTopicData> {
     const {
       courseTitle,
@@ -454,6 +505,8 @@ export class CourseArchitectService {
       hasCodingTask = false,
       practiceTaskSummary = "",
       order = 0,
+      difficulty = "beginner",
+      category = "",
     } = options;
 
     const userPrompt = `
@@ -466,15 +519,18 @@ DESCRIPTION: "${topicDescription}"
 SUB-CONCEPTS TO TEACH: ${JSON.stringify(subConcepts)}
 INCLUDES HANDS-ON TASK: ${hasCodingTask ? "Yes: " + practiceTaskSummary : "No"}
 TOPIC ORDER: ${order}
+DIFFICULTY: ${difficulty}
+CATEGORY: ${category || "Infer from the course and topic titles"}
 
 CRITICAL RULES:
 1. Explain to an absolute beginner in plain, friendly English with short 1-3 sentence paragraphs.
-2. Use relatable everyday analogies.
+2. Use a relatable analogy only when it truly helps.
 3. Contents MUST alternate between 'group' sections and in-lesson 'quiz' check-ins.
-4. Each group must contain 2-3 text and/or code blocks.
-5. EVERY single sub-concept block MUST conclude with:
+4. Each group contains 2-4 blocks. Use text for prose, latex for formulas (expression only, no $$ wrappers), and code only for programming topics (include language).
+5. Academic topics (math, science, engineering, statistics, economics) MUST include latex blocks for the key formula and for one worked step. Do not replace formulas with ASCII art.
+6. EVERY single sub-concept text block MUST conclude with:
    "Remember: [Simple summary takeaway rule repeating the core concept]"
-6. In-lesson quizzes must test the immediate preceding concept, have 1 correct answer, and an explanation starting with "Remember: ...".
+7. In-lesson quizzes must test the immediate preceding concept, have 1 correct answer, and an explanation starting with "Remember: ...". Quantitative questions may use inline $...$ LaTeX.
 `;
 
     const topicData = await this.callDeepSeekJson<GeneratedTopicData>(
@@ -486,6 +542,14 @@ CRITICAL RULES:
 
     topicData.order = order;
     topicData.xp = 50;
+    if (Array.isArray(topicData.contents)) {
+      topicData.contents = topicData.contents.map((item) => {
+        if (item?.type === "group" && Array.isArray(item.blocks)) {
+          return { ...item, blocks: this.normalizeBlocks(item.blocks) };
+        }
+        return item;
+      });
+    }
 
     return topicData;
   }
@@ -500,6 +564,7 @@ CRITICAL RULES:
     capstoneGoal?: string;
     topics: Array<{ title: string; description: string }>;
     difficulty?: string;
+    category?: string;
   }): Promise<ChapterExercise> {
     const {
       courseTitle,
@@ -508,6 +573,7 @@ CRITICAL RULES:
       capstoneGoal = "",
       topics = [],
       difficulty = "medium",
+      category = "",
     } = options;
 
     const userPrompt = `
@@ -520,11 +586,12 @@ CAPSTONE ASSESSMENT GOAL: "${capstoneGoal || "Evaluate complete mastery of chapt
 TOPICS COVERED:
 ${topics.map((t, i) => `${i + 1}. ${t.title}: ${t.description}`).join("\n")}
 DIFFICULTY LEVEL: ${difficulty.toUpperCase()} (MEDIUM & HARD)
+CATEGORY: ${category || "Infer from the course title"}
 
 CRITICAL RULES:
-1. Questions must test technical reasoning, scenario analysis, debugging gotchas, edge cases, and best practices.
+1. Match the subject. Programming: debugging, output, and edge cases. Quantitative subjects: derivations and formula choices written with $...$ or $$...$$ LaTeX inside the strings. Prose subjects: cases and arguments. Do not write code questions for a non-coding chapter.
 2. DO NOT ask simple definition questions.
-3. Every question must have 4 options, 1 correctAnswer, xp: 20, and a detailed pedagogical explanation.
+3. Every question must have 4 options, 1 correctAnswer, xp: 20, and a detailed pedagogical explanation. If a formula appears in the question, the explanation should show the key step in LaTeX too.
 `;
 
     const exercise = await this.callDeepSeekJson<ChapterExercise>(
@@ -571,6 +638,7 @@ CRITICAL RULES:
           practiceTaskSummary: t.practiceTaskSummary,
           order: tIdx,
           difficulty: plan.difficulty,
+          category: plan.category,
         }),
       );
 
@@ -585,6 +653,7 @@ CRITICAL RULES:
           description: t.description,
         })),
         difficulty: plan.capstoneDifficulty || "medium",
+        category: plan.category,
       });
 
       const [generatedTopics, exercise] = await Promise.all([

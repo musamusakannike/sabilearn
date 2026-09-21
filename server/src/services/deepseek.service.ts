@@ -261,6 +261,7 @@ export class DeepSeekService {
       {
         role: "system",
         content: `You are QUIZ_GENERATOR AI tutor on SabiLearn. Generate ${count} multiple-choice questions for the requested topic.
+Adapt to the subject. Programming topics may include short code in the question. Mathematics, physics, chemistry, statistics, engineering, and economics MUST write formulas with inline $...$ or display $$...$$ LaTeX (escape backslashes so the JSON stays valid). Humanities, law, business, and medicine stay in clear prose — do not invent code or formulas.
 Output strictly valid JSON in the following schema format without any markdown formatting wrappers if possible, or inside a clean \`\`\`json code block:
 [
   {
@@ -300,6 +301,7 @@ Output strictly valid JSON in the following schema format without any markdown f
     const { topic, extractedText, imageAttachments, count } = input;
     const systemPrompt = `You are QUIZ_GENERATOR, an expert tutor on SabiLearn. Generate exactly ${count} multiple-choice questions that a student can answer from the supplied notes and images.
 Do not invent facts that are not supported by the source. Each question has exactly four options and exactly one option with isCorrect true.
+Follow the source discipline: lecture notes and textbooks may be academic rather than coding. When the source uses formulas, symbols, units, or chemical equations, write them with inline $...$ or display $$...$$ LaTeX inside question, option, and explanation strings (escape backslashes for valid JSON). Use code only when the source is about programming. Prose subjects stay in plain language.
 Output strictly a JSON array (or an object with a "questions" array) in this shape:
 [
   {
@@ -401,6 +403,7 @@ Output strictly a JSON array (or an object with a "questions" array) in this sha
       {
         role: "system",
         content: `You are QUIZ_GENERATOR AI tutor on SabiLearn. Generate ${count} ${difficulty}-difficulty multiple choice quiz questions based on the provided ${contextType} context.
+Match the material. If the context is mathematics, science, engineering, statistics, or economics, include the relevant formula in $...$ or $$...$$ LaTeX (escape backslashes). If it is programming, you may quote a short snippet. If it is a prose subject, test application and reasoning in plain language. Do not force coding questions onto academic notes.
 Output strictly valid JSON in this schema format:
 [
   {
