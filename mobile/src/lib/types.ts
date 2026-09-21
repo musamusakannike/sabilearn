@@ -146,8 +146,31 @@ export interface Course {
   registeredUsersCount?: number;
   lessonCount?: number;
   totalObtainableXp?: number;
+  isAiGenerated?: boolean;
+  creator?: string | { _id: string; name?: string; firstName?: string; lastName?: string; avatar?: string };
+  visibility?: 'public' | 'unlisted' | 'private';
+  shareSlug?: string;
+  sourceSummary?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface CourseArchitectQuota {
+  usedToday: number;
+  remaining: number;
+  dailyLimit: number;
+  isSubscribed: boolean;
+}
+
+export interface GeneratedCourseResult {
+  courseId: string;
+  title: string;
+  shareSlug: string;
+  visibility: 'public' | 'unlisted' | 'private';
+  stats: {
+    chapters: number;
+    topics: number;
+  };
 }
 
 export type SubscriptionStatus = 'active' | 'cancelled' | 'past_due' | 'none' | 'expired';

@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { IconSearch, IconBook } from "@tabler/icons-react-native";
-import { courseApi } from "@/lib/api";
+import { IconSearch, IconBook, IconSparkles } from "@tabler/icons-react-native";
+import { courseApi, courseArchitectApi } from "@/lib/api";
 import { Course } from "@/lib/types";
 import { useAppReview } from "@/hooks/useAppReview";
 import { cacheCourses, getCachedCourses } from "@/lib/offlineSync";
@@ -17,6 +17,8 @@ import CourseCard from "@/components/ui/CourseCard";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import EmptyState from "@/components/ui/EmptyState";
 import GlassSurface from "@/components/ui/GlassSurface";
+import NativeSegmentedControl from "@/components/ui/NativeSegmentedControl";
+import Button from "@/components/ui/Button";
 import ScreenBackdrop from "@/components/common/ScreenBackdrop";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { fontFamilies, spacing } from "@/theme";
@@ -27,11 +29,13 @@ export default function CoursesScreen() {
   const insets = useSafeAreaInsets();
   const { inReview } = useAppReview();
   const [courses, setCourses] = useState<Course[]>([]);
+  const [mine, setMine] = useState<Course[]>([]);
+  const [segment, setSegment] = useState(0);
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const loadCourses = useCallback(async () => {
+  const loadCatalog = useCallback(async () => {
     try {
       const res = await courseApi.list();
       const data: Course[] = res.data.data;
@@ -40,13 +44,27 @@ export default function CoursesScreen() {
     } catch {
       const cached = await getCachedCourses();
       setCourses(cached);
-    } finally {
-      setIsLoading(false);
     }
   }, []);
 
+  const loadMine = useCallback(async () => {
+    try {
+      const res = await courseArchitectApi.myCourses({ limit: 50 });
+      setMine(res.data?.data || []);
+    } catch {
+      // keep previous mine list if offline
+    }
+  }, []);
+
+  const loadCourses = useCallback(async () => {
+    await Promise.all([loadCatalog(), inReview ? Promise.resolve() : loadMine()]);
+    setIsLoading(false);
+  }, [inReview, loadCatalog, loadMine]);
+
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- initial catalog fetch */
     void loadCourses();
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [loadCourses]);
 
   const onRefresh = useCallback(async () => {
@@ -56,7 +74,8 @@ export default function CoursesScreen() {
     setRefreshing(false);
   }, [loadCourses]);
 
-  const filtered = courses.filter((c) => {
+  const source = segment === 1 && !inReview ? mine : courses;
+  const filtered = source.filter((c) => {
     if (inReview && !c.isFree) return false;
     return c.title.toLowerCase().includes(query.toLowerCase());
   });
@@ -98,6 +117,13 @@ export default function CoursesScreen() {
                 style={styles.searchInput}
               />
             </GlassSurface>
+            {!inReview ? (
+              <NativeSegmentedControl
+                values={["Catalog", "Yours"]}
+                selectedIndex={segment}
+                onChange={setSegment}
+              />
+            ) : null}
           </View>
         }
         renderItem={({ item }) => (
@@ -111,11 +137,30 @@ export default function CoursesScreen() {
         )}
         ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
         ListEmptyComponent={
-          <EmptyState
-            icon={<IconBook size={44} color={FAINT} />}
-            title="No courses found"
-            description="Try a different search, or check back later."
-          />
+          segment === 1 && !inReview ? (
+            <EmptyState
+              icon={<IconSparkles size={44} color={FAINT} />}
+              title="No generated courses yet"
+              description="Turn notes or a prompt into a full course."
+              action={
+                <Button
+                  variant="ai"
+                  onPress={() => {
+                    haptics.light();
+                    router.push("/generate-course" as any);
+                  }}
+                >
+                  Generate course
+                </Button>
+              }
+            />
+          ) : (
+            <EmptyState
+              icon={<IconBook size={44} color={FAINT} />}
+              title="No courses found"
+              description="Try a different search, or check back later."
+            />
+          )
         }
         ListFooterComponent={<View style={{ height: spacing["4xl"] }} />}
       />

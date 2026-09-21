@@ -16,7 +16,7 @@ export default function EmptyState({ icon, title, description, action }: EmptySt
       {icon}
       <Text style={[styles.title, { color: colors.textPrimary }]}>{title}</Text>
       {description ? <Text style={[styles.description, { color: colors.textSecondary }]}>{description}</Text> : null}
-      {action}
+      {action ? <View style={{ marginTop: spacing.md }}>{action}</View> : null}
     </View>
   );
 }

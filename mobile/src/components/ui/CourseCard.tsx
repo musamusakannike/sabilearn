@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
-import { IconBook2, IconArrowRight } from "@tabler/icons-react-native";
+import { IconBook2, IconArrowRight, IconSparkles } from "@tabler/icons-react-native";
 import { fontFamilies, fontSizes, spacing } from "@/theme";
 import { ACCENT, FAINT, INK, MUTED, TINT_GLASS } from "@/theme/brand";
 import { Course } from "@/lib/types";
@@ -34,6 +34,14 @@ export default function CourseCard({ course, onPress }: CourseCardProps) {
               <IconBook2 size={36} color={FAINT} />
             </View>
           )}
+          {course.isAiGenerated ? (
+            <View style={styles.badgeOverlay}>
+              <View style={styles.aiBadge}>
+                <IconSparkles size={12} color="#5B4FE8" />
+                <Text style={styles.aiBadgeText}>AI</Text>
+              </View>
+            </View>
+          ) : null}
         </View>
         <View style={styles.body}>
           <Text style={styles.title} numberOfLines={1}>
@@ -84,6 +92,21 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: spacing.sm,
     left: spacing.sm,
+  },
+  aiBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    backgroundColor: "rgba(231,227,251,0.95)",
+    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  aiBadgeText: {
+    fontSize: 11,
+    fontFamily: fontFamilies.sansBold,
+    color: "#5B4FE8",
+    letterSpacing: 0.4,
   },
   body: {
     padding: spacing.base,

@@ -161,6 +161,7 @@ function AppContent() {
           <Stack.Screen name="privacy" />
           <Stack.Screen name="terms" />
           <Stack.Screen name="subscribe" />
+          <Stack.Screen name="generate-course" />
           <Stack.Screen name="payment-callback" />
         </Stack>
       </SafeAreaProvider>

@@ -8,6 +8,7 @@ import {
   IconSparkles,
   IconBrain,
   IconCards,
+  IconBooks,
   IconMessageCircle,
   IconCode,
   IconBell,
@@ -110,7 +111,7 @@ export default function DashboardHome() {
   else if (continueStudying.length > 0) speech = "Let's pick up where you left off.";
 
   const aiTools: {
-    kind: AIToolKind;
+    kind: AIToolKind | 'generate-course';
     title: string;
     description: string;
     icon: ReactNode;
@@ -133,14 +134,23 @@ export default function DashboardHome() {
       well: 'rgba(91,79,232,0.12)',
       tint: 'rgba(91,79,232,0.14)',
     },
-    {
-      kind: 'flashcards',
-      title: 'Flashcards',
-      description: 'Build flashcards from any topic',
-      icon: <IconCards size={22} color="#5B4FE8" />,
-      well: 'rgba(91,79,232,0.12)',
-      tint: 'rgba(91,79,232,0.14)',
-    },
+    inReview
+      ? {
+          kind: 'flashcards' as const,
+          title: 'Flashcards',
+          description: 'Build flashcards from any topic',
+          icon: <IconCards size={22} color="#5B4FE8" />,
+          well: 'rgba(91,79,232,0.12)',
+          tint: 'rgba(91,79,232,0.14)',
+        }
+      : {
+          kind: 'generate-course' as const,
+          title: 'Generate course',
+          description: 'Turn notes or a prompt into a full course',
+          icon: <IconBooks size={22} color="#5B4FE8" />,
+          well: 'rgba(91,79,232,0.12)',
+          tint: 'rgba(91,79,232,0.14)',
+        },
     {
       kind: 'qa',
       title: 'Q&A AI',
@@ -318,6 +328,8 @@ export default function DashboardHome() {
                   haptics.light();
                   if (tool.kind === 'quiz') {
                     router.push('/ai-quiz' as any);
+                  } else if (tool.kind === 'generate-course') {
+                    router.push('/generate-course' as any);
                   } else {
                     setAiTool(tool.kind);
                   }
