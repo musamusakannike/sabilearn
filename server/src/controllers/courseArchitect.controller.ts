@@ -101,6 +101,7 @@ export const generatePlan = async (
       success: true,
       data: {
         plan,
+        extractedText: processed.extractedText,
         fileSummaries: processed.fileSummaries,
         detectedTypes: processed.detectedTypes,
         totalPages: processed.totalPages,
@@ -131,6 +132,8 @@ export const generateTopic = async (
       practiceTaskSummary = '',
       order = 0,
       difficulty = 'beginner',
+      category = '',
+      sourceContext = '',
     } = req.body;
 
     if (!topicTitle) {
@@ -148,6 +151,8 @@ export const generateTopic = async (
       practiceTaskSummary,
       order: Number(order) || 0,
       difficulty,
+      category,
+      sourceContext,
     });
 
     res.status(200).json({
@@ -176,6 +181,8 @@ export const generateCapstone = async (
       capstoneGoal = '',
       topics = [],
       difficulty = 'medium',
+      category = '',
+      sourceContext = '',
     } = req.body;
 
     if (!chapterTitle) {
@@ -190,6 +197,8 @@ export const generateCapstone = async (
       capstoneGoal,
       topics: Array.isArray(topics) ? topics : [],
       difficulty,
+      category,
+      sourceContext,
     });
 
     res.status(200).json({
@@ -217,11 +226,13 @@ export const saveCourse = async (
       generatedChapters,
       visibility = 'private',
       banner = '',
+      sourceContext = '',
     }: {
       plan: CoursePlan;
       generatedChapters: GeneratedChapterData[];
       visibility?: 'public' | 'unlisted' | 'private';
       banner?: string;
+      sourceContext?: string;
     } = req.body;
 
     if (!plan || !generatedChapters || !Array.isArray(generatedChapters) || generatedChapters.length === 0) {
@@ -283,6 +294,7 @@ export const saveCourse = async (
       visibility,
       shareSlug,
       sourceSummary: `Generated from plan with ${generatedChapters.length} chapters.`,
+      sourceContext: sourceContext || '',
     });
 
     // 4. Save Chapters, Capstones & Topics
@@ -425,6 +437,8 @@ export const generateFullCourse = async (
           practiceTaskSummary: firstTopicPlan.practiceTaskSummary,
           order: 0,
           difficulty: plan.difficulty,
+          category: plan.category,
+          sourceContext: processed.extractedText,
         });
         firstTopicContents = firstTopicData.contents || [];
       } catch (e: any) {
@@ -489,6 +503,7 @@ export const generateFullCourse = async (
       visibility,
       shareSlug,
       sourceSummary: `Generated from ${processed.fileSummaries.length} files (${processed.totalPages} pages).`,
+      sourceContext: processed.extractedText || '',
     });
 
     let totalChapters = 0;

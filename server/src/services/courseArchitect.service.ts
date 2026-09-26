@@ -495,6 +495,7 @@ export class CourseArchitectService {
     order?: number;
     difficulty?: string;
     category?: string;
+    sourceContext?: string;
   }): Promise<GeneratedTopicData> {
     const {
       courseTitle,
@@ -507,7 +508,22 @@ export class CourseArchitectService {
       order = 0,
       difficulty = "beginner",
       category = "",
+      sourceContext = "",
     } = options;
+
+    const sourceSection =
+      sourceContext && sourceContext.trim().length > 0
+        ? `
+SOURCE MATERIAL / REFERENCE NOTES (Ground the lesson specifically in this uploaded document context):
+"""
+${sourceContext.slice(0, 15000)}
+"""
+
+CRITICAL GROUNDING INSTRUCTION:
+- Draw specific explanations, definitions, formulas, examples, terminology, and key takeaways directly from the provided source material above whenever applicable.
+- Do not fabricate alternative terms or methods if the source material establishes specific ones.
+`
+        : "";
 
     const userPrompt = `
 Generate complete, step-by-step SabiLearn lesson content for this topic:
@@ -521,16 +537,17 @@ INCLUDES HANDS-ON TASK: ${hasCodingTask ? "Yes: " + practiceTaskSummary : "No"}
 TOPIC ORDER: ${order}
 DIFFICULTY: ${difficulty}
 CATEGORY: ${category || "Infer from the course and topic titles"}
-
+${sourceSection}
 CRITICAL RULES:
 1. Explain to an absolute beginner in plain, friendly English with short 1-3 sentence paragraphs.
-2. Use a relatable analogy only when it truly helps.
-3. Contents MUST alternate between 'group' sections and in-lesson 'quiz' check-ins.
-4. Each group contains 2-4 blocks. Use text for prose, latex for formulas (expression only, no $$ wrappers), and code only for programming topics (include language).
-5. Academic topics (math, science, engineering, statistics, economics) MUST include latex blocks for the key formula and for one worked step. Do not replace formulas with ASCII art.
-6. EVERY single sub-concept text block MUST conclude with:
+2. Ground all explanations and examples in the uploaded source material / reference notes if provided.
+3. Use a relatable analogy only when it truly helps.
+4. Contents MUST alternate between 'group' sections and in-lesson 'quiz' check-ins.
+5. Each group contains 2-4 blocks. Use text for prose, latex for formulas (expression only, no $$ wrappers), and code only for programming topics (include language).
+6. Academic topics (math, science, engineering, statistics, economics) MUST include latex blocks for the key formula and for one worked step. Do not replace formulas with ASCII art.
+7. EVERY single sub-concept text block MUST conclude with:
    "Remember: [Simple summary takeaway rule repeating the core concept]"
-7. In-lesson quizzes must test the immediate preceding concept, have 1 correct answer, and an explanation starting with "Remember: ...". Quantitative questions may use inline $...$ LaTeX.
+8. In-lesson quizzes must test the immediate preceding concept, have 1 correct answer, and an explanation starting with "Remember: ...". Quantitative questions may use inline $...$ LaTeX.
 `;
 
     const topicData = await this.callDeepSeekJson<GeneratedTopicData>(
@@ -565,6 +582,7 @@ CRITICAL RULES:
     topics: Array<{ title: string; description: string }>;
     difficulty?: string;
     category?: string;
+    sourceContext?: string;
   }): Promise<ChapterExercise> {
     const {
       courseTitle,
@@ -574,7 +592,18 @@ CRITICAL RULES:
       topics = [],
       difficulty = "medium",
       category = "",
+      sourceContext = "",
     } = options;
+
+    const sourceSection =
+      sourceContext && sourceContext.trim().length > 0
+        ? `
+SOURCE MATERIAL / REFERENCE NOTES:
+"""
+${sourceContext.slice(0, 15000)}
+"""
+`
+        : "";
 
     const userPrompt = `
 Generate a Chapter Capstone Assessment with 8 to 10 MEDIUM and HARD difficulty scenario questions for SabiLearn:
@@ -587,11 +616,12 @@ TOPICS COVERED:
 ${topics.map((t, i) => `${i + 1}. ${t.title}: ${t.description}`).join("\n")}
 DIFFICULTY LEVEL: ${difficulty.toUpperCase()} (MEDIUM & HARD)
 CATEGORY: ${category || "Infer from the course title"}
-
+${sourceSection}
 CRITICAL RULES:
 1. Match the subject. Programming: debugging, output, and edge cases. Quantitative subjects: derivations and formula choices written with $...$ or $$...$$ LaTeX inside the strings. Prose subjects: cases and arguments. Do not write code questions for a non-coding chapter.
-2. DO NOT ask simple definition questions.
-3. Every question must have 4 options, 1 correctAnswer, xp: 20, and a detailed pedagogical explanation. If a formula appears in the question, the explanation should show the key step in LaTeX too.
+2. Ground questions and scenarios in the source material context if provided.
+3. DO NOT ask simple definition questions.
+4. Every question must have 4 options, 1 correctAnswer, xp: 20, and a detailed pedagogical explanation. If a formula appears in the question, the explanation should show the key step in LaTeX too.
 `;
 
     const exercise = await this.callDeepSeekJson<ChapterExercise>(
@@ -639,6 +669,7 @@ CRITICAL RULES:
           order: tIdx,
           difficulty: plan.difficulty,
           category: plan.category,
+          sourceContext: options.extractedText,
         }),
       );
 
@@ -654,6 +685,7 @@ CRITICAL RULES:
         })),
         difficulty: plan.capstoneDifficulty || "medium",
         category: plan.category,
+        sourceContext: options.extractedText,
       });
 
       const [generatedTopics, exercise] = await Promise.all([

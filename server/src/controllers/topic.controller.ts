@@ -60,7 +60,7 @@ export const getTopicById = async (req: Request, res: Response, next: NextFuncti
     // generate its full pedagogical contents on first view and cache it to the database.
     if (!topic.contents || topic.contents.length === 0) {
       try {
-        const courseDoc = await Course.findById(topic.course).select('title difficulty isAiGenerated');
+        const courseDoc = await Course.findById(topic.course).select('title difficulty category isAiGenerated sourceContext');
         const chapterDoc = topic.chapter ? await Chapter.findById(topic.chapter).select('title') : null;
 
         if (courseDoc && (courseDoc.isAiGenerated || (topic.subConcepts && topic.subConcepts.length > 0))) {
@@ -74,6 +74,8 @@ export const getTopicById = async (req: Request, res: Response, next: NextFuncti
             practiceTaskSummary: topic.practiceTaskSummary,
             order: topic.order || 0,
             difficulty: courseDoc.difficulty || 'beginner',
+            category: courseDoc.category || '',
+            sourceContext: courseDoc.sourceContext || '',
           });
 
           if (generatedTopicData?.contents && generatedTopicData.contents.length > 0) {

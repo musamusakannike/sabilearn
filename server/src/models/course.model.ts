@@ -33,6 +33,8 @@ export interface ICourse extends Document {
   shareSlug?: string;
   /** Summary of original source/upload prompt */
   sourceSummary?: string;
+  /** Full extracted source text / document context used to generate curriculum and lessons */
+  sourceContext?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -124,6 +126,10 @@ const CourseSchema: Schema = new Schema<ICourse>(
       trim: true,
     },
     sourceSummary: {
+      type: String,
+      default: '',
+    },
+    sourceContext: {
       type: String,
       default: '',
     },
