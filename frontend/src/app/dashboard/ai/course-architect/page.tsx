@@ -358,30 +358,30 @@ export default function GenerateCoursePage() {
         <div>
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--ink-500)] transition-colors hover:text-[var(--ink-900)] mb-3"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-(--ink-500) transition-colors hover:text-foreground mb-3"
           >
             <ArrowLeft className="size-4" />
             <span>Back to Dashboard</span>
           </Link>
-          <h1 className="text-2xl font-bold tracking-tight text-[var(--ink-900)] sm:text-3xl">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
             Course ready
           </h1>
-          <p className="mt-1 text-sm text-[var(--text-muted)]">
+          <p className="mt-1 text-sm text-(--text-muted)">
             Your generated course has been structured with 100% material coverage and saved.
           </p>
         </div>
 
-        <div className="flex flex-col items-center rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-8 text-center shadow-xs">
-          <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-[var(--success-100)] text-[var(--success)]">
-            <Check className="size-7 stroke-[3]" />
+        <div className="flex flex-col items-center rounded-2xl border border-(--line) bg-(--surface-card) p-8 text-center shadow-xs">
+          <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-(--success-100) text-(--success)">
+            <Check className="size-7 stroke-3" />
           </div>
-          <h2 className="text-xl font-bold text-[var(--ink-900)] sm:text-2xl">
+          <h2 className="text-xl font-bold text-foreground sm:text-2xl">
             {result.title}
           </h2>
-          <p className="mt-2 text-sm font-medium text-[var(--text-muted)]">
+          <p className="mt-2 text-sm font-medium text-(--text-muted)">
             {result.stats.chapters} chapters · {result.stats.topics} topics
           </p>
-          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-violet-100)] px-3 py-1 text-xs font-semibold text-[var(--brand-violet)]">
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-(--brand-violet-100) px-3 py-1 text-xs font-semibold text-(--brand-violet)">
             <CheckCircle2 className="size-3.5" />
             <span>Guaranteed full document coverage</span>
           </div>
@@ -410,15 +410,15 @@ export default function GenerateCoursePage() {
       <div>
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--ink-500)] transition-colors hover:text-[var(--ink-900)] mb-3"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-(--ink-500) transition-colors hover:text-foreground mb-3"
         >
           <ArrowLeft className="size-4" />
           <span>Back to Dashboard</span>
         </Link>
-        <h1 className="text-2xl font-bold tracking-tight text-[var(--ink-900)] sm:text-3xl">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
           Generate course
         </h1>
-        <p className="mt-1 text-sm text-[var(--text-muted)]">
+        <p className="mt-1 text-sm text-(--text-muted)">
           Turn notes, slides, or syllabus into a full SabiLearn course with comprehensive coverage.
         </p>
       </div>
@@ -426,32 +426,32 @@ export default function GenerateCoursePage() {
       {/* Quota / Subscription Banner */}
       {quota ? (
         !quota.isSubscribed ? (
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 rounded-2xl border border-[var(--brand-violet-200)] bg-[var(--brand-violet-100)]/40 p-4 text-xs">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 rounded-2xl border border-(--brand-violet-200) bg-(--brand-violet-100)/40 p-4 text-xs">
             <div className="flex items-start gap-2.5">
-              <Sparkles className="size-4 shrink-0 text-[var(--brand-violet)] mt-0.5" />
+              <Sparkles className="size-4 shrink-0 text-(--brand-violet) mt-0.5" />
               <div>
-                <p className="font-bold text-[var(--ink-900)]">Subscription Required</p>
-                <p className="text-[var(--text-muted)] mt-0.5">
+                <p className="font-bold text-foreground">Subscription Required</p>
+                <p className="text-(--text-muted) mt-0.5">
                   AI Course Generation is an exclusive feature for SabiLearn subscribers.
                 </p>
               </div>
             </div>
             <Link
               href="/dashboard/subscribe"
-              className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-[var(--brand-violet)] px-3.5 py-2 font-bold text-white shadow-xs transition hover:opacity-95"
+              className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-(--brand-violet) px-3.5 py-2 font-bold text-white shadow-xs transition hover:opacity-95"
             >
               Subscribe to unlock
             </Link>
           </div>
         ) : quota.remaining <= 0 ? (
-          <div className="flex items-center gap-2.5 rounded-xl border border-[var(--warning-200)] bg-[var(--warning-100)]/60 px-3.5 py-2.5 text-xs font-medium text-[var(--warning-800)]">
+          <div className="flex items-center gap-2.5 rounded-xl border border-(--warning-200) bg-(--warning-100)/60 px-3.5 py-2.5 text-xs font-medium text-(--warning-800)">
             <Clock className="size-4 shrink-0" />
             <span>
               Daily limit reached ({quota.dailyLimit} of {quota.dailyLimit} generations used today). Resets at midnight UTC.
             </span>
           </div>
         ) : (
-          <div className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-violet-100)] px-3.5 py-1.5 text-xs font-semibold text-[var(--brand-violet)]">
+          <div className="inline-flex items-center gap-2 rounded-full bg-(--brand-violet-100) px-3.5 py-1.5 text-xs font-semibold text-(--brand-violet)">
             <Clock className="size-3.5" />
             <span>
               {quota.remaining} of {quota.dailyLimit} generations left today
@@ -463,7 +463,7 @@ export default function GenerateCoursePage() {
       <form onSubmit={handleGenerate} className="space-y-6">
         {/* Prompt Input */}
         <div>
-          <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-[var(--ink-900)]">
+          <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-foreground">
             What should we teach?
           </label>
           <textarea
@@ -472,13 +472,13 @@ export default function GenerateCoursePage() {
             placeholder="e.g. A beginner course on Git for my SWEP class, based on these notes…"
             disabled={generating}
             rows={4}
-            className="w-full rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-4 text-base text-[var(--ink-900)] placeholder-[var(--ink-300)] outline-none transition-colors focus:border-[var(--brand-violet)] disabled:opacity-50"
+            className="w-full rounded-2xl border border-(--line) bg-(--surface-card) p-4 text-base text-foreground placeholder-(--ink-300) outline-none transition-colors focus:border-(--brand-violet) disabled:opacity-50"
           />
         </div>
 
         {/* Optional Title Input */}
         <div>
-          <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-[var(--ink-900)]">
+          <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-foreground">
             Optional title
           </label>
           <input
@@ -487,17 +487,17 @@ export default function GenerateCoursePage() {
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Leave blank and we’ll name it"
             disabled={generating}
-            className="w-full rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] px-4 py-3.5 text-base text-[var(--ink-900)] placeholder-[var(--ink-300)] outline-none transition-colors focus:border-[var(--brand-violet)] disabled:opacity-50"
+            className="w-full rounded-2xl border border-(--line) bg-(--surface-card) px-4 py-3.5 text-base text-foreground placeholder-(--ink-300) outline-none transition-colors focus:border-(--brand-violet) disabled:opacity-50"
           />
         </div>
 
         {/* Source Files Upload Area */}
         <div>
           <div className="mb-2 flex items-center justify-between">
-            <label className="block text-xs font-bold uppercase tracking-wider text-[var(--ink-900)]">
+            <label className="block text-xs font-bold uppercase tracking-wider text-foreground">
               Source files
             </label>
-            <span className="text-[11px] font-medium text-[var(--text-muted)]">
+            <span className="text-[11px] font-medium text-(--text-muted)">
               Up to 100 pages typed · Max 35MB
             </span>
           </div>
@@ -531,16 +531,16 @@ export default function GenerateCoursePage() {
               type="button"
               disabled={generating}
               onClick={() => fileInputRef.current?.click()}
-              className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-4 text-center transition-all hover:border-[var(--brand-violet)] hover:bg-[var(--surface-sunken)] active:scale-[0.99] disabled:opacity-50"
+              className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-(--line) bg-(--surface-card) p-4 text-center transition-all hover:border-(--brand-violet) hover:bg-(--surface-sunken) active:scale-[0.99] disabled:opacity-50"
             >
-              <div className="flex size-10 items-center justify-center rounded-xl bg-[var(--brand-violet-100)] text-[var(--brand-violet)] transition group-hover:scale-105">
+              <div className="flex size-10 items-center justify-center rounded-xl bg-(--brand-violet-100) text-(--brand-violet) transition group-hover:scale-105">
                 <Upload className="size-5" />
               </div>
               <div>
-                <span className="block text-xs font-bold text-[var(--ink-900)]">
+                <span className="block text-xs font-bold text-foreground">
                   PDF or DOCX
                 </span>
-                <span className="block text-[11px] text-[var(--text-muted)] mt-0.5">
+                <span className="block text-[11px] text-(--text-muted) mt-0.5">
                   Up to 100 pages (max 35MB)
                 </span>
               </div>
@@ -550,16 +550,16 @@ export default function GenerateCoursePage() {
               type="button"
               disabled={generating}
               onClick={() => photoInputRef.current?.click()}
-              className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-4 text-center transition-all hover:border-[var(--brand-violet)] hover:bg-[var(--surface-sunken)] active:scale-[0.99] disabled:opacity-50"
+              className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-(--line) bg-(--surface-card) p-4 text-center transition-all hover:border-(--brand-violet) hover:bg-(--surface-sunken) active:scale-[0.99] disabled:opacity-50"
             >
-              <div className="flex size-10 items-center justify-center rounded-xl bg-[var(--brand-violet-100)] text-[var(--brand-violet)] transition group-hover:scale-105">
+              <div className="flex size-10 items-center justify-center rounded-xl bg-(--brand-violet-100) text-(--brand-violet) transition group-hover:scale-105">
                 <ImageIcon className="size-5" />
               </div>
               <div>
-                <span className="block text-xs font-bold text-[var(--ink-900)]">
+                <span className="block text-xs font-bold text-foreground">
                   Photos & Slides
                 </span>
-                <span className="block text-[11px] text-[var(--text-muted)] mt-0.5">
+                <span className="block text-[11px] text-(--text-muted) mt-0.5">
                   Max 20MB (auto-optimized)
                 </span>
               </div>
@@ -572,19 +572,19 @@ export default function GenerateCoursePage() {
               {attachments.map((file) => (
                 <div
                   key={file.id}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-[var(--line)] bg-[var(--surface-card)] px-3.5 py-2.5 text-xs text-[var(--ink-900)] transition hover:border-[var(--brand-violet-200)]"
+                  className="flex items-center justify-between gap-3 rounded-xl border border-(--line) bg-(--surface-card) px-3.5 py-2.5 text-xs text-foreground transition hover:border-(--brand-violet-200)"
                 >
                   <div className="flex min-w-0 items-center gap-2">
                     {file.kind === 'image' ? (
-                      <ImageIcon className="size-4 shrink-0 text-[var(--brand-violet)]" />
+                      <ImageIcon className="size-4 shrink-0 text-(--brand-violet)" />
                     ) : (
-                      <FileText className="size-4 shrink-0 text-[var(--brand-violet)]" />
+                      <FileText className="size-4 shrink-0 text-(--brand-violet)" />
                     )}
                     <span className="truncate font-medium">{file.name}</span>
-                    <span className="shrink-0 text-[var(--text-muted)]">
+                    <span className="shrink-0 text-(--text-muted)">
                       ({formatFileSize(file.size)})
                     </span>
-                    <span className="rounded bg-[var(--surface-sunken)] px-1.5 py-0.5 text-[10px] font-semibold uppercase text-[var(--ink-500)]">
+                    <span className="rounded bg-(--surface-sunken) px-1.5 py-0.5 text-[10px] font-semibold uppercase text-(--ink-500)">
                       {file.kind === 'image' ? 'Image' : 'Document'}
                     </span>
                   </div>
@@ -592,7 +592,7 @@ export default function GenerateCoursePage() {
                     type="button"
                     disabled={generating}
                     onClick={() => removeAttachment(file.id)}
-                    className="shrink-0 p-0.5 text-[var(--ink-500)] transition hover:text-[var(--danger)]"
+                    className="shrink-0 p-0.5 text-(--ink-500) transition hover:text-(--danger)"
                     aria-label="Remove attachment"
                   >
                     <X className="size-4" />
@@ -604,11 +604,11 @@ export default function GenerateCoursePage() {
 
           {/* Page Range Selector (for document uploads) */}
           {hasDocumentAttachment && (
-            <div className="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-4 transition-all">
+            <div className="mt-4 rounded-2xl border border-(--line) bg-(--surface-card) p-4 transition-all">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <SlidersHorizontal className="size-4 text-[var(--brand-violet)]" />
-                  <span className="text-xs font-bold text-[var(--ink-900)]">
+                  <SlidersHorizontal className="size-4 text-(--brand-violet)" />
+                  <span className="text-xs font-bold text-foreground">
                     Targeted Page Range
                   </span>
                 </div>
@@ -617,8 +617,8 @@ export default function GenerateCoursePage() {
                   onClick={() => setEnablePageRange(!enablePageRange)}
                   className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition-colors ${
                     enablePageRange
-                      ? 'bg-[var(--brand-violet-100)] text-[var(--brand-violet)]'
-                      : 'text-[var(--ink-500)] hover:text-[var(--ink-900)] hover:bg-[var(--surface-sunken)]'
+                      ? 'bg-(--brand-violet-100) text-(--brand-violet)'
+                      : 'text-(--ink-500) hover:text-foreground hover:bg-(--surface-sunken)'
                   }`}
                 >
                   {enablePageRange ? 'Using Custom Range' : '+ Specify Pages'}
@@ -626,10 +626,10 @@ export default function GenerateCoursePage() {
               </div>
 
               {enablePageRange ? (
-                <div className="mt-3 space-y-2.5 pt-2 border-t border-[var(--line)]">
+                <div className="mt-3 space-y-2.5 pt-2 border-t border-(--line)">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-semibold text-[var(--ink-500)] mb-1">
+                      <label className="block text-[11px] font-semibold text-(--ink-500) mb-1">
                         Start Page
                       </label>
                       <input
@@ -639,11 +639,11 @@ export default function GenerateCoursePage() {
                         value={startPage}
                         onChange={(e) => setStartPage(e.target.value)}
                         disabled={generating}
-                        className="w-full rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)] px-3 py-2 text-xs text-[var(--ink-900)] outline-none focus:border-[var(--brand-violet)]"
+                        className="w-full rounded-xl border border-(--line) bg-(--surface-sunken) px-3 py-2 text-xs text-foreground outline-none focus:border-(--brand-violet)"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-semibold text-[var(--ink-500)] mb-1">
+                      <label className="block text-[11px] font-semibold text-(--ink-500) mb-1">
                         End Page
                       </label>
                       <input
@@ -653,21 +653,21 @@ export default function GenerateCoursePage() {
                         value={endPage}
                         onChange={(e) => setEndPage(e.target.value)}
                         disabled={generating}
-                        className="w-full rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)] px-3 py-2 text-xs text-[var(--ink-900)] outline-none focus:border-[var(--brand-violet)]"
+                        className="w-full rounded-xl border border-(--line) bg-(--surface-sunken) px-3 py-2 text-xs text-foreground outline-none focus:border-(--brand-violet)"
                       />
                     </div>
                   </div>
 
                   {/* Clarification prompt requested by user */}
-                  <div className="flex items-start gap-2 rounded-xl bg-[var(--brand-violet-100)]/50 p-2.5 text-[11px] text-[var(--brand-violet-hover)] font-medium">
-                    <Info className="size-3.5 shrink-0 mt-0.5 text-[var(--brand-violet)]" />
+                  <div className="flex items-start gap-2 rounded-xl bg-(--brand-violet-100)/50 p-2.5 text-[11px] text-(--brand-violet-hover) font-medium">
+                    <Info className="size-3.5 shrink-0 mt-0.5 text-(--brand-violet)" />
                     <span>
                       The more specific you are with your page range, the better the result.
                     </span>
                   </div>
                 </div>
               ) : (
-                <p className="mt-1.5 text-[11px] text-[var(--text-muted)]">
+                <p className="mt-1.5 text-[11px] text-(--text-muted)">
                   We’ll analyze up to 100 pages. To extract a specific chapter or lecture, click “+ Specify Pages”.
                 </p>
               )}
@@ -677,10 +677,10 @@ export default function GenerateCoursePage() {
 
         {/* Difficulty Selector */}
         <div>
-          <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-[var(--ink-900)]">
+          <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-foreground">
             Difficulty
           </label>
-          <div className="grid grid-cols-3 gap-2 rounded-xl bg-[var(--surface-sunken)] p-1">
+          <div className="grid grid-cols-3 gap-2 rounded-xl bg-(--surface-sunken) p-1">
             {['Beginner', 'Intermediate', 'Advanced'].map((level, idx) => (
               <button
                 key={level}
@@ -689,8 +689,8 @@ export default function GenerateCoursePage() {
                 onClick={() => setDifficultyIndex(idx)}
                 className={`rounded-lg py-2 text-xs font-semibold transition-all ${
                   difficultyIndex === idx
-                    ? 'bg-[var(--surface-card)] text-[var(--ink-900)] shadow-xs'
-                    : 'text-[var(--ink-500)] hover:text-[var(--ink-900)]'
+                    ? 'bg-(--surface-card) text-foreground shadow-xs'
+                    : 'text-(--ink-500) hover:text-foreground'
                 }`}
               >
                 {level}
@@ -701,10 +701,10 @@ export default function GenerateCoursePage() {
 
         {/* Visibility Selector */}
         <div>
-          <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-[var(--ink-900)]">
+          <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-foreground">
             Visibility
           </label>
-          <div className="grid grid-cols-3 gap-2 rounded-xl bg-[var(--surface-sunken)] p-1">
+          <div className="grid grid-cols-3 gap-2 rounded-xl bg-(--surface-sunken) p-1">
             {['Private', 'Unlisted', 'Public'].map((vis, idx) => (
               <button
                 key={vis}
@@ -713,22 +713,22 @@ export default function GenerateCoursePage() {
                 onClick={() => setVisibilityIndex(idx)}
                 className={`rounded-lg py-2 text-xs font-semibold transition-all ${
                   visibilityIndex === idx
-                    ? 'bg-[var(--surface-card)] text-[var(--ink-900)] shadow-xs'
-                    : 'text-[var(--ink-500)] hover:text-[var(--ink-900)]'
+                    ? 'bg-(--surface-card) text-foreground shadow-xs'
+                    : 'text-(--ink-500) hover:text-foreground'
                 }`}
               >
                 {vis}
               </button>
             ))}
           </div>
-          <p className="mt-1.5 text-xs text-[var(--text-muted)]">
+          <p className="mt-1.5 text-xs text-(--text-muted)">
             Private is only for you. Unlisted is link-only. Public can appear in the community catalog.
           </p>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className="flex items-start gap-3 rounded-xl bg-[var(--danger-100)] p-4 text-xs font-medium text-[var(--danger)]">
+          <div className="flex items-start gap-3 rounded-xl bg-(--danger-100) p-4 text-xs font-medium text-(--danger)">
             <AlertCircle className="size-4 shrink-0 mt-0.5" />
             <div className="flex-1">
               <span>{error}</span>
@@ -748,33 +748,33 @@ export default function GenerateCoursePage() {
 
         {/* Generating Progress State with Real-Time Progress Bar & SSE Stages */}
         {generating ? (
-          <div className="rounded-2xl border border-[var(--brand-violet-200)] bg-[var(--surface-card)] p-5 shadow-xs space-y-4">
+          <div className="rounded-2xl border border-(--brand-violet-200) bg-(--surface-card) p-5 shadow-xs space-y-4">
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-start gap-3">
-                <Loader2 className="size-5 shrink-0 animate-spin text-[var(--brand-violet)] mt-0.5" />
+                <Loader2 className="size-5 shrink-0 animate-spin text-(--brand-violet) mt-0.5" />
                 <div>
-                  <p className="text-sm font-bold text-[var(--ink-900)]">
+                  <p className="text-sm font-bold text-foreground">
                     Architecting your course
                   </p>
-                  <p className="text-xs font-semibold text-[var(--brand-violet)] mt-0.5 transition-all">
+                  <p className="text-xs font-semibold text-(--brand-violet) mt-0.5 transition-all">
                     {currentStageText}
                   </p>
                 </div>
               </div>
-              <span className="text-xs font-bold text-[var(--brand-violet)] tabular-nums">
+              <span className="text-xs font-bold text-(--brand-violet) tabular-nums">
                 {progressPercent}%
               </span>
             </div>
 
             {/* Dynamic Animated Progress Bar */}
-            <div className="h-2.5 w-full overflow-hidden rounded-full bg-[var(--surface-sunken)]">
+            <div className="h-2.5 w-full overflow-hidden rounded-full bg-(--surface-sunken)">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-[var(--brand-violet)] to-[var(--brand-violet-hover)] transition-all duration-500 ease-out"
+                className="h-full rounded-full bg-linear-to-r from-(--brand-violet) to-(--brand-violet-hover) transition-all duration-500 ease-out"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
 
-            <div className="flex items-center justify-between text-[11px] text-[var(--text-muted)] pt-1">
+            <div className="flex items-center justify-between text-[11px] text-(--text-muted) pt-1">
               <span>Hierarchical 2-Phase Map-Reduce</span>
               <span>100% full document coverage</span>
             </div>
