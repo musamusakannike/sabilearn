@@ -1,70 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
-
-export interface CoursePlanTopic {
-  id: string;
-  title: string;
-  description: string;
-  order: number;
-  subConcepts: string[];
-  hasCodingTask?: boolean;
-  practiceTaskSummary?: string;
-}
-
-export interface CoursePlanChapter {
-  id: string;
-  title: string;
-  description: string;
-  order: number;
-  capstoneGoal: string;
-  topics: CoursePlanTopic[];
-}
-
-export interface CoursePlan {
-  title: string;
-  description: string;
-  longDescription: string;
-  category: string;
-  difficulty: "beginner" | "intermediate" | "advanced";
-  whatYouWillLearn: string[];
-  prerequisites: string[];
-  targetProjects: string[];
-  quizFrequency: "high" | "medium" | "low";
-  capstoneDifficulty: "medium" | "hard";
-  chapters: CoursePlanChapter[];
-}
-
-export interface GeneratedTopicBlock {
-  type: "text" | "code" | "latex" | "image";
-  content: string;
-  language?: string;
-}
-
-export interface GeneratedTopicQuizOption {
-  text: string;
-  isCorrect: boolean;
-}
-
-export interface GeneratedTopicQuiz {
-  question: string;
-  options: GeneratedTopicQuizOption[];
-  explanation: string;
-}
-
-export interface GeneratedTopicContentItem {
-  type: "group" | "quiz";
-  content: string;
-  blocks?: GeneratedTopicBlock[];
-  quiz?: GeneratedTopicQuiz;
-}
-
-export interface GeneratedTopicData {
-  title: string;
-  description: string;
-  order: number;
-  xp: number;
-  contents: GeneratedTopicContentItem[];
-}
+import { DocumentChunk, DocumentSection } from './documentProcessor.service';
 
 export interface ChapterExerciseQuestion {
   type: "mcq" | "fill_in_blank" | "code_execution";
@@ -81,12 +15,66 @@ export interface ChapterExercise {
   questions: ChapterExerciseQuestion[];
 }
 
-export interface GeneratedChapterData {
+export interface GeneratedTopicBlock {
+  type: "text" | "latex" | "code" | "youtube" | "image";
+  content: string;
+  language?: string;
+}
+
+export interface GeneratedTopicItem {
+  type: "group" | "quiz";
+  content?: string;
+  blocks?: GeneratedTopicBlock[];
+  quiz?: {
+    question: string;
+    options: Array<{ text: string; isCorrect: boolean }>;
+    explanation: string;
+  };
+}
+
+export interface GeneratedTopicData {
+  id?: string;
   title: string;
   description: string;
   order: number;
+  subConcepts: string[];
+  hasCodingTask?: boolean;
+  practiceTaskSummary?: string;
+  sectionId?: string;
+  sourceChunkIndices?: number[];
+  contents?: GeneratedTopicItem[];
+  xp?: number;
+}
+
+export interface GeneratedChapterData {
+  id?: string;
+  title: string;
+  description: string;
+  order: number;
+  capstoneGoal?: string;
+  sourceSectionId?: string;
+  chunkIndices?: number[];
   exercise?: ChapterExercise;
   topics: GeneratedTopicData[];
+}
+
+export interface CoursePlan {
+  title: string;
+  description: string;
+  longDescription: string;
+  category: string;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  whatYouWillLearn: string[];
+  prerequisites: string[];
+  targetProjects: string[];
+  quizFrequency: "high" | "medium" | "low";
+  capstoneDifficulty: "medium" | "hard";
+  chapters: GeneratedChapterData[];
+}
+
+export interface CoursePlanWithMetadata extends CoursePlan {
+  documentIndex: DocumentSection[];
+  chunks: DocumentChunk[];
 }
 
 // Limits to prevent misuse
@@ -94,21 +82,56 @@ export const MAX_CHAPTERS_ALLOWED = 5;
 export const MAX_TOPICS_PER_CHAPTER_ALLOWED = 4;
 export const MAX_TOTAL_TOPICS_ALLOWED = 20;
 
+export const SYSTEM_DOCUMENT_INDEX_PROMPT = `
+You are the SabiLearn Document Structure Architect.
+Your task is to analyze ALL chunks of the uploaded document and produce an Annotated Document Index.
+You must organize all chunks into 3 to 5 coherent, sequential, pedagogical Sections that cover 100% of the material.
+
+CRITICAL COVERAGE RULES (STRICTLY ENFORCED):
+1. FULL COVERAGE GUARANTEE: Every single chunk index (from 0 to N-1) MUST be included in exactly one section's chunkIndices array. No chunk may be dropped, omitted, or skipped.
+2. Group adjacent or conceptually related chunks together into cohesive sections.
+3. For each section, provide:
+   - "sectionId": "sec-1", "sec-2", etc.
+   - "title": Clear, descriptive module title reflecting the actual content of those chunks.
+   - "summary": 2-3 sentences explaining what is taught across these chunks.
+   - "keyConcepts": 3-5 specific terminology, theorems, definitions, methods, or tools found in these chunks.
+   - "chunkIndices": Array of integer chunk indices belonging to this section.
+
+You MUST reply with ONLY valid JSON conforming to this schema:
+{
+  "sections": [
+    {
+      "sectionId": "sec-1",
+      "title": "Module Title",
+      "summary": "Summary of concepts...",
+      "keyConcepts": ["Concept 1", "Concept 2"],
+      "chunkIndices": [0, 1]
+    }
+  ]
+}
+`;
+
 export const SYSTEM_PLAN_PROMPT = `
 You are the SabiLearn AI Curriculum & Course Plan Architect.
 Your job is to analyze the user's uploaded materials (text, notes, slides, images) and create a comprehensive, highly structured course outline in pure valid JSON.
 
 PEDAGOGICAL & ARCHITECTURAL RULES (STRICTLY ENFORCED):
 1. **Structure Caps**: The course outline MUST have between 3 and 5 Chapters (modules). Each chapter must have between 2 and 4 focused Topics.
-2. **Match the source discipline.** Read the uploaded notes before choosing a shape:
+2. **Full Document Coverage & Annotated Index Mapping**:
+   When an ANNOTATED DOCUMENT INDEX is provided, your chapters MUST map directly to the sections in the index.
+   - Chapter 1 MUST correspond to Section 1, Chapter 2 to Section 2, Chapter 3 to Section 3, and so on.
+   - You MUST teach all key concepts listed in that section's keyConcepts.
+   - Set "sourceSectionId" (e.g. "sec-1") and "chunkIndices" on each chapter object.
+   - ZERO SECTIONS MAY BE DROPPED OR SKIPPED.
+3. **Match the source discipline.** Read the uploaded notes before choosing a shape:
    - Programming, software, data, or commands: hands-on coding topics, \`hasCodingTask: true\` only on topics that actually practice code.
    - Mathematics, physics, chemistry, statistics, engineering, or economics: concept → definition → worked symbolic example. \`hasCodingTask\` stays false unless the notes are about computing. \`practiceTaskSummary\` is a worked problem or derivation, not a coding task.
    - Humanities, law, business, medicine, or other prose subjects: argument, cases, and applied examples. Do not invent programming projects or code tasks.
-3. **Pedagogy**: Progressive mastery. Short topics. One idea per topic.
-4. **Applied work**: Include 1 to 3 milestone applications that fit the subject (a small program, a problem set, a lab-style calculation, a case write-up, or a source analysis). Do not force software projects onto non-coding courses.
-5. **Chapter Capstones**: Every chapter must have a clear Capstone Assessment goal evaluating deep comprehension of THAT subject's skills (debugging for code, symbolic reasoning for quantitative subjects, argument and application for prose subjects).
+4. **Pedagogy**: Progressive mastery. Short topics. One idea per topic.
+5. **Applied work**: Include 1 to 3 milestone applications that fit the subject (a small program, a problem set, a lab-style calculation, a case write-up, or a source analysis). Do not force software projects onto non-coding courses.
+6. **Chapter Capstones**: Every chapter must have a clear Capstone Assessment goal evaluating deep comprehension of THAT subject's skills (debugging for code, symbolic reasoning for quantitative subjects, argument and application for prose subjects).
 
-You MUST reply with ONLY valid JSON conforming to this exact TypeScript schema (no conversational fluff, no surrounding markdown wrappers):
+You MUST reply with ONLY valid JSON conforming to this exact TypeScript schema:
 {
   "title": "Full Descriptive Course Title",
   "description": "Short punchy 1-sentence description",
@@ -126,6 +149,8 @@ You MUST reply with ONLY valid JSON conforming to this exact TypeScript schema (
       "title": "Chapter 1 Title",
       "description": "Chapter summary",
       "order": 0,
+      "sourceSectionId": "sec-1",
+      "chunkIndices": [0, 1],
       "capstoneGoal": "What the chapter assessment tests",
       "topics": [
         {
@@ -274,7 +299,6 @@ export class CourseArchitectService {
       return this.generateMockResponse<T>(systemPrompt, userTextPrompt);
     }
 
-    // Build multimodal user message content
     let userMessageContent: any = userTextPrompt;
 
     if (imageAttachments && imageAttachments.length > 0) {
@@ -326,7 +350,6 @@ export class CourseArchitectService {
       try {
         return JSON.parse(rawContent) as T;
       } catch {
-        // Strip any unexpected markdown code fence wrappers
         const cleaned = rawContent
           .replace(/```(?:json)?\n?|\n?```/g, "")
           .trim();
@@ -342,7 +365,119 @@ export class CourseArchitectService {
   }
 
   /**
-   * Generate a comprehensive Course Plan from extracted text and images.
+   * Phase 1 (Macro): Full Document Structure & Section Indexing.
+   * Generates an Annotated Document Index grouping 100% of chunks into 3 to 5 logical sections.
+   */
+  public static async buildAnnotatedDocumentIndex(
+    chunks: DocumentChunk[],
+    subjectHint = "",
+  ): Promise<DocumentSection[]> {
+    if (!chunks || chunks.length === 0) {
+      return [];
+    }
+
+    if (chunks.length === 1) {
+      return [
+        {
+          sectionId: "sec-1",
+          title: subjectHint || chunks[0].title || "Core Foundations",
+          summary: chunks[0].content.slice(0, 300),
+          keyConcepts: ["Overview", "Core Principles"],
+          chunkIndices: [0],
+        },
+      ];
+    }
+
+    const chunkSummaries = chunks
+      .map(
+        (c) =>
+          `[Chunk ${c.index}] Title: "${c.title}" (~${c.wordCount} words)\nExcerpt: ${c.content.slice(0, 280).replace(/\s+/g, " ")}...`,
+      )
+      .join("\n\n");
+
+    const prompt = `
+Uploaded document contains ${chunks.length} chunks covering the topic: "${subjectHint || "Academic Study"}".
+Analyze all ${chunks.length} chunks below and group them into 3 to 5 coherent, sequential course modules.
+CRITICAL: Every chunk index from 0 to ${chunks.length - 1} must be present in chunkIndices. Zero chunks may be skipped.
+
+DOCUMENT CHUNKS OVERVIEW:
+${chunkSummaries}
+`;
+
+    try {
+      const response = await this.callDeepSeekJson<{ sections: DocumentSection[] }>(
+        SYSTEM_DOCUMENT_INDEX_PROMPT,
+        prompt,
+        [],
+        0.2,
+      );
+
+      let sections = Array.isArray(response?.sections) ? response.sections : [];
+
+      // Fallback partitioning if LLM returned malformed sections
+      if (sections.length === 0) {
+        sections = this.fallbackPartitionChunks(chunks, subjectHint);
+      }
+
+      // Enforce 100% Chunk Coverage Guarantee: check if any chunk was omitted
+      const assignedIndices = new Set<number>();
+      sections.forEach((sec, idx) => {
+        sec.sectionId = sec.sectionId || `sec-${idx + 1}`;
+        sec.chunkIndices = Array.isArray(sec.chunkIndices) ? sec.chunkIndices : [];
+        sec.chunkIndices.forEach((i) => assignedIndices.add(i));
+      });
+
+      // Add any missing chunk indices to the nearest section
+      for (let i = 0; i < chunks.length; i++) {
+        if (!assignedIndices.has(i)) {
+          const targetSection = sections[sections.length - 1];
+          targetSection.chunkIndices.push(i);
+          assignedIndices.add(i);
+        }
+      }
+
+      return sections;
+    } catch (err: any) {
+      console.warn("Annotated index generation error, using fallback partitioning:", err.message);
+      return this.fallbackPartitionChunks(chunks, subjectHint);
+    }
+  }
+
+  /**
+   * Deterministic fallback: partitions all chunks evenly into 3-5 sections covering 100% of material.
+   */
+  private static fallbackPartitionChunks(chunks: DocumentChunk[], subjectHint: string): DocumentSection[] {
+    const totalChunks = chunks.length;
+    const numSections = Math.min(5, Math.max(3, Math.ceil(totalChunks / 2)));
+    const sections: DocumentSection[] = [];
+    const chunkSize = Math.ceil(totalChunks / numSections);
+
+    for (let s = 0; s < numSections; s++) {
+      const startIdx = s * chunkSize;
+      const endIdx = Math.min(totalChunks, startIdx + chunkSize);
+      const sectionChunkIndices: number[] = [];
+      for (let c = startIdx; c < endIdx; c++) {
+        sectionChunkIndices.push(c);
+      }
+
+      if (sectionChunkIndices.length > 0) {
+        const firstChunk = chunks[sectionChunkIndices[0]];
+        sections.push({
+          sectionId: `sec-${s + 1}`,
+          title: firstChunk?.title || `Module ${s + 1}: ${subjectHint || "Study Block"}`,
+          summary: `Covers material from document chunks ${sectionChunkIndices.map((i) => i + 1).join(", ")}.`,
+          keyConcepts: ["Fundamental Concepts", "Applications"],
+          chunkIndices: sectionChunkIndices,
+        });
+      }
+    }
+
+    return sections;
+  }
+
+  /**
+   * Phase 1 (Macro): Generate a comprehensive Course Plan from extracted text, chunks, and images.
+   * Ensures 100% document coverage by mapping chapters to the Annotated Document Index.
    */
   public static async generatePlan(options: {
     courseTitle?: string;
@@ -351,7 +486,8 @@ export class CourseArchitectService {
     imageAttachments?: string[];
     difficulty?: "beginner" | "intermediate" | "advanced";
     clarificationAnswers?: Record<string, any>;
-  }): Promise<CoursePlan> {
+    chunks?: DocumentChunk[];
+  }): Promise<CoursePlanWithMetadata> {
     const {
       courseTitle = "",
       userGuidePrompt = "",
@@ -359,7 +495,14 @@ export class CourseArchitectService {
       imageAttachments = [],
       difficulty = "beginner",
       clarificationAnswers,
+      chunks = [],
     } = options;
+
+    // Step 1: Build Phase 1 Annotated Document Index covering 100% of chunks
+    const documentIndex = await this.buildAnnotatedDocumentIndex(
+      chunks,
+      courseTitle || userGuidePrompt,
+    );
 
     let userPrompt = `Please formulate a complete, highly structured course outline for SabiLearn.\n`;
 
@@ -371,12 +514,20 @@ export class CourseArchitectService {
       userPrompt += `USER COURSE INSTRUCTIONS & SCOPE:\n${userGuidePrompt}\n\n`;
     }
 
-    if (extractedText) {
+    if (documentIndex.length > 0) {
+      userPrompt += `ANNOTATED DOCUMENT INDEX (COVERS 100% OF UPLOADED MATERIAL ACROSS ALL ${chunks.length} CHUNKS):\n`;
+      userPrompt += `${JSON.stringify(documentIndex, null, 2)}\n\n`;
+      userPrompt += `MANDATORY FULL-COVERAGE CHAPTER MAPPING RULE:\n`;
+      userPrompt += `- The course chapters MUST align with the ${documentIndex.length} sections in the Annotated Document Index.\n`;
+      userPrompt += `- Chapter 1 maps to Section 1 ("${documentIndex[0]?.title}"), Chapter 2 maps to Section 2, and so on.\n`;
+      userPrompt += `- In each chapter output, set "sourceSectionId" (e.g. "sec-1") and "chunkIndices".\n`;
+      userPrompt += `- Ensure EVERY keyConcept from each section is explicitly taught in that chapter's topics.\n\n`;
+    } else if (extractedText) {
       userPrompt += `EXTRACTED SOURCE MATERIAL / DOCUMENT CONTENT:\n${extractedText.slice(0, 15000)}\n\n`;
     }
 
     if (imageAttachments.length > 0) {
-      userPrompt += `NOTE: ${imageAttachments.length} image(s) / handwritten notes / slides are attached for visual analysis. Extract key concepts and incorporate them.\n\n`;
+      userPrompt += `NOTE: ${imageAttachments.length} normalized image(s) / handwritten notes / slides are attached for visual analysis. Extract key concepts and incorporate them.\n\n`;
     }
 
     if (clarificationAnswers && Object.keys(clarificationAnswers).length > 0) {
@@ -384,7 +535,7 @@ export class CourseArchitectService {
     }
 
     userPrompt += `DIFFICULTY TARGET: ${difficulty.toUpperCase()}\n`;
-    userPrompt += `Ensure the plan has 3 to ${MAX_CHAPTERS_ALLOWED} chapters, with 2 to ${MAX_TOPICS_PER_CHAPTER_ALLOWED} topics per chapter, milestone projects, and capstone goals.`;
+    userPrompt += `Ensure the plan has between 3 and ${MAX_CHAPTERS_ALLOWED} chapters, with 2 to ${MAX_TOPICS_PER_CHAPTER_ALLOWED} topics per chapter, milestone projects, and capstone goals.`;
 
     const plan = await this.callDeepSeekJson<CoursePlan>(
       SYSTEM_PLAN_PROMPT,
@@ -393,9 +544,8 @@ export class CourseArchitectService {
       0.4,
     );
 
-    // Normalize and enforce limits to prevent misuse
+    // Normalize chapters and assign section bindings
     if (plan.chapters && Array.isArray(plan.chapters)) {
-      // Limit chapters
       if (plan.chapters.length > MAX_CHAPTERS_ALLOWED) {
         plan.chapters = plan.chapters.slice(0, MAX_CHAPTERS_ALLOWED);
       }
@@ -407,16 +557,20 @@ export class CourseArchitectService {
         ch.order = typeof ch.order === "number" ? ch.order : chIdx;
         ch.title = ch.title || `Chapter ${chIdx + 1}`;
         ch.description = ch.description || "";
-        ch.capstoneGoal =
-          ch.capstoneGoal || "Evaluate mastery of chapter topics";
+        ch.capstoneGoal = ch.capstoneGoal || "Evaluate mastery of chapter topics";
+
+        // Bind source section and chunks if available
+        const matchingSection = documentIndex[chIdx];
+        if (matchingSection) {
+          ch.sourceSectionId = ch.sourceSectionId || matchingSection.sectionId;
+          ch.chunkIndices = ch.chunkIndices || matchingSection.chunkIndices;
+        }
 
         if (ch.topics && Array.isArray(ch.topics)) {
-          // Limit topics per chapter
           if (ch.topics.length > MAX_TOPICS_PER_CHAPTER_ALLOWED) {
             ch.topics = ch.topics.slice(0, MAX_TOPICS_PER_CHAPTER_ALLOWED);
           }
 
-          // Enforce global maximum topics
           if (totalTopicsCount + ch.topics.length > MAX_TOTAL_TOPICS_ALLOWED) {
             ch.topics = ch.topics.slice(
               0,
@@ -430,12 +584,111 @@ export class CourseArchitectService {
             t.order = typeof t.order === "number" ? t.order : tIdx;
             t.title = t.title || `Topic ${tIdx + 1}`;
             t.subConcepts = Array.isArray(t.subConcepts) ? t.subConcepts : [];
+            t.sectionId = t.sectionId || ch.sourceSectionId;
+            t.sourceChunkIndices = t.sourceChunkIndices || ch.chunkIndices;
           });
         }
       });
     }
 
-    return plan;
+    return {
+      ...plan,
+      documentIndex,
+      chunks,
+    };
+  }
+
+  /**
+   * Phase 2 (Micro): Targeted Context Injection.
+   * Retrieves specific chunks tied to this topic's chapter/sub-concepts rather than blind truncation.
+   */
+  public static getRelevantTopicContext(options: {
+    chapterTitle: string;
+    topicTitle: string;
+    subConcepts?: string[];
+    sourceContext?: string;
+    chunks?: DocumentChunk[];
+    documentIndex?: DocumentSection[];
+    sectionId?: string;
+    sourceChunkIndices?: number[];
+    chapterIndex?: number;
+  }): string {
+    const {
+      chapterTitle,
+      topicTitle,
+      subConcepts = [],
+      sourceContext = "",
+      chunks = [],
+      documentIndex = [],
+      sectionId,
+      sourceChunkIndices,
+      chapterIndex,
+    } = options;
+
+    // Strategy 1: Targeted retrieval from structured Chunks & Document Index
+    if (chunks && chunks.length > 0) {
+      let targetChunkIndices: number[] = [];
+
+      if (Array.isArray(sourceChunkIndices) && sourceChunkIndices.length > 0) {
+        targetChunkIndices = [...sourceChunkIndices];
+      } else if (sectionId && documentIndex && documentIndex.length > 0) {
+        const matchingSection = documentIndex.find((s) => s.sectionId === sectionId);
+        if (matchingSection && matchingSection.chunkIndices?.length > 0) {
+          targetChunkIndices = [...matchingSection.chunkIndices];
+        }
+      } else if (chapterIndex !== undefined && documentIndex && documentIndex.length > chapterIndex) {
+        targetChunkIndices = [...(documentIndex[chapterIndex]?.chunkIndices || [])];
+      } else {
+        // Fallback: search keywords across chunks
+        const queryTerms = [chapterTitle, topicTitle, ...subConcepts]
+          .join(" ")
+          .toLowerCase()
+          .split(/\W+/)
+          .filter((t) => t.length > 3);
+
+        const scoredChunks = chunks.map((chunk) => {
+          const lower = chunk.content.toLowerCase();
+          let score = 0;
+          for (const term of queryTerms) {
+            if (lower.includes(term)) score += 1;
+          }
+          return { index: chunk.index, score };
+        });
+
+        scoredChunks.sort((a, b) => b.score - a.score);
+        targetChunkIndices = scoredChunks.filter((s) => s.score > 0).slice(0, 3).map((s) => s.index);
+        if (targetChunkIndices.length === 0 && chunks.length > 0) {
+          const fallbackIdx = Math.min(chunks.length - 1, chapterIndex || 0);
+          targetChunkIndices = [fallbackIdx];
+        }
+      }
+
+      const selectedChunks = chunks.filter((c) => targetChunkIndices.includes(c.index));
+      if (selectedChunks.length > 0) {
+        const assembledText = selectedChunks
+          .map((c) => `--- SECTION CONTEXT: ${c.title} (Chunk ${c.index + 1} of ${chunks.length}) ---\n${c.content}`)
+          .join("\n\n");
+        return assembledText.slice(0, 18000);
+      }
+    }
+
+    // Strategy 2: Fallback for unstructured raw sourceContext (legacy courses)
+    if (sourceContext && sourceContext.trim().length > 0) {
+      const sections = sourceContext.split(/(?=\n--- CONTENT FROM DOCUMENT|\n#{1,3}\s|\nChapter\s+\d+)/i);
+      if (sections.length > 1 && chapterIndex !== undefined) {
+        const proportionalIdx = Math.min(
+          sections.length - 1,
+          Math.floor((chapterIndex / Math.max(1, (options.chapterIndex || 1) + 2)) * sections.length),
+        );
+        const matched = sections[proportionalIdx];
+        if (matched && matched.trim().length > 100) {
+          return matched.slice(0, 15000);
+        }
+      }
+      return sourceContext.slice(0, 15000);
+    }
+
+    return "";
   }
 
   /** Pull display-math out of prose into real latex blocks, and strip delimiters on latex blocks. */
@@ -482,7 +735,7 @@ export class CourseArchitectService {
   }
 
   /**
-   * Generate rich step-by-step lesson content for a specific topic.
+   * Generate rich step-by-step lesson content for a specific topic with Targeted Context Injection.
    */
   public static async generateTopicContent(options: {
     courseTitle: string;
@@ -496,6 +749,12 @@ export class CourseArchitectService {
     difficulty?: string;
     category?: string;
     sourceContext?: string;
+    chunks?: DocumentChunk[];
+    documentIndex?: DocumentSection[];
+    sectionId?: string;
+    sourceChunkIndices?: number[];
+    chapterIndex?: number;
+    topicIndex?: number;
   }): Promise<GeneratedTopicData> {
     const {
       courseTitle,
@@ -508,19 +767,21 @@ export class CourseArchitectService {
       order = 0,
       difficulty = "beginner",
       category = "",
-      sourceContext = "",
     } = options;
 
+    // Phase 2 Micro: Extract the exact, targeted source context for this topic
+    const targetedSourceContext = this.getRelevantTopicContext(options);
+
     const sourceSection =
-      sourceContext && sourceContext.trim().length > 0
+      targetedSourceContext && targetedSourceContext.trim().length > 0
         ? `
-SOURCE MATERIAL / REFERENCE NOTES (Ground the lesson specifically in this uploaded document context):
+SOURCE MATERIAL / REFERENCE NOTES (Targeted context specifically grounded in this chapter's source chunks):
 """
-${sourceContext.slice(0, 15000)}
+${targetedSourceContext}
 """
 
 CRITICAL GROUNDING INSTRUCTION:
-- Draw specific explanations, definitions, formulas, examples, terminology, and key takeaways directly from the provided source material above whenever applicable.
+- Draw specific explanations, definitions, formulas, examples, terminology, and key takeaways directly from the provided source material above.
 - Do not fabricate alternative terms or methods if the source material establishes specific ones.
 `
         : "";
@@ -559,6 +820,9 @@ CRITICAL RULES:
 
     topicData.order = order;
     topicData.xp = 50;
+    topicData.sectionId = options.sectionId;
+    topicData.sourceChunkIndices = options.sourceChunkIndices;
+
     if (Array.isArray(topicData.contents)) {
       topicData.contents = topicData.contents.map((item) => {
         if (item?.type === "group" && Array.isArray(item.blocks)) {
@@ -643,23 +907,22 @@ CRITICAL RULES:
     extractedText?: string;
     imageAttachments?: string[];
     difficulty?: "beginner" | "intermediate" | "advanced";
+    chunks?: DocumentChunk[];
     onProgress?: (progressText: string) => void;
-  }): Promise<{ plan: CoursePlan; generatedChapters: GeneratedChapterData[] }> {
+  }): Promise<{ plan: CoursePlanWithMetadata; generatedChapters: GeneratedChapterData[] }> {
     const { onProgress } = options;
 
     onProgress?.("Generating Course Outline & Curriculum Plan...");
-    const plan = await this.generatePlan(options);
+    const planResult = await this.generatePlan(options);
 
-    // Parallelize generation across all chapters and topics to drastically reduce latency
-    const chapterPromises = plan.chapters.map(async (ch, chIdx) => {
+    const chapterPromises = planResult.chapters.map(async (ch, chIdx) => {
       onProgress?.(
         `Generating Chapter ${chIdx + 1}: "${ch.title}" (${ch.topics.length} topics)...`,
       );
 
-      // 1. Generate topics in parallel
       const topicPromises = ch.topics.map((t, tIdx) =>
         this.generateTopicContent({
-          courseTitle: plan.title,
+          courseTitle: planResult.title,
           chapterTitle: ch.title,
           topicTitle: t.title,
           topicDescription: t.description,
@@ -667,85 +930,107 @@ CRITICAL RULES:
           hasCodingTask: t.hasCodingTask,
           practiceTaskSummary: t.practiceTaskSummary,
           order: tIdx,
-          difficulty: plan.difficulty,
-          category: plan.category,
+          difficulty: planResult.difficulty,
+          category: planResult.category,
           sourceContext: options.extractedText,
+          chunks: planResult.chunks,
+          documentIndex: planResult.documentIndex,
+          sectionId: ch.sourceSectionId,
+          sourceChunkIndices: ch.chunkIndices,
+          chapterIndex: chIdx,
+          topicIndex: tIdx,
         }),
       );
 
-      // 2. Generate chapter capstone assessment in parallel with topics
       const capstonePromise = this.generateCapstoneAssessment({
-        courseTitle: plan.title,
+        courseTitle: planResult.title,
         chapterTitle: ch.title,
         chapterDescription: ch.description,
         capstoneGoal: ch.capstoneGoal,
-        topics: ch.topics.map((t) => ({
-          title: t.title,
-          description: t.description,
-        })),
-        difficulty: plan.capstoneDifficulty || "medium",
-        category: plan.category,
+        topics: ch.topics,
+        difficulty: planResult.capstoneDifficulty || "medium",
+        category: planResult.category,
         sourceContext: options.extractedText,
       });
 
-      const [generatedTopics, exercise] = await Promise.all([
+      const [generatedTopics, capstoneExercise] = await Promise.all([
         Promise.all(topicPromises),
         capstonePromise,
       ]);
 
       return {
-        title: ch.title,
-        description: ch.description,
-        order: chIdx,
-        exercise,
+        ...ch,
+        exercise: capstoneExercise,
         topics: generatedTopics,
       };
     });
 
     const generatedChapters = await Promise.all(chapterPromises);
 
-    onProgress?.("Course generation complete!");
-    return { plan, generatedChapters };
+    return {
+      plan: planResult,
+      generatedChapters,
+    };
   }
 
   /**
-   * Realistic fallback mock generator when running locally without an API key.
+   * Deterministic mock generator for environments without DEEPSEEK_API_KEY.
    */
   private static generateMockResponse<T>(
     systemPrompt: string,
-    userPrompt: string,
+    userTextPrompt: string,
   ): T {
-    if (systemPrompt.includes("Plan Architect")) {
+    if (systemPrompt.includes("Document Structure Architect")) {
+      const mockSections = {
+        sections: [
+          {
+            sectionId: "sec-1",
+            title: "Foundations & Mental Models",
+            summary: "Core principles and introductory terminology.",
+            keyConcepts: ["Definitions", "Architecture", "Syntax"],
+            chunkIndices: [0],
+          },
+          {
+            sectionId: "sec-2",
+            title: "Practical Workflows & Implementation",
+            summary: "Hands-on execution and fundamental techniques.",
+            keyConcepts: ["Variables", "Operations", "Functions"],
+            chunkIndices: [1],
+          },
+        ],
+      };
+      return mockSections as unknown as T;
+    }
+
+    if (systemPrompt.includes("Curriculum & Course Plan")) {
       const mockPlan: CoursePlan = {
-        title: "Interactive Foundations: Core Concepts & Practice",
-        description:
-          "Master core principles through interactive lessons, analogies, and hands-on exercises.",
+        title: userTextPrompt.includes("Git")
+          ? "Practical Git & GitHub Fundamentals"
+          : "Complete Mastery Course",
+        description: "A fast, beginner-friendly curriculum.",
         longDescription:
-          "A comprehensive, beginner-friendly curriculum designed to take you from core basics to practical project mastery with real-world application.",
-        category: "Computer Science",
+          "Master core principles with relatable everyday analogies and practical quizzes.",
+        category: "Programming",
         difficulty: "beginner",
         whatYouWillLearn: [
-          "Foundational concepts and principles",
-          "Practical workflows and best practices",
-          "Debugging and problem-solving techniques",
-          "Building real-world milestone projects",
+          "Core mental models",
+          "Working with data",
+          "Conditional logic",
+          "Real-world application",
         ],
-        prerequisites: ["No prior experience required"],
-        targetProjects: [
-          "Personal Portfolio Milestone Project",
-          "Interactive Utility Tool",
-        ],
+        prerequisites: ["Curiosity to learn"],
+        targetProjects: ["Hands-on Capstone Demonstration"],
         quizFrequency: "high",
         capstoneDifficulty: "medium",
         chapters: [
           {
             id: "ch-1",
-            title: "Foundations & Core Principles",
-            description:
-              "Understand the fundamental building blocks and mental models.",
+            title: "Foundations & Mental Models",
+            description: "Build a rock-solid mental framework.",
             order: 0,
-            capstoneGoal:
-              "Evaluate understanding of core definitions, syntax, and execution flow.",
+            sourceSectionId: "sec-1",
+            chunkIndices: [0],
+            capstoneGoal: "Evaluate core concepts and terminology.",
             topics: [
               {
                 id: "t-1-1",
@@ -782,6 +1067,8 @@ CRITICAL RULES:
             description:
               "Directing execution pathways and handling different conditions.",
             order: 1,
+            sourceSectionId: "sec-2",
+            chunkIndices: [1],
             capstoneGoal:
               "Evaluate problem solving with conditional logic and loops.",
             topics: [
@@ -819,6 +1106,7 @@ CRITICAL RULES:
         description:
           "Understand the fundamental ideas with clear analogies and examples.",
         order: 0,
+        subConcepts: ["Core definition", "Working with storage"],
         xp: 50,
         contents: [
           {
@@ -828,7 +1116,7 @@ CRITICAL RULES:
               {
                 type: "text",
                 content:
-                  "Welcome to this lesson! Let us explore how this concept works in everyday life.\n\nImagine you have a organized storage box where every item has a specific labeled compartment.\n\nRemember: Keeping your data cleanly labeled prevents mistakes and makes your code reliable.",
+                  "Welcome to this lesson! Let us explore how this concept works in everyday life.\n\nImagine you have an organized storage box where every item has a specific labeled compartment.\n\nRemember: Keeping your data cleanly labeled prevents mistakes and makes your code reliable.",
               },
               {
                 type: "code",

@@ -7,6 +7,8 @@ import {
   generateCapstone,
   saveCourse,
   generateFullCourse,
+  getJobProgressSse,
+  getJobStatus,
   getPublicAiCourses,
   getMyAiCourses,
   getAiCourseByIdOrSlug,
@@ -24,7 +26,8 @@ const router = Router();
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 15 * 1024 * 1024, // 15MB max file size
+    fileSize: 35 * 1024 * 1024, // 35MB max file size (up to 100 pages typed)
+    fieldSize: 40 * 1024 * 1024,
   },
   fileFilter: (_req, file, cb) => {
     const mime = file.mimetype.toLowerCase();
@@ -90,6 +93,12 @@ router.post(
   upload.any(),
   generateFullCourse
 );
+
+// Real-time SSE progress stream for generation jobs (> 20 pages or async)
+router.get('/progress/:jobId', getJobProgressSse);
+
+// Job status polling endpoint
+router.get('/jobs/:jobId', getJobStatus);
 
 // ==========================================
 // AI-GENERATED COURSES DISCOVERY & MANAGEMENT

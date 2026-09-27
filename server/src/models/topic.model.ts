@@ -22,6 +22,8 @@ export interface ITopic extends Document {
   hasCodingTask?: boolean;
   practiceTaskSummary?: string;
   isGenerated?: boolean;
+  sectionId?: string;
+  sourceChunkIndices?: number[];
   contents: ITopicContent[];
   exercise?: IExercise;
   xp: number;
@@ -107,6 +109,14 @@ const TopicSchema: Schema = new Schema<ITopic>(
     isGenerated: {
       type: Boolean,
       default: false,
+    },
+    sectionId: {
+      type: String,
+      default: undefined,
+    },
+    sourceChunkIndices: {
+      type: [Number],
+      default: undefined,
     },
     contents: [TopicContentSchema],
     exercise: {

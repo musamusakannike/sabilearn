@@ -35,6 +35,10 @@ export interface ICourse extends Document {
   sourceSummary?: string;
   /** Full extracted source text / document context used to generate curriculum and lessons */
   sourceContext?: string;
+  /** Macro Annotated Document Index produced by Phase 1 */
+  documentIndex?: any[];
+  /** Sanitized structural chunks for targeted Phase 2 micro-grounding */
+  sourceChunks?: any[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -132,6 +136,14 @@ const CourseSchema: Schema = new Schema<ICourse>(
     sourceContext: {
       type: String,
       default: '',
+    },
+    documentIndex: {
+      type: [Schema.Types.Mixed],
+      default: undefined,
+    },
+    sourceChunks: {
+      type: [Schema.Types.Mixed],
+      default: undefined,
     },
   },
   {

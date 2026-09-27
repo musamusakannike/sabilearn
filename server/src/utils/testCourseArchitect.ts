@@ -94,7 +94,7 @@ async function runTests() {
   console.log('✅ Generated Topic Content:');
   console.log(' - Title:', topicData.title);
   console.log(' - XP:', topicData.xp);
-  console.log(' - Contents items count:', topicData.contents.length);
+  console.log(' - Contents items count:', topicData.contents?.length || 0);
 
   // Test 5: Capstone Assessment Generation
   console.log('\n5. Testing Chapter Capstone Assessment Generation...');

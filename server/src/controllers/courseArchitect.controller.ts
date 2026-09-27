@@ -16,6 +16,7 @@ import Category from '../models/category.model';
 import UserProgress from '../models/userProgress.model';
 import AiHistory from '../models/aiHistory.model';
 import { uploadToR2 } from '../utils/r2.util';
+import { courseGenerationQueue } from '../services/courseGenerationQueue.service';
 
 interface MulterRequest extends AuthenticatedRequest {
   files?: Express.Multer.File[] | { [fieldname: string]: Express.Multer.File[] };
@@ -66,7 +67,14 @@ export const generatePlan = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { courseTitle, userGuidePrompt, difficulty = 'beginner', clarificationAnswers } = req.body;
+    const {
+      courseTitle,
+      userGuidePrompt,
+      difficulty = 'beginner',
+      clarificationAnswers,
+      startPage,
+      endPage,
+    } = req.body;
 
     let filesList: Express.Multer.File[] = [];
     if (Array.isArray(req.files)) {
@@ -84,27 +92,44 @@ export const generatePlan = async (
       }
     }
 
-    // 1. Process documents, extract text, and rasterize/collect image attachments
-    const processed = await DocumentProcessorService.processUploads(filesList, userGuidePrompt);
+    const pageRange =
+      startPage || endPage
+        ? {
+            start: startPage ? parseInt(startPage, 10) : undefined,
+            end: endPage ? parseInt(endPage, 10) : undefined,
+          }
+        : undefined;
 
-    // 2. Generate plan with DeepSeek
-    const plan = await CourseArchitectService.generatePlan({
+    // 1. Process documents with sanitization, normalization, and page range slicing
+    const processed = await DocumentProcessorService.processUploads(
+      filesList,
+      userGuidePrompt,
+      undefined,
+      pageRange
+    );
+
+    // 2. Generate plan with Phase 1 Macro Document Indexing covering 100% of chunks
+    const planResult = await CourseArchitectService.generatePlan({
       courseTitle,
       userGuidePrompt,
       extractedText: processed.extractedText,
       imageAttachments: processed.imageAttachments,
       difficulty,
       clarificationAnswers: parsedClarifications,
+      chunks: processed.chunks,
     });
 
     res.status(200).json({
       success: true,
       data: {
-        plan,
+        plan: planResult,
+        documentIndex: planResult.documentIndex,
+        chunks: planResult.chunks,
         extractedText: processed.extractedText,
         fileSummaries: processed.fileSummaries,
         detectedTypes: processed.detectedTypes,
         totalPages: processed.totalPages,
+        isLargeDocument: processed.isLargeDocument,
       },
     });
   } catch (error: any) {
@@ -383,9 +408,265 @@ export const saveCourse = async (
   }
 };
 
+interface FullCourseGenerationArgs {
+  jobId?: string;
+  user: any;
+  courseTitle: string;
+  userGuidePrompt: string;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  visibility: 'public' | 'unlisted' | 'private';
+  banner: string;
+  filesList: Express.Multer.File[];
+  processed: any;
+}
+
+async function executeFullCourseGeneration(args: FullCourseGenerationArgs) {
+  const {
+    jobId,
+    user,
+    courseTitle,
+    userGuidePrompt,
+    difficulty,
+    visibility,
+    banner,
+    filesList,
+    processed,
+  } = args;
+
+  if (jobId) {
+    courseGenerationQueue.updateProgress(
+      jobId,
+      25,
+      'Phase 1: Analyzing document structure and building Annotated Index...'
+    );
+  }
+
+  // 1. Generate plan with Phase 1 Macro Document Indexing covering 100% of chunks
+  const planResult = await CourseArchitectService.generatePlan({
+    courseTitle,
+    userGuidePrompt,
+    extractedText: processed.extractedText,
+    imageAttachments: processed.imageAttachments,
+    difficulty,
+    chunks: processed.chunks,
+  });
+
+  if (jobId) {
+    courseGenerationQueue.updateProgress(
+      jobId,
+      50,
+      'Phase 1: Curriculum structured with 100% document coverage guaranteed...'
+    );
+  }
+
+  // 2. Pre-generate only the very first topic with Phase 2 Micro targeted context injection
+  let firstTopicContents: any[] = [];
+  const firstChapterPlan = planResult.chapters?.[0];
+  const firstTopicPlan = firstChapterPlan?.topics?.[0];
+  if (firstTopicPlan) {
+    if (jobId) {
+      courseGenerationQueue.updateProgress(
+        jobId,
+        70,
+        'Phase 2: Generating opening lesson with targeted chunk grounding...'
+      );
+    }
+    try {
+      const firstTopicData = await CourseArchitectService.generateTopicContent({
+        courseTitle: planResult.title,
+        chapterTitle: firstChapterPlan.title,
+        topicTitle: firstTopicPlan.title,
+        topicDescription: firstTopicPlan.description,
+        subConcepts: firstTopicPlan.subConcepts,
+        hasCodingTask: firstTopicPlan.hasCodingTask,
+        practiceTaskSummary: firstTopicPlan.practiceTaskSummary,
+        order: 0,
+        difficulty: planResult.difficulty,
+        category: planResult.category,
+        sourceContext: processed.extractedText,
+        chunks: planResult.chunks,
+        documentIndex: planResult.documentIndex,
+        sectionId: firstChapterPlan.sourceSectionId,
+        sourceChunkIndices: firstChapterPlan.chunkIndices,
+        chapterIndex: 0,
+        topicIndex: 0,
+      });
+      firstTopicContents = firstTopicData.contents || [];
+    } catch (e: any) {
+      console.warn('Failed to pre-generate first topic, will generate on-demand:', e.message);
+    }
+  }
+
+  if (jobId) {
+    courseGenerationQueue.updateProgress(
+      jobId,
+      85,
+      'Saving course modules, chapters, and topics to database...'
+    );
+  }
+
+  // 3. Save to database
+  let bannerUrl = typeof banner === 'string' ? banner : '';
+  const bannerFile = filesList.find((f) => f.fieldname === 'banner');
+  if (bannerFile) {
+    const fileKey = `courses/banners/${Date.now()}-${bannerFile.originalname.replace(/\s+/g, '-')}`;
+    bannerUrl = await uploadToR2(bannerFile.buffer, fileKey, bannerFile.mimetype);
+  }
+
+  const categoryName = planResult.category || 'General Studies';
+  let categoryDoc = await Category.findOne({
+    name: { $regex: `^${categoryName.trim()}$`, $options: 'i' },
+  });
+  if (!categoryDoc) {
+    categoryDoc = await Category.create({
+      name: categoryName.trim(),
+      description: `Explore courses in ${categoryName.trim()}.`,
+    });
+  }
+
+  const authorName = user.name || `${user.firstName} ${user.lastName}`.trim() || 'SabiLearn Creator';
+  const authorAvatar =
+    user.avatar ||
+    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80';
+
+  const defaultBanner =
+    bannerUrl ||
+    'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80';
+
+  const shareSlug = generateShareSlug(planResult.title);
+
+  const course = await Course.create({
+    title: planResult.title,
+    description: planResult.description,
+    longDescription: planResult.longDescription || planResult.description,
+    banner: defaultBanner,
+    category: categoryDoc.name,
+    difficulty: planResult.difficulty || 'beginner',
+    authors: [
+      {
+        name: authorName,
+        role: 'Course Creator',
+        avatar: authorAvatar,
+        bio: 'Created with SabiLearn AI Course Architect.',
+      },
+    ],
+    whatYouWillLearn: planResult.whatYouWillLearn || [],
+    prerequisites: planResult.prerequisites || [],
+    isPublished: visibility === 'public',
+    isFree: true,
+    price: 0,
+    order: 100,
+    isAiGenerated: true,
+    creator: user._id,
+    visibility,
+    shareSlug,
+    sourceSummary: `Generated from ${processed.fileSummaries.length} files (${processed.totalPages} pages).`,
+    sourceContext: processed.extractedText || '',
+    documentIndex: planResult.documentIndex,
+    sourceChunks: planResult.chunks,
+  });
+
+  let totalChapters = 0;
+  let totalTopics = 0;
+
+  for (let chIdx = 0; chIdx < planResult.chapters.length; chIdx++) {
+    const chData = planResult.chapters[chIdx];
+    const createdChapter = await Chapter.create({
+      course: course._id,
+      title: chData.title,
+      description: chData.description || '',
+      order: chIdx,
+      capstoneGoal: chData.capstoneGoal || 'Evaluate mastery of chapter topics',
+      capstoneDifficulty: planResult.capstoneDifficulty || 'medium',
+    });
+    totalChapters++;
+
+    for (let tIdx = 0; tIdx < chData.topics.length; tIdx++) {
+      const tData = chData.topics[tIdx];
+      const isFirst = chIdx === 0 && tIdx === 0;
+      const contents = isFirst && firstTopicContents.length > 0 ? firstTopicContents : [];
+      const isGenerated = contents.length > 0;
+
+      await Topic.create({
+        course: course._id,
+        chapter: createdChapter._id,
+        title: tData.title,
+        description: tData.description || '',
+        subConcepts: tData.subConcepts || [],
+        hasCodingTask: Boolean(tData.hasCodingTask),
+        practiceTaskSummary: tData.practiceTaskSummary || '',
+        order: tIdx,
+        sectionId: chData.sourceSectionId || tData.sectionId,
+        sourceChunkIndices: chData.chunkIndices || tData.sourceChunkIndices,
+        contents,
+        isGenerated,
+        xp: 50,
+        isPublished: true,
+      });
+      totalTopics++;
+    }
+  }
+
+  // Auto-enroll user
+  const firstTopic = await Topic.findOne({ course: course._id }).sort({ order: 1 });
+  await UserProgress.findOneAndUpdate(
+    { user: user._id, course: course._id },
+    {
+      $setOnInsert: {
+        user: user._id,
+        course: course._id,
+        lastTopic: firstTopic?._id,
+        completedTopics: [],
+        percentCompleted: 0,
+      },
+    },
+    { upsert: true, new: true }
+  );
+
+  // Record AI History
+  await AiHistory.create({
+    user: user._id,
+    type: 'course_generation',
+    title: `Generated Course: ${course.title}`,
+    prompt: courseTitle || userGuidePrompt || 'One-click course generation',
+    metadata: {
+      courseId: course._id,
+      category: course.category,
+      visibility: course.visibility,
+      totalChapters,
+      totalTopics,
+      shareSlug: course.shareSlug,
+      filesCount: filesList.length,
+    },
+    result: {
+      courseId: course._id,
+      chaptersCount: totalChapters,
+      topicsCount: totalTopics,
+    },
+  });
+
+  const finalResult = {
+    courseId: course._id,
+    title: course.title,
+    shareSlug: course.shareSlug,
+    visibility: course.visibility,
+    stats: {
+      chapters: totalChapters,
+      topics: totalTopics,
+    },
+  };
+
+  if (jobId) {
+    courseGenerationQueue.completeJob(jobId, finalResult);
+  }
+
+  return finalResult;
+}
+
 /**
  * POST /api/v1/ai/course-architect/generate-full
  * 1-click end-to-end course generation and saving.
+ * Dispatches to async background queue with real-time SSE progress when files > 20 pages or on request.
  */
 export const generateFullCourse = async (
   req: MulterRequest,
@@ -400,6 +681,9 @@ export const generateFullCourse = async (
       difficulty = 'beginner',
       visibility = 'private',
       banner = '',
+      startPage,
+      endPage,
+      isAsync,
     } = req.body;
 
     let filesList: Express.Multer.File[] = [];
@@ -409,196 +693,130 @@ export const generateFullCourse = async (
       filesList = Object.values(req.files).flat();
     }
 
-    // 1. Process documents
-    const processed = await DocumentProcessorService.processUploads(filesList, userGuidePrompt);
+    const pageRange =
+      startPage || endPage
+        ? {
+            start: startPage ? parseInt(startPage, 10) : undefined,
+            end: endPage ? parseInt(endPage, 10) : undefined,
+          }
+        : undefined;
 
-    // 2. Generate course plan only (fast, 1 LLM call)
-    const plan = await CourseArchitectService.generatePlan({
-      courseTitle,
+    // 1. Process documents with sanitization, normalization, and page range slicing
+    const processed = await DocumentProcessorService.processUploads(
+      filesList,
       userGuidePrompt,
-      extractedText: processed.extractedText,
-      imageAttachments: processed.imageAttachments,
-      difficulty,
-    });
-
-    // 3. Pre-generate only the very first topic so the student can start immediately
-    let firstTopicContents: any[] = [];
-    const firstChapterPlan = plan.chapters?.[0];
-    const firstTopicPlan = firstChapterPlan?.topics?.[0];
-    if (firstTopicPlan) {
-      try {
-        const firstTopicData = await CourseArchitectService.generateTopicContent({
-          courseTitle: plan.title,
-          chapterTitle: firstChapterPlan.title,
-          topicTitle: firstTopicPlan.title,
-          topicDescription: firstTopicPlan.description,
-          subConcepts: firstTopicPlan.subConcepts,
-          hasCodingTask: firstTopicPlan.hasCodingTask,
-          practiceTaskSummary: firstTopicPlan.practiceTaskSummary,
-          order: 0,
-          difficulty: plan.difficulty,
-          category: plan.category,
-          sourceContext: processed.extractedText,
-        });
-        firstTopicContents = firstTopicData.contents || [];
-      } catch (e: any) {
-        console.warn('Failed to pre-generate first topic, will generate on-demand:', e.message);
-      }
-    }
-
-    // 4. Save to database
-    let bannerUrl = typeof banner === 'string' ? banner : '';
-    const bannerFile = filesList.find((f) => f.fieldname === 'banner');
-    if (bannerFile) {
-      const fileKey = `courses/banners/${Date.now()}-${bannerFile.originalname.replace(/\s+/g, '-')}`;
-      bannerUrl = await uploadToR2(bannerFile.buffer, fileKey, bannerFile.mimetype);
-    }
-
-    // 5. Create category if needed
-    const categoryName = plan.category || 'General Studies';
-    let categoryDoc = await Category.findOne({
-      name: { $regex: `^${categoryName.trim()}$`, $options: 'i' },
-    });
-    if (!categoryDoc) {
-      categoryDoc = await Category.create({
-        name: categoryName.trim(),
-        description: `Explore courses in ${categoryName.trim()}.`,
-      });
-    }
-
-    const authorName = user.name || `${user.firstName} ${user.lastName}`.trim() || 'SabiLearn Creator';
-    const authorAvatar =
-      user.avatar ||
-      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80';
-
-    const defaultBanner =
-      bannerUrl ||
-      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80';
-
-    const shareSlug = generateShareSlug(plan.title);
-
-    const course = await Course.create({
-      title: plan.title,
-      description: plan.description,
-      longDescription: plan.longDescription || plan.description,
-      banner: defaultBanner,
-      category: categoryDoc.name,
-      difficulty: plan.difficulty || 'beginner',
-      authors: [
-        {
-          name: authorName,
-          role: 'Course Creator',
-          avatar: authorAvatar,
-          bio: 'Created with SabiLearn AI Course Architect.',
-        },
-      ],
-      whatYouWillLearn: plan.whatYouWillLearn || [],
-      prerequisites: plan.prerequisites || [],
-      isPublished: visibility === 'public',
-      isFree: true,
-      price: 0,
-      order: 100,
-      isAiGenerated: true,
-      creator: user._id,
-      visibility,
-      shareSlug,
-      sourceSummary: `Generated from ${processed.fileSummaries.length} files (${processed.totalPages} pages).`,
-      sourceContext: processed.extractedText || '',
-    });
-
-    let totalChapters = 0;
-    let totalTopics = 0;
-
-    for (let chIdx = 0; chIdx < plan.chapters.length; chIdx++) {
-      const chData = plan.chapters[chIdx];
-      const createdChapter = await Chapter.create({
-        course: course._id,
-        title: chData.title,
-        description: chData.description || '',
-        order: chIdx,
-        capstoneGoal: chData.capstoneGoal || 'Evaluate mastery of chapter topics',
-        capstoneDifficulty: plan.capstoneDifficulty || 'medium',
-      });
-      totalChapters++;
-
-      for (let tIdx = 0; tIdx < chData.topics.length; tIdx++) {
-        const tData = chData.topics[tIdx];
-        const isFirst = chIdx === 0 && tIdx === 0;
-        const contents = isFirst && firstTopicContents.length > 0 ? firstTopicContents : [];
-        const isGenerated = contents.length > 0;
-
-        await Topic.create({
-          course: course._id,
-          chapter: createdChapter._id,
-          title: tData.title,
-          description: tData.description || '',
-          subConcepts: tData.subConcepts || [],
-          hasCodingTask: Boolean(tData.hasCodingTask),
-          practiceTaskSummary: tData.practiceTaskSummary || '',
-          order: tIdx,
-          contents,
-          isGenerated,
-          xp: 50,
-          isPublished: true,
-        });
-        totalTopics++;
-      }
-    }
-
-    // Auto-enroll user
-    const firstTopic = await Topic.findOne({ course: course._id }).sort({ order: 1 });
-    await UserProgress.findOneAndUpdate(
-      { user: user._id, course: course._id },
-      {
-        $setOnInsert: {
-          user: user._id,
-          course: course._id,
-          lastTopic: firstTopic?._id,
-          completedTopics: [],
-          percentCompleted: 0,
-        },
-      },
-      { upsert: true, new: true }
+      undefined,
+      pageRange
     );
 
-    // Record AI History
-    await AiHistory.create({
-      user: user._id,
-      type: 'course_generation',
-      title: `Generated Course: ${course.title}`,
-      prompt: courseTitle || userGuidePrompt || 'One-click course generation',
-      metadata: {
-        courseId: course._id,
-        category: course.category,
-        visibility: course.visibility,
-        totalChapters,
-        totalTopics,
-        shareSlug: course.shareSlug,
-        filesCount: filesList.length,
-      },
-      result: {
-        courseId: course._id,
-        chaptersCount: totalChapters,
-        topicsCount: totalTopics,
-      },
+    // Check if background queue should be used (> 20 pages or explicit isAsync)
+    const shouldUseQueue = processed.isLargeDocument || isAsync === 'true' || isAsync === true;
+
+    if (shouldUseQueue) {
+      const job = courseGenerationQueue.createJob(user._id.toString(), {
+        courseTitle: courseTitle || 'Untitled Course',
+        totalPages: processed.totalPages,
+        fileCount: filesList.length,
+      });
+
+      // Enqueue job with concurrency control for EC2 t3.micro protection
+      courseGenerationQueue.enqueue(job.id, async () => {
+        await executeFullCourseGeneration({
+          jobId: job.id,
+          user,
+          courseTitle,
+          userGuidePrompt,
+          difficulty: difficulty as any,
+          visibility: visibility as any,
+          banner,
+          filesList,
+          processed,
+        });
+      });
+
+      res.status(202).json({
+        success: true,
+        async: true,
+        jobId: job.id,
+        totalPages: processed.totalPages,
+        isLargeDocument: true,
+        message: 'Large document detected. Course is generating in background queue.',
+      });
+      return;
+    }
+
+    // Synchronous execution for smaller files (<= 20 pages)
+    const result = await executeFullCourseGeneration({
+      user,
+      courseTitle,
+      userGuidePrompt,
+      difficulty: difficulty as any,
+      visibility: visibility as any,
+      banner,
+      filesList,
+      processed,
     });
 
     res.status(201).json({
       success: true,
-      data: {
-        courseId: course._id,
-        title: course.title,
-        shareSlug: course.shareSlug,
-        visibility: course.visibility,
-        stats: {
-          chapters: totalChapters,
-          topics: totalTopics,
-        },
-      },
+      data: result,
     });
   } catch (error) {
     next(error);
   }
+};
+
+/**
+ * GET /api/v1/ai/course-architect/progress/:jobId
+ * Server-Sent Events (SSE) stream for real-time generation progress and stages.
+ */
+export const getJobProgressSse = (req: Request, res: Response): void => {
+  const jobId = String(req.params.jobId);
+  const job = courseGenerationQueue.getJob(jobId);
+
+  if (!job) {
+    res.status(404).json({ success: false, message: 'Generation job not found.' });
+    return;
+  }
+
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.flushHeaders?.();
+
+  const heartbeat = setInterval(() => {
+    res.write(': keepalive\n\n');
+  }, 15000);
+
+  const unsubscribe = courseGenerationQueue.subscribe(jobId, (updatedJob) => {
+    res.write(`data: ${JSON.stringify(updatedJob)}\n\n`);
+    if (updatedJob.status === 'completed' || updatedJob.status === 'failed') {
+      clearInterval(heartbeat);
+      res.end();
+    }
+  });
+
+  req.on('close', () => {
+    clearInterval(heartbeat);
+    unsubscribe();
+  });
+};
+
+/**
+ * GET /api/v1/ai/course-architect/jobs/:jobId
+ * Polling fallback endpoint to check job status and progress.
+ */
+export const getJobStatus = (req: Request, res: Response): void => {
+  const jobId = String(req.params.jobId);
+  const job = courseGenerationQueue.getJob(jobId);
+
+  if (!job) {
+    res.status(404).json({ success: false, message: 'Generation job not found.' });
+    return;
+  }
+
+  res.status(200).json({ success: true, data: job });
 };
 
 /**
