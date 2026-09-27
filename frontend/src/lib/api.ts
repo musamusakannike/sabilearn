@@ -213,6 +213,8 @@ export const courseArchitectApi = {
       timeout: COURSE_GENERATE_TIMEOUT_MS,
       headers: { 'Content-Type': 'multipart/form-data' },
     }),
+  getJobProgressUrl: (jobId: string) => `${API_URL}/ai/course-architect/progress/${jobId}`,
+  getJobStatus: (jobId: string) => api.get(`/ai/course-architect/jobs/${jobId}`),
   myCourses: (params?: { page?: number; limit?: number }) =>
     api.get('/ai/courses/my-courses', { params }),
   publicCourses: (params?: Record<string, unknown>) =>

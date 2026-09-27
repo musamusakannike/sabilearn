@@ -15,22 +15,27 @@ import {
   Clock,
   AlertCircle,
   Sparkles,
+  SlidersHorizontal,
+  Info,
+  CheckCircle2,
 } from 'lucide-react';
 import { courseArchitectApi } from '@/lib/api';
 import { CourseArchitectQuota, GeneratedCourseResult } from '@/lib/types';
 import Button from '@/components/ui/Button';
 
-const MAX_FILE_BYTES = 15 * 1024 * 1024; // 15MB
+// Upload constraints
+const MAX_DOC_BYTES = 35 * 1024 * 1024; // 35MB for typed text documents (up to 100 pages)
+const MAX_IMAGE_BYTES = 20 * 1024 * 1024; // 20MB for photos / scanned non-typed files
 
 const DIFFICULTIES = ['beginner', 'intermediate', 'advanced'] as const;
 const VISIBILITIES = ['private', 'unlisted', 'public'] as const;
 
 const STAGES = [
-  'Reading your materials…',
-  'Outlining chapters…',
-  'Writing lessons…',
-  'Building quizzes…',
-  'Saving your course…',
+  'Reading and sanitizing your materials…',
+  'Phase 1 Macro: Building Annotated Document Index across all pages…',
+  'Phase 1 Macro: Outlining full-coverage course curriculum…',
+  'Phase 2 Micro: Grounding lessons with targeted chunk context…',
+  'Finalizing interactive quizzes and saving your course…',
 ];
 
 interface Attachment {
@@ -58,12 +63,21 @@ export default function GenerateCoursePage() {
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [generating, setGenerating] = useState(false);
   const [stageIndex, setStageIndex] = useState(0);
+  const [progressPercent, setProgressPercent] = useState(10);
+  const [currentStageText, setCurrentStageText] = useState(STAGES[0]);
   const [result, setResult] = useState<GeneratedCourseResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Page range selector state
+  const [enablePageRange, setEnablePageRange] = useState(false);
+  const [startPage, setStartPage] = useState('');
+  const [endPage, setEndPage] = useState('');
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const photoInputRef = useRef<HTMLInputElement | null>(null);
   const stageTimer = useRef<NodeJS.Timeout | null>(null);
+  const eventSourceRef = useRef<EventSource | null>(null);
+  const pollTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const loadQuota = useCallback(async () => {
     try {
@@ -83,6 +97,8 @@ export default function GenerateCoursePage() {
   useEffect(() => {
     return () => {
       if (stageTimer.current) clearInterval(stageTimer.current);
+      if (pollTimerRef.current) clearInterval(pollTimerRef.current);
+      if (eventSourceRef.current) eventSourceRef.current.close();
     };
   }, []);
 
@@ -92,10 +108,18 @@ export default function GenerateCoursePage() {
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      if (file.size > MAX_FILE_BYTES) {
-        setError(`${file.name} is over 15MB. Please choose a smaller file.`);
+      const maxAllowed = kind === 'image' ? MAX_IMAGE_BYTES : MAX_DOC_BYTES;
+      const maxLabel = kind === 'image' ? '20MB' : '35MB';
+
+      if (file.size > maxAllowed) {
+        setError(
+          `"${file.name}" exceeds the ${maxLabel} limit for ${kind === 'image' ? 'photos' : 'documents'}. Please choose a smaller file${
+            kind === 'file' ? ' or use the page range selector.' : '.'
+          }`
+        );
         return;
       }
+
       newItems.push({
         id: `${file.name}-${file.size}-${Date.now()}-${i}`,
         file,
@@ -113,14 +137,23 @@ export default function GenerateCoursePage() {
     setAttachments((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const hasDocumentAttachment = attachments.some((a) => a.kind === 'file');
   const canGenerate = prompt.trim().length > 0 || attachments.length > 0;
 
   const startStageLoop = () => {
     setStageIndex(0);
+    setProgressPercent(15);
+    setCurrentStageText(STAGES[0]);
+
     if (stageTimer.current) clearInterval(stageTimer.current);
     stageTimer.current = setInterval(() => {
-      setStageIndex((i) => (i + 1) % STAGES.length);
-    }, 1500);
+      setStageIndex((prev) => {
+        const next = (prev + 1) % STAGES.length;
+        setCurrentStageText(STAGES[next]);
+        setProgressPercent((p) => Math.min(92, p + 12));
+        return next;
+      });
+    }, 4500);
   };
 
   const stopStageLoop = () => {
@@ -128,6 +161,96 @@ export default function GenerateCoursePage() {
       clearInterval(stageTimer.current);
       stageTimer.current = null;
     }
+  };
+
+  /**
+   * Listen to Server-Sent Events (SSE) for background async jobs (> 20 pages).
+   */
+  const listenToJobProgress = (jobId: string) => {
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
+    }
+
+    const sseUrl = courseArchitectApi.getJobProgressUrl(jobId);
+    let sseConnected = false;
+
+    try {
+      const es = new EventSource(sseUrl);
+      eventSourceRef.current = es;
+
+      es.onopen = () => {
+        sseConnected = true;
+      };
+
+      es.onmessage = (event) => {
+        try {
+          const job = JSON.parse(event.data);
+          if (job.progress !== undefined) {
+            setProgressPercent(job.progress);
+          }
+          if (job.stage) {
+            setCurrentStageText(job.stage);
+          }
+
+          if (job.status === 'completed' && job.result) {
+            es.close();
+            stopStageLoop();
+            setResult(job.result as GeneratedCourseResult);
+            setGenerating(false);
+            void loadQuota();
+          } else if (job.status === 'failed') {
+            es.close();
+            stopStageLoop();
+            setError(job.error || 'Course generation failed. Please try again.');
+            setGenerating(false);
+          }
+        } catch {
+          // ignore parsing error on keepalive
+        }
+      };
+
+      es.onerror = () => {
+        es.close();
+        if (!sseConnected) {
+          // Fallback to polling if SSE is blocked by client proxy
+          startPollingJobStatus(jobId);
+        }
+      };
+    } catch {
+      startPollingJobStatus(jobId);
+    }
+  };
+
+  /**
+   * Resilient fallback polling in case SSE is blocked by proxy/firewall.
+   */
+  const startPollingJobStatus = (jobId: string) => {
+    if (pollTimerRef.current) clearInterval(pollTimerRef.current);
+    pollTimerRef.current = setInterval(async () => {
+      try {
+        const res = await courseArchitectApi.getJobStatus(jobId);
+        if (res.data?.success && res.data.data) {
+          const job = res.data.data;
+          setProgressPercent(job.progress || 50);
+          if (job.stage) setCurrentStageText(job.stage);
+
+          if (job.status === 'completed' && job.result) {
+            if (pollTimerRef.current) clearInterval(pollTimerRef.current);
+            stopStageLoop();
+            setResult(job.result as GeneratedCourseResult);
+            setGenerating(false);
+            void loadQuota();
+          } else if (job.status === 'failed') {
+            if (pollTimerRef.current) clearInterval(pollTimerRef.current);
+            stopStageLoop();
+            setError(job.error || 'Course generation failed.');
+            setGenerating(false);
+          }
+        }
+      } catch {
+        // keep polling until timeout
+      }
+    }, 2500);
   };
 
   const handleGenerate = async (e?: React.FormEvent) => {
@@ -144,6 +267,19 @@ export default function GenerateCoursePage() {
       return;
     }
 
+    if (enablePageRange) {
+      const s = parseInt(startPage, 10);
+      const en = parseInt(endPage, 10);
+      if (isNaN(s) || s < 1) {
+        setError('Please enter a valid start page number (e.g. 1).');
+        return;
+      }
+      if (endPage.trim() && (isNaN(en) || en < s)) {
+        setError(`End page (${endPage}) cannot be less than start page (${startPage}).`);
+        return;
+      }
+    }
+
     setError(null);
     setGenerating(true);
     startStageLoop();
@@ -155,18 +291,35 @@ export default function GenerateCoursePage() {
       form.append('difficulty', DIFFICULTIES[difficultyIndex]);
       form.append('visibility', VISIBILITIES[visibilityIndex]);
 
+      if (enablePageRange) {
+        if (startPage.trim()) form.append('startPage', startPage.trim());
+        if (endPage.trim()) form.append('endPage', endPage.trim());
+      }
+
       attachments.forEach((item, index) => {
         form.append(`file_${index}`, item.file);
       });
 
       const res = await courseArchitectApi.generateFull(form);
+
+      // Async background queue response for large documents (> 20 pages)
+      if (res.data?.async && res.data?.jobId) {
+        setCurrentStageText(`Queued background processing for ${res.data.totalPages || 'large'} pages…`);
+        listenToJobProgress(res.data.jobId);
+        return;
+      }
+
       if (!res.data?.success) {
         throw new Error(res.data?.message || 'Generation failed');
       }
 
+      stopStageLoop();
       setResult(res.data.data as GeneratedCourseResult);
+      setGenerating(false);
       void loadQuota();
     } catch (err: unknown) {
+      stopStageLoop();
+      setGenerating(false);
       const axiosError = err as { response?: { status?: number; data?: { message?: string } }; message?: string };
       const status = axiosError.response?.status;
       const message =
@@ -183,9 +336,6 @@ export default function GenerateCoursePage() {
       } else {
         setError(message);
       }
-    } finally {
-      stopStageLoop();
-      setGenerating(false);
     }
   };
 
@@ -197,6 +347,9 @@ export default function GenerateCoursePage() {
     setAttachments([]);
     setDifficultyIndex(0);
     setVisibilityIndex(0);
+    setEnablePageRange(false);
+    setStartPage('');
+    setEndPage('');
   };
 
   if (result) {
@@ -214,7 +367,7 @@ export default function GenerateCoursePage() {
             Course ready
           </h1>
           <p className="mt-1 text-sm text-[var(--text-muted)]">
-            Your generated course is saved and you are enrolled.
+            Your generated course has been structured with 100% material coverage and saved.
           </p>
         </div>
 
@@ -228,6 +381,10 @@ export default function GenerateCoursePage() {
           <p className="mt-2 text-sm font-medium text-[var(--text-muted)]">
             {result.stats.chapters} chapters · {result.stats.topics} topics
           </p>
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-violet-100)] px-3 py-1 text-xs font-semibold text-[var(--brand-violet)]">
+            <CheckCircle2 className="size-3.5" />
+            <span>Guaranteed full document coverage</span>
+          </div>
         </div>
 
         <div className="space-y-3 pt-2">
@@ -262,7 +419,7 @@ export default function GenerateCoursePage() {
           Generate course
         </h1>
         <p className="mt-1 text-sm text-[var(--text-muted)]">
-          Turn notes or a prompt into a full SabiLearn course.
+          Turn notes, slides, or syllabus into a full SabiLearn course with comprehensive coverage.
         </p>
       </div>
 
@@ -336,9 +493,14 @@ export default function GenerateCoursePage() {
 
         {/* Source Files Upload Area */}
         <div>
-          <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-[var(--ink-900)]">
-            Source files
-          </label>
+          <div className="mb-2 flex items-center justify-between">
+            <label className="block text-xs font-bold uppercase tracking-wider text-[var(--ink-900)]">
+              Source files
+            </label>
+            <span className="text-[11px] font-medium text-[var(--text-muted)]">
+              Up to 100 pages typed · Max 35MB
+            </span>
+          </div>
 
           {/* Hidden HTML file inputs */}
           <input
@@ -369,24 +531,38 @@ export default function GenerateCoursePage() {
               type="button"
               disabled={generating}
               onClick={() => fileInputRef.current?.click()}
-              className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-4 text-center transition-all hover:bg-[var(--surface-sunken)] active:scale-[0.99] disabled:opacity-50"
+              className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-4 text-center transition-all hover:border-[var(--brand-violet)] hover:bg-[var(--surface-sunken)] active:scale-[0.99] disabled:opacity-50"
             >
-              <Upload className="size-5 text-[var(--ink-900)]" />
-              <span className="text-xs font-bold text-[var(--ink-900)]">
-                PDF or DOCX
-              </span>
+              <div className="flex size-10 items-center justify-center rounded-xl bg-[var(--brand-violet-100)] text-[var(--brand-violet)] transition group-hover:scale-105">
+                <Upload className="size-5" />
+              </div>
+              <div>
+                <span className="block text-xs font-bold text-[var(--ink-900)]">
+                  PDF or DOCX
+                </span>
+                <span className="block text-[11px] text-[var(--text-muted)] mt-0.5">
+                  Up to 100 pages (max 35MB)
+                </span>
+              </div>
             </button>
 
             <button
               type="button"
               disabled={generating}
               onClick={() => photoInputRef.current?.click()}
-              className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-4 text-center transition-all hover:bg-[var(--surface-sunken)] active:scale-[0.99] disabled:opacity-50"
+              className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-4 text-center transition-all hover:border-[var(--brand-violet)] hover:bg-[var(--surface-sunken)] active:scale-[0.99] disabled:opacity-50"
             >
-              <ImageIcon className="size-5 text-[var(--ink-900)]" />
-              <span className="text-xs font-bold text-[var(--ink-900)]">
-                Photos
-              </span>
+              <div className="flex size-10 items-center justify-center rounded-xl bg-[var(--brand-violet-100)] text-[var(--brand-violet)] transition group-hover:scale-105">
+                <ImageIcon className="size-5" />
+              </div>
+              <div>
+                <span className="block text-xs font-bold text-[var(--ink-900)]">
+                  Photos & Slides
+                </span>
+                <span className="block text-[11px] text-[var(--text-muted)] mt-0.5">
+                  Max 20MB (auto-optimized)
+                </span>
+              </div>
             </button>
           </div>
 
@@ -396,7 +572,7 @@ export default function GenerateCoursePage() {
               {attachments.map((file) => (
                 <div
                   key={file.id}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-[var(--line)] bg-[var(--surface-card)] px-3.5 py-2.5 text-xs text-[var(--ink-900)]"
+                  className="flex items-center justify-between gap-3 rounded-xl border border-[var(--line)] bg-[var(--surface-card)] px-3.5 py-2.5 text-xs text-[var(--ink-900)] transition hover:border-[var(--brand-violet-200)]"
                 >
                   <div className="flex min-w-0 items-center gap-2">
                     {file.kind === 'image' ? (
@@ -408,18 +584,93 @@ export default function GenerateCoursePage() {
                     <span className="shrink-0 text-[var(--text-muted)]">
                       ({formatFileSize(file.size)})
                     </span>
+                    <span className="rounded bg-[var(--surface-sunken)] px-1.5 py-0.5 text-[10px] font-semibold uppercase text-[var(--ink-500)]">
+                      {file.kind === 'image' ? 'Image' : 'Document'}
+                    </span>
                   </div>
                   <button
                     type="button"
                     disabled={generating}
                     onClick={() => removeAttachment(file.id)}
-                    className="shrink-0 p-0.5 text-[var(--ink-500)] hover:text-[var(--danger)]"
+                    className="shrink-0 p-0.5 text-[var(--ink-500)] transition hover:text-[var(--danger)]"
                     aria-label="Remove attachment"
                   >
                     <X className="size-4" />
                   </button>
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* Page Range Selector (for document uploads) */}
+          {hasDocumentAttachment && (
+            <div className="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-4 transition-all">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <SlidersHorizontal className="size-4 text-[var(--brand-violet)]" />
+                  <span className="text-xs font-bold text-[var(--ink-900)]">
+                    Targeted Page Range
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setEnablePageRange(!enablePageRange)}
+                  className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition-colors ${
+                    enablePageRange
+                      ? 'bg-[var(--brand-violet-100)] text-[var(--brand-violet)]'
+                      : 'text-[var(--ink-500)] hover:text-[var(--ink-900)] hover:bg-[var(--surface-sunken)]'
+                  }`}
+                >
+                  {enablePageRange ? 'Using Custom Range' : '+ Specify Pages'}
+                </button>
+              </div>
+
+              {enablePageRange ? (
+                <div className="mt-3 space-y-2.5 pt-2 border-t border-[var(--line)]">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-semibold text-[var(--ink-500)] mb-1">
+                        Start Page
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        placeholder="e.g. 1"
+                        value={startPage}
+                        onChange={(e) => setStartPage(e.target.value)}
+                        disabled={generating}
+                        className="w-full rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)] px-3 py-2 text-xs text-[var(--ink-900)] outline-none focus:border-[var(--brand-violet)]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-semibold text-[var(--ink-500)] mb-1">
+                        End Page
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        placeholder="e.g. 25"
+                        value={endPage}
+                        onChange={(e) => setEndPage(e.target.value)}
+                        disabled={generating}
+                        className="w-full rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)] px-3 py-2 text-xs text-[var(--ink-900)] outline-none focus:border-[var(--brand-violet)]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Clarification prompt requested by user */}
+                  <div className="flex items-start gap-2 rounded-xl bg-[var(--brand-violet-100)]/50 p-2.5 text-[11px] text-[var(--brand-violet-hover)] font-medium">
+                    <Info className="size-3.5 shrink-0 mt-0.5 text-[var(--brand-violet)]" />
+                    <span>
+                      The more specific you are with your page range, the better the result.
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <p className="mt-1.5 text-[11px] text-[var(--text-muted)]">
+                  We’ll analyze up to 100 pages. To extract a specific chapter or lecture, click “+ Specify Pages”.
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -495,20 +746,37 @@ export default function GenerateCoursePage() {
           </div>
         )}
 
-        {/* Generating Progress State or Submit Button */}
+        {/* Generating Progress State with Real-Time Progress Bar & SSE Stages */}
         {generating ? (
-          <div className="flex items-start gap-3 rounded-2xl border border-[var(--brand-violet-100)] bg-[var(--brand-violet-100)]/40 p-5">
-            <Loader2 className="size-5 shrink-0 animate-spin text-[var(--brand-violet)] mt-0.5" />
-            <div className="flex-1">
-              <p className="text-sm font-bold text-[var(--ink-900)]">
-                Building your course
-              </p>
-              <p className="mt-1 text-xs font-semibold text-[var(--brand-violet)]">
-                {STAGES[stageIndex]}
-              </p>
-              <p className="mt-2 text-xs text-[var(--text-muted)]">
-                Creating course modules and personalized lessons…
-              </p>
+          <div className="rounded-2xl border border-[var(--brand-violet-200)] bg-[var(--surface-card)] p-5 shadow-xs space-y-4">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start gap-3">
+                <Loader2 className="size-5 shrink-0 animate-spin text-[var(--brand-violet)] mt-0.5" />
+                <div>
+                  <p className="text-sm font-bold text-[var(--ink-900)]">
+                    Architecting your course
+                  </p>
+                  <p className="text-xs font-semibold text-[var(--brand-violet)] mt-0.5 transition-all">
+                    {currentStageText}
+                  </p>
+                </div>
+              </div>
+              <span className="text-xs font-bold text-[var(--brand-violet)] tabular-nums">
+                {progressPercent}%
+              </span>
+            </div>
+
+            {/* Dynamic Animated Progress Bar */}
+            <div className="h-2.5 w-full overflow-hidden rounded-full bg-[var(--surface-sunken)]">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-[var(--brand-violet)] to-[var(--brand-violet-hover)] transition-all duration-500 ease-out"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] text-[var(--text-muted)] pt-1">
+              <span>Hierarchical 2-Phase Map-Reduce</span>
+              <span>100% full document coverage</span>
             </div>
           </div>
         ) : quota && !quota.isSubscribed ? (

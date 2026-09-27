@@ -40,7 +40,8 @@ import { fontFamilies, fontSizes, spacing } from '@/theme';
 import { AI, FAINT, INK, MUTED, TINT_AI, TINT_GLASS } from '@/theme/brand';
 import * as haptics from '@/lib/haptics';
 
-const MAX_FILE_BYTES = 15 * 1024 * 1024;
+const MAX_DOC_BYTES = 35 * 1024 * 1024; // 35MB for typed documents
+const MAX_IMAGE_BYTES = 20 * 1024 * 1024; // 20MB for images
 const KEEP_AWAKE_TAG = 'course-generate';
 
 const DIFFICULTIES = ['beginner', 'intermediate', 'advanced'] as const;
@@ -119,9 +120,17 @@ export default function GenerateCourseScreen() {
   }, []);
 
   const addAttachments = (items: Attachment[]) => {
-    const tooBig = items.find((item) => (item.size ?? 0) > MAX_FILE_BYTES);
+    const tooBig = items.find((item) => {
+      const isImg = item.kind === 'image';
+      const limit = isImg ? MAX_IMAGE_BYTES : MAX_DOC_BYTES;
+      return (item.size ?? 0) > limit;
+    });
     if (tooBig) {
-      Alert.alert('File too large', `${tooBig.name} is over 15MB. Pick a smaller file.`);
+      const isImg = tooBig.kind === 'image';
+      Alert.alert(
+        'File too large',
+        `${tooBig.name} exceeds the ${isImg ? '20MB image' : '35MB document'} limit. Please pick a smaller file.`
+      );
       return;
     }
     setAttachments((prev) => [...prev, ...items]);
