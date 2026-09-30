@@ -6,13 +6,18 @@ import { notify } from '../services/notification.service';
 export const getNotifications = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const userId = req.user!._id;
+    // Bounded feed: the drawer is a "what's new" surface, not an archive.
+    // Caps the pile-up (43 identical unread rows) on the read path too.
+    const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 100);
 
     // Anything still queued for a future send must stay hidden until it fires,
     // or a scheduled maintenance warning shows up in the list days early.
     const notifications = await Notification.find({
       $or: [{ user: userId }, { user: null }],
       $and: [{ $or: [{ scheduledFor: null }, { scheduledFor: { $lte: new Date() } }] }],
-    }).sort({ createdAt: -1 });
+    })
+      .sort({ createdAt: -1 })
+      .limit(limit);
 
     res.status(200).json({ success: true, data: notifications });
   } catch (error) {

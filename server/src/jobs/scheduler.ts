@@ -4,7 +4,8 @@ import Notification from '../models/notification.model';
 import StudySession from '../models/studySession.model';
 import {
   deliver,
-  sendStudyReminder,
+  pruneStaleNotifications,
+  sendVariableStudyReminder,
   sendStreakRiskReminder,
 } from '../services/notification.service';
 import { expireLapsedStreaks } from '../services/streak.service';
@@ -57,6 +58,11 @@ function pushableUsersQuery(): Record<string, unknown> {
  * 5-day study reminder. Runs every 15 minutes and picks out the users whose
  * chosen local time has just come around, ensuring at least 5 days have passed
  * since their last reminder (or account creation), and skipping anyone who already studied today.
+ *
+ * Event-driven guardrails (why the drawer stopped piling up identical rows):
+ * - Users with an active streak (>= 2 days) are owned by the evening
+ *   streak-risk nudge — no generic reminder for them.
+ * - Max one nudge push per user per local day across reminder + streak.
  */
 export async function runStudyReminders(now = new Date()): Promise<number> {
   const users = await User.find({
@@ -76,7 +82,18 @@ export async function runStudyReminders(now = new Date()): Promise<number> {
 
     if (await hasStudiedToday(user)) continue;
 
+    // Event-driven: active streaks get the evening rescue nudge, not this.
+    if ((user.currentStreak ?? 0) >= 2) continue;
+
     const dayKey = localDayKey(now, offset);
+
+    // One nudge per day: a streak-risk already sent today wins.
+    const alreadyNudged = await Notification.exists({
+      user: user._id,
+      category: { $in: ['reminder', 'streak'] },
+      dedupeKey: { $in: [`reminder:${user._id}:${dayKey}`, `streak-risk:${user._id}:${dayKey}`] },
+    });
+    if (alreadyNudged) continue;
 
     // Ensure at least 5 days have elapsed since the user's last study reminder
     const lastReminder = await Notification.findOne({
@@ -94,18 +111,7 @@ export async function runStudyReminders(now = new Date()): Promise<number> {
       if (daysSinceCreation < STUDY_REMINDER_CADENCE_DAYS) continue;
     }
 
-    const streak = user.currentStreak;
-    const message =
-      streak > 0
-        ? `You are on a ${streak}-day streak. A short session keeps it going.`
-        : 'A few minutes of flashcards today adds up fast. Pick up where you left off.';
-
-    const created = await sendStudyReminder(
-      user._id as never,
-      'Time to study',
-      message,
-      dayKey
-    );
+    const created = await sendVariableStudyReminder(user, dayKey);
     if (created) sent += 1;
   }
 
@@ -132,6 +138,15 @@ export async function runStreakRiskReminders(now = new Date()): Promise<number> 
     if (await hasStudiedToday(user)) continue;
 
     const dayKey = localDayKey(now, offset);
+
+    // One nudge per day: a generic reminder already sent today wins.
+    const alreadyNudged = await Notification.exists({
+      user: user._id,
+      category: { $in: ['reminder', 'streak'] },
+      dedupeKey: { $in: [`reminder:${user._id}:${dayKey}`, `streak-risk:${user._id}:${dayKey}`] },
+    });
+    if (alreadyNudged) continue;
+
     const created = await sendStreakRiskReminder(user._id as never, user.currentStreak, dayKey);
     if (created) sent += 1;
   }
@@ -157,6 +172,13 @@ export async function runScheduledDispatch(now = new Date()): Promise<number> {
 }
 
 /**
+ * Retention sweep so the drawer can't accumulate months of stale nudges.
+ */
+export async function runNotificationPrune(now = new Date()): Promise<number> {
+  return pruneStaleNotifications(now);
+}
+
+/**
  * Zeroes streaks that have already lapsed, so a user who stopped studying a
  * week ago doesn't still see "5-day streak" on their dashboard.
  */
@@ -177,7 +199,16 @@ const JOBS: Job[] = [
     expression: '*/15 * * * *', // every 15 minutes, filtered per user timezone
     run: () => runStudyReminders(),
   },
-  // Note: evening streak-risk reminder ('streak-risk') removed for now.
+  {
+    name: 'streak-risk',
+    expression: '*/15 * * * *', // every 15 minutes, filtered to 20:00 local
+    run: () => runStreakRiskReminders(),
+  },
+  {
+    name: 'notification-prune',
+    expression: '45 1 * * *', // 01:45 UTC daily
+    run: () => runNotificationPrune(),
+  },
   {
     name: 'streak-cleanup',
     expression: '30 0 * * *', // 00:30 UTC daily

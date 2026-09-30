@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { scheduleLocalDailyReminder, requestNotificationPermission } from '@/lib/notifications';
 
 const STORAGE_KEY = 'sabilearn_has_onboarded';
 const PREFS_KEY = 'sabilearn_onboarding_preferences';
@@ -85,18 +84,6 @@ export const useOnboardingStore = create<OnboardingState>((set, get) => ({
         AsyncStorage.setItem(STORAGE_KEY, 'true'),
         AsyncStorage.setItem(PREFS_KEY, JSON.stringify(prefs)),
       ]);
-
-      // Request notification permission right when user locks in their habit
-      const granted = await requestNotificationPermission();
-
-      // Schedule local daily reminder based on chosen time
-      let hour24 = reminderTime.hour % 12;
-      if (reminderTime.period === 'PM') {
-        hour24 += 12;
-      }
-      if (granted) {
-        await scheduleLocalDailyReminder(hour24, reminderTime.minute);
-      }
     } catch {
       // non-fatal
     }

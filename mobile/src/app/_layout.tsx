@@ -98,32 +98,36 @@ function AppContent() {
   useEffect(() => {
     if (!isAuthenticated) return;
 
-    registerForPushNotifications();
+    // Push token is needed for streak alerts (active by default) and for daily
+    // study reminders (opt-in). Only skip registration when both are off.
+    const pushOptIn = user?.settings?.pushNotifications === true;
+    const streakOptIn = user?.settings?.streakAlerts !== false; // true by default
+    if (pushOptIn || streakOptIn) {
+      void registerForPushNotifications();
+    }
 
     const cleanup = setupNotificationHandlers((mobileRoute) => {
       router.push(mobileRoute as any);
     });
     return cleanup;
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, user?.settings?.pushNotifications, user?.settings?.streakAlerts, router]);
 
-  // Local daily-reminder backstop, tied to the user's notification settings or onboarding prefs.
+  // Local daily-reminder backstop — opt-in only. Inactive by default until
+  // the user explicitly enables both pushNotifications and studyReminders in Settings/Profile.
+  // Streak alerts (settings.streakAlerts) are independent and not gated here.
   useEffect(() => {
     if (!onboardingInitialized) return;
 
     if (isAuthenticated && user) {
       const settings = user.settings;
-      if (settings?.pushNotifications !== false && settings?.studyReminders !== false) {
-        scheduleLocalDailyReminder(settings?.reminderHour ?? 19, settings?.reminderMinute ?? 0);
+      if (settings?.pushNotifications === true && settings?.studyReminders === true) {
+        void scheduleLocalDailyReminder(settings?.reminderHour ?? 19, settings?.reminderMinute ?? 0);
       } else {
-        cancelLocalDailyReminder();
+        void cancelLocalDailyReminder();
       }
-    } else if (!isAuthenticated && hasOnboarded) {
-      const reminderTime = useOnboardingStore.getState().reminderTime;
-      if (reminderTime) {
-        let hour24 = reminderTime.hour % 12;
-        if (reminderTime.period === 'PM') hour24 += 12;
-        scheduleLocalDailyReminder(hour24, reminderTime.minute);
-      }
+    } else {
+      // Inactive by default for unauthenticated / onboarding users as well.
+      void cancelLocalDailyReminder();
     }
   }, [
     isAuthenticated,

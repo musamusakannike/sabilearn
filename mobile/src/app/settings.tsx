@@ -8,7 +8,7 @@ import { IconUser, IconCamera, IconShieldCheck, IconFileText, IconChevronRight, 
 import { useAuthStore, DEFAULT_SETTINGS } from '@/store/auth.store';
 import { ReminderTime } from '@/store/onboarding.store';
 import OnboardingTimePickerModal from '@/components/auth/OnboardingTimePickerModal';
-import { scheduleLocalDailyReminder } from '@/lib/notifications';
+import { scheduleLocalDailyReminder, cancelLocalDailyReminder, registerForPushNotifications, requestNotificationPermission } from '@/lib/notifications';
 import { useAppReview } from '@/hooks/useAppReview';
 import { InReview, ReviewGuard } from '@/components/common/ReviewGuard';
 import { fontFamilies, spacing } from '@/theme';
@@ -128,9 +128,34 @@ export default function SettingsScreen() {
     else Alert.alert('Could not save', result.error);
   };
 
-  const toggleSetting = (key: keyof typeof settings) => (value: boolean) => {
+  const toggleSetting = (key: keyof typeof settings) => async (value: boolean) => {
     haptics.selection();
-    updateSettings({ [key]: value } as any);
+    const result = await updateSettings({ [key]: value } as any);
+
+    // Daily push / study reminders are opt-in. When the user enables them in
+    // Profile > Settings, request OS permission and wire up push + local reminder.
+    // Streak alerts (streakAlerts !== false) remain active by default and independent.
+    if (result.success) {
+      if ((key === 'pushNotifications' || key === 'studyReminders') && value === true) {
+        const nextSettings = { ...settings, [key]: value } as typeof settings;
+        if (nextSettings.pushNotifications === true && nextSettings.studyReminders === true) {
+          const granted = await requestNotificationPermission();
+          if (granted) {
+            void registerForPushNotifications();
+            void scheduleLocalDailyReminder(nextSettings.reminderHour ?? 19, nextSettings.reminderMinute ?? 0);
+          }
+        } else if (nextSettings.pushNotifications === true) {
+          // Push enabled but study reminders still off — just ensure push token for daily opt-in later.
+          const granted = await requestNotificationPermission();
+          if (granted) void registerForPushNotifications();
+        }
+      } else if (key === 'streakAlerts' && value === true) {
+        const granted = await requestNotificationPermission();
+        if (granted) void registerForPushNotifications();
+      } else if ((key === 'pushNotifications' && value === false) || (key === 'studyReminders' && value === false)) {
+        void cancelLocalDailyReminder();
+      }
+    }
   };
 
   const reminderHour24 = settings.reminderHour ?? 19;
@@ -146,12 +171,13 @@ export default function SettingsScreen() {
   const handleReminderTimeChange = (newTime: ReminderTime) => {
     let h24 = newTime.hour % 12;
     if (newTime.period === 'PM') h24 += 12;
-    updateSettings({
+    void updateSettings({
       reminderHour: h24,
       reminderMinute: newTime.minute,
     });
-    if (settings.pushNotifications !== false && settings.studyReminders !== false) {
-      scheduleLocalDailyReminder(h24, newTime.minute);
+    // Only reschedule when daily reminders are explicitly opted-in.
+    if (settings.pushNotifications === true && settings.studyReminders === true) {
+      void scheduleLocalDailyReminder(h24, newTime.minute);
     }
   };
 

@@ -234,6 +234,13 @@ export async function sendStudyReminder(
   message: string,
   dayKey: string
 ): Promise<boolean> {
+  // Collapse: an unread reminder from a previous day is stale — remove it so
+  // the drawer never piles up N identical rows ("43 unread, same sentence").
+  await Notification.deleteMany({
+    user: new mongoose.Types.ObjectId(String(userId)),
+    category: 'reminder',
+    isRead: false,
+  });
   const result = await notify({
     user: userId,
     type: 'info',
@@ -246,12 +253,106 @@ export async function sendStudyReminder(
   return result.created;
 }
 
+/**
+ * Variable, personalized study-reminder copy. Deterministic per (user, day) so
+ * a retry within the same day keeps the same wording instead of flip-flopping,
+ * but consecutive nudges (5 days apart) rotate through variants.
+ */
+export function buildStudyReminderContent(
+  user: Pick<IUser, '_id' | 'firstName' | 'currentStreak'>,
+  dayKey: string
+): { title: string; message: string } {
+  const streak = user.currentStreak ?? 0;
+  const name = user.firstName ? `, ${user.firstName}` : '';
+
+  if (streak > 0) {
+    const variants = [
+      {
+        title: `${streak}-day streak going${name} — keep it alive?`,
+        message: `You're on a ${streak}-day streak. A short session today keeps it going.`,
+      },
+      {
+        title: `Day ${streak + 1} is one session away`,
+        message: `One quick review today takes your ${streak}-day streak to ${streak + 1}.`,
+      },
+      {
+        title: `Protect your ${streak}-day streak`,
+        message: `A few flashcards now is all it takes to hold onto ${streak} days of momentum.`,
+      },
+    ];
+    return variants[hashString(`${user._id}:${dayKey}`) % variants.length];
+  }
+
+  const variants = [
+    {
+      title: `A fresh start${name}?`,
+      message: 'Two flashcards is enough to restart the habit. Open one deck and do the first card.',
+    },
+    {
+      title: 'Small reps beat long sessions',
+      message: 'Five minutes of recall today compounds faster than an hour on the weekend. Try one quiz.',
+    },
+    {
+      title: 'Your decks miss you',
+      message: 'Pick one course and finish a single lesson — momentum starts there.',
+    },
+    {
+      title: 'Learn one thing today',
+      message: 'Answer three questions correctly and call it a win. Consistency beats intensity.',
+    },
+  ];
+  return variants[hashString(`${user._id}:${dayKey}`) % variants.length];
+}
+
+/** Thin wrapper: picks variable copy, then sends (with collapse). */
+export async function sendVariableStudyReminder(
+  user: Pick<IUser, '_id' | 'firstName' | 'currentStreak'>,
+  dayKey: string
+): Promise<boolean> {
+  const { title, message } = buildStudyReminderContent(user, dayKey);
+  return sendStudyReminder(user._id as never, title, message, dayKey);
+}
+
+function hashString(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i += 1) {
+    h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  }
+  return h;
+}
+
+/**
+ * Retention sweep: read notifications older than 30 days are gone, and unread
+ * generic nudges (reminder/streak) older than 14 days are stale by definition.
+ * Returns how many documents were removed.
+ */
+export async function pruneStaleNotifications(now = new Date()): Promise<number> {
+  const readCutoff = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const nudgeCutoff = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+
+  const [read, nudges] = await Promise.all([
+    Notification.deleteMany({ isRead: true, updatedAt: { $lt: readCutoff } }),
+    Notification.deleteMany({
+      category: { $in: ['reminder', 'streak'] },
+      isRead: false,
+      createdAt: { $lt: nudgeCutoff },
+    }),
+  ]);
+  return (read.deletedCount ?? 0) + (nudges.deletedCount ?? 0);
+}
+
 /** Evening "your streak is about to break" nudge. One per user per local day. */
 export async function sendStreakRiskReminder(
   userId: mongoose.Types.ObjectId | string,
   streak: number,
   dayKey: string
 ): Promise<boolean> {
+  // Same collapse rule as reminders: yesterday's unread rescue is stale.
+  await Notification.deleteMany({
+    user: new mongoose.Types.ObjectId(String(userId)),
+    category: 'streak',
+    isRead: false,
+  });
   const result = await notify({
     user: userId,
     type: 'warning',

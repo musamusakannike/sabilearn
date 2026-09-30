@@ -8,7 +8,6 @@ import api, { setOnUnauthorizedCallback, userApi } from '@/lib/api';
 import { getToken, saveToken, deleteToken } from '@/lib/secureStorage';
 import { User, IUserSettings } from '@/lib/types';
 import { useOnboardingStore } from './onboarding.store';
-import { scheduleLocalDailyReminder, registerForPushNotifications } from '@/lib/notifications';
 import { resetPurchasesUser } from '@/lib/iap';
 
 interface AuthState {
@@ -31,10 +30,10 @@ interface AuthState {
 
 export const DEFAULT_SETTINGS: IUserSettings = {
   emailNotifications: true,
-  pushNotifications: true,
+  pushNotifications: false,
   weeklyProgress: true,
   language: 'en',
-  studyReminders: true,
+  studyReminders: false,
   streakAlerts: true,
   reminderHour: 19,
   reminderMinute: 0,
@@ -56,10 +55,9 @@ async function syncOnboardingPreferences(updateSettingsFn: (settings: Partial<IU
         reminderHour: hour24,
         reminderMinute: reminderTime.minute,
         dailyGoalMinutes: dailyGoalMinutes || 10,
-        studyReminders: true,
-        pushNotifications: true,
+        studyReminders: false,
+        pushNotifications: false,
       });
-      await scheduleLocalDailyReminder(hour24, reminderTime.minute);
     }
   } catch (e) {
     console.warn('Failed to sync onboarding preferences:', e);
@@ -97,7 +95,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           await get().fetchMe();
         }
         await syncOnboardingPreferences(get().updateSettings);
-        void registerForPushNotifications();
         set({ isLoading: false });
         return { success: true };
       }
@@ -121,7 +118,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           await get().fetchMe();
         }
         await syncOnboardingPreferences(get().updateSettings);
-        void registerForPushNotifications();
         set({ isLoading: false });
         return { success: true };
       }
@@ -160,7 +156,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           await get().fetchMe();
         }
         await syncOnboardingPreferences(get().updateSettings);
-        void registerForPushNotifications();
         set({ isLoading: false });
         return { success: true };
       }
@@ -206,7 +201,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           await get().fetchMe();
         }
         await syncOnboardingPreferences(get().updateSettings);
-        void registerForPushNotifications();
         set({ isLoading: false });
         return { success: true };
       }
