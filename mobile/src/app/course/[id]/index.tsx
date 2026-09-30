@@ -45,7 +45,7 @@ import * as haptics from '@/lib/haptics';
 export default function CourseDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
-  const { inReview } = useAppReview();
+  const { inReview, androidInReview } = useAppReview();
   const colors = {
     textPrimary: INK,
     textSecondary: '#6B6B80',
@@ -256,11 +256,12 @@ export default function CourseDetailScreen() {
           </View>
 
           <Text style={s.title}>{course.title}</Text>
-          {!course.isFree ? (
-            <Text style={s.priceLine}>{hasAccess ? 'Included in your access' : 'Included with Premium'}</Text>
-          ) : (
-            <Text style={s.priceLine}>Free</Text>
-          )}
+          {!androidInReview &&
+            (!course.isFree ? (
+              <Text style={s.priceLine}>{hasAccess ? 'Included in your access' : 'Included with Premium'}</Text>
+            ) : (
+              <Text style={s.priceLine}>Free</Text>
+            ))}
 
           {authors.length > 0 && (
             <View style={s.authorsRow}>

@@ -4,6 +4,7 @@ import { IconBook2, IconArrowRight, IconSparkles } from "@tabler/icons-react-nat
 import { fontFamilies, fontSizes, spacing } from "@/theme";
 import { ACCENT, FAINT, INK, MUTED, TINT_GLASS } from "@/theme/brand";
 import { Course } from "@/lib/types";
+import { useAppReview } from "@/hooks/useAppReview";
 import GlassSurface from "./GlassSurface";
 
 interface CourseCardProps {
@@ -14,6 +15,8 @@ interface CourseCardProps {
 export default function CourseCard({ course, onPress }: CourseCardProps) {
   const [imgError, setImgError] = useState(false);
   const showImage = Boolean(course.banner) && !imgError;
+  const { androidInReview } = useAppReview();
+  const hidePricingTag = androidInReview;
 
   return (
     <Pressable
@@ -55,9 +58,11 @@ export default function CourseCard({ course, onPress }: CourseCardProps) {
           <View style={styles.footerRow}>
             <Text style={styles.category}>{course.category}</Text>
             <View style={styles.continueLink}>
-              <Text style={styles.continueLinkText}>
-                {course.isFree ? "Free" : "Premium"}
-              </Text>
+              {!hidePricingTag && (
+                <Text style={styles.continueLinkText}>
+                  {course.isFree ? "Free" : "Premium"}
+                </Text>
+              )}
               <IconArrowRight size={14} color={ACCENT} />
             </View>
           </View>
