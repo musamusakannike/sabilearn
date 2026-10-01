@@ -6,6 +6,7 @@ import {
   X,
   MoreHorizontal,
   PartyPopper,
+  Award,
   ChevronLeft,
   Flag,
   Check,
@@ -30,6 +31,7 @@ export default function StepPlayer({
   const [index, setIndex] = useState(0);
   const [quizAnswered, setQuizAnswered] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [isCourseComplete, setIsCourseComplete] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSubmittingCompletion, setIsSubmittingCompletion] = useState(false);
   const [hasCompleted, setHasCompleted] = useState(false);
@@ -144,14 +146,48 @@ export default function StepPlayer({
     return () => clearInterval(interval);
   }, []);
 
+  // Bigger, longer confetti for full course completion
+  const triggerCourseConfetti = useCallback(() => {
+    // Big initial burst from center
+    confetti({
+      particleCount: 160,
+      spread: 120,
+      origin: { y: 0.5 },
+      colors: ["#FF8A00", "#22C55E", "#3B82F6", "#EC4899", "#EAB308", "#8B5CF6"],
+    });
+
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = {
+      startVelocity: 35,
+      spread: 360,
+      ticks: 100,
+      zIndex: 1000,
+      colors: ["#FF8A00", "#22C55E", "#3B82F6", "#EC4899", "#EAB308", "#8B5CF6"],
+    };
+
+    const interval: NodeJS.Timeout = setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+        return;
+      }
+      const particleCount = 55 * (timeLeft / duration);
+      confetti({ ...defaults, particleCount, angle: 60, spread: 80, origin: { x: 0, y: 0.6 } });
+      confetti({ ...defaults, particleCount, angle: 120, spread: 80, origin: { x: 1, y: 0.6 } });
+    }, 180);
+
+    return () => clearInterval(interval);
+  }, []);
+
   // Trigger confetti celebration on lesson completion
   useEffect(() => {
     if (!finished) return;
-    const cleanup = triggerConfettiFall();
+    const cleanup = isCourseComplete ? triggerCourseConfetti() : triggerConfettiFall();
     return () => {
       if (cleanup) cleanup();
     };
-  }, [finished, triggerConfettiFall]);
+  }, [finished, isCourseComplete, triggerConfettiFall, triggerCourseConfetti]);
 
   const step = steps[index];
   const isLastStep = index === total - 1;
@@ -162,11 +198,15 @@ export default function StepPlayer({
     if (hasCompleted) return;
     try {
       setIsSubmittingCompletion(true);
-      await progressApi.completeTopic({
+      const res = await progressApi.completeTopic({
         courseId: topic.course,
         topicId: topic._id,
       });
       setHasCompleted(true);
+      // Detect if the whole course is now complete
+      if (res.data?.progress?.isCompleted === true) {
+        setIsCourseComplete(true);
+      }
     } catch (e) {
       console.error("Failed to complete topic on server:", e);
     } finally {
@@ -207,7 +247,70 @@ export default function StepPlayer({
     );
   }
 
-  // Celebration Finished Screen
+  // =====================================================
+  // COURSE COMPLETE SCREEN — bigger celebration when the
+  // final topic of the entire course is finished.
+  // =====================================================
+  if (finished && isCourseComplete) {
+    return (
+      <div className="min-h-screen w-full flex flex-col justify-between bg-[var(--surface-page)] text-[var(--ink-900)]">
+        {/* Top bar */}
+        <div className="flex items-center justify-between px-6 py-5 max-w-xl mx-auto w-full">
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            className="cursor-pointer p-2 rounded-full hover:bg-[var(--surface-sunken)] transition-colors text-[var(--ink-900)]"
+          >
+            <X className="size-6" />
+          </button>
+        </div>
+
+        {/* Course Completion Body */}
+        <div className="flex flex-1 flex-col items-center justify-center gap-6 px-6 text-center max-w-md mx-auto animate-in fade-in zoom-in-95 duration-300">
+          <div
+            className="relative cursor-pointer transition-transform hover:scale-105 active:scale-95"
+            onClick={triggerCourseConfetti}
+            title="Click for more confetti!"
+          >
+            <div className="flex size-28 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-950/60 shadow-xl ring-8 ring-amber-50/50 dark:ring-amber-900/20">
+              <Award className="size-14 text-amber-600 dark:text-amber-400" />
+            </div>
+            <span className="absolute -bottom-2 -right-2 flex items-center gap-1 rounded-full bg-[#FF8A00] px-3 py-1 text-xs font-black text-white shadow-md">
+              🏆 Course Done!
+            </span>
+          </div>
+
+          <div className="space-y-2">
+            <h1 className="text-3xl font-black text-[var(--ink-900)] tracking-tight">
+              Outstanding! 🎉
+            </h1>
+            <p className="text-base text-[var(--text-muted)] leading-relaxed">
+              You&apos;ve completed every topic in this course. Keep the momentum going — your next adventure awaits!
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 rounded-2xl border border-amber-200 bg-amber-50/80 px-4 py-2.5 text-sm font-semibold text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-300">
+            <Check className="size-4 text-amber-600" />
+            <span>All topics completed &amp; progress saved</span>
+          </div>
+        </div>
+
+        {/* Bottom Continue Button */}
+        <div className="w-full max-w-xl mx-auto p-6 pb-8">
+          <button
+            onClick={onClose}
+            className="w-full flex items-center justify-center py-4 px-8 rounded-2xl bg-[#FF8A00] hover:bg-[#F07D00] active:scale-[0.98] text-white text-lg font-bold tracking-wide shadow-lg shadow-orange-500/25 transition-all cursor-pointer"
+          >
+            Back to Course
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // =====================================================
+  // TOPIC COMPLETE SCREEN — standard lesson completion.
+  // =====================================================
   if (finished) {
     return (
       <div className="min-h-screen w-full flex flex-col justify-between bg-[var(--surface-page)] text-[var(--ink-900)]">
@@ -220,17 +323,6 @@ export default function StepPlayer({
           >
             <X className="size-6" />
           </button>
-          <div className="flex items-center gap-1.5 font-bold">
-            <svg
-              className="size-6 fill-rose-500 text-rose-500"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-            </svg>
-            <span className="text-base font-extrabold text-[var(--ink-900)]">
-              5
-            </span>
-          </div>
         </div>
 
         {/* Celebration Body */}
@@ -263,7 +355,7 @@ export default function StepPlayer({
 
           <div className="flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50/80 px-4 py-2.5 text-sm font-semibold text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300">
             <Check className="size-4 text-emerald-600" />
-            <span>Progress saved & topic marked complete</span>
+            <span>Progress saved &amp; topic marked complete</span>
           </div>
         </div>
 

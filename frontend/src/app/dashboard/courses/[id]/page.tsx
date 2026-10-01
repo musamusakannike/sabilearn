@@ -86,9 +86,18 @@ export default function CourseDetailsPage() {
           setIsPaywallOpen(true);
         }
 
-        // Default expand chapter 1
+        // Auto-expand the chapter the user should read next:
+        // 1st priority: in-progress chapter
+        // 2nd priority: first chapter with at least one incomplete topic
+        // Fallback: first chapter
         if (fetchedChapters.length > 0) {
-          setOpenChapters((prev) => ({ ...prev, [fetchedChapters[0]._id]: true }));
+          const targetChapter =
+            fetchedChapters.find((ch) => ch.status === 'inprogress') ||
+            fetchedChapters.find((ch) =>
+              (ch.topics || []).some((t) => !t.isCompleted)
+            ) ||
+            fetchedChapters[0];
+          setOpenChapters((prev) => ({ ...prev, [targetChapter._id]: true }));
         }
       } catch (e) {
         console.error('Failed to load course details:', e);

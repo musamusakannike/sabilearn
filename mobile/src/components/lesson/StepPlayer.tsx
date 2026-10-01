@@ -1,9 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
-import { View, Text, Pressable, StyleSheet, ScrollView, Alert, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { View, Text, Pressable, StyleSheet, ScrollView, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import Svg, { Path } from 'react-native-svg';
-import { IconX, IconDots, IconConfetti, IconChevronLeft, IconCheck } from '@tabler/icons-react-native';
+import ConfettiCannon from 'react-native-confetti-cannon';
+import { IconX, IconConfetti, IconChevronLeft, IconCheck, IconAward } from '@tabler/icons-react-native';
 import { useTheme, fontFamilies, fontSizes, radii, spacing } from '@/theme';
 import { Topic } from '@/lib/types';
 import { useProgressStore } from '@/store/progress.store';
@@ -13,6 +12,9 @@ import InfoStepBlock from './InfoStepBlock';
 import QuizStep from './QuizStep';
 import ExerciseRunner from './ExerciseRunner';
 import InLessonAiTutor from './InLessonAiTutor';
+
+// Confetti colours matching the brand palette
+const CONFETTI_COLORS = ['#FF8A1E', '#22C55E', '#3B82F6', '#EC4899', '#EAB308', '#8B5CF6'];
 
 export default function StepPlayer({
   topic,
@@ -26,12 +28,18 @@ export default function StepPlayer({
   const [index, setIndex] = useState(0);
   const [quizAnswered, setQuizAnswered] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [isCourseComplete, setIsCourseComplete] = useState(false);
   const [hasCompleted, setHasCompleted] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
   const lastScrollY = useRef(0);
   const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Confetti refs — one for topic completion, two for course completion (both sides)
+  const topicConfettiRef = useRef<any>(null);
+  const courseConfettiLeftRef = useRef<any>(null);
+  const courseConfettiRightRef = useRef<any>(null);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const currentY = event.nativeEvent.contentOffset.y;
@@ -51,7 +59,7 @@ export default function StepPlayer({
   const { saveContentPosition, fetchTopicProgress } = useProgressStore();
   const total = steps.length;
 
-  // Scroll to top whenever step index changes (e.g. next/prev content)
+  // Scroll to top whenever step index changes
   useEffect(() => {
     scrollRef.current?.scrollTo({ y: 0, animated: false });
   }, [index]);
@@ -77,6 +85,34 @@ export default function StepPlayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, topic._id, finished]);
 
+  // Trigger confetti + haptic sequence on topic completion
+  useEffect(() => {
+    if (!finished || isCourseComplete) return;
+    // Fire confetti from top-left after a tiny delay so screen has rendered
+    setTimeout(() => topicConfettiRef.current?.start(), 150);
+    // Celebratory haptic triple-tap
+    haptics.success();
+    setTimeout(() => haptics.success(), 350);
+    setTimeout(() => haptics.success(), 700);
+  }, [finished]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Extra celebration when the ENTIRE COURSE is complete
+  useEffect(() => {
+    if (!isCourseComplete) return;
+    // Fire confetti cannons from both sides
+    setTimeout(() => {
+      courseConfettiLeftRef.current?.start();
+      courseConfettiRightRef.current?.start();
+    }, 200);
+    // Epic haptic sequence — heavy-success alternating
+    haptics.heavy();
+    setTimeout(() => haptics.success(), 250);
+    setTimeout(() => haptics.heavy(), 500);
+    setTimeout(() => haptics.success(), 750);
+    setTimeout(() => haptics.heavy(), 1000);
+    setTimeout(() => haptics.success(), 1350);
+  }, [isCourseComplete]);
+
   const step = steps[index];
   const isLastStep = index === total - 1;
   const isQuizStep = step?.type === 'quiz';
@@ -86,12 +122,15 @@ export default function StepPlayer({
     if (hasCompleted) return;
     try {
       setIsCompleting(true);
-      await progressApi.completeTopic({
+      const res = await progressApi.completeTopic({
         courseId: topic.course,
         topicId: topic._id,
       });
       setHasCompleted(true);
-      haptics.success();
+      // Detect course completion from the server response
+      if (res.data?.progress?.isCompleted === true) {
+        setIsCourseComplete(true);
+      }
     } catch (e) {
       console.error('Failed to complete topic on server:', e);
     } finally {
@@ -120,15 +159,6 @@ export default function StepPlayer({
     }
   };
 
-  const handleMenuPress = () => {
-    haptics.light();
-    const options = [
-      { text: 'Report an issue', onPress: () => Alert.alert('Thank you', 'Your feedback has been recorded.') },
-      { text: 'Cancel', style: 'cancel' as const },
-    ];
-    Alert.alert(topic.title, 'Lesson options', options);
-  };
-
   if (total === 0) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.bgApp }]}>
@@ -144,10 +174,35 @@ export default function StepPlayer({
     );
   }
 
-  // Celebration Finished Screen
-  if (finished) {
+  // =========================================================
+  // COURSE COMPLETE SCREEN — shown when the final topic in
+  // the entire course is finished. Extra confetti + haptics.
+  // =========================================================
+  if (finished && isCourseComplete) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.bgApp }]}>
+        {/* Two confetti cannons — one from each top corner */}
+        <ConfettiCannon
+          ref={courseConfettiLeftRef}
+          count={180}
+          origin={{ x: -10, y: 0 }}
+          autoStart={false}
+          fadeOut
+          colors={CONFETTI_COLORS}
+          explosionSpeed={400}
+          fallSpeed={3500}
+        />
+        <ConfettiCannon
+          ref={courseConfettiRightRef}
+          count={180}
+          origin={{ x: 420, y: 0 }}
+          autoStart={false}
+          fadeOut
+          colors={CONFETTI_COLORS}
+          explosionSpeed={400}
+          fallSpeed={3500}
+        />
+
         <View style={styles.headerRow}>
           <Pressable onPress={onClose} hitSlop={12} style={styles.closeBtn}>
             <IconX size={26} color={colors.textPrimary} />
@@ -155,9 +210,83 @@ export default function StepPlayer({
         </View>
 
         <View style={styles.congratsWrap}>
-          <View style={[styles.congratsIcon, { backgroundColor: 'rgba(34, 197, 94, 0.12)' }]}>
-            <IconConfetti size={48} color="#16A34A" />
+          {/* Trophy icon — tap to re-fire confetti */}
+          <Pressable
+            onPress={() => {
+              haptics.success();
+              courseConfettiLeftRef.current?.start();
+              courseConfettiRightRef.current?.start();
+            }}
+          >
+            <View style={[styles.congratsIcon, { backgroundColor: 'rgba(255,138,30,0.12)' }]}>
+              <IconAward size={52} color="#FF8A1E" />
+            </View>
+          </Pressable>
+
+          <View style={[styles.xpBadge, { backgroundColor: '#FF8A1E' }]}>
+            <Text style={styles.xpBadgeText}>🏆 Course Complete!</Text>
           </View>
+
+          <Text style={[styles.congratsTitle, { color: colors.textPrimary, fontSize: 30 }]}>
+            Outstanding! 🎉
+          </Text>
+          <Text style={[styles.congratsSub, { color: colors.textSecondary }]}>
+            You've completed every topic in this course. Keep the momentum going — your next adventure awaits!
+          </Text>
+
+          <View style={[styles.completedPill, { backgroundColor: 'rgba(255,138,30,0.08)', borderColor: 'rgba(255,138,30,0.3)' }]}>
+            <IconCheck size={16} color="#FF8A1E" />
+            <Text style={[styles.completedPillText, { color: '#FF8A1E' }]}>All topics completed · Progress saved</Text>
+          </View>
+        </View>
+
+        <View style={styles.footer}>
+          <Pressable onPress={onClose} style={styles.orangeContinueBtn}>
+            <Text style={styles.orangeContinueText}>Back to Course</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // =========================================================
+  // TOPIC COMPLETE SCREEN — shown after finishing a single
+  // topic lesson. Confetti cannon fires automatically.
+  // =========================================================
+  if (finished) {
+    return (
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.bgApp }]}>
+        {/* Confetti fires from top-left corner */}
+        <ConfettiCannon
+          ref={topicConfettiRef}
+          count={130}
+          origin={{ x: -10, y: 0 }}
+          autoStart={false}
+          fadeOut
+          colors={CONFETTI_COLORS}
+          explosionSpeed={350}
+          fallSpeed={3000}
+        />
+
+        <View style={styles.headerRow}>
+          <Pressable onPress={onClose} hitSlop={12} style={styles.closeBtn}>
+            <IconX size={26} color={colors.textPrimary} />
+          </Pressable>
+        </View>
+
+        <View style={styles.congratsWrap}>
+          {/* Tap the icon to re-fire confetti */}
+          <Pressable
+            onPress={() => {
+              haptics.success();
+              topicConfettiRef.current?.start();
+            }}
+            hitSlop={8}
+          >
+            <View style={[styles.congratsIcon, { backgroundColor: 'rgba(34, 197, 94, 0.12)' }]}>
+              <IconConfetti size={48} color="#16A34A" />
+            </View>
+          </Pressable>
 
           <View style={styles.xpBadge}>
             <Text style={styles.xpBadgeText}>+{topic.xp || 50} XP</Text>
@@ -218,7 +347,7 @@ export default function StepPlayer({
           })}
         </View>
 
-        {/* Hearts / Live counter (AI Tutor Dropdown) */}
+        {/* In-Lesson AI Tutor */}
         {step && (
           <InLessonAiTutor
             topicTitle={topic.title}
@@ -244,15 +373,10 @@ export default function StepPlayer({
         onScroll={handleScroll}
         scrollEventThrottle={16}
       >
-        {/* Step Title Row with '...' button */}
         <View style={styles.titleRow}>
           <Text style={[styles.stepTitle, { color: colors.textPrimary }]}>{displayTitle}</Text>
-          {/* <Pressable onPress={handleMenuPress} hitSlop={12} style={styles.dotsBtn}>
-            <IconDots size={24} color={colors.textPrimary} />
-          </Pressable> */}
         </View>
 
-        {/* Content Body */}
         {isTakeaway ? (
           <View style={styles.takeawayWrap}>
             <Text style={[styles.takeawayText, { color: colors.textPrimary }]}>{step.content}</Text>
@@ -344,13 +468,6 @@ const styles = StyleSheet.create({
   pillSegmentInactive: {
     flex: 1,
   },
-  heartRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingLeft: 4,
-  },
-
   body: {
     paddingHorizontal: spacing.xl,
     paddingTop: spacing.lg,
@@ -369,9 +486,6 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     flex: 1,
     lineHeight: 32,
-  },
-  dotsBtn: {
-    padding: 4,
   },
   takeawayWrap: {
     minHeight: 280,
@@ -404,12 +518,12 @@ const styles = StyleSheet.create({
   },
   orangeContinueBtn: {
     flex: 1,
-    backgroundColor: '#FF8A00',
+    backgroundColor: '#FF8A1E',
     height: 56,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#FF8A00',
+    shadowColor: '#FF8A1E',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 10,
@@ -460,6 +574,7 @@ const styles = StyleSheet.create({
     fontSize: fontSizes['2xl'],
     fontFamily: fontFamilies.displaySemiBold,
     fontWeight: '800',
+    textAlign: 'center',
   },
   congratsSub: {
     fontFamily: fontFamilies.sans,
