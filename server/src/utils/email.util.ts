@@ -1,29 +1,16 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import nodemailer from 'nodemailer';
 import { Resend } from 'resend';
 
 const DEFAULT_FROM = 'SabiLearn <noreply@contact.sabilearn.online>';
 
-function getResendClient(): Resend | null {
-  return process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-}
-
-function getTransporter() {
-  return process.env.SMTP_HOST
-    ? nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: parseInt(process.env.SMTP_PORT || '587', 10),
-        secure: process.env.SMTP_SECURE === 'true',
-        auth: process.env.SMTP_USER
-          ? {
-              user: process.env.SMTP_USER,
-              pass: process.env.SMTP_PASS || '',
-            }
-          : undefined,
-      })
-    : null;
+function getResendClient(): Resend {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    throw new Error('RESEND_API_KEY is required to send email');
+  }
+  return new Resend(apiKey);
 }
 
 export async function sendEmail({
@@ -35,26 +22,10 @@ export async function sendEmail({
   subject: string;
   html: string;
 }): Promise<void> {
-  const from = process.env.EMAIL_FROM || process.env.SMTP_FROM || DEFAULT_FROM;
+  const from = process.env.EMAIL_FROM || DEFAULT_FROM;
   const resend = getResendClient();
-  const transporter = getTransporter();
-
-  // Prefer Resend when configured.
-  if (resend) {
-    try {
-      const { error } = await resend.emails.send({ from, to, subject, html });
-      if (!error) return;
-      console.warn('Resend failed, falling back to SMTP:', error.message);
-    } catch (err) {
-      console.warn('Resend threw, falling back to SMTP:', err);
-    }
+  const { error } = await resend.emails.send({ from, to, subject, html });
+  if (error) {
+    throw new Error(`Resend failed: ${error.message}`);
   }
-
-  // Fall back to SMTP.
-  if (transporter) {
-    await transporter.sendMail({ from, to, subject, html });
-    return;
-  }
-
-  console.warn('No email provider configured. Email not sent to:', to);
 }
