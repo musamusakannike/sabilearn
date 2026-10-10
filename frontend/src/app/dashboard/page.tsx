@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -11,13 +11,14 @@ import {
   Play,
   CheckCircle2,
   ChevronRight,
-  Flame,
-  Zap,
-  Target,
-  Code2,
   BookOpen,
+  Trophy,
 } from "lucide-react";
-import { courseApi, progressApi } from "@/lib/api";
+import {
+  courseApi,
+  leaderboardApi,
+  progressApi,
+} from "@/lib/api";
 import {
   Course,
   Chapter,
@@ -25,10 +26,10 @@ import {
   UserProgress,
   ResumptionData,
   DashboardData,
+  ProgressStats,
+  LeaderboardUser,
 } from "@/lib/types";
 import { useAuthStore } from "@/store/auth.store";
-import ProgressBar from "@/components/ui/ProgressBar";
-import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import {
@@ -53,21 +54,24 @@ export default function DashboardHome() {
     totalUnfinished: 0,
   });
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
+  const [stats, setStats] = useState<ProgressStats | null>(null);
   const [popularCourses, setPopularCourses] = useState<Course[]>([]);
+  const [leaders, setLeaders] = useState<LeaderboardUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTool, setActiveTool] = useState<ActiveTool>(null);
-  const [expandedAuthors, setExpandedAuthors] = useState<
-    Record<string, boolean>
-  >({});
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
 
   useEffect(() => {
     (async () => {
       try {
-        const [resumptionRes, dashboardRes, popularRes] = await Promise.all([
-          progressApi.dashboardResumption(),
-          progressApi.dashboard(),
-          courseApi.popular().catch(() => null),
-        ]);
+        const [resumptionRes, dashboardRes, popularRes, statsRes, boardRes] =
+          await Promise.all([
+            progressApi.dashboardResumption(),
+            progressApi.dashboard(),
+            courseApi.popular().catch(() => null),
+            progressApi.stats().catch(() => null),
+            leaderboardApi.get("1w").catch(() => null),
+          ]);
 
         if (resumptionRes.data?.success) {
           const rawData = resumptionRes.data.data;
@@ -88,6 +92,14 @@ export default function DashboardHome() {
           setDashboard(dashboardRes.data.data);
         }
 
+        if (statsRes?.data?.success) {
+          setStats(statsRes.data.data);
+        }
+
+        if (boardRes?.data?.success) {
+          setLeaders(boardRes.data.data || []);
+        }
+
         if (popularRes?.data?.success) {
           setPopularCourses(popularRes.data.data || []);
         } else if (popularRes?.data?.data) {
@@ -101,9 +113,71 @@ export default function DashboardHome() {
     })();
   }, []);
 
-  const toggleExpandAuthors = (courseId: string) => {
-    setExpandedAuthors((prev) => ({ ...prev, [courseId]: !prev[courseId] }));
-  };
+  const { resumptionCards, totalUnfinished } = resumptionData;
+  const firstName = user?.firstName?.trim();
+  const hour = new Date().getHours();
+  const streak = dashboard?.streak ?? user?.currentStreak ?? 0;
+  const xp = dashboard?.totalXp ?? user?.totalXp ?? 0;
+  const dailyGoalPct = stats?.dailyGoal?.progress ?? 0;
+
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    resumptionCards.forEach((p) => {
+      const course = typeof p.course === "object" ? (p.course as Course) : null;
+      if (course?.category) set.add(course.category);
+    });
+    return Array.from(set);
+  }, [resumptionCards]);
+
+  const visibleCards = useMemo(() => {
+    if (categoryFilter === "all") return resumptionCards;
+    return resumptionCards.filter((p) => {
+      const course = typeof p.course === "object" ? (p.course as Course) : null;
+      return course?.category === categoryFilter;
+    });
+  }, [resumptionCards, categoryFilter]);
+
+  let speech = "What do you want to learn today?";
+  if (streak > 1) speech = `A ${streak}-day streak! Ready to keep it going?`;
+  else if (resumptionCards.length > 0)
+    speech = "Let’s pick up where you left off.";
+
+  const aiTools: {
+    kind: ActiveTool;
+    title: string;
+    description: string;
+    cta: string;
+    icon: React.ReactNode;
+  }[] = [
+    {
+      kind: "summarizer",
+      title: "Summarizer",
+      description: "Turn any lengthy lecture note or PDF into a crisp, readable summary.",
+      cta: "Try Summarizer",
+      icon: <FileText className="size-6" />,
+    },
+    {
+      kind: "quiz",
+      title: "Quiz Generator",
+      description: "Generate quick multiple-choice assessments from any topic or lesson.",
+      cta: "Build Practice Test",
+      icon: <FileQuestion className="size-6" />,
+    },
+    {
+      kind: "course",
+      title: "Generate Course",
+      description: "Turn rough notes or a one-line prompt into a complete structured curriculum.",
+      cta: "Draft New Track",
+      icon: <BookOpen className="size-6" />,
+    },
+    {
+      kind: "qa",
+      title: "Q&A AI Tutor",
+      description: "Ask any tricky coding or theory question and receive instant step-by-step guidance.",
+      cta: "Ask Anything",
+      icon: <MessageCircleQuestion className="size-6" />,
+    },
+  ];
 
   if (isLoading) {
     return (
@@ -113,399 +187,421 @@ export default function DashboardHome() {
     );
   }
 
-  const { resumptionCards, totalUnfinished } = resumptionData;
-  const firstName = user?.firstName?.trim();
-  const hour = new Date().getHours();
-  const streak = dashboard?.streak ?? user?.currentStreak ?? 0;
-  const xp = dashboard?.totalXp ?? user?.totalXp ?? 0;
-  const accuracy = dashboard?.quickStats?.avgAccuracy ?? 0;
-
-  let speech = "What do you want to learn today?";
-  if (streak > 1) speech = `A ${streak}-day streak! Ready to keep it going?`;
-  else if (resumptionCards.length > 0)
-    speech = "Let's pick up where you left off.";
-
-  const aiTools: {
-    kind: ActiveTool;
-    title: string;
-    description: string;
-    icon: React.ReactNode;
-  }[] = [
-    {
-      kind: "summarizer",
-      title: "Summarizer",
-      description: "Turn any lecture note into a short summary",
-      icon: <FileText className="size-5 text-[#5B4FE8]" />,
-    },
-    {
-      kind: "quiz",
-      title: "Quiz generator",
-      description: "Generate a quick multiple-choice quiz",
-      icon: <FileQuestion className="size-5 text-[#5B4FE8]" />,
-    },
-    {
-      kind: "course",
-      title: "Course generator",
-      description: "Turn notes or a prompt into a full course",
-      icon: <BookOpen className="size-5 text-[#5B4FE8]" />,
-    },
-    {
-      kind: "qa",
-      title: "Q&A AI",
-      description: "Ask a question, get a direct answer",
-      icon: <MessageCircleQuestion className="size-5 text-[#5B4FE8]" />,
-    },
-  ];
+  const myId = user?.id || user?._id;
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8">
-      <div>
-        <p className="text-sm font-medium text-[var(--text-muted)]">
-          {greetingForHour(hour)}
-        </p>
-        <h1 className="font-[var(--font-display)] text-3xl font-bold tracking-tight text-[var(--ink-900)] md:text-4xl">
-          {firstName || "there"}
-        </h1>
-      </div>
+    <div className="space-y-8">
+      <section className="grid grid-cols-12 items-stretch gap-6">
+        <div className="relative col-span-12 flex flex-col justify-between overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface-card)] p-6 shadow-sm lg:col-span-7">
+          <div className="pointer-events-none absolute -top-12 -right-12 font-mono text-7xl font-black text-[var(--surface-sunken)] select-none">
+            01001100
+          </div>
+          <div className="relative z-10 flex items-start gap-5">
+            <div className="relative shrink-0">
+              <div className="flex size-20 items-center justify-center overflow-hidden rounded-2xl border-2 border-[var(--line)] bg-[var(--ink-900)] shadow-md">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/mascot/tutor-mascot.webp"
+                  alt=""
+                  className="size-full object-cover"
+                />
+              </div>
+              <div className="absolute -right-1 -bottom-1 flex size-5 items-center justify-center rounded-full border-2 border-white bg-[var(--success)] text-[9px] font-bold text-white">
+                ✓
+              </div>
+            </div>
+            <div className="min-w-0 flex-1">
+              <span className="rounded-full border border-[var(--brand-gold-100)] bg-[var(--brand-gold-100)] px-2.5 py-1 text-xs font-bold tracking-wider text-[var(--brand-gold-600)] uppercase">
+                {greetingForHour(hour)}
+              </span>
+              <h1 className="mt-1 text-2xl font-[var(--font-display)] font-black text-[var(--ink-900)]">
+                {firstName || "there"}
+              </h1>
+              <div className="mt-2.5 inline-flex items-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--surface-sunken)] px-4 py-2.5 text-sm font-semibold text-[var(--ink-900)]">
+                “{speech}”
+              </div>
+            </div>
+          </div>
+          <div className="mt-6 grid grid-cols-3 gap-3 border-t border-[var(--line)] pt-4 sm:gap-4">
+            <div className="rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)]/70 p-3">
+              <p className="text-[11px] font-bold text-[var(--ink-500)] uppercase">Day Streak</p>
+              <div className="mt-0.5 flex items-baseline gap-1">
+                <span className="text-lg font-black text-[var(--ink-900)]">{streak}</span>
+                <span className="text-xs text-[var(--ink-500)]">Days</span>
+              </div>
+            </div>
+            <div className="rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)]/70 p-3">
+              <p className="text-[11px] font-bold text-[var(--ink-500)] uppercase">Total XP</p>
+              <div className="mt-0.5 flex items-baseline gap-1">
+                <span className="text-lg font-black text-[var(--brand-violet)]">{xp.toLocaleString()}</span>
+                <span className="text-xs text-[var(--ink-500)]">Pts</span>
+              </div>
+            </div>
+            <div className="rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)]/70 p-3">
+              <p className="text-[11px] font-bold text-[var(--ink-500)] uppercase">Daily Goal</p>
+              <div className="mt-0.5 flex items-baseline gap-1">
+                <span className="text-lg font-black text-[var(--success)]">{Math.round(dailyGoalPct)}%</span>
+                <span className="text-xs text-[var(--ink-500)]">done</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div className="flex items-center gap-3">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/mascot/tutor-mascot.webp"
-          alt=""
-          className="size-[68px] shrink-0 object-contain"
-        />
-        <div className="relative flex-1">
-          <div className="absolute top-1/2 -left-2 size-0 -translate-y-1/2 border-y-8 border-r-8 border-y-transparent border-r-[#F4F4F6]" />
-          <div className="rounded-2xl bg-[#F4F4F6] px-4 py-3 text-base font-medium text-[var(--ink-900)] md:text-lg">
-            {speech}
+        <div className="relative col-span-12 flex flex-col justify-between overflow-hidden rounded-3xl border border-[var(--brand-gold-100)] bg-gradient-to-br from-[var(--brand-gold-100)] via-[var(--surface-sunken)] to-[var(--brand-gold-100)] p-6 shadow-sm lg:col-span-5">
+          <div className="relative z-10 flex items-start gap-4">
+            <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-[var(--brand-gold-dark)] text-xl font-black text-[var(--ink-900)] shadow-md">
+              {"</>"}
+            </div>
+            <div>
+              <span className="mb-1 inline-block rounded-full bg-white/70 px-2 py-0.5 text-[10px] font-bold tracking-wider text-[var(--brand-gold-600)] uppercase">
+                Browser IDE
+              </span>
+              <h3 className="text-lg font-extrabold text-[var(--ink-900)]">Code Playground</h3>
+              <p className="mt-1 text-xs leading-relaxed font-medium text-[var(--ink-700)]">
+                Write and run HTML, CSS, JavaScript, and Python directly inside your browser without installing anything.
+              </p>
+            </div>
           </div>
-        </div>
-      </div>
-
-      <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1">
-        <div className="flex min-w-[140px] items-center gap-2.5 rounded-2xl bg-[rgba(255,138,30,0.12)] p-3.5">
-          <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[rgba(255,138,30,0.16)]">
-            <Flame className="size-[18px] text-[#FF8A1E]" />
-          </div>
-          <div>
-            <p className="text-lg font-bold tracking-tight text-[var(--ink-900)]">
-              {streak}
-            </p>
-            <p className="text-xs font-medium text-[var(--text-muted)]">
-              day streak
-            </p>
-          </div>
-        </div>
-        <div className="flex min-w-[140px] items-center gap-2.5 rounded-2xl bg-[rgba(91,79,232,0.1)] p-3.5">
-          <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[rgba(91,79,232,0.12)]">
-            <Zap className="size-[18px] text-[#5B4FE8]" />
-          </div>
-          <div>
-            <p className="text-lg font-bold tracking-tight text-[var(--ink-900)]">
-              {xp}
-            </p>
-            <p className="text-xs font-medium text-[var(--text-muted)]">
-              XP earned
-            </p>
-          </div>
-        </div>
-        <div className="flex min-w-[140px] items-center gap-2.5 rounded-2xl bg-[rgba(16,185,129,0.12)] p-3.5">
-          <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[rgba(16,185,129,0.14)]">
-            <Target className="size-[18px] text-[#10B981]" />
-          </div>
-          <div>
-            <p className="text-lg font-bold tracking-tight text-[var(--ink-900)]">
-              {Math.round(accuracy)}%
-            </p>
-            <p className="text-xs font-medium text-[var(--text-muted)]">
-              avg accuracy
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* <Link
-        href="/dashboard/playground"
-        className="flex items-center gap-4 rounded-2xl border border-[#FFD4A8] bg-[#FFF7EE] p-4 transition-opacity hover:opacity-95"
-      >
-        <div className="flex size-11 shrink-0 items-center justify-center rounded-[14px] bg-[#FF8A1E] text-[var(--ink-900)]">
-          <Code2 className="size-5" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="font-bold text-[var(--ink-900)]">Code Playground</p>
-          <p className="text-sm text-[var(--text-muted)]">Write and run HTML, CSS, JavaScript and Python</p>
-        </div>
-        <span className="hidden rounded-[14px] bg-[#FF8A1E] px-3.5 py-2 text-sm font-bold text-[var(--ink-900)] sm:inline">
-          Open
-        </span>
-      </Link> */}
-
-      {/* <div className="relative overflow-hidden rounded-3xl border border-violet-800/30 bg-gradient-to-r from-violet-950 via-indigo-900 to-slate-900 p-6 text-white shadow-xl md:p-10">
-        <div className="relative z-10 max-w-2xl space-y-4">
-          <h2 className="text-2xl leading-tight font-extrabold text-white md:text-3xl">
-            Don&apos;t know where to start?
-          </h2>
-          <p className="text-sm leading-relaxed text-violet-100/90 md:text-base">
-            Take our AI-powered skill assessment quiz to get personalized course recommendations tailored to your experience level and goals.
-          </p>
-          <div className="pt-2">
+          <div className="mt-6 flex flex-col gap-3 border-t border-[var(--brand-gold-100)] pt-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-2 text-xs font-semibold text-[var(--ink-900)]">
+              <span className="size-2 animate-pulse rounded-full bg-[var(--success)]" />
+              HTML, JS &amp; Python runtime ready
+            </div>
             <Link
-              href="/dashboard/ai/quiz"
-              className="inline-flex items-center gap-2.5 rounded-xl bg-[var(--brand-gold)] px-6 py-3 text-sm font-bold text-slate-950 shadow-md transition-all hover:scale-[1.02] hover:bg-amber-400"
+              href="/dashboard/playground"
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-[var(--brand-gold)] px-5 py-2.5 text-xs font-bold text-[var(--ink-900)] shadow-md transition-all hover:bg-[var(--brand-gold-600)]"
             >
-              <span>Start AI Quiz</span>
-              <ArrowRight className="size-4" />
+              Open Playground
+              <ArrowRight className="size-3.5" />
             </Link>
           </div>
         </div>
-        <div className="pointer-events-none absolute top-0 right-0 -mt-16 -mr-16 size-80 rounded-full bg-violet-600/20 blur-3xl" />
-        <div className="pointer-events-none absolute right-1/4 bottom-0 -mb-16 size-64 rounded-full bg-indigo-500/20 blur-2xl" />
-      </div> */}
+      </section>
 
-      <div>
-        <h2 className="mb-4 text-xl font-[var(--font-display)] font-bold tracking-tight text-[var(--ink-900)]">
-          AI tools
-        </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="space-y-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-3">
+            <h2 className="text-xl font-extrabold text-[var(--ink-900)]">AI Study Suite</h2>
+            <span className="rounded-full border border-[var(--brand-violet-100)] bg-[var(--brand-violet-100)] px-2.5 py-0.5 text-xs font-bold text-[var(--brand-violet-600)]">
+              4 tools
+            </span>
+          </div>
+          <p className="text-xs font-semibold text-[var(--ink-500)]">
+            Accelerate retention, generate tests, and transcribe summaries in seconds
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {aiTools.map((tool) => (
             <button
               key={tool.kind}
               type="button"
               onClick={() => {
-                if (tool.kind === "quiz") {
-                  router.push("/dashboard/ai/quiz");
-                } else if (tool.kind === "course") {
-                  router.push("/dashboard/ai/course-architect");
-                } else {
-                  setActiveTool(tool.kind);
-                }
+                if (tool.kind === "quiz") router.push("/dashboard/ai/quiz");
+                else if (tool.kind === "course") router.push("/dashboard/ai/course-architect");
+                else setActiveTool(tool.kind);
               }}
-              className="flex min-h-[148px] flex-col items-start rounded-[20px] bg-[rgba(91,79,232,0.08)] p-4 text-left transition-opacity hover:opacity-90"
+              className="group flex flex-col justify-between rounded-2xl border border-[var(--brand-violet-100)] bg-[var(--brand-violet-100)]/50 p-5 text-left shadow-xs transition-all hover:bg-[var(--surface-card)] hover:shadow-md"
             >
-              <div className="mb-3 flex size-11 items-center justify-center rounded-[14px] bg-[rgba(91,79,232,0.12)]">
-                {tool.icon}
+              <div>
+                <div className="mb-4 flex size-12 items-center justify-center rounded-xl bg-[var(--brand-violet-100)] text-[var(--brand-violet)] transition-transform group-hover:scale-110">
+                  {tool.icon}
+                </div>
+                <h3 className="text-base font-bold text-[var(--ink-900)] transition-colors group-hover:text-[var(--brand-violet)]">
+                  {tool.title}
+                </h3>
+                <p className="mt-1 text-xs leading-relaxed text-[var(--ink-700)]">{tool.description}</p>
               </div>
-              <p className="mb-1 text-[17px] font-bold tracking-tight text-[var(--ink-900)]">
-                {tool.title}
-              </p>
-              <p className="text-[13px] leading-[18px] text-[var(--text-muted)]">
-                {tool.description}
-              </p>
+              <div className="mt-4 flex items-center justify-between border-t border-[var(--brand-violet-100)] pt-3 text-xs font-bold text-[var(--brand-violet)]">
+                <span>{tool.cta}</span>
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </div>
             </button>
           ))}
         </div>
-      </div>
+      </section>
 
-      <div>
-        <div className="mb-4 flex items-center justify-between">
+      <section className="space-y-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="text-xl font-bold tracking-tight text-[var(--ink-900)]">
-              Continue studying
-            </h2>
-            <p className="text-xs text-[var(--text-muted)]">
-              Pick up right where you left off
+            <h2 className="text-xl font-extrabold text-[var(--ink-900)]">In-Progress Tracks</h2>
+            <p className="text-xs font-medium text-[var(--ink-500)]">
+              Continue where you left off across your enrolled topics
             </p>
           </div>
-
-          {totalUnfinished > 4 && (
-            <Link
-              href="/dashboard/progress"
-              className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--ink-900)] hover:underline"
-            >
-              <span>See more ({totalUnfinished})</span>
-              <ChevronRight className="size-4" />
-            </Link>
-          )}
+          <div className="flex flex-wrap items-center gap-2">
+            {totalUnfinished > 0 && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setCategoryFilter("all")}
+                  className={`rounded-lg border px-3 py-1 text-xs font-bold transition ${
+                    categoryFilter === "all"
+                      ? "border-[var(--line)] bg-[var(--surface-card)] text-[var(--ink-900)] shadow-xs"
+                      : "border-transparent text-[var(--ink-500)] hover:bg-[var(--surface-card)]"
+                  }`}
+                >
+                  All ({totalUnfinished})
+                </button>
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setCategoryFilter(cat)}
+                    className={`rounded-lg px-3 py-1 text-xs font-semibold transition ${
+                      categoryFilter === cat
+                        ? "border border-[var(--line)] bg-[var(--surface-card)] font-bold text-[var(--ink-900)]"
+                        : "text-[var(--ink-500)] hover:bg-[var(--surface-card)]"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </>
+            )}
+            {totalUnfinished > 4 && (
+              <Link
+                href="/dashboard/progress"
+                className="inline-flex items-center gap-1 text-xs font-bold text-[var(--ink-900)] hover:underline"
+              >
+                See more <ChevronRight className="size-3.5" />
+              </Link>
+            )}
+          </div>
         </div>
 
-        {resumptionCards.length === 0 ? (
+        {visibleCards.length === 0 ? (
           <div className="space-y-3 rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-8 text-center">
             <CheckCircle2 className="mx-auto size-10 text-[var(--brand-gold-600)]" />
-            <h3 className="text-base font-bold text-[var(--ink-900)]">
-              No active course in progress
-            </h3>
-            <p className="mx-auto max-w-md text-xs text-[var(--text-muted)]">
-              Start a new course today and your progress will automatically
-              appear here for quick resumption.
+            <h3 className="text-base font-bold text-[var(--ink-900)]">No active course in progress</h3>
+            <p className="mx-auto max-w-md text-xs text-[var(--ink-500)]">
+              Start a new course today and your progress will appear here for quick resumption.
             </p>
             <div className="pt-2">
               <Link
                 href="/dashboard/courses"
-                className="inline-flex items-center gap-2 rounded-xl bg-[var(--brand-gold)] px-5 py-2.5 text-xs font-semibold text-black transition-all hover:brightness-105"
+                className="inline-flex items-center gap-2 rounded-xl bg-[var(--brand-gold)] px-5 py-2.5 text-xs font-semibold text-[var(--ink-900)] hover:brightness-105"
               >
                 Browse Courses
               </Link>
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {resumptionCards.map((progress) => {
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {visibleCards.map((progress) => {
               const course =
-                typeof progress.course === "object"
-                  ? (progress.course as Course)
-                  : null;
-              if (!course || !course._id || course.isPublished === false)
-                return null;
-
+                typeof progress.course === "object" ? (progress.course as Course) : null;
+              if (!course || !course._id || course.isPublished === false) return null;
               const chapter =
                 typeof progress.lastChapter === "object"
                   ? (progress.lastChapter as Chapter)
                   : null;
               const topic =
-                typeof progress.lastTopic === "object"
-                  ? (progress.lastTopic as Topic)
-                  : null;
-              const courseId = course._id;
-              const isExpanded = expandedAuthors[courseId];
-              const authors = course.authors || [];
+                typeof progress.lastTopic === "object" ? (progress.lastTopic as Topic) : null;
+              const pct = progress.percentCompleted || 0;
 
               return (
-                <Card
+                <article
                   key={progress._id}
-                  className="flex h-full flex-col justify-between gap-5 rounded-[20px] border border-[var(--line)] p-5 transition-shadow hover:shadow-md"
+                  className="group flex flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] shadow-sm transition hover:shadow-md"
                 >
-                  <div className="space-y-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <p className="mb-1 truncate text-xs text-[var(--text-muted)]">
-                          {course?.category || "Course"}
-                        </p>
-                        <h3 className="line-clamp-1 text-lg font-bold text-[var(--ink-900)]">
-                          {course?.title || "Course"}
-                        </h3>
-                      </div>
-                      {course && <Badge tone="gold">{course.difficulty}</Badge>}
-                    </div>
-
-                    <p className="truncate text-sm text-[var(--text-muted)]">
-                      {chapter ? chapter.title : "Started chapter"}
-                      {topic && (
-                        <span className="text-[var(--ink-700)]">
-                          {" "}
-                          · {topic.title}
-                        </span>
-                      )}
-                    </p>
-
-                    {authors.length > 0 && (
-                      <div className="flex items-center gap-2">
-                        <div className="flex shrink-0 -space-x-2 overflow-hidden">
-                          {authors
-                            .slice(0, isExpanded ? authors.length : 3)
-                            .map((author, aIdx) => (
-                              <div
-                                key={aIdx}
-                                className="flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--surface-card)] bg-[var(--brand-gold-100)] text-[10px] font-bold text-[var(--brand-gold-600)]"
-                                title={author.name}
-                              >
-                                {author.avatar ? (
-                                  /* eslint-disable-next-line @next/next/no-img-element */
-                                  <img
-                                    src={author.avatar}
-                                    alt={author.name}
-                                    className="size-full object-cover"
-                                  />
-                                ) : (
-                                  author.name.charAt(0).toUpperCase()
-                                )}
-                              </div>
-                            ))}
-                        </div>
-
-                        <p className="min-w-0 flex-1 truncate text-xs text-[var(--text-muted)]">
-                          {isExpanded ? (
-                            authors.map((a) => a.name).join(", ")
-                          ) : (
-                            <>
-                              {authors[0].name}
-                              {authors.length > 1 && (
-                                <button
-                                  onClick={() => toggleExpandAuthors(courseId)}
-                                  className="ml-1 font-semibold text-[var(--brand-gold-600)] hover:underline"
-                                >
-                                  +{authors.length - 1} more
-                                </button>
-                              )}
-                            </>
-                          )}
-                        </p>
-                      </div>
+                  <div className="relative h-36 w-full overflow-hidden border-b border-[var(--line)]">
+                    {course.banner ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={course.banner}
+                        alt=""
+                        className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="size-full bg-[var(--surface-sunken)]" />
                     )}
-
-                    <ProgressBar
-                      value={progress.percentCompleted || 0}
-                      label={`${progress.percentCompleted || 0}% complete · Page ${(progress.lastContentIndex || 0) + 1}`}
-                    />
+                    <div className="absolute top-3 right-3">
+                      <Badge tone="gold">{course.difficulty}</Badge>
+                    </div>
                   </div>
-
-                  <Link
-                    href={`/dashboard/courses/${courseId}`}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--brand-gold)] px-4 py-2.5 text-xs font-bold text-slate-950 shadow-xs transition-all hover:brightness-105"
-                  >
-                    <Play className="size-3.5 fill-black" />
-                    <span>Continue learning</span>
-                  </Link>
-                </Card>
+                  <div className="flex flex-1 flex-col justify-between p-5">
+                    <div>
+                      <div className="mb-2 flex items-center gap-2">
+                        <span className="text-[11px] font-bold tracking-wider text-[var(--brand-gold-600)] uppercase">
+                          {course.category || "Course"}
+                        </span>
+                        {typeof course.totalObtainableXp === "number" && (
+                          <>
+                            <span className="text-[var(--ink-300)]">•</span>
+                            <span className="text-[11px] font-semibold text-[var(--ink-500)]">
+                              +{course.totalObtainableXp} XP
+                            </span>
+                          </>
+                        )}
+                      </div>
+                      <h3 className="text-base leading-snug font-bold text-[var(--ink-900)] transition-colors group-hover:text-[var(--brand-gold-600)]">
+                        {course.title}
+                      </h3>
+                      {course.description && (
+                        <p className="mt-2 line-clamp-2 text-xs text-[var(--ink-500)]">
+                          {course.description}
+                        </p>
+                      )}
+                    </div>
+                    <div className="mt-5 border-t border-[var(--line)] pt-4">
+                      <div className="mb-1.5 flex justify-between text-xs font-bold text-[var(--ink-700)]">
+                        <span className="truncate pr-2">
+                          {chapter?.title || topic?.title || "In progress"}
+                        </span>
+                        <span className="shrink-0 text-[var(--brand-gold-600)]">{pct}%</span>
+                      </div>
+                      <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--surface-sunken)]">
+                        <div
+                          className="h-2 rounded-full bg-[var(--brand-gold)]"
+                          style={{ width: `${Math.min(100, pct)}%` }}
+                        />
+                      </div>
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-xs font-bold text-[var(--ink-900)]">
+                          {course.topicCount
+                            ? `${course.topicCount} topics`
+                            : course.lessonCount
+                              ? `${course.lessonCount} lessons`
+                              : "Continue"}
+                        </span>
+                        <Link
+                          href={`/dashboard/courses/${course._id}`}
+                          className="inline-flex items-center gap-1 rounded-lg bg-[var(--brand-gold)] px-3.5 py-1.5 text-xs font-bold text-[var(--ink-900)] shadow-sm transition hover:bg-[var(--brand-gold-600)]"
+                        >
+                          <Play className="size-3 fill-current" />
+                          Continue
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </article>
               );
             })}
           </div>
         )}
-      </div>
+      </section>
 
-      {popularCourses.length > 0 && (
-        <div>
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-bold tracking-tight text-[var(--ink-900)]">
-              Popular courses
-            </h2>
-            <Link
-              href="/dashboard/courses"
-              className="text-sm font-bold text-[var(--ink-900)] hover:underline"
-            >
+      {popularCourses.length > 0 && resumptionCards.length === 0 && (
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-extrabold text-[var(--ink-900)]">Popular courses</h2>
+            <Link href="/dashboard/courses" className="text-sm font-bold text-[var(--ink-900)] hover:underline">
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {popularCourses.slice(0, 4).map((course) => (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {popularCourses.slice(0, 3).map((course) => (
               <Link key={course._id} href={`/dashboard/courses/${course._id}`}>
-                <Card className="h-full rounded-[20px] border border-[var(--line)] p-4 transition-shadow hover:shadow-md">
-                  <div className="mb-2 flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <h3 className="line-clamp-1 font-bold text-[var(--ink-900)]">
-                        {course.title}
-                      </h3>
-                      <p className="text-xs text-[var(--text-muted)]">
-                        {course.category}
-                      </p>
-                    </div>
-                    <Badge>{course.topicCount || 0} topics</Badge>
-                  </div>
-                  <p className="mb-3 line-clamp-2 text-sm text-[var(--text-muted)]">
-                    {course.description}
-                  </p>
-                  <p className="text-sm font-bold text-[var(--ink-900)]">
-                    View course
-                  </p>
-                </Card>
+                <article className="h-full overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-4 shadow-sm transition hover:shadow-md">
+                  <h3 className="line-clamp-1 font-bold text-[var(--ink-900)]">{course.title}</h3>
+                  <p className="text-xs text-[var(--ink-500)]">{course.category}</p>
+                  <p className="mt-2 line-clamp-2 text-sm text-[var(--ink-500)]">{course.description}</p>
+                </article>
               </Link>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
-      <SummarizerDialog
-        open={activeTool === "summarizer"}
-        onClose={() => setActiveTool(null)}
-      />
-      <QuizGeneratorDialog
-        open={activeTool === "quiz"}
-        onClose={() => setActiveTool(null)}
-      />
-      <QAAIDialog
-        open={activeTool === "qa"}
-        onClose={() => setActiveTool(null)}
-      />
+      <section className="grid grid-cols-12 gap-6 pb-6">
+        <div className="col-span-12 flex flex-col justify-between rounded-3xl border border-[var(--line)] bg-[var(--surface-card)] p-6 shadow-sm lg:col-span-7">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <div>
+              <h3 className="text-base font-bold text-[var(--ink-900)]">Today&apos;s study goal</h3>
+              <p className="text-xs text-[var(--ink-500)]">
+                {stats?.dailyGoal
+                  ? `${stats.dailyGoal.studiedMinutes} of ${stats.dailyGoal.minutes} minutes`
+                  : "Set a daily goal in settings"}
+              </p>
+            </div>
+            {stats?.dailyGoal?.met && (
+              <span className="rounded-full border border-[var(--success)]/20 bg-[var(--success-100)] px-2.5 py-1 text-xs font-bold text-[var(--success)]">
+                Goal met
+              </span>
+            )}
+          </div>
+          <div className="h-3 w-full overflow-hidden rounded-full bg-[var(--surface-sunken)]">
+            <div
+              className="h-3 rounded-full bg-[var(--brand-gold)]"
+              style={{ width: `${Math.min(100, dailyGoalPct)}%` }}
+            />
+          </div>
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-[var(--line)] pt-3 text-xs font-semibold text-[var(--ink-500)]">
+            <span>{stats?.totalSessions ?? 0} study sessions recorded</span>
+            <Link href="/dashboard/progress" className="font-bold text-[var(--brand-gold-600)] hover:underline">
+              View progress
+            </Link>
+          </div>
+        </div>
+
+        <div className="col-span-12 flex flex-col rounded-3xl border border-[var(--line)] bg-[var(--surface-card)] p-6 shadow-sm lg:col-span-5">
+          <div className="mb-2 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex size-8 items-center justify-center rounded-lg bg-[var(--brand-gold-100)] text-[var(--brand-gold-600)]">
+                <Trophy className="size-4" />
+              </div>
+              <div>
+                <h3 className="text-base leading-tight font-bold text-[var(--ink-900)]">Weekly Leaders</h3>
+                <p className="text-[11px] text-[var(--ink-500)]">Past 7 days on SabiLearn</p>
+              </div>
+            </div>
+            <Link href="/dashboard/leaderboard" className="text-xs font-bold text-[var(--brand-gold-600)] hover:underline">
+              View All
+            </Link>
+          </div>
+          {leaders.length === 0 ? (
+            <p className="py-6 text-center text-xs text-[var(--ink-500)]">Leaderboard is empty this week.</p>
+          ) : (
+            <div className="my-2 divide-y divide-[var(--line)]">
+              {leaders.slice(0, 3).map((entry, idx) => {
+                const isYou = myId && String(entry._id) === String(myId);
+                const name = entry.name || [entry.firstName, entry.lastName].filter(Boolean).join(" ") || "Learner";
+                const initial = name.charAt(0).toUpperCase();
+                return (
+                  <div
+                    key={entry._id}
+                    className={`flex items-center justify-between py-2.5 ${isYou ? "-mx-3 rounded-xl bg-[var(--brand-gold-100)]/60 px-3" : "px-1"}`}
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      <span className={`w-5 text-center text-xs font-black ${idx === 0 ? "text-[var(--brand-gold-600)]" : "text-[var(--ink-300)]"}`}>
+                        {idx + 1}
+                      </span>
+                      <div className="flex size-8 items-center justify-center overflow-hidden rounded-full bg-[var(--ink-900)] text-xs font-bold text-white">
+                        {entry.avatar ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={entry.avatar} alt="" className="size-full object-cover" />
+                        ) : (
+                          initial
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="flex items-center gap-1 truncate text-xs font-bold text-[var(--ink-900)]">
+                          {name}
+                          {isYou && (
+                            <span className="rounded bg-[var(--brand-gold-dark)] px-1 text-[9px] font-black text-[var(--ink-900)]">
+                              YOU
+                            </span>
+                          )}
+                        </p>
+                        {entry.currentStreak !== undefined && (
+                          <p className="text-[10px] text-[var(--ink-500)]">{entry.currentStreak}-day streak</p>
+                        )}
+                      </div>
+                    </div>
+                    <span className="shrink-0 text-xs font-extrabold text-[var(--ink-900)]">
+                      {entry.periodXp.toLocaleString()} XP
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <SummarizerDialog open={activeTool === "summarizer"} onClose={() => setActiveTool(null)} />
+      <QuizGeneratorDialog open={activeTool === "quiz"} onClose={() => setActiveTool(null)} />
+      <QAAIDialog open={activeTool === "qa"} onClose={() => setActiveTool(null)} />
     </div>
   );
 }
