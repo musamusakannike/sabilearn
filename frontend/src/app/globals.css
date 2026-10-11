@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 @import "../styles/tokens/colors.css";
 @import "../styles/tokens/typography.css";
@@ -8,8 +8,57 @@
 @theme inline {
   --color-background: var(--surface-page);
   --color-foreground: var(--ink-900);
-  --font-sans: var(--font-body);
+  --font-sans: 'Plus Jakarta Sans', var(--font-body), sans-serif;
+  --color-cream-50: #FFFDF9;
+  --color-cream-100: #FAF7F2;
+  --color-cream-200: #F5EFE6;
+  --color-cream-300: #EFE7DA;
+  --color-sabi-orange: #F97316;
+  --color-sabi-peach: #FED7AA;
+  --color-sabi-dark: #1C1917;
+  --color-sabi-muted: #78716C;
+  --color-lavender-50: #F6F5FF;
+  --color-lavender-100: #EEEDFE;
+  --color-lavender-200: #DDD8FD;
+  --color-lavender-600: #7C3AED;
 }
+
+/* Reference scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+::-webkit-scrollbar-thumb {
+  background: #E4DCD0;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D1C5B6;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.dot-pattern {
+  background-image: radial-gradient(#F97316 1.2px, transparent 1.2px);
+  background-size: 14px 14px;
+  opacity: 0.25;
+}
+
+.binary-ambient {
+  user-select: none;
+  letter-spacing: 0.2em;
+}
+
 
 body {
   background: var(--surface-page);
