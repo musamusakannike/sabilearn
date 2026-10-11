@@ -14,7 +14,7 @@ function bannerBlock(bannerUrl?: string, alt = 'Course'): string {
   return `
           <tr>
             <td style="padding: 0 32px 20px 32px;">
-              <img src="${escapeHtml(bannerUrl)}" alt="${escapeHtml(alt)}" width="496" style="display: block; width: 100%; max-width: 496px; height: auto; border-radius: 12px; border: 1px solid #E5E1D8;" />
+              <img src="${escapeHtml(bannerUrl)}" alt="${escapeHtml(alt)}" width="496" border="0" style="display: block; width: 100%; max-width: 496px; height: auto; border-radius: 12px; border: 1px solid #E5E1D8;" />
             </td>
           </tr>`;
 }
