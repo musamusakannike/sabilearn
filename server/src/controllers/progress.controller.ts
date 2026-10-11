@@ -8,6 +8,7 @@ import StudySession from '../models/studySession.model';
 import Topic from '../models/topic.model';
 import UserProgress from '../models/userProgress.model';
 import { recordStudyDay, announceStreakProgress } from '../services/streak.service';
+import { maybeStampFirstTopicOpened } from '../services/engagementEmail.service';
 import { sendAchievement } from '../services/notification.service';
 import User from '../models/user.model';
 
@@ -248,6 +249,8 @@ export const savePosition = async (req: AuthenticatedRequest, res: Response, nex
       { new: true, upsert: true }
     );
 
+    void maybeStampFirstTopicOpened(userId, courseId, topicId);
+
     res.status(200).json({ success: true, data: progress });
   } catch (error) {
     next(error);
@@ -442,11 +445,19 @@ export const updateContentPosition = async (req: AuthenticatedRequest, res: Resp
     const userId = req.user!._id;
     const { course, topic, contentIndex } = req.body;
 
+    const positionUpdate: Record<string, unknown> = {
+      lastContentIndex: contentIndex,
+      lastStudiedAt: new Date(),
+    };
+    if (topic) positionUpdate.lastTopic = topic;
+
     const progress = await UserProgress.findOneAndUpdate(
-      { user: userId, course, topic },
-      { $set: { lastContentIndex: contentIndex, lastStudiedAt: new Date() } },
+      { user: userId, course },
+      { $set: positionUpdate },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
+
+    void maybeStampFirstTopicOpened(userId, course, topic);
 
     res.status(200).json({ success: true, data: progress });
   } catch (error) {

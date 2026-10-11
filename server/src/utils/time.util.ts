@@ -48,3 +48,20 @@ export function startOfLocalDay(date: Date, offsetMinutes: number): Date {
   const key = localDayKey(date, offsetMinutes);
   return new Date(dayKeyToDate(key).getTime() - offsetMinutes * 60_000);
 }
+
+/** Local weekday: 0 Sunday … 6 Saturday. */
+export function localWeekday(date: Date, offsetMinutes: number): number {
+  const shifted = new Date(date.getTime() + offsetMinutes * 60_000);
+  return shifted.getUTCDay();
+}
+
+/** ISO-like week key from a local day (`YYYY-Www`). */
+export function localWeekKey(date: Date, offsetMinutes: number): string {
+  const key = localDayKey(date, offsetMinutes);
+  const d = dayKeyToDate(key);
+  const day = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const week = Math.ceil(((d.getTime() - yearStart.getTime()) / MS_PER_DAY + 1) / 7);
+  return `${d.getUTCFullYear()}-W${String(week).padStart(2, '0')}`;
+}

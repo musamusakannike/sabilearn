@@ -9,6 +9,11 @@ import {
   sendStreakRiskReminder,
 } from '../services/notification.service';
 import { expireLapsedStreaks } from '../services/streak.service';
+import {
+  runIncompleteFirstTopicEmails,
+  runStreakRiskEmails,
+  runWeeklyProgressEmails,
+} from '../services/engagementEmail.service';
 import { daysBetweenKeys, localDayKey, localHour, localMinute, startOfLocalDay } from '../utils/time.util';
 
 /**
@@ -213,6 +218,21 @@ const JOBS: Job[] = [
     name: 'streak-cleanup',
     expression: '30 0 * * *', // 00:30 UTC daily
     run: () => runLapsedStreakCleanup(),
+  },
+  {
+    name: 'incomplete-first-topic-email',
+    expression: '*/15 * * * *',
+    run: () => runIncompleteFirstTopicEmails(),
+  },
+  {
+    name: 'streak-risk-email',
+    expression: '*/15 * * * *',
+    run: () => runStreakRiskEmails(),
+  },
+  {
+    name: 'weekly-progress-email',
+    expression: '*/15 * * * *',
+    run: () => runWeeklyProgressEmails(),
   },
 ];
 

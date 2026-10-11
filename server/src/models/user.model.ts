@@ -44,6 +44,12 @@ export interface IUser extends Document {
   lastStudyDate?: Date | null;
   totalStudyDays: number;
   totalXp: number;
+  /** Local YYYY-MM-DD of the last first-topic or streak engagement email. */
+  lastEngagementEmailDay?: string | null;
+  /** Local YYYY-MM-DD of the last streak-risk email. */
+  lastStreakEmailDay?: string | null;
+  /** Local week key `YYYY-Www` of the last weekly digest. */
+  lastWeeklyEmailWeek?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -141,6 +147,18 @@ const UserSchema: Schema = new Schema<IUser>(
       type: Number,
       default: 0,
       min: 0,
+    },
+    lastEngagementEmailDay: {
+      type: String,
+      default: null,
+    },
+    lastStreakEmailDay: {
+      type: String,
+      default: null,
+    },
+    lastWeeklyEmailWeek: {
+      type: String,
+      default: null,
     },
   },
   {

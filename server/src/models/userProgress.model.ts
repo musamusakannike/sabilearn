@@ -12,6 +12,10 @@ export interface IUserProgress extends Document {
   percentCompleted: number;
   isCompleted: boolean;
   lastStudiedAt: Date;
+  /** Set the first time the learner actually opens the course's first topic. */
+  firstTopicOpenedAt?: Date | null;
+  /** Set when the 2-hour unfinished-first-topic email has been sent. */
+  firstTopicNudgeSentAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -70,6 +74,14 @@ const UserProgressSchema: Schema = new Schema<IUserProgress>(
     lastStudiedAt: {
       type: Date,
       default: Date.now,
+    },
+    firstTopicOpenedAt: {
+      type: Date,
+      default: null,
+    },
+    firstTopicNudgeSentAt: {
+      type: Date,
+      default: null,
     },
   },
   {

@@ -17,14 +17,22 @@ export async function sendEmail({
   to,
   subject,
   html,
+  text,
 }: {
   to: string;
   subject: string;
   html: string;
+  text?: string;
 }): Promise<void> {
   const from = process.env.EMAIL_FROM || DEFAULT_FROM;
   const resend = getResendClient();
-  const { error } = await resend.emails.send({ from, to, subject, html });
+  const { error } = await resend.emails.send({
+    from,
+    to,
+    subject,
+    html,
+    ...(text ? { text } : {}),
+  });
   if (error) {
     throw new Error(`Resend failed: ${error.message}`);
   }
