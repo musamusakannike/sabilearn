@@ -13,6 +13,9 @@ import {
   runIncompleteFirstTopicEmails,
   runStreakRiskEmails,
   runWeeklyProgressEmails,
+  runCelebrationEmails,
+  runNextTopicEmails,
+  runResumeCourseEmails,
 } from '../services/engagementEmail.service';
 import { daysBetweenKeys, localDayKey, localHour, localMinute, startOfLocalDay } from '../utils/time.util';
 
@@ -233,6 +236,21 @@ const JOBS: Job[] = [
     name: 'weekly-progress-email',
     expression: '*/15 * * * *',
     run: () => runWeeklyProgressEmails(),
+  },
+  {
+    name: 'celebration-email',
+    expression: '*/15 * * * *',
+    run: () => runCelebrationEmails(),
+  },
+  {
+    name: 'next-topic-email',
+    expression: '*/15 * * * *',
+    run: () => runNextTopicEmails(),
+  },
+  {
+    name: 'resume-course-email',
+    expression: '*/15 * * * *',
+    run: () => runResumeCourseEmails(),
   },
 ];
 

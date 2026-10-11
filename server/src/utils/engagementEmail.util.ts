@@ -262,7 +262,213 @@ SabiLearn — Learn a skill. Sabi it for life.
 ${HOME_URL}`;
 }
 
+export function firstTopicCelebrationHtml(props: {
+  name: string;
+  courseTitle: string;
+  topicTitle: string;
+  bannerUrl?: string;
+  learnUrl: string;
+}): string {
+  const name = escapeHtml(props.name);
+  return wrapEmail({
+    title: 'You finished your first topic',
+    preheader: `Nice work on “${props.topicTitle}”. The next lesson is ready when you are.`,
+    bannerUrl: props.bannerUrl,
+    bannerAlt: props.courseTitle,
+    bodyHtml: `
+              <p style="margin: 0 0 12px 0; font-size: 16px; color: #35354A;">Hi ${name},</p>
+              <h1 style="margin: 0 0 12px 0; font-size: 22px; line-height: 1.3; color: #0E0E1A; font-weight: 800;">
+                You finished your first topic
+              </h1>
+              <p style="margin: 0 0 8px 0; font-size: 15px; line-height: 1.6; color: #35354A;">
+                “${escapeHtml(props.topicTitle)}” in <strong>${escapeHtml(props.courseTitle)}</strong> is done. That first finish is the hard part — keep going when you have a few minutes.
+              </p>
+              ${ctaButton(props.learnUrl, 'See what’s next')}
+    `,
+  });
+}
+
+export function firstTopicCelebrationText(props: {
+  name: string;
+  courseTitle: string;
+  topicTitle: string;
+  learnUrl: string;
+}): string {
+  return `Hi ${props.name},
+
+You finished “${props.topicTitle}” in ${props.courseTitle}. The next lesson is ready when you are.
+
+${props.learnUrl}
+
+SabiLearn — Learn a skill. Sabi it for life.
+${HOME_URL}`;
+}
+
+export function firstCourseCelebrationHtml(props: {
+  name: string;
+  courseTitle: string;
+  bannerUrl?: string;
+  learnUrl: string;
+}): string {
+  const name = escapeHtml(props.name);
+  return wrapEmail({
+    title: `You finished ${props.courseTitle}`,
+    preheader: `Your first course is complete. That is a real skill under your belt.`,
+    bannerUrl: props.bannerUrl,
+    bannerAlt: props.courseTitle,
+    bodyHtml: `
+              <p style="margin: 0 0 12px 0; font-size: 16px; color: #35354A;">Hi ${name},</p>
+              <h1 style="margin: 0 0 12px 0; font-size: 22px; line-height: 1.3; color: #0E0E1A; font-weight: 800;">
+                You finished ${escapeHtml(props.courseTitle)}
+              </h1>
+              <p style="margin: 0 0 8px 0; font-size: 15px; line-height: 1.6; color: #35354A;">
+                First course, done. Browse another skill whenever you want to keep the momentum.
+              </p>
+              ${ctaButton(props.learnUrl, 'Explore more courses')}
+    `,
+  });
+}
+
+export function firstCourseCelebrationText(props: {
+  name: string;
+  courseTitle: string;
+  learnUrl: string;
+}): string {
+  return `Hi ${props.name},
+
+You finished ${props.courseTitle}. That is your first full course on SabiLearn.
+
+${props.learnUrl}
+
+SabiLearn — Learn a skill. Sabi it for life.
+${HOME_URL}`;
+}
+
+export function sevenDayStreakHtml(props: {
+  name: string;
+  bannerUrl?: string;
+  learnUrl: string;
+}): string {
+  const name = escapeHtml(props.name);
+  return wrapEmail({
+    title: 'Seven days in a row',
+    preheader: 'A full week of studying. The habit is real.',
+    bannerUrl: props.bannerUrl,
+    bannerAlt: 'SabiLearn',
+    bodyHtml: `
+              <p style="margin: 0 0 12px 0; font-size: 16px; color: #35354A;">Hi ${name},</p>
+              <h1 style="margin: 0 0 12px 0; font-size: 22px; line-height: 1.3; color: #0E0E1A; font-weight: 800;">
+                Seven days in a row
+              </h1>
+              <p style="margin: 0 0 8px 0; font-size: 15px; line-height: 1.6; color: #35354A;">
+                A full week of showing up. That is the kind of streak that turns into a skill. Another short session whenever you are ready.
+              </p>
+              ${ctaButton(props.learnUrl, 'Keep it going')}
+    `,
+  });
+}
+
+export function sevenDayStreakText(props: { name: string; learnUrl: string }): string {
+  return `Hi ${props.name},
+
+Seven days in a row. A full week of studying. Keep it going here:
+
+${props.learnUrl}
+
+SabiLearn — Learn a skill. Sabi it for life.
+${HOME_URL}`;
+}
+
+export function nextTopicHtml(props: {
+  name: string;
+  courseTitle: string;
+  topicTitle: string;
+  bannerUrl?: string;
+  learnUrl: string;
+}): string {
+  const name = escapeHtml(props.name);
+  return wrapEmail({
+    title: `Next up: ${props.topicTitle}`,
+    preheader: `Continue ${props.courseTitle} with “${props.topicTitle}” when you have a few minutes.`,
+    bannerUrl: props.bannerUrl,
+    bannerAlt: props.courseTitle,
+    bodyHtml: `
+              <p style="margin: 0 0 12px 0; font-size: 16px; color: #35354A;">Hi ${name},</p>
+              <h1 style="margin: 0 0 12px 0; font-size: 22px; line-height: 1.3; color: #0E0E1A; font-weight: 800;">
+                Next up: ${escapeHtml(props.topicTitle)}
+              </h1>
+              <p style="margin: 0 0 8px 0; font-size: 15px; line-height: 1.6; color: #35354A;">
+                You have been moving through <strong>${escapeHtml(props.courseTitle)}</strong>. The next lesson is ready if you want to keep going.
+              </p>
+              ${ctaButton(props.learnUrl, 'Open the next topic')}
+    `,
+  });
+}
+
+export function nextTopicText(props: {
+  name: string;
+  courseTitle: string;
+  topicTitle: string;
+  learnUrl: string;
+}): string {
+  return `Hi ${props.name},
+
+Next up in ${props.courseTitle}: “${props.topicTitle}”.
+
+${props.learnUrl}
+
+SabiLearn — Learn a skill. Sabi it for life.
+${HOME_URL}`;
+}
+
+export function resumeCourseHtml(props: {
+  name: string;
+  courseTitle: string;
+  topicTitle?: string;
+  bannerUrl?: string;
+  learnUrl: string;
+}): string {
+  const name = escapeHtml(props.name);
+  const topicBit = props.topicTitle
+    ? ` You left off at “${escapeHtml(props.topicTitle)}”.`
+    : '';
+  return wrapEmail({
+    title: `Pick up ${props.courseTitle}`,
+    preheader: `Your place in ${props.courseTitle} is saved.`,
+    bannerUrl: props.bannerUrl,
+    bannerAlt: props.courseTitle,
+    bodyHtml: `
+              <p style="margin: 0 0 12px 0; font-size: 16px; color: #35354A;">Hi ${name},</p>
+              <h1 style="margin: 0 0 12px 0; font-size: 22px; line-height: 1.3; color: #0E0E1A; font-weight: 800;">
+                Pick up ${escapeHtml(props.courseTitle)}
+              </h1>
+              <p style="margin: 0 0 8px 0; font-size: 15px; line-height: 1.6; color: #35354A;">
+                It has been a few days.${topicBit} Your progress is still here whenever you want it.
+              </p>
+              ${ctaButton(props.learnUrl, 'Resume the course')}
+    `,
+  });
+}
+
+export function resumeCourseText(props: {
+  name: string;
+  courseTitle: string;
+  topicTitle?: string;
+  learnUrl: string;
+}): string {
+  const topicBit = props.topicTitle ? ` You left off at “${props.topicTitle}”.` : '';
+  return `Hi ${props.name},
+
+Pick up ${props.courseTitle}.${topicBit}
+
+${props.learnUrl}
+
+SabiLearn — Learn a skill. Sabi it for life.
+${HOME_URL}`;
+}
+
 export const SITE_HOME = HOME_URL;
 export const LEARN_URL = (courseId: string, topicId: string) =>
   `${HOME_URL}/dashboard/courses/${courseId}/topics/${topicId}/learn`;
 export const DASHBOARD_URL = `${HOME_URL}/dashboard`;
+export const COURSES_URL = `${HOME_URL}/dashboard/courses`;

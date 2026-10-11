@@ -8,7 +8,7 @@ import StudySession from '../models/studySession.model';
 import Topic from '../models/topic.model';
 import UserProgress from '../models/userProgress.model';
 import { recordStudyDay, announceStreakProgress } from '../services/streak.service';
-import { maybeStampFirstTopicOpened } from '../services/engagementEmail.service';
+import { maybeStampFirstTopicOpened, onTopicCompleted } from '../services/engagementEmail.service';
 import { sendAchievement } from '../services/notification.service';
 import User from '../models/user.model';
 
@@ -95,7 +95,8 @@ export const completeTopic = async (req: AuthenticatedRequest, res: Response, ne
     }
 
     const topicObjId = new mongoose.Types.ObjectId(topicId);
-    if (!progress.completedTopics.some((id) => id.toString() === topicId)) {
+    const isNewCompletion = !progress.completedTopics.some((id) => id.toString() === topicId);
+    if (isNewCompletion) {
       progress.completedTopics.push(topicObjId);
     }
 
@@ -105,6 +106,7 @@ export const completeTopic = async (req: AuthenticatedRequest, res: Response, ne
     }
     progress.lastStudiedAt = new Date();
 
+    const wasCompleted = Boolean(progress.isCompleted);
     const totalTopicsInCourse = await Topic.countDocuments({ course: courseId });
     if (totalTopicsInCourse > 0) {
       progress.percentCompleted = Math.min(100, Math.round((progress.completedTopics.length / totalTopicsInCourse) * 100));
@@ -112,8 +114,13 @@ export const completeTopic = async (req: AuthenticatedRequest, res: Response, ne
         progress.isCompleted = true;
       }
     }
+    const courseJustCompleted = !wasCompleted && progress.isCompleted === true;
 
     await progress.save();
+
+    if (isNewCompletion) {
+      void onTopicCompleted(userId, courseId, topicId, courseJustCompleted);
+    }
 
     void awardStreakAchievements(userId);
 
@@ -187,15 +194,33 @@ export const submitExercise = async (req: AuthenticatedRequest, res: Response, n
       progress.passedExercises.push(exerciseKey);
     }
 
+    let exerciseCompletedTopic = false;
+    let exerciseCourseJustCompleted = false;
+
     if (isPassed && topicId) {
       const topicObjId = new mongoose.Types.ObjectId(topicId);
-      if (!progress.completedTopics.some((id) => id.toString() === topicId)) {
+      const isNewCompletion = !progress.completedTopics.some((id) => id.toString() === topicId);
+      if (isNewCompletion) {
         progress.completedTopics.push(topicObjId);
+        exerciseCompletedTopic = true;
+        const wasCompleted = Boolean(progress.isCompleted);
+        const totalTopicsInCourse = await Topic.countDocuments({ course: courseId });
+        if (totalTopicsInCourse > 0) {
+          progress.percentCompleted = Math.min(100, Math.round((progress.completedTopics.length / totalTopicsInCourse) * 100));
+          if (progress.percentCompleted >= 100) {
+            progress.isCompleted = true;
+          }
+        }
+        exerciseCourseJustCompleted = !wasCompleted && progress.isCompleted === true;
       }
     }
 
     progress.lastStudiedAt = new Date();
     await progress.save();
+
+    if (exerciseCompletedTopic && topicId) {
+      void onTopicCompleted(userId, courseId, topicId, exerciseCourseJustCompleted);
+    }
 
     // Record study session so accuracy and study metrics reflect exercise activity
     try {

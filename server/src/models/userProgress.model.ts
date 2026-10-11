@@ -16,6 +16,7 @@ export interface IUserProgress extends Document {
   firstTopicOpenedAt?: Date | null;
   /** Set when the 2-hour unfinished-first-topic email has been sent. */
   firstTopicNudgeSentAt?: Date | null;
+  lastResumeEmailAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -80,6 +81,10 @@ const UserProgressSchema: Schema = new Schema<IUserProgress>(
       default: null,
     },
     firstTopicNudgeSentAt: {
+      type: Date,
+      default: null,
+    },
+    lastResumeEmailAt: {
       type: Date,
       default: null,
     },

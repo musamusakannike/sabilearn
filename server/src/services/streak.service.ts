@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import User from '../models/user.model';
 import { localDayKey, dayKeyToDate, dateToDayKey, daysBetweenKeys } from '../utils/time.util';
 import { sendAchievement } from './notification.service';
+import { onSevenDayStreak } from './engagementEmail.service';
 
 /** Streak lengths worth celebrating. */
 const STREAK_MILESTONES = [3, 7, 14, 30, 60, 100, 365];
@@ -104,6 +105,9 @@ export async function announceStreakProgress(
       MILESTONE_COPY[result.milestone] || `You have studied ${result.milestone} days in a row.`,
       `achievement:streak-${result.milestone}:${userId}:${result.longestStreak}`
     );
+    if (result.milestone === 7) {
+      void onSevenDayStreak(userId);
+    }
   }
 }
 

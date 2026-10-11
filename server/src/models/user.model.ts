@@ -50,6 +50,19 @@ export interface IUser extends Document {
   lastStreakEmailDay?: string | null;
   /** Local week key `YYYY-Www` of the last weekly digest. */
   lastWeeklyEmailWeek?: string | null;
+  lastCelebrationEmailDay?: string | null;
+  firstTopicCelebrationSentAt?: Date | null;
+  firstCourseCelebrationSentAt?: Date | null;
+  sevenDayStreakEmailedAt?: Date | null;
+  pendingCelebration?: 'first-topic' | 'first-course' | 'streak-7' | null;
+  pendingCelebrationCourse?: mongoose.Types.ObjectId | null;
+  pendingCelebrationTopic?: mongoose.Types.ObjectId | null;
+  /** Coalesced next-topic suggestion: always the latest unfinished next lesson. */
+  nextTopicSuggestAt?: Date | null;
+  nextTopicCourse?: mongoose.Types.ObjectId | null;
+  nextTopicId?: mongoose.Types.ObjectId | null;
+  lastNextTopicEmailAt?: Date | null;
+  lastResumeEmailAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -158,6 +171,59 @@ const UserSchema: Schema = new Schema<IUser>(
     },
     lastWeeklyEmailWeek: {
       type: String,
+      default: null,
+    },
+    lastCelebrationEmailDay: {
+      type: String,
+      default: null,
+    },
+    firstTopicCelebrationSentAt: {
+      type: Date,
+      default: null,
+    },
+    firstCourseCelebrationSentAt: {
+      type: Date,
+      default: null,
+    },
+    sevenDayStreakEmailedAt: {
+      type: Date,
+      default: null,
+    },
+    pendingCelebration: {
+      type: String,
+      enum: ['first-topic', 'first-course', 'streak-7'],
+      default: null,
+    },
+    pendingCelebrationCourse: {
+      type: Schema.Types.ObjectId,
+      ref: 'Course',
+      default: null,
+    },
+    pendingCelebrationTopic: {
+      type: Schema.Types.ObjectId,
+      ref: 'Topic',
+      default: null,
+    },
+    nextTopicSuggestAt: {
+      type: Date,
+      default: null,
+    },
+    nextTopicCourse: {
+      type: Schema.Types.ObjectId,
+      ref: 'Course',
+      default: null,
+    },
+    nextTopicId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Topic',
+      default: null,
+    },
+    lastNextTopicEmailAt: {
+      type: Date,
+      default: null,
+    },
+    lastResumeEmailAt: {
+      type: Date,
       default: null,
     },
   },
