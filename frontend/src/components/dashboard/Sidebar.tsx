@@ -88,22 +88,8 @@ const navItems: NavItemConfig[] = [
     ),
   },
   {
-    href: "/dashboard/ai/quiz",
-    label: "AI Study Suite",
-    badgeKey: "ai",
-    renderIcon: () => (
-      <svg
-        className="w-5 h-5 shrink-0 text-purple-600 transition-colors"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path d="M12 2L9.5 8.5L3 11L9.5 13.5L12 20L14.5 13.5L21 11L14.5 8.5L12 2ZM6.5 17.5L5 21.5L3.5 17.5L-0.5 16L3.5 14.5L5 10.5L6.5 14.5L10.5 16L6.5 17.5Z" />
-      </svg>
-    ),
-  },
-  {
-    href: "/dashboard/leaderboard",
-    label: "Leaderboard",
+    href: "/swep",
+    label: "SWEP",
     renderIcon: (active: boolean) => (
       <svg
         className={`w-5 h-5 shrink-0 transition-colors ${
@@ -119,7 +105,7 @@ const navItems: NavItemConfig[] = [
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138z"
+          d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
         />
       </svg>
     ),
