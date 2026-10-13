@@ -18,14 +18,6 @@ type Phase = 'quiz' | 'results';
 
 const OPTION_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-function shuffleOptions(options: SwepOption[]): SwepOption[] {
-  const array = [...options];
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
 
 function QuizQuestion({
   question,
@@ -130,10 +122,7 @@ export default function SwepQuiz({
   const mcq = questions[currentQ];
   const isLast = currentQ === total - 1;
 
-  const currentOptions = useMemo(() => {
-    if (!mcq) return [];
-    return shuffleOptions(mcq.formattedOptions || []);
-  }, [mcq]);
+  const currentOptions = mcq?.formattedOptions || [];
 
   const close = () => router.push(`${base}/practice?year=${year}`);
 
