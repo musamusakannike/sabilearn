@@ -3,11 +3,10 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ArrowLeft, BookOpen, Check, FileQuestion, ListOrdered, Lock, Shuffle, Sparkles } from 'lucide-react';
+import { ArrowLeft, Lock } from 'lucide-react';
 import {
   COUNT_OPTIONS,
   GUEST_MAX_QUESTIONS,
-  SWEP_EDITIONS,
   SwepYear,
   filterQuestions,
   getSwepQuiz,
@@ -27,7 +26,6 @@ export default function SwepPracticeSetup({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Initialize year from URL query parameter (defaulting to 2018 if specified or requested)
   const initialYear = parseYearParam(searchParams.get('year'));
   const [year, setYear] = useState<SwepYear>(initialYear);
 
@@ -44,7 +42,7 @@ export default function SwepPracticeSetup({
 
   const handleYearChange = (newYear: SwepYear) => {
     setYear(newYear);
-    setUnit('all'); // Reset unit selection when switching examination edition
+    setUnit('all');
   };
 
   const applyCount = (n: number) => {
@@ -64,201 +62,127 @@ export default function SwepPracticeSetup({
   };
 
   const steps = [
-    { n: 1 as const, label: 'Edition & Unit' },
+    { n: 1 as const, label: 'Set & unit' },
     { n: 2 as const, label: 'Order' },
-    { n: 3 as const, label: 'Quantity' },
+    { n: 3 as const, label: 'Count' },
   ];
 
+  const selectedRow = 'bg-[var(--brand-gold-100)]/70 text-[var(--ink-900)]';
+  const idleRow = 'text-[var(--ink-800)]';
+
   return (
-    <div className="mx-auto max-w-xl px-4 py-4 sm:px-0">
+    <div className="mx-auto max-w-xl">
       <Link
         href={base}
-        className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--ink-900)]"
+        className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-[var(--ink-500)] hover:text-[var(--ink-900)]"
       >
-        <ArrowLeft className="size-4" /> Back to SWEP Hub
+        <ArrowLeft className="size-4" /> Back
       </Link>
 
-      {/* Stepper Indicator */}
-      <div className="mb-6 flex items-center gap-2">
+      <div className="mt-4 flex gap-2" aria-label="Setup steps">
         {steps.map((s) => (
-          <div key={s.n} className="flex flex-1 flex-col gap-1.5">
+          <div key={s.n} className="flex flex-1 flex-col gap-1">
             <div
-              className={`h-2.5 rounded-full transition-all ${
-                s.n < step ? 'bg-[#22C55E]' : s.n === step ? 'bg-[#FF8A00]' : 'bg-slate-200'
+              className={`h-1 rounded-full ${
+                s.n <= step ? 'bg-[var(--ink-900)]' : 'bg-[var(--line)]'
               }`}
             />
-            <span
-              className={`text-[11px] font-semibold ${
-                s.n === step ? 'text-[var(--ink-900)]' : 'text-[var(--text-muted)]'
-              }`}
-            >
-              {s.n}. {s.label}
+            <span className={`text-[11px] ${s.n === step ? 'font-semibold text-[var(--ink-900)]' : 'text-[var(--ink-500)]'}`}>
+              {s.label}
             </span>
           </div>
         ))}
       </div>
 
-      <div className="rounded-[28px] border border-[var(--line)] bg-[var(--surface-card)] p-6 shadow-[var(--shadow-sm)] sm:p-8">
+      <div className="mt-5 pb-24">
         {step === 1 && (
           <>
-            <div className="mb-5">
-              <h1 className="text-2xl font-extrabold tracking-tight text-[var(--ink-900)]">
-                Select Year & Unit
-              </h1>
-              <p className="mt-1 text-sm text-[var(--text-muted)]">
-                Choose the past question edition, then pick a workshop unit or study across all units.
-              </p>
+            <h1 className="text-xl font-bold tracking-tight text-[var(--ink-900)]">Set and unit</h1>
+            <p className="mt-1 text-sm text-[var(--ink-500)]">Pick an edition, then a workshop unit.</p>
+
+            <div className="mt-5 grid grid-cols-2 gap-1 rounded-xl bg-[var(--surface-sunken)] p-1">
+              <button
+                type="button"
+                onClick={() => handleYearChange('2018')}
+                className={`min-h-12 cursor-pointer rounded-lg px-2 text-center text-sm transition-colors ${
+                  year === '2018' ? 'bg-[var(--surface-page)] font-semibold text-[var(--ink-900)]' : 'text-[var(--ink-500)]'
+                }`}
+              >
+                2018
+                <span className="mt-0.5 block text-[11px] font-medium">321 questions</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleYearChange('2025')}
+                className={`min-h-12 cursor-pointer rounded-lg px-2 text-center text-sm transition-colors ${
+                  year === '2025' ? 'bg-[var(--surface-page)] font-semibold text-[var(--ink-900)]' : 'text-[var(--ink-500)]'
+                }`}
+              >
+                2025/2026
+                <span className="mt-0.5 block text-[11px] font-medium">180 questions</span>
+              </button>
             </div>
 
-            {/* Edition Switcher Tabs */}
-            <div className="mb-6">
-              <label className="mb-2 block text-xs font-bold tracking-wider text-[var(--text-muted)] uppercase">
-                Examination Edition
-              </label>
-              <div className="grid grid-cols-2 gap-2 rounded-2xl bg-[var(--surface-sunken)] p-1.5">
+            <p className="mt-5 mb-1 text-[11px] font-semibold tracking-wide text-[var(--ink-500)] uppercase">
+              Units
+            </p>
+            <div className="divide-y divide-[var(--line-muted)]">
+              <button
+                type="button"
+                onClick={() => setUnit('all')}
+                className={`flex min-h-12 w-full cursor-pointer items-center justify-between gap-3 px-2 py-3 text-left ${
+                  unit === 'all' ? selectedRow : idleRow
+                }`}
+              >
+                <span className="text-sm font-semibold">All units</span>
+                <span className="text-xs text-[var(--ink-500)]">{activeQuiz.totalQuestions}</span>
+              </button>
+              {activeQuiz.units.map((u) => (
                 <button
+                  key={u.unitNumber}
                   type="button"
-                  onClick={() => handleYearChange('2018')}
-                  className={`flex cursor-pointer flex-col items-center justify-center rounded-xl py-2.5 px-3 text-center transition-all ${
-                    year === '2018'
-                      ? 'bg-[var(--surface-card)] shadow-xs font-bold text-[var(--ink-900)] ring-1 ring-black/5'
-                      : 'text-[var(--text-muted)] hover:text-[var(--ink-800)]'
+                  onClick={() => setUnit(u.unitNumber)}
+                  className={`flex min-h-12 w-full cursor-pointer items-center justify-between gap-3 px-2 py-3 text-left ${
+                    unit === u.unitNumber ? selectedRow : idleRow
                   }`}
                 >
-                  <span className="flex items-center gap-1.5 text-sm">
-                    <BookOpen className="size-4 text-[var(--brand-gold)]" />
-                    SWEP 2018
+                  <span className="min-w-0">
+                    <span className="block text-[11px] font-medium text-[var(--ink-500)]">Unit {u.unitNumber}</span>
+                    <span className="block truncate text-sm font-medium text-[var(--ink-900)]">{u.unitName}</span>
                   </span>
-                  <span className="text-[11px] font-medium text-[var(--brand-gold-600)]">
-                    321 Official Questions
-                  </span>
+                  <span className="shrink-0 text-xs text-[var(--ink-500)]">{u.questionCount}</span>
                 </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleYearChange('2025')}
-                  className={`flex cursor-pointer flex-col items-center justify-center rounded-xl py-2.5 px-3 text-center transition-all ${
-                    year === '2025'
-                      ? 'bg-[var(--surface-card)] shadow-xs font-bold text-[var(--ink-900)] ring-1 ring-black/5'
-                      : 'text-[var(--text-muted)] hover:text-[var(--ink-800)]'
-                  }`}
-                >
-                  <span className="flex items-center gap-1.5 text-sm">
-                    <FileQuestion className="size-4 text-sky-600" />
-                    SWEP 2025/2026
-                  </span>
-                  <span className="text-[11px] font-medium text-sky-600">
-                    180 Practice Questions
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            {/* Units Selection List */}
-            <div>
-              <div className="mb-2 flex items-center justify-between">
-                <label className="text-xs font-bold tracking-wider text-[var(--text-muted)] uppercase">
-                  Workshop Units ({activeQuiz.totalUnits})
-                </label>
-                <span className="text-xs font-semibold text-[var(--brand-gold-600)]">
-                  {year === '2018' ? 'Official Exam Units' : 'Modern Rotation Units'}
-                </span>
-              </div>
-
-              <div className="grid max-h-[20rem] gap-2 overflow-y-auto pr-1">
-                {/* All Units Option */}
-                <button
-                  type="button"
-                  onClick={() => setUnit('all')}
-                  className={`flex items-center justify-between rounded-2xl border p-4 text-left transition-all ${
-                    unit === 'all'
-                      ? 'border-2 border-[var(--brand-gold)] bg-[var(--brand-gold-100)]/60 text-[var(--ink-900)] shadow-xs'
-                      : 'border-[var(--line)] text-[var(--ink-800)] hover:border-slate-400'
-                  }`}
-                >
-                  <div>
-                    <span className="block font-bold text-sm sm:text-base">
-                      All Workshop Units Combined
-                    </span>
-                    <span className="text-xs text-[var(--text-muted)]">
-                      Comprehensive simulation across all {activeQuiz.totalUnits} rotations
-                    </span>
-                  </div>
-                  <span className="rounded-full bg-[var(--surface-card)] px-2.5 py-1 text-xs font-bold text-[var(--brand-gold-700)]">
-                    {activeQuiz.totalQuestions} Qs
-                  </span>
-                </button>
-
-                {/* Individual Units */}
-                {activeQuiz.units.map((u) => (
-                  <button
-                    key={u.unitNumber}
-                    type="button"
-                    onClick={() => setUnit(u.unitNumber)}
-                    className={`flex items-center justify-between rounded-2xl border p-3.5 text-left transition-all ${
-                      unit === u.unitNumber
-                        ? 'border-2 border-[var(--brand-gold)] bg-[var(--brand-gold-100)]/60 text-[var(--ink-900)] shadow-xs'
-                        : 'border-[var(--line)] text-[var(--ink-800)] hover:border-slate-400'
-                    }`}
-                  >
-                    <div className="pr-2">
-                      <span className="block text-xs font-bold uppercase tracking-wider text-[var(--brand-gold-600)]">
-                        Unit {u.unitNumber}
-                      </span>
-                      <span className="block text-sm font-semibold text-[var(--ink-900)]">
-                        {u.unitName}
-                      </span>
-                    </div>
-                    <span className="shrink-0 rounded-full bg-[var(--surface-sunken)] px-2.5 py-1 text-xs font-bold text-[var(--text-muted)]">
-                      {u.questionCount} Qs
-                    </span>
-                  </button>
-                ))}
-              </div>
+              ))}
             </div>
           </>
         )}
 
         {step === 2 && (
           <>
-            <h1 className="text-2xl font-extrabold tracking-tight text-[var(--ink-900)]">Question Order</h1>
-            <p className="mt-1 text-sm text-[var(--text-muted)]">
-              Random is closer to the real CBT exam experience. Sequential follows the booklet question numbering.
+            <h1 className="text-xl font-bold tracking-tight text-[var(--ink-900)]">Question order</h1>
+            <p className="mt-1 text-sm text-[var(--ink-500)]">
+              Random is closer to a CBT paper. Sequential follows booklet numbering.
             </p>
-            <div className="mt-6 grid gap-3">
+            <div className="mt-4 divide-y divide-[var(--line-muted)]">
               <button
                 type="button"
                 onClick={() => setRandom(true)}
-                className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-5 text-left transition-all ${
-                  random
-                    ? 'border-2 border-[var(--brand-gold)] bg-[var(--brand-gold-100)]/50'
-                    : 'border-[var(--line)] hover:border-slate-400'
+                className={`flex min-h-14 w-full cursor-pointer flex-col items-start px-2 py-3 text-left ${
+                  random ? selectedRow : idleRow
                 }`}
               >
-                <Shuffle className="mt-0.5 size-5 shrink-0 text-[#FF8A00]" />
-                <span>
-                  <span className="block font-bold text-[var(--ink-900)]">Random (Shuffled)</span>
-                  <span className="mt-0.5 block text-sm text-[var(--text-muted)]">
-                    Shuffle questions randomly from the chosen {poolSize} pool.
-                  </span>
-                </span>
+                <span className="text-sm font-semibold text-[var(--ink-900)]">Random</span>
+                <span className="text-sm text-[var(--ink-500)]">Shuffle from {poolSize} questions</span>
               </button>
               <button
                 type="button"
                 onClick={() => setRandom(false)}
-                className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-5 text-left transition-all ${
-                  !random
-                    ? 'border-2 border-[var(--brand-gold)] bg-[var(--brand-gold-100)]/50'
-                    : 'border-[var(--line)] hover:border-slate-400'
+                className={`flex min-h-14 w-full cursor-pointer flex-col items-start px-2 py-3 text-left ${
+                  !random ? selectedRow : idleRow
                 }`}
               >
-                <ListOrdered className="mt-0.5 size-5 shrink-0 text-[#FF8A00]" />
-                <span>
-                  <span className="block font-bold text-[var(--ink-900)]">Sequential (Chronological)</span>
-                  <span className="mt-0.5 block text-sm text-[var(--text-muted)]">
-                    Follow the exact paper sequence from Question 1 to {poolSize}.
-                  </span>
-                </span>
+                <span className="text-sm font-semibold text-[var(--ink-900)]">Sequential</span>
+                <span className="text-sm text-[var(--ink-500)]">Question 1 through {poolSize}</span>
               </button>
             </div>
           </>
@@ -266,13 +190,13 @@ export default function SwepPracticeSetup({
 
         {step === 3 && (
           <>
-            <h1 className="text-2xl font-extrabold tracking-tight text-[var(--ink-900)]">How Many Questions?</h1>
-            <p className="mt-1 text-sm text-[var(--text-muted)]">
-              <strong className="text-[var(--ink-900)]">{poolSize} questions</strong> available in this {year === '2018' ? '2018' : '2025'} set
-              {!isAuthenticated && ` · guests can take up to ${guestMax}`}
+            <h1 className="text-xl font-bold tracking-tight text-[var(--ink-900)]">How many questions?</h1>
+            <p className="mt-1 text-sm text-[var(--ink-500)]">
+              {poolSize} available
+              {!isAuthenticated ? ` · guests up to ${guestMax}` : ''}
             </p>
 
-            <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-6">
+            <div className="mt-4 grid grid-cols-3 gap-1.5 sm:grid-cols-6">
               {COUNT_OPTIONS.map((n) => {
                 const disabledByPool = n > poolSize;
                 const locked = !isAuthenticated && n > guestMax;
@@ -282,41 +206,38 @@ export default function SwepPracticeSetup({
                     type="button"
                     disabled={disabledByPool}
                     onClick={() => applyCount(n)}
-                    className={`relative cursor-pointer rounded-2xl border py-4 text-sm font-bold transition-all disabled:pointer-events-none disabled:opacity-40 ${
-                      count === n
-                        ? 'border-2 border-[var(--brand-gold)] bg-[var(--brand-gold-100)]/70 text-[var(--ink-900)]'
-                        : 'border-[var(--line)] text-[var(--text-muted)] hover:border-slate-400'
+                    className={`relative min-h-12 cursor-pointer rounded-xl text-sm font-semibold disabled:pointer-events-none disabled:opacity-35 ${
+                      count === n ? selectedRow : 'bg-[var(--surface-sunken)] text-[var(--ink-700)]'
                     }`}
                   >
                     {n}
-                    {locked && !disabledByPool && (
+                    {locked && !disabledByPool ? (
                       <Lock className="absolute top-1.5 right-1.5 size-3 text-[var(--ink-400)]" />
-                    )}
+                    ) : null}
                   </button>
                 );
               })}
               <button
                 type="button"
                 onClick={() => applyCount(poolSize)}
-                className={`relative cursor-pointer rounded-2xl border py-4 text-sm font-bold transition-all ${
-                  count === poolSize
-                    ? 'border-2 border-[var(--brand-gold)] bg-[var(--brand-gold-100)]/70 text-[var(--ink-900)]'
-                    : 'border-[var(--line)] text-[var(--text-muted)] hover:border-slate-400'
+                className={`relative min-h-12 cursor-pointer rounded-xl text-sm font-semibold ${
+                  count === poolSize ? selectedRow : 'bg-[var(--surface-sunken)] text-[var(--ink-700)]'
                 }`}
               >
-                All ({poolSize})
-                {!isAuthenticated && poolSize > guestMax && (
+                All
+                {!isAuthenticated && poolSize > guestMax ? (
                   <Lock className="absolute top-1.5 right-1.5 size-3 text-[var(--ink-400)]" />
-                )}
+                ) : null}
               </button>
             </div>
 
-            <label className="mt-6 flex flex-col gap-1.5">
-              <span className="text-sm font-semibold text-[var(--ink-900)]">Or enter custom count:</span>
+            <label className="mt-5 flex flex-col gap-1.5">
+              <span className="text-sm font-medium text-[var(--ink-900)]">Custom count</span>
               <input
                 type="number"
                 min={1}
                 max={poolSize}
+                inputMode="numeric"
                 value={customCount}
                 onChange={(e) => {
                   const raw = e.target.value;
@@ -324,41 +245,40 @@ export default function SwepPracticeSetup({
                   const n = Number(raw);
                   if (Number.isInteger(n) && n >= 1) applyCount(n);
                 }}
-                className="rounded-2xl border-[1.5px] border-[var(--line)] bg-[var(--surface-card)] px-4 py-3 text-base text-[var(--ink-900)] outline-none focus:border-[var(--brand-gold)]"
+                className="min-h-12 rounded-xl bg-[var(--surface-sunken)] px-4 text-base text-[var(--ink-900)] outline-none"
               />
-              <span className="text-xs text-[var(--text-muted)]">
-                Between 1 and {poolSize} questions
-                {guestLocked && (
-                  <>
-                    {' · '}
-                    <Link href="/auth/register" className="font-semibold text-[#FF8A00] hover:underline">
-                      Sign up free
-                    </Link>{' '}
-                    to practice beyond {guestMax} questions
-                  </>
-                )}
-              </span>
+              {guestLocked ? (
+                <span className="text-xs text-[var(--ink-500)]">
+                  <Link href="/auth/register" className="font-semibold text-[var(--ink-900)] underline-offset-2 hover:underline">
+                    Sign up free
+                  </Link>{' '}
+                  to go past {guestMax} questions
+                </span>
+              ) : (
+                <span className="text-xs text-[var(--ink-500)]">1 to {poolSize}</span>
+              )}
             </label>
           </>
         )}
+      </div>
 
-        {/* Navigation Buttons */}
-        <div className="mt-8 flex items-center gap-3">
-          {step > 1 && (
+      <div className="sticky bottom-0 -mx-4 border-t border-[var(--line-muted)] bg-[var(--surface-page)] px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:mx-0 sm:px-0">
+        <div className="flex items-center gap-2">
+          {step > 1 ? (
             <button
               type="button"
               onClick={() => setStep((s) => (s === 1 ? 1 : ((s - 1) as Step)))}
-              className="flex size-14 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] text-[var(--ink-900)] shadow-xs transition-all hover:bg-[var(--surface-sunken)] active:scale-95"
+              className="flex size-12 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-[var(--surface-sunken)] text-[var(--ink-900)]"
               aria-label="Previous step"
             >
-              <ArrowLeft className="size-6 stroke-[2.5]" />
+              <ArrowLeft className="size-5" />
             </button>
-          )}
+          ) : null}
           {step < 3 ? (
             <button
               type="button"
               onClick={() => setStep((s) => (s === 3 ? 3 : ((s + 1) as Step)))}
-              className="flex flex-1 cursor-pointer items-center justify-center rounded-2xl bg-[#FF8A00] px-8 py-4 text-lg font-bold tracking-wide text-white shadow-lg shadow-orange-500/20 transition-all hover:bg-[#F07D00] active:scale-[0.98]"
+              className="flex min-h-12 flex-1 cursor-pointer items-center justify-center rounded-xl bg-[var(--brand-gold)] px-6 text-base font-semibold text-[var(--ink-900)]"
             >
               Continue
             </button>
@@ -367,11 +287,11 @@ export default function SwepPracticeSetup({
               type="button"
               onClick={start}
               disabled={count < 1}
-              className="flex flex-1 cursor-pointer items-center justify-center rounded-2xl bg-[#FF8A00] px-8 py-4 text-lg font-bold tracking-wide text-white shadow-lg shadow-orange-500/20 transition-all hover:bg-[#F07D00] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex min-h-12 flex-1 cursor-pointer items-center justify-center rounded-xl bg-[var(--brand-gold)] px-6 text-base font-semibold text-[var(--ink-900)] disabled:cursor-not-allowed disabled:opacity-40"
             >
               {guestLocked
-                ? 'Sign up to start this set'
-                : `Start ${Math.min(count, maxAllowed)} ${year === '2018' ? '2018' : '2025'} Questions`}
+                ? 'Sign up to start'
+                : `Start ${Math.min(count, maxAllowed)} questions`}
             </button>
           )}
         </div>

@@ -17,7 +17,7 @@ export default function SwepFab() {
     <div className="fixed right-4 bottom-5 z-[60] flex items-start gap-1 sm:right-6 sm:bottom-6">
       <Link
         href={href}
-        className="flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface-card)] py-2 pr-4 pl-2 shadow-[var(--shadow-lg)] transition-transform hover:-translate-y-0.5"
+        className="flex items-center gap-2 rounded-full bg-[var(--surface-page)] py-1.5 pr-3.5 pl-1.5 ring-1 ring-[var(--line)]"
       >
         <span className="flex size-10 overflow-hidden rounded-full bg-[var(--brand-gold-100)]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -29,7 +29,7 @@ export default function SwepFab() {
         type="button"
         onClick={dismissFab}
         aria-label="Hide SWEP shortcut"
-        className="-mt-1 flex size-6 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface-card)] text-[var(--ink-500)] shadow-sm hover:text-[var(--ink-900)]"
+        className="-mt-1 flex size-6 items-center justify-center rounded-full bg-[var(--surface-page)] text-[var(--ink-500)] ring-1 ring-[var(--line)] hover:text-[var(--ink-900)]"
       >
         <X className="size-3.5" />
       </button>

@@ -53,7 +53,7 @@ export default function SwepEnrollmentSheet() {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-            className="relative z-10 w-full max-w-lg overflow-hidden rounded-t-[28px] bg-[var(--surface-card)] shadow-[var(--shadow-xl)] sm:mb-0"
+            className="relative z-10 w-full max-w-lg overflow-hidden rounded-t-2xl bg-[var(--surface-page)] sm:mb-0"
           >
             <div className="flex justify-center pt-3">
               <div className="h-1.5 w-12 rounded-full bg-[var(--line)]" />
@@ -67,26 +67,26 @@ export default function SwepEnrollmentSheet() {
               <X className="size-5" />
             </button>
 
-            <div className="px-6 pt-2 pb-8">
-              <div className="mx-auto mb-4 flex size-28 items-end justify-center overflow-hidden rounded-3xl bg-[var(--brand-gold-100)]">
+            <div className="px-5 pt-2 pb-7">
+              <div className="mx-auto mb-3 flex size-16 items-end justify-center overflow-hidden rounded-xl bg-[var(--brand-gold-100)]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/mascot/mascot-unilorin.webp"
-                  alt="Unilorin mascot"
-                  className="h-[7.25rem] w-auto object-contain"
+                  alt=""
+                  className="h-14 w-auto object-contain"
                 />
               </div>
-              <p className="mb-1 text-center text-xs font-semibold tracking-wide text-[var(--brand-gold-600)] uppercase">
-                Unilorin · SWEP 2026
+              <p className="mb-1 text-center text-[11px] font-medium tracking-wide text-[var(--ink-500)] uppercase">
+                University of Ilorin · SWEP
               </p>
               <h2
                 id="swep-enroll-title"
-                className="text-center text-2xl font-[var(--font-display)] font-bold text-[var(--ink-900)]"
+                className="text-center text-xl font-[var(--font-display)] font-bold text-[var(--ink-900)]"
               >
-                Are you enrolled for SWEP at the University of Ilorin?
+                Are you enrolled for SWEP at Unilorin?
               </h2>
-              <p className="mt-2 text-center text-sm leading-relaxed text-[var(--text-muted)]">
-                Practice past questions for free — 9 workshop units, 180 questions, instant explanations.
+              <p className="mt-2 text-center text-sm leading-relaxed text-[var(--ink-500)]">
+                Free past questions with explanations across workshop units.
               </p>
               <div className="mt-6 flex flex-col gap-3">
                 <Button fullWidth onClick={onYes}>

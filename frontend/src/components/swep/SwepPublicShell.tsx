@@ -15,7 +15,7 @@ export default function SwepPublicShell({ children }: { children: React.ReactNod
     <div className="flex min-h-screen flex-col bg-[var(--surface-page)]">
       <SwepChrome />
       <Navbar links={navLinks} active="SWEP" />
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6">{children}</main>
+      <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-5 sm:px-6 sm:py-8">{children}</main>
       <Footer />
     </div>
   );
