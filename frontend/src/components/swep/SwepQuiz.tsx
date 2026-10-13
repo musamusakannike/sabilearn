@@ -4,7 +4,14 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Check, CheckCircle2, HelpCircle, RotateCcw, X, XCircle } from 'lucide-react';
-import { buildSession, GUEST_MAX_QUESTIONS, parseUnitParam, unitLabel } from '@/lib/swep';
+import {
+  GUEST_MAX_QUESTIONS,
+  buildSession,
+  getSwepQuiz,
+  parseUnitParam,
+  parseYearParam,
+  unitLabel,
+} from '@/lib/swep';
 import type { SwepOption, SwepQuestion } from '@/lib/swep';
 
 type Phase = 'quiz' | 'results';
@@ -25,23 +32,34 @@ function QuizQuestion({
   options,
   selected,
   checked,
+  yearLabel,
   onSelect,
 }: {
   question: SwepQuestion;
   options: SwepOption[];
   selected: number | null;
   checked: boolean;
+  yearLabel: string;
   onSelect: (index: number) => void;
 }) {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">
-          <HelpCircle className="size-3.5" />
-          <span>Quick Quiz</span>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">
+            <HelpCircle className="size-3.5" />
+            <span>{yearLabel}</span>
+          </div>
+          <span className="rounded-full bg-[var(--surface-sunken)] px-3 py-1 text-xs font-bold text-[var(--text-muted)]">
+            Q{question.questionNumber}
+          </span>
         </div>
-        <p className="text-xs font-semibold tracking-wide text-[var(--brand-gold-600)] uppercase">{question.unitName}</p>
-        <p className="text-xl leading-snug font-bold text-[var(--ink-900)] sm:text-2xl">{question.question}</p>
+        <p className="text-xs font-bold tracking-wider text-[var(--brand-gold-600)] uppercase">
+          {question.unitName}
+        </p>
+        <p className="text-xl leading-snug font-bold text-[var(--ink-900)] sm:text-2xl">
+          {question.question}
+        </p>
       </div>
 
       <div className="space-y-3">
@@ -91,7 +109,7 @@ function QuizQuestion({
 
       {checked && question.explanation && (
         <div className="space-y-1.5 rounded-2xl border border-[var(--line)] bg-[var(--surface-sunken)] p-4 animate-in fade-in slide-in-from-bottom-2 duration-300 sm:p-5">
-          <span className="text-xs font-bold tracking-wider text-[var(--text-muted)] uppercase">Explanation</span>
+          <span className="text-xs font-bold tracking-wider text-[var(--brand-gold-600)] uppercase">Explanation</span>
           <p className="text-sm leading-relaxed text-[var(--ink-900)] sm:text-base">{question.explanation}</p>
         </div>
       )}
@@ -108,14 +126,19 @@ export default function SwepQuiz({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const unit = parseUnitParam(searchParams.get('unit'));
+
+  const year = parseYearParam(searchParams.get('year'));
+  const unit = parseUnitParam(searchParams.get('unit'), year);
   const random = searchParams.get('random') !== '0';
   const requestedCount = Number(searchParams.get('count') || 10);
+
+  const activeQuiz = useMemo(() => getSwepQuiz(year), [year]);
+  const yearLabel = year === '2018' ? 'SWEP 2018' : 'SWEP 2025/2026';
 
   const [questions] = useState(() => {
     let count = Number.isFinite(requestedCount) ? requestedCount : 10;
     if (!isAuthenticated) count = Math.min(count <= 0 ? GUEST_MAX_QUESTIONS : count, GUEST_MAX_QUESTIONS);
-    return buildSession(unit, count, random);
+    return buildSession(unit, count, random, year);
   });
 
   const [phase, setPhase] = useState<Phase>('quiz');
@@ -136,7 +159,7 @@ export default function SwepQuiz({
     return shuffleOptions(mcq.formattedOptions || []);
   }, [mcq]);
 
-  const close = () => router.push(`${base}/practice`);
+  const close = () => router.push(`${base}/practice?year=${year}`);
 
   const handleAction = () => {
     if (!checked) {
@@ -202,7 +225,7 @@ export default function SwepQuiz({
             >
               <X className="size-6 stroke-[2.5]" />
             </button>
-            <span className="text-sm font-bold text-[var(--text-muted)]">Session Results</span>
+            <span className="text-sm font-bold text-[var(--text-muted)]">{yearLabel} Results</span>
             <div className="size-6" />
           </div>
         </header>
@@ -216,14 +239,14 @@ export default function SwepQuiz({
               <h1 className="text-3xl font-black tracking-tight text-[var(--ink-900)]">Session complete!</h1>
               <p className="text-base leading-relaxed text-[var(--text-muted)]">
                 You scored <span className="font-semibold text-[var(--ink-900)]">{score}%</span> — {correctCount} of {total}{' '}
-                correct · {unitLabel(unit)}
+                correct · {unitLabel(unit, year)} ({yearLabel})
               </p>
             </div>
             {!isAuthenticated && (
               <p className="text-sm text-[var(--text-muted)]">
-                Create a free account to practice all 180 questions.{' '}
-                <Link href="/auth/register" className="font-semibold text-[#FF8A00]">
-                  Sign up
+                Create a free account to practice all {activeQuiz.totalQuestions} questions in this edition.{' '}
+                <Link href="/auth/register" className="font-semibold text-[#FF8A00] hover:underline">
+                  Sign up free
                 </Link>
               </p>
             )}
@@ -244,13 +267,13 @@ export default function SwepQuiz({
               onClick={close}
               className="flex w-full cursor-pointer items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] px-8 py-3 text-sm font-bold text-[var(--ink-900)] hover:bg-[var(--surface-sunken)]"
             >
-              Change filters
+              Change filters & units
             </button>
             <Link
-              href="/dashboard/courses"
+              href={base}
               className="block pt-1 text-center text-xs font-semibold text-[#FF8A00] hover:underline"
             >
-              Explore courses on SabiLearn
+              Back to SWEP Hub
             </Link>
           </div>
         </footer>
@@ -316,6 +339,7 @@ export default function SwepQuiz({
             options={currentOptions}
             selected={selectedOption}
             checked={checked}
+            yearLabel={yearLabel}
             onSelect={(idx) => setSelectedOption(idx)}
           />
         </div>
@@ -336,4 +360,3 @@ export default function SwepQuiz({
     </div>
   );
 }
-
