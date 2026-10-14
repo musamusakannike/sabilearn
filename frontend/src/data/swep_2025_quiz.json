@@ -212,11 +212,11 @@
       "formattedOptions": [
         {
           "text": "TiO₂",
-          "isCorrect": false
+          "isCorrect": true
         },
         {
           "text": "Al₂(SO₃)₃",
-          "isCorrect": true
+          "isCorrect": false
         },
         {
           "text": "Formaldehyde",
@@ -227,10 +227,10 @@
           "isCorrect": false
         }
       ],
-      "correctOption": "B",
-      "correctAnswer": "Al₂(SO₃)₃",
-      "answer": "Al₂(SO₃)₃",
-      "explanation": "B. Al₂(SO₃)₃. The text explicitly states that Al₂(SO₃)₃ is a pigment.",
+      "correctOption": "A",
+      "correctAnswer": "TiO₂",
+      "answer": "TiO₂",
+      "explanation": "Correct Answer: A. TiO₂. Titanium dioxide (TiO₂) is the primary white pigment used in paint formulations for opacity, whiteness, and hiding power.",
       "xp": 10
     },
     {
@@ -1404,14 +1404,14 @@
       "options": [
         "To provide a parting line.",
         "To align the cope and drag.",
-        "To hold the core inside the moul",
-        "D. To create a replica of the component."
+        "To hold the core inside the mould.",
+        "To create a replica of the component."
       ],
       "optionsMap": {
         "A": "To provide a parting line.",
         "B": "To align the cope and drag.",
-        "C": "To hold the core inside the moul",
-        "D": "D. To create a replica of the component."
+        "C": "To hold the core inside the mould.",
+        "D": "To create a replica of the component."
       },
       "formattedOptions": [
         {
@@ -1423,17 +1423,17 @@
           "isCorrect": false
         },
         {
-          "text": "To hold the core inside the moul",
+          "text": "To hold the core inside the mould.",
           "isCorrect": true
         },
         {
-          "text": "D. To create a replica of the component.",
+          "text": "To create a replica of the component.",
           "isCorrect": false
         }
       ],
       "correctOption": "C",
-      "correctAnswer": "To hold the core inside the moul",
-      "answer": "To hold the core inside the moul",
+      "correctAnswer": "To hold the core inside the mould.",
+      "answer": "To hold the core inside the mould.",
       "explanation": "Correct Answer: C. The text defines a Core print as a feature of a pattern used \"to hold the core inside mould.\" Why the others are wrong: The parting line separates the cope and drag, pins align them, and a pattern is a replica of a component.",
       "xp": 10
     },
@@ -1490,14 +1490,14 @@
       "options": [
         "Mixing sand.",
         "Sieving sand.",
-        "Ramming san",
-        "D. Making vent holes."
+        "Ramming sand.",
+        "Making vent holes."
       ],
       "optionsMap": {
         "A": "Mixing sand.",
         "B": "Sieving sand.",
-        "C": "Ramming san",
-        "D": "D. Making vent holes."
+        "C": "Ramming sand.",
+        "D": "Making vent holes."
       },
       "formattedOptions": [
         {
@@ -1509,11 +1509,11 @@
           "isCorrect": true
         },
         {
-          "text": "Ramming san",
+          "text": "Ramming sand.",
           "isCorrect": false
         },
         {
-          "text": "D. Making vent holes.",
+          "text": "Making vent holes.",
           "isCorrect": false
         }
       ],
@@ -2737,14 +2737,14 @@
       "options": [
         "It provides a way to select gears manually.",
         "It replaces the clutch, acting as a hydraulic coupling.",
-        "It provides the highest torque at low spee",
-        "D. It allows the system to decide gear changes automatically."
+        "It provides the highest torque at low speed.",
+        "It allows the system to decide gear changes automatically."
       ],
       "optionsMap": {
         "A": "It provides a way to select gears manually.",
         "B": "It replaces the clutch, acting as a hydraulic coupling.",
-        "C": "It provides the highest torque at low spee",
-        "D": "D. It allows the system to decide gear changes automatically."
+        "C": "It provides the highest torque at low speed.",
+        "D": "It allows the system to decide gear changes automatically."
       },
       "formattedOptions": [
         {
@@ -2756,11 +2756,11 @@
           "isCorrect": true
         },
         {
-          "text": "It provides the highest torque at low spee",
+          "text": "It provides the highest torque at low speed.",
           "isCorrect": false
         },
         {
-          "text": "D. It allows the system to decide gear changes automatically.",
+          "text": "It allows the system to decide gear changes automatically.",
           "isCorrect": false
         }
       ],
@@ -3080,14 +3080,14 @@
       "question": "Which of the following is a type of sensor that works by operating with natural phenomena like heat and pressure?",
       "options": [
         "Hydraulic.",
-        "Pneumati",
-        "C. Actuator.",
+        "Pneumatics",
+        "Actuator.",
         "Transducer."
       ],
       "optionsMap": {
         "A": "Hydraulic.",
-        "B": "Pneumati",
-        "C": "C. Actuator.",
+        "B": "Pneumatics",
+        "C": "Actuator.",
         "D": "Transducer."
       },
       "formattedOptions": [
@@ -3096,11 +3096,11 @@
           "isCorrect": false
         },
         {
-          "text": "Pneumati",
+          "text": "Pneumatics",
           "isCorrect": true
         },
         {
-          "text": "C. Actuator.",
+          "text": "Actuator.",
           "isCorrect": false
         },
         {
@@ -3109,8 +3109,8 @@
         }
       ],
       "correctOption": "B",
-      "correctAnswer": "Pneumati",
-      "answer": "Pneumati",
+      "correctAnswer": "Pneumatics",
+      "answer": "Pneumatics",
       "explanation": "Correct Answer: B. The text states that \"Pneumatics → operating by natural phenomena (e.g. heat, pressure).\" Why the others are wrong: Hydraulic systems are more powerful than pneumatic systems but are not defined this way. Actuators are output devices. Transducers convert one form of energy to another.",
       "xp": 10
     },
@@ -3316,17 +3316,17 @@
         },
         {
           "text": "To regulate the coolant's temperature.",
-          "isCorrect": false
+          "isCorrect": true
         },
         {
           "text": "The text does not specify its function.",
-          "isCorrect": true
+          "isCorrect": false
         }
       ],
-      "correctOption": "D",
-      "correctAnswer": "The text does not specify its function.",
-      "answer": "The text does not specify its function.",
-      "explanation": "Correct Answer: D. While the thermostat's primary function is to regulate temperature, the text only lists it as a component of the cooling system. It does not describe its specific role, unlike the water pump (circulates) or radiator (removes heat). Why the others are wrong: Options A, B, and C are functions of a water pump, radiator, and the thermostat itself, but the text provided does not explicitly state the thermostat's function.",
+      "correctOption": "C",
+      "correctAnswer": "To regulate the coolant's temperature.",
+      "answer": "To regulate the coolant's temperature.",
+      "explanation": "Correct Answer: C. To regulate the coolant's temperature. The thermostat regulates engine operating temperature by controlling the flow of coolant between the engine and the radiator.",
       "xp": 10
     },
     {
@@ -3382,14 +3382,14 @@
       "options": [
         "Dependent suspension absorbs shocks, while independent provides comfort.",
         "Independent suspension supports the load, while dependent prevents tire wear.",
-        "In independent suspension, each wheel is separate, while in dependent, the axle supports the loa",
-        "D. The text does not specify the difference."
+        "In independent suspension, each wheel is separate, while in dependent, the axle supports the load.",
+        "The text does not specify the difference."
       ],
       "optionsMap": {
         "A": "Dependent suspension absorbs shocks, while independent provides comfort.",
         "B": "Independent suspension supports the load, while dependent prevents tire wear.",
-        "C": "In independent suspension, each wheel is separate, while in dependent, the axle supports the loa",
-        "D": "D. The text does not specify the difference."
+        "C": "In independent suspension, each wheel is separate, while in dependent, the axle supports the load.",
+        "D": "The text does not specify the difference."
       },
       "formattedOptions": [
         {
@@ -3401,17 +3401,17 @@
           "isCorrect": false
         },
         {
-          "text": "In independent suspension, each wheel is separate, while in dependent, the axle supports the loa",
+          "text": "In independent suspension, each wheel is separate, while in dependent, the axle supports the load.",
           "isCorrect": true
         },
         {
-          "text": "D. The text does not specify the difference.",
+          "text": "The text does not specify the difference.",
           "isCorrect": false
         }
       ],
       "correctOption": "C",
-      "correctAnswer": "In independent suspension, each wheel is separate, while in dependent, the axle supports the loa",
-      "answer": "In independent suspension, each wheel is separate, while in dependent, the axle supports the loa",
+      "correctAnswer": "In independent suspension, each wheel is separate, while in dependent, the axle supports the load.",
+      "answer": "In independent suspension, each wheel is separate, while in dependent, the axle supports the load.",
       "explanation": "Correct Answer: C. The text states, \"Independent suspension → each wheel independent. Dependent suspension → axle supports load.\" Why the others are wrong: Options A and B describe functions of the suspension system in general, not the difference between the two types. The difference is clearly specified in the text.",
       "xp": 10
     },
@@ -3554,14 +3554,14 @@
       "options": [
         "To step up or step down voltage.",
         "To store charge.",
-        "To protect against overloa",
-        "D. To oppose current."
+        "To protect against overload.",
+        "To oppose current."
       ],
       "optionsMap": {
         "A": "To step up or step down voltage.",
         "B": "To store charge.",
-        "C": "To protect against overloa",
-        "D": "D. To oppose current."
+        "C": "To protect against overload.",
+        "D": "To oppose current."
       },
       "formattedOptions": [
         {
@@ -3573,17 +3573,17 @@
           "isCorrect": false
         },
         {
-          "text": "To protect against overloa",
+          "text": "To protect against overload.",
           "isCorrect": true
         },
         {
-          "text": "D. To oppose current.",
+          "text": "To oppose current.",
           "isCorrect": false
         }
       ],
       "correctOption": "C",
-      "correctAnswer": "To protect against overloa",
-      "answer": "To protect against overloa",
+      "correctAnswer": "To protect against overload.",
+      "answer": "To protect against overload.",
       "explanation": "Correct Answer: C. The text defines the function of a Fuse as protecting against overload. Why the others are wrong: A transformer steps up/steps down voltage. A capacitor stores charge. A resistor opposes current.",
       "xp": 10
     },
@@ -3726,13 +3726,13 @@
       "options": [
         "It is a switching device.",
         "It steps up or steps down voltage.",
-        "It protects against overloa",
+        "It protects against overload.",
         "D. It opposes current."
       ],
       "optionsMap": {
         "A": "It is a switching device.",
         "B": "It steps up or steps down voltage.",
-        "C": "It protects against overloa",
+        "C": "It protects against overload.",
         "D": "D. It opposes current."
       },
       "formattedOptions": [
@@ -3745,7 +3745,7 @@
           "isCorrect": false
         },
         {
-          "text": "It protects against overloa",
+          "text": "It protects against overload.",
           "isCorrect": false
         },
         {
@@ -3832,17 +3832,17 @@
         },
         {
           "text": "It provides power.",
-          "isCorrect": false
+          "isCorrect": true
         },
         {
           "text": "The text does not specify its purpose.",
-          "isCorrect": true
+          "isCorrect": false
         }
       ],
-      "correctOption": "D",
-      "correctAnswer": "The text does not specify its purpose.",
-      "answer": "The text does not specify its purpose.",
-      "explanation": "Correct Answer: D. The text lists the Power supply as a common lab equipment but does not define its function, unlike other equipment like the signal generator or multimeter. Why the others are wrong: A signal generator generates signals. A multimeter measures voltage and current. While a power supply does provide power, the text doesn't explicitly state this function.",
+      "correctOption": "C",
+      "correctAnswer": "It provides power.",
+      "answer": "It provides power.",
+      "explanation": "Correct Answer: C. It provides power. The primary function of a laboratory power supply is to provide electrical power (DC or AC voltage/current) to operate electronic circuits.",
       "xp": 10
     },
     {
@@ -4200,13 +4200,13 @@
         "Turning",
         "Boring",
         "Knurling",
-        "D. Slotting"
+        "Slotting"
       ],
       "optionsMap": {
         "A": "Turning",
         "B": "Boring",
         "C": "Knurling",
-        "D": "D. Slotting"
+        "D": "Slotting"
       },
       "formattedOptions": [
         {
@@ -4222,13 +4222,13 @@
           "isCorrect": false
         },
         {
-          "text": "D. Slotting",
+          "text": "Slotting",
           "isCorrect": true
         }
       ],
       "correctOption": "D",
-      "correctAnswer": "D. Slotting",
-      "answer": "D. Slotting",
+      "correctAnswer": "Slotting",
+      "answer": "Slotting",
       "explanation": "Correct Answer: D. The text lists slotting as an operation for a Milling Machine. Why the others are wrong: Turning, boring, and knurling are all listed as operations for a Lathe Machine.",
       "xp": 10
     },
@@ -4370,14 +4370,14 @@
       "question": "Based on the text, what is the purpose of the Rectifier diode RM4007 in the 5V Power Supply Circuit?",
       "options": [
         "It stabilizes the voltage.",
-        "It converts AC to D",
-        "C. It smooths the DC current.",
+        "It converts AC to DC.",
+        "It smooths the DC current.",
         "The text does not specify its function."
       ],
       "optionsMap": {
         "A": "It stabilizes the voltage.",
-        "B": "It converts AC to D",
-        "C": "C. It smooths the DC current.",
+        "B": "It converts AC to DC.",
+        "C": "It smooths the DC current.",
         "D": "The text does not specify its function."
       },
       "formattedOptions": [
@@ -4386,22 +4386,22 @@
           "isCorrect": false
         },
         {
-          "text": "It converts AC to D",
-          "isCorrect": false
+          "text": "It converts AC to DC.",
+          "isCorrect": true
         },
         {
-          "text": "C. It smooths the DC current.",
+          "text": "It smooths the DC current.",
           "isCorrect": false
         },
         {
           "text": "The text does not specify its function.",
-          "isCorrect": true
+          "isCorrect": false
         }
       ],
-      "correctOption": "D",
-      "correctAnswer": "The text does not specify its function.",
-      "answer": "The text does not specify its function.",
-      "explanation": "Correct Answer: D. The text lists the rectifier diode as a component but does not explicitly state its function, unlike other components whose functions are specified. Why the others are wrong: The voltage regulator stabilizes voltage. The capacitor smooths DC. The text does not explicitly define what the rectifier diode does, so we cannot assume it converts AC to DC, even if that is its real-world function.",
+      "correctOption": "B",
+      "correctAnswer": "It converts AC to DC.",
+      "answer": "It converts AC to DC.",
+      "explanation": "Correct Answer: B. It converts AC to DC. In a linear DC power supply circuit, the rectifier diode converts alternating current (AC) into direct current (DC).",
       "xp": 10
     },
     {
@@ -4671,13 +4671,13 @@
       "question": "According to the text, what is the definition of Safety?",
       "options": [
         "The correct use of tools for a jo",
-        "B. Procedures to prevent hazards to personnel, equipment, and environment.",
+        "Procedures to prevent hazards to personnel, equipment, and environment.",
         "Using a tester to check a circuit.",
         "A system for domestic wiring."
       ],
       "optionsMap": {
         "A": "The correct use of tools for a jo",
-        "B": "B. Procedures to prevent hazards to personnel, equipment, and environment.",
+        "B": "Procedures to prevent hazards to personnel, equipment, and environment.",
         "C": "Using a tester to check a circuit.",
         "D": "A system for domestic wiring."
       },
@@ -4687,7 +4687,7 @@
           "isCorrect": false
         },
         {
-          "text": "B. Procedures to prevent hazards to personnel, equipment, and environment.",
+          "text": "Procedures to prevent hazards to personnel, equipment, and environment.",
           "isCorrect": true
         },
         {
@@ -4700,8 +4700,8 @@
         }
       ],
       "correctOption": "B",
-      "correctAnswer": "B. Procedures to prevent hazards to personnel, equipment, and environment.",
-      "answer": "B. Procedures to prevent hazards to personnel, equipment, and environment.",
+      "correctAnswer": "Procedures to prevent hazards to personnel, equipment, and environment.",
+      "answer": "Procedures to prevent hazards to personnel, equipment, and environment.",
       "explanation": "Correct Answer: B. The text defines safety as \"Procedures put in place to prevent hazards or avert danger to personnel, equipment & environment.” Why the others are wrong: The other options are examples of safe practices or a type of wiring system, but they are not the definition of safety itself.",
       "xp": 10
     },
@@ -4774,21 +4774,21 @@
         },
         {
           "text": "A short circuit is a complete circuit, and an open circuit is an incomplete circuit.",
-          "isCorrect": false
+          "isCorrect": true
         },
         {
           "text": "The text does not provide a definition for either.",
-          "isCorrect": true
+          "isCorrect": false
         },
         {
           "text": "They are both the same type of fault.",
           "isCorrect": false
         }
       ],
-      "correctOption": "C",
-      "correctAnswer": "The text does not provide a definition for either.",
-      "answer": "The text does not provide a definition for either.",
-      "explanation": "Correct Answer: C. The text lists both \"Short circuit fault\" and \"Open circuit fault\" but does not provide a definition or explanation for the difference between them. Why the others are wrong: Options A and B are assumed definitions not found in the text. Option D is incorrect because they are listed as two distinct types of faults.",
+      "correctOption": "B",
+      "correctAnswer": "A short circuit is a complete circuit, and an open circuit is an incomplete circuit.",
+      "answer": "A short circuit is a complete circuit, and an open circuit is an incomplete circuit.",
+      "explanation": "Correct Answer: B. A short circuit is a complete circuit, and an open circuit is an incomplete circuit. A short circuit creates an unintended low-resistance closed path causing excessive current flow, whereas an open circuit is an incomplete/broken path that prevents current flow.",
       "xp": 10
     },
     {
@@ -5619,13 +5619,13 @@
         "To cool the milk.",
         "To add bacteria to the milk.",
         "To convert lactose to lactic aci",
-        "D. To stop fermentation."
+        "To stop fermentation."
       ],
       "optionsMap": {
         "A": "To cool the milk.",
         "B": "To add bacteria to the milk.",
         "C": "To convert lactose to lactic aci",
-        "D": "D. To stop fermentation."
+        "D": "To stop fermentation."
       },
       "formattedOptions": [
         {
@@ -5641,7 +5641,7 @@
           "isCorrect": false
         },
         {
-          "text": "D. To stop fermentation.",
+          "text": "To stop fermentation.",
           "isCorrect": false
         }
       ],
@@ -5748,13 +5748,13 @@
         "The processing of agricultural raw materials.",
         "The design of food production machinery and systems.",
         "The study of different types of foo",
-        "D. The process of converting protein to amino acids."
+        "The process of converting protein to amino acids."
       ],
       "optionsMap": {
         "A": "The processing of agricultural raw materials.",
         "B": "The design of food production machinery and systems.",
         "C": "The study of different types of foo",
-        "D": "D. The process of converting protein to amino acids."
+        "D": "The process of converting protein to amino acids."
       },
       "formattedOptions": [
         {
@@ -5770,7 +5770,7 @@
           "isCorrect": false
         },
         {
-          "text": "D. The process of converting protein to amino acids.",
+          "text": "The process of converting protein to amino acids.",
           "isCorrect": false
         }
       ],
@@ -6220,14 +6220,14 @@
       "options": [
         "The size is directly proportional to the speed.",
         "The size is inversely proportional to the speed.",
-        "The size is equal to the spee",
-        "D. The text does not specify a relationship."
+        "The size is equal to the speed.",
+        "The text does not specify a relationship."
       ],
       "optionsMap": {
         "A": "The size is directly proportional to the speed.",
         "B": "The size is inversely proportional to the speed.",
-        "C": "The size is equal to the spee",
-        "D": "D. The text does not specify a relationship."
+        "C": "The size is equal to the speed.",
+        "D": "The text does not specify a relationship."
       },
       "formattedOptions": [
         {
@@ -6239,11 +6239,11 @@
           "isCorrect": true
         },
         {
-          "text": "The size is equal to the spee",
+          "text": "The size is equal to the speed.",
           "isCorrect": false
         },
         {
-          "text": "D. The text does not specify a relationship.",
+          "text": "The text does not specify a relationship.",
           "isCorrect": false
         }
       ],
@@ -6412,17 +6412,17 @@
         },
         {
           "text": "To check the oil level.",
-          "isCorrect": false
+          "isCorrect": true
         },
         {
           "text": "The text does not mention a dipstick.",
-          "isCorrect": true
+          "isCorrect": false
         }
       ],
-      "correctOption": "D",
-      "correctAnswer": "The text does not mention a dipstick.",
-      "answer": "The text does not mention a dipstick.",
-      "explanation": "Correct Answer: D. The text mentions a dipstick in the previous text about lubrication systems, but it is not present in the current text provided. Why the others are wrong: Options A, B, and C are functions mentioned in the previous text but are not present in this new text.",
+      "correctOption": "C",
+      "correctAnswer": "To check the oil level.",
+      "answer": "To check the oil level.",
+      "explanation": "Correct Answer: C. To check the oil level. In an automobile engine, the dipstick is a calibrated rod used to manually check the lubricating oil level in the oil pan/sump.",
       "xp": 10
     },
     {
@@ -6756,17 +6756,17 @@
         },
         {
           "text": "To regulate temperature.",
-          "isCorrect": false
+          "isCorrect": true
         },
         {
           "text": "The text does not specify its purpose.",
-          "isCorrect": true
+          "isCorrect": false
         }
       ],
-      "correctOption": "D",
-      "correctAnswer": "The text does not specify its purpose.",
-      "answer": "The text does not specify its purpose.",
-      "explanation": "Correct Answer: D. The text lists the thermostat as a component of the iron but does not describe its specific function. Why the others are wrong: Options A, B, and C are functions of a plug, a capacitor, and the thermostat itself, but the text does not explicitly state the thermostat's function.",
+      "correctOption": "C",
+      "correctAnswer": "To regulate temperature.",
+      "answer": "To regulate temperature.",
+      "explanation": "Correct Answer: C. To regulate temperature. The thermostat in an electric pressing iron regulates and maintains the desired temperature via a bimetallic strip switch.",
       "xp": 10
     },
     {
@@ -6864,14 +6864,14 @@
       "question": "What is the difference between a Polarized and a Non polarized capacitor?",
       "options": [
         "Polarized capacitors are ceramic, while non-polarized are electrolytic.",
-        "Polarized capacitors are electrolytic, while non-polarized are cerami",
-        "C. Polarized capacitors store energy, while non-polarized capacitors filter circuits.",
+        "Polarized capacitors are electrolytic, while non-polarized are ceramic.",
+        "Polarized capacitors store energy, while non-polarized capacitors filter circuits.",
         "The text does not specify the difference."
       ],
       "optionsMap": {
         "A": "Polarized capacitors are ceramic, while non-polarized are electrolytic.",
-        "B": "Polarized capacitors are electrolytic, while non-polarized are cerami",
-        "C": "C. Polarized capacitors store energy, while non-polarized capacitors filter circuits.",
+        "B": "Polarized capacitors are electrolytic, while non-polarized are ceramic.",
+        "C": "Polarized capacitors store energy, while non-polarized capacitors filter circuits.",
         "D": "The text does not specify the difference."
       },
       "formattedOptions": [
@@ -6880,11 +6880,11 @@
           "isCorrect": false
         },
         {
-          "text": "Polarized capacitors are electrolytic, while non-polarized are cerami",
+          "text": "Polarized capacitors are electrolytic, while non-polarized are ceramic.",
           "isCorrect": true
         },
         {
-          "text": "C. Polarized capacitors store energy, while non-polarized capacitors filter circuits.",
+          "text": "Polarized capacitors store energy, while non-polarized capacitors filter circuits.",
           "isCorrect": false
         },
         {
@@ -6893,8 +6893,8 @@
         }
       ],
       "correctOption": "B",
-      "correctAnswer": "Polarized capacitors are electrolytic, while non-polarized are cerami",
-      "answer": "Polarized capacitors are electrolytic, while non-polarized are cerami",
+      "correctAnswer": "Polarized capacitors are electrolytic, while non-polarized are ceramic.",
+      "answer": "Polarized capacitors are electrolytic, while non-polarized are ceramic.",
       "explanation": "Correct Answer: B. The text states, \"Polarized capacitors → electrolytic\" and \"Non-polarized capacitors → ceramic.\" Why the others are wrong: Option A reverses the correct definitions. Option C describes general uses of a capacitor. Option D is incorrect as the text clearly defines the difference.",
       "xp": 10
     },
