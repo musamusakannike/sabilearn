@@ -57,6 +57,7 @@ export const courseApi = {
   createCategory: (data: { name: string; description?: string }) => api.post('/courses/categories', data),
   popular: () => api.get('/courses/popular'),
   get: (id: string) => api.get(`/courses/${id}`),
+  bySlug: (slug: string) => api.get(`/courses/slug/${encodeURIComponent(slug)}`),
   create: (data: FormData) => api.post('/courses', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
   update: (id: string, data: FormData) => api.put(`/courses/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }),
   remove: (id: string) => api.delete(`/courses/${id}`),

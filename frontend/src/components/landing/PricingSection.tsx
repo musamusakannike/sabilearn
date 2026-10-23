@@ -52,7 +52,7 @@ const plans: PricingPlan[] = [
       'No subscription or recurring charges',
     ],
     ctaText: 'Browse Courses',
-    ctaHref: '/dashboard/courses',
+    ctaHref: '/courses',
   },
   {
     name: 'All-Access Pass',

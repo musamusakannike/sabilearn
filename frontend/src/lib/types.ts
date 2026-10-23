@@ -131,6 +131,7 @@ export interface CourseAuthor {
 export interface Course {
   _id: string;
   title: string;
+  slug?: string;
   description: string;
   longDescription: string;
   banner: string;

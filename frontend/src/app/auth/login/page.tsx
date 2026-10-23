@@ -10,6 +10,7 @@ import AuthLayout from '@/components/auth/AuthLayout';
 import Input from '@/components/ui/Input';
 import Checkbox from '@/components/ui/Checkbox';
 import Button from '@/components/ui/Button';
+import { getRedirectFromLocation, useRedirectParam, withRedirect } from '@/lib/redirect';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -21,6 +22,7 @@ export default function LoginPage() {
   const [success, setSuccess] = useState(false);
   const router = useRouter();
   const { login, loginWithGoogle } = useAuthStore();
+  const redirectTarget = useRedirectParam();
 
   const handleGoogleLogin = async () => {
     setError('');
@@ -28,7 +30,7 @@ export default function LoginPage() {
     const result = await loginWithGoogle();
     if (result.success) {
       setSuccess(true);
-      setTimeout(() => router.push('/dashboard'), 800);
+      setTimeout(() => router.push(getRedirectFromLocation()), 800);
     } else {
       setError(result.error || 'Google login failed.');
     }
@@ -44,7 +46,7 @@ export default function LoginPage() {
     const result = await login(email, password);
     if (result.success) {
       setSuccess(true);
-      setTimeout(() => router.push('/dashboard'), 800);
+      setTimeout(() => router.push(getRedirectFromLocation()), 800);
     } else {
       setError(result.error || 'Login failed.');
     }
@@ -127,7 +129,7 @@ export default function LoginPage() {
 
           <div className="pt-2 text-center text-sm text-[var(--text-muted)]">
             Don&apos;t have an account?{' '}
-            <Link href="/auth/register" className="font-semibold text-[var(--brand-gold-600)] hover:underline">
+            <Link href={withRedirect('/auth/register', redirectTarget)} className="font-semibold text-[var(--brand-gold-600)] hover:underline">
               Sign up
             </Link>
           </div>

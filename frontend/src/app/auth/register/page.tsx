@@ -11,6 +11,7 @@ import Input from '@/components/ui/Input';
 import Select from '@/components/ui/Select';
 import Checkbox from '@/components/ui/Checkbox';
 import Button from '@/components/ui/Button';
+import { getRedirectFromLocation, useRedirectParam, withRedirect } from '@/lib/redirect';
 
 export default function RegisterPage() {
   const [firstName, setFirstName] = useState('');
@@ -25,6 +26,7 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState(false);
   const router = useRouter();
   const { register, loginWithGoogle } = useAuthStore();
+  const redirectTarget = useRedirectParam();
 
   const handleGoogleLogin = async () => {
     setError('');
@@ -32,7 +34,7 @@ export default function RegisterPage() {
     const result = await loginWithGoogle();
     if (result.success) {
       setSuccess(true);
-      setTimeout(() => router.push('/dashboard'), 800);
+      setTimeout(() => router.push(getRedirectFromLocation()), 800);
     } else {
       setError(result.error || 'Google sign-up failed.');
     }
@@ -49,7 +51,7 @@ export default function RegisterPage() {
     const result = await register({ firstName, lastName, email, password, level });
     if (result.success) {
       setSuccess(true);
-      setTimeout(() => router.push('/dashboard'), 800);
+      setTimeout(() => router.push(getRedirectFromLocation()), 800);
     } else {
       setError(result.error || 'Account creation failed.');
     }
@@ -141,7 +143,7 @@ export default function RegisterPage() {
 
           <div className="pt-2 text-center text-sm text-[var(--text-muted)]">
             Already have an account?{' '}
-            <Link href="/auth/login" className="font-semibold text-[var(--brand-gold-600)] hover:underline">
+            <Link href={withRedirect('/auth/login', redirectTarget)} className="font-semibold text-[var(--brand-gold-600)] hover:underline">
               Log in
             </Link>
           </div>

@@ -84,6 +84,7 @@ const pageJsonLd = {
 
 const navLinks = [
   { label: 'Features', href: '#features' },
+  { label: 'Courses', href: '/courses' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'Blog', href: '/blog' },
   { label: 'FAQ', href: '#faq' },

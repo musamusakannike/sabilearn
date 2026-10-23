@@ -9,6 +9,7 @@ import {
   getPopularTopics,
   getCourseCategories,
   createCourseCategory,
+  getPublicCourseBySlug,
 } from '../controllers/course.controller';
 import { protect, authorize } from '../middlewares/auth.middleware';
 import { validateCreateCourse, validateUpdateCourse } from '../validations/course.validation';
@@ -31,6 +32,7 @@ const upload = multer({
 router.get('/', validatePagination, getCourses);
 router.get('/popular', getPopularTopics);
 router.get('/categories', getCourseCategories);
+router.get('/slug/:slug', getPublicCourseBySlug);
 router.post('/categories', protect, authorize('admin'), createCourseCategory);
 router.get('/:id', getCourseById);
 router.post('/', protect, authorize('admin'), upload.single('banner'), validateCreateCourse, createCourse);

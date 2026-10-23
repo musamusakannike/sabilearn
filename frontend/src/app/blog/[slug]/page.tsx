@@ -13,7 +13,7 @@ import BlogPostCard from '@/components/blog/BlogPostCard';
 import { fetchBlogPostBySlug, SITE_URL } from '@/lib/blog-server';
 
 const navLinks = [
-  { label: 'Courses', href: '/dashboard/courses' },
+  { label: 'Courses', href: '/courses' },
   { label: 'Blog', href: '/blog' },
   { label: 'AI tools', href: '/#ai-tools' },
 ];

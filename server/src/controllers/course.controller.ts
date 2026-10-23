@@ -8,6 +8,7 @@ import MCQ from '../models/mcq.model';
 import UserProgress from '../models/userProgress.model';
 import { uploadToR2 } from '../utils/r2.util';
 import { broadcastCoursePublished } from '../services/notification.service';
+import { generateUniqueCourseSlug } from '../utils/courseSlug.util';
 
 interface MulterRequest extends Request {
   file?: Express.Multer.File;
@@ -113,6 +114,64 @@ export const getCourse = async (req: Request, res: Response, next: NextFunction)
 
 export const getCourseById = getCourse;
 
+/**
+ * Public (unauthenticated) course detail by slug. Only published, non-AI courses are
+ * returned, and topics expose titles/ordering only (never lesson contents or exercises).
+ */
+export const getPublicCourseBySlug = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const course = await Course.findOne({
+      slug: String(req.params.slug).toLowerCase(),
+      isPublished: true,
+      isAiGenerated: { $ne: true },
+    }).select('-sourceContext -documentIndex -sourceChunks -sourceSummary');
+
+    if (!course) {
+      res.status(404).json({ success: false, message: 'Course not found' });
+      return;
+    }
+
+    const chapters = await Chapter.find({ course: course._id }).sort({ order: 1 }).select('title description order');
+    const topics = await Topic.find({ course: course._id, isPublished: true })
+      .sort({ order: 1 })
+      .select('title description order chapter xp exercise contents');
+
+    const lessonCount = topics.reduce((acc, t) => acc + (t.contents?.length || 0), 0);
+    const totalObtainableXp = topics.reduce((acc, t) => {
+      const topicXp = t.xp || 50;
+      const exerciseXp = (t.exercise?.questions || []).reduce((qAcc, q) => qAcc + (q.xp || 10), 0);
+      return acc + topicXp + exerciseXp;
+    }, 0);
+    const registeredUsersCount = await UserProgress.distinct('user', { course: course._id }).then((u) => u.length);
+
+    const outline = chapters.map((chapter) => ({
+      _id: chapter._id,
+      title: chapter.title,
+      description: chapter.description,
+      order: chapter.order,
+      topics: topics
+        .filter((t) => String(t.chapter) === String(chapter._id))
+        .map((t) => ({ _id: t._id, title: t.title, description: t.description, order: t.order })),
+    }));
+
+    const { sourceContext: _sc, documentIndex: _di, sourceChunks: _ch, sourceSummary: _ss, ...safeCourse } = course.toObject();
+
+    res.status(200).json({
+      success: true,
+      data: {
+        ...safeCourse,
+        chapters: outline,
+        registeredUsersCount,
+        lessonCount,
+        totalObtainableXp,
+        topicCount: topics.length,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 const parseJsonOrArray = <T>(val: unknown): T[] | undefined => {
   if (val === undefined || val === null) return undefined;
@@ -156,8 +215,11 @@ export const createCourse = async (req: MulterRequest, res: Response, next: Next
     const parsedLearn = parseJsonOrArray<string>(whatYouWillLearn);
     const parsedPrereqs = parseJsonOrArray<string>(prerequisites);
 
+    const slug = await generateUniqueCourseSlug(title);
+
     const newCourseData = {
       title,
+      slug,
       description,
       longDescription: longDescription || '',
       category,
@@ -204,6 +266,11 @@ export const updateCourse = async (req: MulterRequest, res: Response, next: Next
 
     const updates: Record<string, unknown> = {};
     if (title !== undefined) updates.title = title;
+    // Slugs stay stable once set (URL stability); only backfill when missing.
+    const existingForSlug = await Course.findById(req.params.id).select('title slug');
+    if (existingForSlug && !existingForSlug.slug) {
+      updates.slug = await generateUniqueCourseSlug(title ?? existingForSlug.title, String(req.params.id));
+    }
     if (description !== undefined) updates.description = description;
     if (longDescription !== undefined) updates.longDescription = longDescription;
     if (category !== undefined) updates.category = category;

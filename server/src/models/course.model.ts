@@ -9,6 +9,8 @@ export interface ICourseAuthor {
 
 export interface ICourse extends Document {
   title: string;
+  /** URL-safe unique slug used for public course pages (/courses/:slug) */
+  slug?: string;
   description: string;
   longDescription: string;
   banner: string;
@@ -59,6 +61,14 @@ const CourseSchema: Schema = new Schema<ICourse>(
       type: String,
       required: true,
       trim: true,
+    },
+    slug: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+      lowercase: true,
+      index: true,
     },
     description: {
       type: String,
