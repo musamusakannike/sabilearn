@@ -22,8 +22,6 @@ export const metadata: Metadata = {
     'Nigerian EdTech',
     'learn tech skills Nigeria',
     'online courses Nigeria',
-    'SWEP past questions',
-    'Unilorin SWEP',
     'interactive coding quizzes',
     'AI study assistant',
     'lecture summarizer',
@@ -116,7 +114,7 @@ const jsonLd = {
       name: 'SabiLearn',
       url: SITE_URL,
       logo: `${SITE_URL}/logo.png`,
-      description: 'Online learning platform providing courses, quizzes, SWEP workshop prep, and AI study tools for Nigerian students.',
+      description: 'Online learning platform providing courses, quizzes, interactive exercises, and AI study tools for Nigerian students.',
     },
     {
       '@type': 'SoftwareApplication',

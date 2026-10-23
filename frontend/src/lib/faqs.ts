@@ -12,7 +12,7 @@ export const faqs: FAQItem[] = [
   {
     question: 'Is SabiLearn free to get started?',
     answer:
-      'Yes! You can start learning immediately on the Free Plan. It includes access to foundational courses, interactive practice quizzes, daily AI assistant tokens, and free SWEP past questions practice. Premium courses and unlimited AI features are available as single one-time payments or all-access passes.',
+      'Yes! You can start learning immediately on the Free Plan. It includes access to foundational courses, interactive practice quizzes, and daily AI assistant tokens. Premium courses and unlimited AI features are available as single one-time payments or all-access passes.',
   },
   {
     question: 'What payment methods do you accept in Nigeria?',
@@ -23,11 +23,6 @@ export const faqs: FAQItem[] = [
     question: 'How do the AI study tools assist my learning?',
     answer:
       'Our AI study tools let you automate lecture summaries, generate custom multiple-choice quizzes from your study notes, create revision flashcards in seconds, and ask complex study questions to get instant, step-by-step explanations.',
-  },
-  {
-    question: 'Can I practice SWEP past questions on SabiLearn?',
-    answer:
-      'Yes! SabiLearn features an extensive SWEP (Students Work Experience Programme) practice hub with curated past questions across various workshop units, complete with instant answer feedback, hints, and explanations designed for University of Ilorin (Unilorin) and Nigerian engineering students.',
   },
   {
     question: 'Do I get a certificate when I complete a course?',

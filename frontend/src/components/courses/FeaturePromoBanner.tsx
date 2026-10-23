@@ -2,12 +2,12 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Code2, GraduationCap, Smartphone, Sparkles, Trophy } from 'lucide-react';
+import { ArrowRight, Code2, Smartphone, Sparkles, Trophy } from 'lucide-react';
 
 export const APP_STORE_URL = 'https://apps.apple.com/us/app/sabilearn/id6800027018';
 export const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.codiac.sabilearn';
 
-export type PromoKind = 'playground' | 'ai' | 'swep' | 'pro' | 'app' | 'leaderboard';
+export type PromoKind = 'playground' | 'ai' | 'pro' | 'app' | 'leaderboard';
 
 export interface PromoBanner {
   kind: PromoKind;
@@ -35,14 +35,6 @@ export const COURSE_PROMOS: PromoBanner[] = [
     body: 'Turn lecture notes into summaries, practice tests, or a full structured track.',
     href: '/dashboard/ai/quiz',
     cta: 'Try AI tools',
-  },
-  {
-    kind: 'swep',
-    kicker: 'Unilorin',
-    title: 'SWEP past questions',
-    body: 'Practice with the SWEP bank and timed quizzes built for Unilorin students.',
-    href: '/dashboard/swep',
-    cta: 'Open SWEP',
   },
   {
     kind: 'pro',
@@ -89,13 +81,6 @@ const KIND_STYLES: Record<
     cta: 'bg-[var(--brand-violet)] text-white hover:bg-[var(--brand-violet-600)]',
     Icon: Sparkles,
   },
-  swep: {
-    wrap: 'border-[var(--line)] bg-gradient-to-br from-[var(--ink-900)] to-[#1c1c2e] text-white',
-    iconWrap: 'bg-[var(--brand-gold)] text-[var(--ink-900)]',
-    kicker: 'bg-white/10 text-[var(--brand-gold)]',
-    cta: 'bg-[var(--brand-gold)] text-[var(--ink-900)] hover:bg-[var(--brand-gold-600)]',
-    Icon: GraduationCap,
-  },
   pro: {
     wrap: 'border-[var(--brand-gold-100)] bg-gradient-to-r from-[var(--surface-card)] to-[var(--brand-gold-100)]',
     iconWrap: 'bg-[var(--ink-900)] text-[var(--brand-gold)]',
@@ -122,7 +107,6 @@ const KIND_STYLES: Record<
 export default function FeaturePromoBanner({ banner }: { banner: PromoBanner }) {
   const style = KIND_STYLES[banner.kind];
   const Icon = style.Icon;
-  const isDark = banner.kind === 'swep';
 
   return (
     <div
@@ -138,8 +122,8 @@ export default function FeaturePromoBanner({ banner }: { banner: PromoBanner }) 
             <span className={`mb-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase ${style.kicker}`}>
               {banner.kicker}
             </span>
-            <h3 className={`text-lg font-extrabold ${isDark ? 'text-white' : 'text-[var(--ink-900)]'}`}>{banner.title}</h3>
-            <p className={`mt-1 max-w-xl text-xs leading-relaxed font-medium ${isDark ? 'text-white/80' : 'text-[var(--ink-700)]'}`}>
+            <h3 className="text-lg font-extrabold text-[var(--ink-900)]">{banner.title}</h3>
+            <p className="mt-1 max-w-xl text-xs leading-relaxed font-medium text-[var(--ink-700)]">
               {banner.body}
             </p>
           </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 const cols = [
-  { title: 'Learn', links: [{ l: 'SWEP', href: '/swep' }, { l: 'Courses', href: '/dashboard/courses' }, { l: 'Blog', href: '/blog' }, { l: 'AI tools', href: '/dashboard' }] },
+  { title: 'Learn', links: [{ l: 'Courses', href: '/dashboard/courses' }, { l: 'Blog', href: '/blog' }, { l: 'AI tools', href: '/dashboard' }] },
   { title: 'Company', links: [{ l: 'About', href: '/' }, { l: 'Contact', href: '/' }] },
   { title: 'Legal', links: [{ l: 'Terms', href: '/terms' }, { l: 'Privacy', href: '/privacy' }, { l: 'Delete Account', href: '/delete-account' }] },
 ];

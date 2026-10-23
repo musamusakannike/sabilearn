@@ -7,8 +7,6 @@ const STATIC_CONTENT_UPDATED_AT = new Date('2026-08-09');
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'weekly', priority: 1.0 },
-    { url: `${SITE_URL}/swep`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${SITE_URL}/swep/practice`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${SITE_URL}/blog`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'daily', priority: 0.9 },
     { url: `${SITE_URL}/privacy`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${SITE_URL}/terms`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'yearly', priority: 0.3 },

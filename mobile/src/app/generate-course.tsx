@@ -407,7 +407,7 @@ export default function GenerateCourseScreen() {
           <TextInput
             value={prompt}
             onChangeText={setPrompt}
-            placeholder="e.g. A beginner course on Git for my SWEP class, based on these notes…"
+            placeholder="e.g. A beginner course on Git, based on these notes…"
             placeholderTextColor={FAINT}
             style={[styles.input, styles.multiline]}
             multiline

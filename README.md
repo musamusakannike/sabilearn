@@ -1,7 +1,7 @@
 # SabiLearn Monorepo
 
 > **"Learn a skill. Sabi it for life."**  
-> An AI-powered, mobile-first learning ecosystem tailored for ambitious learners and university students (with dedicated Unilorin SWEP practice). Combines structured courses, interactive chapter exercises, flashcards, MCQs, an in-browser code playground, multi-timeframe XP leaderboards, and AI study assistants.
+> An AI-powered, mobile-first learning ecosystem tailored for ambitious learners and university students. Combines structured courses, interactive chapter exercises, flashcards, MCQs, an in-browser code playground, multi-timeframe XP leaderboards, and AI study assistants.
 
 **Live Web App:** [sabilearn.online](https://sabilearn.online) • [sabilearn.com](https://sabilearn.com)  
 **API Endpoint:** [api.sabilearn.online/api/v1](https://api.sabilearn.online/api/v1)
@@ -64,7 +64,6 @@ Built with **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4**, **Fra
 - **Public Experience & SEO**:
   - High-converting landing page with modern typography, smooth scroll animations (Lenis), testimonials, and interactive pricing
   - Fully indexed Blog (`/blog`) with category filters, search, and JSON-LD structured data
-  - Dedicated **SWEP 2026 Past Questions & Workshop Practice Hub** (`/swep`) for University of Ilorin engineering students
 - **Web Student Dashboard (`/dashboard`)**:
   - Resumption dashboard with progress metrics, weekly study time, accuracy tracking, and streak counts
   - Course directory and dedicated course viewer with markdown rendering and syntax highlighting

@@ -22,7 +22,6 @@ export const metadata: Metadata = {
     'online courses Nigeria',
     'interactive coding quizzes',
     'AI study assistant',
-    'SWEP Unilorin past questions',
     'study smarter Nigeria',
   ],
   alternates: { canonical: '/' },
@@ -86,7 +85,6 @@ const pageJsonLd = {
 const navLinks = [
   { label: 'Features', href: '#features' },
   { label: 'Pricing', href: '#pricing' },
-  { label: 'SWEP', href: '/swep' },
   { label: 'Blog', href: '/blog' },
   { label: 'FAQ', href: '#faq' },
 ];

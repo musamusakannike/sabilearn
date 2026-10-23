@@ -469,7 +469,7 @@ export default function GenerateCoursePage() {
           <textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="e.g. A beginner course on Git for my SWEP class, based on these notes…"
+            placeholder="e.g. A beginner course on Git, based on these notes…"
             disabled={generating}
             rows={4}
             className="w-full rounded-2xl border border-(--line) bg-(--surface-card) p-4 text-base text-foreground placeholder-(--ink-300) outline-none transition-colors focus:border-(--brand-violet) disabled:opacity-50"

@@ -6,7 +6,6 @@ import AuthGuard from '@/components/auth/AuthGuard';
 import Sidebar from '@/components/dashboard/Sidebar';
 import Header from '@/components/dashboard/Header';
 import NotificationDrawer from '@/components/dashboard/NotificationDrawer';
-import SwepChrome from '@/components/swep/SwepChrome';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -20,7 +19,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <AuthGuard>
       <div className="flex h-dvh w-full overflow-hidden bg-cream-100 font-sans text-stone-900 antialiased selection:bg-orange-200 selection:text-orange-900">
-        <SwepChrome />
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         <NotificationDrawer />
         <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-cream-100">

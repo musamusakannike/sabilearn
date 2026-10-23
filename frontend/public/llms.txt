@@ -1,19 +1,17 @@
 # SabiLearn
 
-> SabiLearn (https://sabilearn.online) is a premier Nigerian EdTech platform offering practical tech courses, interactive coding exercises, checkpoint quizzes, SWEP workshop past questions, and AI-powered study tools (Lecture Summarizer, Quiz Generator, Flashcards Generator, Q&A Study Assistant).
+> SabiLearn (https://sabilearn.online) is a premier Nigerian EdTech platform offering practical tech courses, interactive coding exercises, checkpoint quizzes, and AI-powered study tools (Lecture Summarizer, Quiz Generator, Flashcards Generator, Q&A Study Assistant).
 
 ## Key Public Pages
 
 - [Home](https://sabilearn.online/): Overview of SabiLearn's course catalog, AI study suite, interactive lessons, and pricing.
-- [SWEP 2026 Hub](https://sabilearn.online/swep): Past questions, workshop units, and instant answer explanations prepared for University of Ilorin (Unilorin) engineering students.
-- [SWEP Practice](https://sabilearn.online/swep/practice): Interactive quiz engine for timed or untimed SWEP workshop preparation.
 - [Blog](https://sabilearn.online/blog): Practical study guides, learning science, exam techniques, and technology tutorials.
 - [Terms of Service](https://sabilearn.online/terms): Service terms, course access policies, and AI usage rules.
 - [Privacy Policy](https://sabilearn.online/privacy): Data privacy, collection policies, and learner safety.
 
 ## Pricing Structure (in Nigerian Naira ₦)
 
-- **Free Plan**: ₦0 forever — foundational courses, interactive quizzes, free SWEP past questions practice, and daily AI tokens.
+- **Free Plan**: ₦0 forever — foundational courses, interactive quizzes, and daily AI tokens.
 - **Single Course**: ₦2,500 (one-time payment) — lifetime access to a specific course, capstone projects, and certificate of completion.
 - **All-Access Pass**: ₦3,000/month or ₦30,000/year (with 2 months free) — unlimited access to all courses, unlimited AI study tools, and verified certificates.
 - Payment methods supported: Nigerian Debit Cards (Mastercard, Visa, Verve), Bank Transfer, and USSD.

@@ -20,7 +20,7 @@ export default function FAQSection() {
             Everything you need to know about SabiLearn
           </h2>
           <p className="mt-4 text-base leading-relaxed text-[#555568] sm:text-lg">
-            Have questions about courses, AI tools, pricing, or SWEP? Here are answers to our most common questions.
+            Have questions about courses, AI tools, or pricing? Here are answers to our most common questions.
           </p>
         </div>
 
