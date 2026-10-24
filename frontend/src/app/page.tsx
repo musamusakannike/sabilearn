@@ -82,14 +82,6 @@ const pageJsonLd = {
   ],
 };
 
-const navLinks = [
-  { label: 'Features', href: '#features' },
-  { label: 'Courses', href: '/courses' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'FAQ', href: '#faq' },
-];
-
 export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-[var(--surface-page)]">
@@ -98,7 +90,7 @@ export default function LandingPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pageJsonLd) }}
       />
       <ContinueToDashboardPrompt />
-      <Navbar links={navLinks} />
+      <Navbar />
 
       <HeroSection />
 

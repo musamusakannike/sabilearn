@@ -60,6 +60,10 @@
 }
 
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--surface-page);
   color: var(--text-body);

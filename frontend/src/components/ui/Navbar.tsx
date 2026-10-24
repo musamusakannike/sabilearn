@@ -2,21 +2,63 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 
-interface NavLink {
+export interface NavLink {
   label: string;
   href: string;
 }
 
+export const DEFAULT_NAV_LINKS: NavLink[] = [
+  { label: 'Features', href: '/#features' },
+  { label: 'Courses', href: '/courses' },
+  { label: 'Pricing', href: '/#pricing' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'FAQ', href: '/#faq' },
+];
+
 export default function Navbar({
-  links = [],
+  links = DEFAULT_NAV_LINKS,
   active,
 }: {
   links?: NavLink[];
   active?: string;
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const sourceLinks = links && links.length > 0 ? links : DEFAULT_NAV_LINKS;
+
+  // On the homepage ('/'), relative hash anchors ('#features') scroll natively in the page.
+  // On other pages ('/courses', '/blog', etc.), hash links must point back to home ('/#features').
+  const resolvedLinks = sourceLinks.map((l) => {
+    if (pathname === '/' && l.href.startsWith('/#')) {
+      return { ...l, href: l.href.slice(1) };
+    }
+    if (pathname && pathname !== '/' && l.href.startsWith('#')) {
+      return { ...l, href: `/${l.href}` };
+    }
+    return l;
+  });
+
+  const isLinkActive = (l: NavLink) => {
+    if (active) {
+      return l.label.toLowerCase() === active.toLowerCase();
+    }
+    if (pathname) {
+      if (l.href === pathname) return true;
+      if (
+        l.href !== '/' &&
+        !l.href.startsWith('#') &&
+        !l.href.startsWith('/#') &&
+        pathname.startsWith(l.href)
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
 
   return (
     <header className="relative z-40 w-full bg-[var(--surface-page)] px-6 py-5 sm:px-8">
@@ -30,12 +72,12 @@ export default function Navbar({
 
         {/* Center: Nav links (Desktop) */}
         <nav className="hidden items-center gap-8 md:flex">
-          {links.map((l) => (
+          {resolvedLinks.map((l) => (
             <Link
               key={l.label}
               href={l.href}
               className={`text-[15px] font-medium transition-colors ${
-                l.label === active
+                isLinkActive(l)
                   ? 'text-[#0E0E1A] font-bold'
                   : 'text-[#2D2D3A] hover:text-[#0E0E1A]'
               }`}
@@ -84,13 +126,13 @@ export default function Navbar({
       {mobileMenuOpen && (
         <div className="mt-4 rounded-xl border border-[var(--line)] bg-[var(--surface-card)] p-5 shadow-lg md:hidden">
           <nav className="flex flex-col gap-3">
-            {links.map((l) => (
+            {resolvedLinks.map((l) => (
               <Link
                 key={l.label}
                 href={l.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={`py-1.5 text-base font-medium transition-colors ${
-                  l.label === active ? 'font-bold text-[#0E0E1A]' : 'text-[#2D2D3A]'
+                  isLinkActive(l) ? 'font-bold text-[#0E0E1A]' : 'text-[#2D2D3A]'
                 }`}
               >
                 {l.label}

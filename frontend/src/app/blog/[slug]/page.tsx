@@ -12,12 +12,6 @@ import Badge from '@/components/ui/Badge';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 import { fetchBlogPostBySlug, SITE_URL } from '@/lib/blog-server';
 
-const navLinks = [
-  { label: 'Courses', href: '/courses' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'AI tools', href: '/#ai-tools' },
-];
-
 function formatDate(value: string | null): string {
   if (!value) return '';
   return new Date(value).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
@@ -130,7 +124,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     <div className="flex min-h-screen flex-col bg-[var(--surface-page)]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <Navbar links={navLinks} active="Blog" />
+      <Navbar active="Blog" />
 
       <article className="px-6 py-14 sm:px-8">
         <div className="mx-auto max-w-3xl">

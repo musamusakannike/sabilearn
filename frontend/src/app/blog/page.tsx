@@ -8,12 +8,6 @@ import BlogSearchBar from '@/components/blog/BlogSearchBar';
 import { fetchBlogPosts, fetchBlogCategories, SITE_URL } from '@/lib/blog-server';
 import { Newspaper } from 'lucide-react';
 
-const navLinks = [
-  { label: 'Courses', href: '/courses' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'AI tools', href: '/#ai-tools' },
-];
-
 export const metadata: Metadata = {
   title: 'Blog — Study Guides, Learning Science & Tech Tutorials',
   description:
@@ -107,7 +101,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   return (
     <div className="flex min-h-screen flex-col bg-[var(--surface-page)]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Navbar links={navLinks} active="Blog" />
+      <Navbar active="Blog" />
 
       <section className="border-b border-[var(--line)] bg-[var(--surface-card)] px-6 py-16 sm:px-8 sm:py-20">
         <div className="mx-auto max-w-[var(--container-max)] text-center">

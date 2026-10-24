@@ -13,12 +13,6 @@ import { formatKobo } from '@/lib/money';
 
 export const revalidate = 300;
 
-const navLinks = [
-  { label: 'Courses', href: '/courses' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'AI tools', href: '/#ai-tools' },
-];
-
 const isMongoId = (value: string) => /^[a-f\d]{24}$/i.test(value);
 
 interface CoursePageProps {
@@ -108,7 +102,7 @@ export default async function PublicCoursePage({ params }: CoursePageProps) {
   return (
     <div className="flex min-h-screen flex-col bg-[var(--surface-page)]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Navbar links={navLinks} active="Courses" />
+      <Navbar active="Courses" />
 
       <main className="flex-1 px-6 py-10 sm:px-8">
         <div className="mx-auto max-w-[var(--container-max)]">
