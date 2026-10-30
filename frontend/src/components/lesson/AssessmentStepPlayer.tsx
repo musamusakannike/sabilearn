@@ -14,6 +14,7 @@ import {
 import { Exercise, Question } from "@/lib/types";
 import { RichText } from "@/components/lesson/RichText";
 import { progressApi } from "@/lib/api";
+import { emitProgressUpdated } from "@/lib/progress-events";
 
 interface AssessmentStepPlayerProps {
   exercise: Exercise;
@@ -154,6 +155,7 @@ export default function AssessmentStepPlayer({
 
       if (res.data) {
         const data = res.data;
+        emitProgressUpdated();
         setResultScore(data.scorePercent ?? 0);
         setIsPassed(!!data.isPassed);
         setEarnedXp(data.earnedXp ?? 0);

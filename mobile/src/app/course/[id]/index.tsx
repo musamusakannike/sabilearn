@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import {
   IconArrowLeft,
   IconShare,
@@ -114,9 +114,11 @@ export default function CourseDetailScreen() {
     }
   }, [id]);
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  useFocusEffect(
+    useCallback(() => {
+      void loadData();
+    }, [loadData]),
+  );
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -464,9 +466,9 @@ export default function CourseDetailScreen() {
                       ) : (
                         <Pressable
                           onPress={() => {
-                            const firstUnlocked = topics.find((t) => t.isUnlocked) || topics[0];
-                            if (firstUnlocked) {
-                              handleOpenTopic(chapter, firstUnlocked);
+                            const firstIncomplete = topics.find((topic) => topic.isUnlocked && !topic.isCompleted);
+                            if (firstIncomplete) {
+                              handleOpenTopic(chapter, firstIncomplete);
                             }
                           }}
                           style={s.continueBtn}
@@ -585,6 +587,9 @@ export default function CourseDetailScreen() {
                             </View>
 
                             <View style={s.topicRight}>
+                              {chapter.isAssessmentPassed && (
+                                <IconCheck size={14} color="#10B981" />
+                              )}
                               <Text style={s.topicXpText}>
                                 {exercise.questions.reduce((sum, q) => sum + (q.xp || 20), 0)} XP
                               </Text>

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth.store';
 import { useNotificationStore } from '@/store/notification.store';
 import { progressApi, searchApi } from '@/lib/api';
+import { PROGRESS_UPDATED_EVENT } from '@/lib/progress-events';
 
 type SearchHit = {
   _id: string;
@@ -36,17 +37,25 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
   }, [fetchNotifications]);
 
   useEffect(() => {
-    (async () => {
+    let active = true;
+    const refreshProgress = async () => {
       try {
         const res = await progressApi.dashboard();
-        if (res.data?.success) {
+        if (active && res.data?.success) {
           setStreak(res.data.data?.streak ?? 0);
           setXp(res.data.data?.totalXp ?? 0);
         }
       } catch {
         /* ignore */
       }
-    })();
+    };
+
+    void refreshProgress();
+    window.addEventListener(PROGRESS_UPDATED_EVENT, refreshProgress);
+    return () => {
+      active = false;
+      window.removeEventListener(PROGRESS_UPDATED_EVENT, refreshProgress);
+    };
   }, []);
 
   useEffect(() => {

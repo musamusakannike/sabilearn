@@ -19,9 +19,11 @@ const CONFETTI_COLORS = ['#FF8A1E', '#22C55E', '#3B82F6', '#EC4899', '#EAB308', 
 export default function StepPlayer({
   topic,
   onClose,
+  onContinue,
 }: {
   topic: Topic;
   onClose: () => void;
+  onContinue?: () => void;
 }) {
   const { colors } = useTheme();
   const steps = topic.contents || [];
@@ -56,7 +58,7 @@ export default function StepPlayer({
     }, 400);
   };
 
-  const { saveContentPosition, fetchTopicProgress } = useProgressStore();
+  const { saveContentPosition, fetchTopicProgress, fetchDashboard } = useProgressStore();
   const total = steps.length;
 
   // Scroll to top whenever step index changes
@@ -127,6 +129,7 @@ export default function StepPlayer({
         topicId: topic._id,
       });
       setHasCompleted(true);
+      void fetchDashboard();
       // Detect course completion from the server response
       if (res.data?.progress?.isCompleted === true) {
         setIsCourseComplete(true);
@@ -304,7 +307,7 @@ export default function StepPlayer({
         </View>
 
         <View style={styles.footer}>
-          <Pressable onPress={onClose} style={styles.orangeContinueBtn}>
+          <Pressable onPress={onContinue || onClose} style={styles.orangeContinueBtn}>
             <Text style={styles.orangeContinueText}>Continue</Text>
           </Pressable>
         </View>
@@ -471,7 +474,7 @@ const styles = StyleSheet.create({
   body: {
     paddingHorizontal: spacing.xl,
     paddingTop: spacing.lg,
-    paddingBottom: spacing['3xl'],
+    paddingBottom: spacing['6xl'],
   },
   titleRow: {
     flexDirection: 'row',

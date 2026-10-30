@@ -40,7 +40,7 @@ export default function ChapterAssessmentPage() {
     })();
   }, [courseId, chapterId]);
 
-  const handleClose = () => router.push(`/dashboard/courses/${courseId}`);
+  const handleClose = () => router.replace(`/dashboard/courses/${courseId}`);
 
   if (isLoading) {
     return (

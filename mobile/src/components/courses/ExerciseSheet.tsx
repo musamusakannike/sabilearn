@@ -26,6 +26,7 @@ import { progressApi } from '@/lib/api';
 import Button from '@/components/ui/Button';
 import { useTheme, fontFamilies, fontSizes, radii, spacing, shadows } from '@/theme';
 import * as haptics from '@/lib/haptics';
+import { useProgressStore } from '@/store/progress.store';
 
 interface ExerciseSheetProps {
   open: boolean;
@@ -47,6 +48,7 @@ export default function ExerciseSheet({
   onSuccessPassed,
 }: ExerciseSheetProps) {
   const { colors } = useTheme();
+  const fetchDashboard = useProgressStore((state) => state.fetchDashboard);
   const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
   const [codeOutputs, setCodeOutputs] = useState<Record<number, string>>({});
   const [submitted, setSubmitted] = useState<boolean>(false);
@@ -141,6 +143,7 @@ export default function ExerciseSheet({
 
       if (res.data?.success) {
         const data = res.data;
+        void fetchDashboard();
         setResultScore(data.scorePercent ?? 0);
         setIsPassed(!!data.isPassed);
         setEarnedXp(data.earnedXp ?? 0);

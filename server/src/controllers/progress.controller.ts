@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import { AuthenticatedRequest } from '../middlewares/auth.middleware';
 import Course from '../models/course.model';
+import Chapter from '../models/chapter.model';
 import Flashcard from '../models/flashcard.model';
 import MCQ from '../models/mcq.model';
 import StudySession from '../models/studySession.model';
@@ -28,7 +29,6 @@ async function awardStreakAchievements(userId: mongoose.Types.ObjectId | string)
 }
 
 import XpLog from '../models/xpLog.model';
-import Chapter from '../models/chapter.model';
 
 export const getDashboardResumption = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -70,7 +70,7 @@ export const completeTopic = async (req: AuthenticatedRequest, res: Response, ne
     const { courseId, topicId } = req.body;
 
     const topic = await Topic.findById(topicId);
-    if (!topic) {
+    if (!topic || topic.course.toString() !== courseId) {
       res.status(404).json({ success: false, message: 'Topic not found.' });
       return;
     }
@@ -149,6 +149,23 @@ export const submitExercise = async (req: AuthenticatedRequest, res: Response, n
       return;
     }
 
+    if (topicId) {
+      const topic = await Topic.findById(topicId).select('course');
+      if (!topic || topic.course.toString() !== courseId) {
+        res.status(404).json({ success: false, message: 'Topic not found in this course.' });
+        return;
+      }
+    } else if (chapterId) {
+      const chapter = await Chapter.findById(chapterId).select('course');
+      if (!chapter || chapter.course.toString() !== courseId) {
+        res.status(404).json({ success: false, message: 'Chapter not found in this course.' });
+        return;
+      }
+    } else {
+      res.status(400).json({ success: false, message: 'A topicId or chapterId is required.' });
+      return;
+    }
+
     let progress = await UserProgress.findOne({ user: userId, course: courseId });
     if (!progress) {
       progress = new UserProgress({ user: userId, course: courseId, completedTopics: [], completedChapters: [], passedExercises: [] });
@@ -194,33 +211,8 @@ export const submitExercise = async (req: AuthenticatedRequest, res: Response, n
       progress.passedExercises.push(exerciseKey);
     }
 
-    let exerciseCompletedTopic = false;
-    let exerciseCourseJustCompleted = false;
-
-    if (isPassed && topicId) {
-      const topicObjId = new mongoose.Types.ObjectId(topicId);
-      const isNewCompletion = !progress.completedTopics.some((id) => id.toString() === topicId);
-      if (isNewCompletion) {
-        progress.completedTopics.push(topicObjId);
-        exerciseCompletedTopic = true;
-        const wasCompleted = Boolean(progress.isCompleted);
-        const totalTopicsInCourse = await Topic.countDocuments({ course: courseId });
-        if (totalTopicsInCourse > 0) {
-          progress.percentCompleted = Math.min(100, Math.round((progress.completedTopics.length / totalTopicsInCourse) * 100));
-          if (progress.percentCompleted >= 100) {
-            progress.isCompleted = true;
-          }
-        }
-        exerciseCourseJustCompleted = !wasCompleted && progress.isCompleted === true;
-      }
-    }
-
     progress.lastStudiedAt = new Date();
     await progress.save();
-
-    if (exerciseCompletedTopic && topicId) {
-      void onTopicCompleted(userId, courseId, topicId, exerciseCourseJustCompleted);
-    }
 
     // Record study session so accuracy and study metrics reflect exercise activity
     try {

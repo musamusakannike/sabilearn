@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import Chapter from '../models/chapter.model';
 import Topic from '../models/topic.model';
 import UserProgress from '../models/userProgress.model';
+import XpLog from '../models/xpLog.model';
 import Course from '../models/course.model';
 import { CourseArchitectService } from '../services/courseArchitect.service';
 
@@ -25,18 +26,16 @@ export const getChaptersByCourse = async (req: AuthRequest, res: Response, next:
       userProgress = await UserProgress.findOne({ user: userId, course: courseId });
     }
 
-    const completedTopicIds = new Set((userProgress?.completedTopics || []).map((id) => id.toString()));
+    const topicCompletionLogs = userId
+      ? await XpLog.find({ user: userId, course: courseId, sourceType: 'topic' }).select('sourceId').lean()
+      : [];
+    const earnedTopicIds = new Set(topicCompletionLogs.map((log) => log.sourceId));
+    const completedTopicIds = new Set(
+      (userProgress?.completedTopics || [])
+        .map((id) => id.toString())
+        .filter((id) => earnedTopicIds.has(id)),
+    );
     const passedExerciseIds = new Set(userProgress?.passedExercises || []);
-
-    // Helper to check if a topic is completed/passed
-    const isTopicDone = (t: any): boolean => {
-      const topicIdStr = t._id.toString();
-      if (completedTopicIds.has(topicIdStr)) return true;
-      if (t.exercise && t.exercise.questions && t.exercise.questions.length > 0) {
-        return passedExerciseIds.has(`topic_${topicIdStr}`);
-      }
-      return false;
-    };
 
     // Calculate lock/unlock status sequentially across chapters and topics
     let previousTopicCompleted = true; // First topic of first chapter starts unlocked!
@@ -50,7 +49,9 @@ export const getChaptersByCourse = async (req: AuthRequest, res: Response, next:
 
       const topicsWithStatus = chapterTopics.map((topic, topicIdx) => {
         const topicIdStr = topic._id.toString();
-        const isCompleted = completedTopicIds.has(topicIdStr) || passedExerciseIds.has(`topic_${topicIdStr}`);
+        // completedTopics is the canonical topic completion record. Passing an
+        // exercise alone must not make an unopened lesson look complete.
+        const isCompleted = completedTopicIds.has(topicIdStr);
 
         let isUnlocked = false;
         if (!isChapterUnlocked) {
@@ -75,9 +76,14 @@ export const getChaptersByCourse = async (req: AuthRequest, res: Response, next:
         };
       });
 
-      const totalTopicsInChapter = chapterTopics.length;
-      const chapterPercent = totalTopicsInChapter > 0 ? Math.round((chapterCompletedCount / totalTopicsInChapter) * 100) : 0;
-      const isChapterCompleted = totalTopicsInChapter > 0 && chapterCompletedCount === totalTopicsInChapter;
+      const hasCapstone = (chapter.exercise?.questions?.length || 0) > 0;
+      const capstonePassed = passedExerciseIds.has(`chapter_${chapter._id.toString()}`);
+      const totalRequirements = chapterTopics.length + (hasCapstone ? 1 : 0);
+      const completedRequirements = chapterCompletedCount + (hasCapstone && capstonePassed ? 1 : 0);
+      const chapterPercent = totalRequirements > 0
+        ? Math.round((completedRequirements / totalRequirements) * 100)
+        : 0;
+      const isChapterCompleted = totalRequirements > 0 && completedRequirements === totalRequirements;
 
       previousChapterCompleted = isChapterCompleted;
 
@@ -94,6 +100,7 @@ export const getChaptersByCourse = async (req: AuthRequest, res: Response, next:
         ...chapter.toObject(),
         status,
         progressPercent: chapterPercent,
+        isAssessmentPassed: capstonePassed,
         topics: topicsWithStatus,
       };
     });

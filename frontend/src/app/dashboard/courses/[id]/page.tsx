@@ -515,8 +515,9 @@ export default function CourseDetailsPage() {
                       ) : isCompleted ? (
                         <button
                           onClick={() => {
-                            if (chapter.topics && chapter.topics.length > 0) {
-                              handleOpenTopic(chapter, chapter.topics[0]);
+                            const firstTopic = (chapter.topics || [])[0];
+                            if (firstTopic) {
+                              handleOpenTopic(chapter, firstTopic);
                             }
                           }}
                           className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)] px-5 py-2.5 text-sm font-semibold text-[var(--ink-900)] transition-colors hover:bg-[var(--line)]"
@@ -527,10 +528,11 @@ export default function CourseDetailsPage() {
                       ) : (
                         <button
                           onClick={() => {
-                            const firstUnlocked =
-                              (chapter.topics || []).find((t) => t.isUnlocked) || (chapter.topics || [])[0];
-                            if (firstUnlocked) {
-                              handleOpenTopic(chapter, firstUnlocked);
+                            const firstIncomplete = (chapter.topics || []).find(
+                              (topic) => topic.isUnlocked && !topic.isCompleted,
+                            );
+                            if (firstIncomplete) {
+                              handleOpenTopic(chapter, firstIncomplete);
                             }
                           }}
                           className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[var(--brand-gold)] px-5 py-2.5 text-sm font-bold text-slate-950 shadow-xs transition-all hover:brightness-105"
@@ -623,15 +625,18 @@ export default function CourseDetailsPage() {
 
                       {/* Chapter Capstone Assessment item if present */}
                       {chapter.exercise && chapter.exercise.questions && chapter.exercise.questions.length > 0 && (
-                        <div
-                          onClick={() => {
+                        <Link
+                          href={`/dashboard/courses/${id}/chapters/${chapter._id}/assessment`}
+                          onClick={(event) => {
                             if (!hasAccess) {
+                              event.preventDefault();
                               setIsPaywallOpen(true);
-                              return;
+                            } else if (isLocked) {
+                              event.preventDefault();
                             }
-                            if (isLocked) return;
-                            router.push(`/dashboard/courses/${id}/chapters/${chapter._id}/assessment`);
                           }}
+                          aria-disabled={!hasAccess || isLocked}
+                          tabIndex={!hasAccess || isLocked ? -1 : undefined}
                           className={`group flex items-center justify-between rounded-lg px-2.5 py-2.5 transition-colors ${
                             !hasAccess
                               ? 'cursor-pointer hover:bg-[var(--surface-sunken)]/60'
@@ -655,11 +660,14 @@ export default function CourseDetailsPage() {
                           </div>
 
                           <div className="flex shrink-0 items-center gap-2 pl-4">
+                            {chapter.isAssessmentPassed && (
+                              <Check className="size-4 stroke-[3] text-emerald-500" aria-label="Assessment passed" />
+                            )}
                             <span className="text-sm font-semibold text-[var(--ink-900)]">
                               {chapter.exercise.questions.reduce((sum, q) => sum + (q.xp || 20), 0)} XP
                             </span>
                           </div>
-                        </div>
+                        </Link>
                       )}
                     </div>
                   )}

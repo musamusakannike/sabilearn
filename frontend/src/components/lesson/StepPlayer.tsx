@@ -15,6 +15,7 @@ import {
 import { Topic } from "@/lib/types";
 import { useProgressStore } from "@/store/progress.store";
 import { progressApi } from "@/lib/api";
+import { emitProgressUpdated } from "@/lib/progress-events";
 import InfoStepBlock from "./InfoStepBlock";
 import QuizStep from "./QuizStep";
 import ExerciseRunner from "./ExerciseRunner";
@@ -23,9 +24,11 @@ import InLessonAiTutor from "./InLessonAiTutor";
 export default function StepPlayer({
   topic,
   onClose,
+  onContinue,
 }: {
   topic: Topic;
   onClose: () => void;
+  onContinue?: () => void;
 }) {
   const steps = topic.contents || [];
   const [index, setIndex] = useState(0);
@@ -203,6 +206,7 @@ export default function StepPlayer({
         topicId: topic._id,
       });
       setHasCompleted(true);
+      emitProgressUpdated();
       // Detect if the whole course is now complete
       if (res.data?.progress?.isCompleted === true) {
         setIsCourseComplete(true);
@@ -362,7 +366,7 @@ export default function StepPlayer({
         {/* Bottom Continue Button */}
         <div className="w-full max-w-xl mx-auto p-6 pb-8">
           <button
-            onClick={onClose}
+            onClick={onContinue || onClose}
             className="w-full flex items-center justify-center py-4 px-8 rounded-2xl bg-[#FF8A00] hover:bg-[#F07D00] active:scale-[0.98] text-white text-lg font-bold tracking-wide shadow-lg shadow-orange-500/25 transition-all cursor-pointer"
           >
             Continue
@@ -435,7 +439,7 @@ export default function StepPlayer({
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-xl mx-auto px-6 py-6 sm:py-8 flex flex-col justify-start">
+      <main className="flex-1 w-full max-w-xl mx-auto px-6 py-6 pb-28 sm:py-8 sm:pb-32 flex flex-col justify-start">
         {/* Step Title Row with 3-dots Menu */}
         <div className="relative mb-6 flex items-start justify-between gap-4">
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--ink-900)]">

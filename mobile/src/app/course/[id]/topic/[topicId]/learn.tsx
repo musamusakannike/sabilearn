@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { topicApi } from '@/lib/api';
-import { Topic } from '@/lib/types';
+import { chapterApi, topicApi } from '@/lib/api';
+import { Chapter, Topic } from '@/lib/types';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import EmptyState from '@/components/ui/EmptyState';
 import StepPlayer from '@/components/lesson/StepPlayer';
@@ -15,11 +15,32 @@ const POLL_INTERVAL_MS = 4000;
 export default function TopicLearnScreen() {
   const { id, topicId } = useLocalSearchParams<{ id: string; topicId: string }>();
   const [topic, setTopic] = useState<Topic | null>(null);
+  const [nextTopicId, setNextTopicId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isPolling, setIsPolling] = useState(false);
   const [pollAttempt, setPollAttempt] = useState(0);
   const [errorState, setErrorState] = useState<'not_found' | 'generation_failed' | null>(null);
   const pollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const loadNextTopic = useCallback(async (currentTopic: Topic) => {
+    try {
+      const res = await chapterApi.byCourse(id);
+      const chapters: Chapter[] = res.data.data || [];
+      const orderedTopics = chapters.flatMap((chapter) =>
+        (chapter.topics || []).map((chapterTopic) => ({ chapter, topic: chapterTopic })),
+      );
+      const currentIndex = orderedTopics.findIndex(({ topic: item }) => item._id === currentTopic._id);
+      const nextTopic = currentIndex >= 0
+        ? orderedTopics.slice(currentIndex + 1).find(({ chapter, topic: item }) => {
+            const sameChapter = chapter._id === currentTopic.chapter;
+            return !item.isCompleted && (sameChapter || (chapter.status !== 'locked' && item.isUnlocked));
+          })
+        : undefined;
+      setNextTopicId(nextTopic?.topic._id || null);
+    } catch {
+      setNextTopicId(null);
+    }
+  }, [id]);
 
   const fetchTopic = useCallback(async (attempt: number = 0): Promise<void> => {
     if (!topicId) return;
@@ -37,6 +58,7 @@ export default function TopicLearnScreen() {
       // If topic has contents, we're done — render the lesson
       if (fetchedTopic.contents && fetchedTopic.contents.length > 0) {
         setTopic(fetchedTopic);
+        void loadNextTopic(fetchedTopic);
         setIsLoading(false);
         setIsPolling(false);
         if (pollTimerRef.current) clearTimeout(pollTimerRef.current);
@@ -55,6 +77,7 @@ export default function TopicLearnScreen() {
       } else {
         // Ran out of retries — show the topic anyway (StepPlayer handles empty state gracefully)
         setTopic(fetchedTopic);
+        void loadNextTopic(fetchedTopic);
         setIsPolling(false);
         setIsLoading(false);
         setErrorState('generation_failed');
@@ -78,7 +101,7 @@ export default function TopicLearnScreen() {
         setIsPolling(false);
       }
     }
-  }, [topicId]);
+  }, [topicId, loadNextTopic]);
 
   useEffect(() => {
     fetchTopic(0);
@@ -90,6 +113,17 @@ export default function TopicLearnScreen() {
   const handleClose = () => {
     if (pollTimerRef.current) clearTimeout(pollTimerRef.current);
     router.replace(`/course/${id}` as any);
+  };
+
+  const handleContinue = () => {
+    if (nextTopicId) {
+      router.replace({
+        pathname: '/course/[id]/topic/[topicId]/learn',
+        params: { id, topicId: nextTopicId },
+      } as any);
+      return;
+    }
+    handleClose();
   };
 
   if (isLoading) {
@@ -130,6 +164,7 @@ export default function TopicLearnScreen() {
     <StepPlayer
       topic={topic}
       onClose={handleClose}
+      onContinue={handleContinue}
     />
   );
 }

@@ -33,6 +33,7 @@ import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import { fontFamilies, fontSizes, radii, spacing, shadows } from '@/theme';
 import { ACCENT, INK, PAGE } from '@/theme/brand';
 import * as haptics from '@/lib/haptics';
+import { useProgressStore } from '@/store/progress.store';
 
 interface ShuffledQuestion extends Question {
   shuffledOptions?: string[];
@@ -49,6 +50,7 @@ function shuffleArray<T>(array: T[]): T[] {
 
 export default function ChapterAssessmentScreen() {
   const { id, chapterId } = useLocalSearchParams<{ id: string; chapterId: string }>();
+  const fetchDashboard = useProgressStore((state) => state.fetchDashboard);
 
   const colors = {
     textPrimary: INK,
@@ -130,7 +132,11 @@ export default function ChapterAssessmentScreen() {
 
   const handleClose = () => {
     haptics.light();
-    router.back();
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace({ pathname: '/course/[id]', params: { id } } as any);
+    }
   };
 
   const total = questions.length;
@@ -198,6 +204,7 @@ export default function ChapterAssessmentScreen() {
 
       if (res.data) {
         const data = res.data;
+        void fetchDashboard();
         setResultScore(data.scorePercent ?? 0);
         setIsPassed(!!data.isPassed);
         setEarnedXp(data.earnedXp ?? 0);

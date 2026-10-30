@@ -116,6 +116,7 @@ export interface Chapter {
   exercise?: Exercise;
   status?: 'completed' | 'inprogress' | 'locked';
   progressPercent?: number;
+  isAssessmentPassed?: boolean;
   topics?: Topic[];
   createdAt?: string;
   updatedAt?: string;
