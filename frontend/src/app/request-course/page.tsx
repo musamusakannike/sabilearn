@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
-import { BookOpen, CheckCircle2, Clock3, GraduationCap, Sparkles } from 'lucide-react';
+import { BookOpen, CheckCircle2, Clock3, Download, GraduationCap } from 'lucide-react';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
 import Button from '@/components/ui/Button';
@@ -10,6 +10,9 @@ import Card from '@/components/ui/Card';
 import { courseRequestApi } from '@/lib/api';
 
 type Category = 'academic' | 'non-academic';
+
+const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.codiac.sabilearn';
+const APP_STORE_URL = 'https://apps.apple.com/us/app/sabilearn/id6800027018';
 
 export default function RequestCoursePage() {
   const [courseName, setCourseName] = useState('');
@@ -64,6 +67,35 @@ export default function RequestCoursePage() {
                 <p className="mt-2 text-sm leading-relaxed text-[var(--ink-500)]">
                   Thanks for helping us decide what to teach next. We’ll do our best to bring it within two weeks.
                 </p>
+                <div className="mt-6 rounded-2xl border border-[var(--line)] bg-[var(--surface-sunken)] p-4 text-left">
+                  <div className="flex items-start gap-3">
+                    <Download className="mt-0.5 size-5 shrink-0 text-[var(--brand-violet-600)]" />
+                    <div>
+                      <h3 className="font-semibold text-[var(--ink-900)]">Get notified when it’s ready</h3>
+                      <p className="mt-1 text-sm leading-relaxed text-[var(--ink-500)]">
+                        Download the SabiLearn app and enable notifications to hear when your requested course is published.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                    <a
+                      href={PLAY_STORE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-[var(--radius-md)] bg-[var(--ink-900)] px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-85"
+                    >
+                      Get it on Google Play
+                    </a>
+                    <a
+                      href={APP_STORE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-[var(--radius-md)] border border-[var(--ink-900)] px-4 py-3 text-sm font-semibold text-[var(--ink-900)] transition-colors hover:bg-[var(--surface-card)]"
+                    >
+                      Download on the App Store
+                    </a>
+                  </div>
+                </div>
                 <button
                   type="button"
                   className="mt-6 text-sm font-semibold text-[var(--brand-violet-600)] hover:underline"
