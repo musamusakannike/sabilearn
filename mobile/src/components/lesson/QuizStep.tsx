@@ -57,6 +57,8 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
           return (
             <Pressable
               key={i}
+              accessibilityRole="button"
+              accessibilityLabel={`Answer ${opt.text}`}
               onPress={() => {
                 if (!checked) {
                   haptics.selection();
@@ -85,6 +87,8 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
 
       {!checked ? (
         <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Check answer"
           onPress={handleCheck}
           disabled={selected === null}
           style={[
@@ -98,17 +102,22 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
           <Text style={styles.checkBtnText}>Check Answer</Text>
         </Pressable>
       ) : (
-        !!quiz.explanation && (
-          <View style={[styles.explanation, { backgroundColor: colors.surfaceSunken, borderColor: colors.borderSubtle }]}>
-            <Text style={[styles.explanationTitle, { color: colors.textTertiary }]}>EXPLANATION</Text>
-            <RichMathText
-              text={quiz.explanation}
-              style={{ color: colors.textPrimary, fontFamily: fontFamilies.sans, fontSize: fontSizes.sm, lineHeight: fontSizes.sm * 1.5 }}
-              color={colors.textPrimary}
-              fontSize={fontSizes.sm}
-            />
-          </View>
-        )
+        <View style={{ gap: spacing.md }}>
+          <Text accessibilityRole="text" style={{ color: shuffledOptions[selected!]?.isCorrect ? colors.success : colors.danger, fontFamily: fontFamilies.sansBold, fontSize: fontSizes.md }}>
+            {shuffledOptions[selected!]?.isCorrect ? 'Correct' : 'Incorrect'}
+          </Text>
+          {!!quiz.explanation && (
+            <View style={[styles.explanation, { backgroundColor: colors.surfaceSunken, borderColor: colors.borderSubtle }]}>
+              <Text style={[styles.explanationTitle, { color: colors.textTertiary }]}>EXPLANATION</Text>
+              <RichMathText
+                text={quiz.explanation}
+                style={{ color: colors.textPrimary, fontFamily: fontFamilies.sans, fontSize: fontSizes.sm, lineHeight: fontSizes.sm * 1.5 }}
+                color={colors.textPrimary}
+                fontSize={fontSizes.sm}
+              />
+            </View>
+          )}
+        </View>
       )}
     </View>
   );

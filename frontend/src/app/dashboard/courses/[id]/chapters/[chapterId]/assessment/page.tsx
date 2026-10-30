@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { chapterApi } from '@/lib/api';
-import { Chapter } from '@/lib/types';
+import { chapterApi, progressApi } from '@/lib/api';
+import { AssessmentProgress, Chapter } from '@/lib/types';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import AssessmentStepPlayer from '@/components/lesson/AssessmentStepPlayer';
 
@@ -14,14 +14,16 @@ export default function ChapterAssessmentPage() {
   const chapterId = params.chapterId as string;
 
   const [chapter, setChapter] = useState<Chapter | null>(null);
+  const [savedProgress, setSavedProgress] = useState<AssessmentProgress | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
-        const [chaptersRes, assessmentRes] = await Promise.all([
+        const [chaptersRes, assessmentRes, progressRes] = await Promise.all([
           chapterApi.byCourse(courseId),
           chapterApi.getAssessment(chapterId).catch(() => null),
+          progressApi.assessmentProgress(chapterId).catch(() => null),
         ]);
         const chapters: Chapter[] = chaptersRes.data.data || [];
         const found = chapters.find((c) => c._id === chapterId);
@@ -31,6 +33,7 @@ export default function ChapterAssessmentPage() {
             found.exercise = exerciseData;
           }
           setChapter(found);
+          setSavedProgress(progressRes?.data?.data || null);
         }
       } catch (e) {
         console.error('Failed to load chapter for assessment:', e);
@@ -72,6 +75,7 @@ export default function ChapterAssessmentPage() {
       courseId={courseId}
       chapterId={chapterId}
       chapterTitle={chapter.title}
+      savedProgress={savedProgress}
       onClose={handleClose}
     />
   );

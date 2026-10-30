@@ -497,12 +497,20 @@ function CoursesContent() {
             title={
               activeTab === 'my-courses'
                 ? 'No generated courses yet'
-                : 'No courses found'
+                : search || category !== 'all' || difficulty !== 'all'
+                ? 'No courses found'
+                : activeTab === 'community-ai'
+                ? 'No community AI tracks available yet'
+                : 'No public tracks available yet'
             }
             description={
               activeTab === 'my-courses'
                 ? 'Use the AI Course Architect to create full interactive courses from your notes, documents, or prompts.'
-                : 'Try adjusting your search query or category filters.'
+                : search || category !== 'all' || difficulty !== 'all'
+                ? 'Try adjusting your search query or category filters.'
+                : activeTab === 'catalog'
+                ? 'Your enrolled tracks are still available below. You can also explore community AI tracks.'
+                : 'Check back soon for tracks shared by the community.'
             }
             action={
               activeTab === 'my-courses' ? (

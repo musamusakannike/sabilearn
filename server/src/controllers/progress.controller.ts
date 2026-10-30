@@ -491,9 +491,130 @@ export const getTopicProgress = async (req: AuthenticatedRequest, res: Response,
     const userId = req.user!._id;
     const { topicId } = req.params;
 
-    const progress = await UserProgress.findOne({ user: userId, topic: topicId }).select('lastContentIndex isCompleted lastStudiedAt');
+    const topic = await Topic.findById(topicId).select('course contents');
+    if (!topic) {
+      res.status(404).json({ success: false, message: 'Topic not found.' });
+      return;
+    }
 
-    res.status(200).json({ success: true, data: progress || { lastContentIndex: 0, isCompleted: false, lastStudiedAt: null } });
+    const progress = await UserProgress.findOne({ user: userId, course: topic.course })
+      .select('lastTopic lastContentIndex completedTopics lastStudiedAt');
+    const hasCompletionReward = !!await XpLog.exists({
+      user: userId,
+      course: topic.course,
+      sourceType: 'topic',
+      sourceId: topicId,
+    });
+    const isCompleted = hasCompletionReward && !!progress?.completedTopics.some((id) => id.toString() === topicId);
+    const isCurrentTopic = progress?.lastTopic?.toString() === topicId;
+    const lastContentIndex = isCompleted
+      ? Math.max(0, (topic.contents?.length || 1) - 1)
+      : isCurrentTopic ? progress?.lastContentIndex || 0 : 0;
+
+    res.status(200).json({
+      success: true,
+      data: { lastContentIndex, isCompleted, lastStudiedAt: progress?.lastStudiedAt || null },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAssessmentProgress = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userId = req.user!._id;
+    const { chapterId } = req.params;
+    const chapter = await Chapter.findById(chapterId).select('course');
+    if (!chapter) {
+      res.status(404).json({ success: false, message: 'Chapter not found.' });
+      return;
+    }
+
+    const progress = await UserProgress.findOne({ user: userId, course: chapter.course }).select('assessmentProgress');
+    const saved = progress?.assessmentProgress.find((item) => item.chapter.toString() === chapterId);
+    res.status(200).json({ success: true, data: saved || null });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const saveAssessmentProgress = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userId = req.user!._id;
+    const { chapterId } = req.params;
+    const { currentIndex, userAnswers, checkedSteps } = req.body;
+    const chapter = await Chapter.findById(chapterId).select('course exercise');
+    if (!chapter) {
+      res.status(404).json({ success: false, message: 'Chapter not found.' });
+      return;
+    }
+
+    const questionCount = chapter.exercise?.questions?.length || 0;
+    if (
+      !Number.isInteger(currentIndex) || currentIndex < 0 || currentIndex >= Math.max(1, questionCount) ||
+      !userAnswers || typeof userAnswers !== 'object' || Array.isArray(userAnswers) ||
+      !checkedSteps || typeof checkedSteps !== 'object' || Array.isArray(checkedSteps)
+    ) {
+      res.status(400).json({ success: false, message: 'Assessment progress is invalid.' });
+      return;
+    }
+
+    const validAnswers: Record<string, string> = {};
+    for (const [key, value] of Object.entries(userAnswers)) {
+      const index = Number(key);
+      if (!Number.isInteger(index) || index < 0 || index >= questionCount || typeof value !== 'string' || value.length > 5000) {
+        res.status(400).json({ success: false, message: 'Assessment answers are invalid.' });
+        return;
+      }
+      validAnswers[String(index)] = value;
+    }
+
+    const validCheckedSteps: Record<string, boolean> = {};
+    for (const [key, value] of Object.entries(checkedSteps)) {
+      const index = Number(key);
+      if (!Number.isInteger(index) || index < 0 || index >= questionCount || typeof value !== 'boolean') {
+        res.status(400).json({ success: false, message: 'Assessment question state is invalid.' });
+        return;
+      }
+      validCheckedSteps[String(index)] = value;
+    }
+
+    let progress = await UserProgress.findOne({ user: userId, course: chapter.course });
+    if (!progress) {
+      progress = new UserProgress({ user: userId, course: chapter.course, completedTopics: [], completedChapters: [], passedExercises: [] });
+    }
+    const saved = progress.assessmentProgress.find((item) => item.chapter.toString() === chapterId);
+    const state = {
+      chapter: chapter._id,
+      currentIndex,
+      userAnswers: validAnswers,
+      checkedSteps: validCheckedSteps,
+      updatedAt: new Date(),
+    };
+    if (saved) Object.assign(saved, state);
+    else progress.assessmentProgress.push(state);
+    await progress.save();
+
+    res.status(200).json({ success: true, data: state });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const clearAssessmentProgress = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userId = req.user!._id;
+    const { chapterId } = req.params;
+    const chapter = await Chapter.findById(chapterId).select('course');
+    if (!chapter) {
+      res.status(404).json({ success: false, message: 'Chapter not found.' });
+      return;
+    }
+    await UserProgress.updateOne(
+      { user: userId, course: chapter.course },
+      { $pull: { assessmentProgress: { chapter: chapter._id } } },
+    );
+    res.status(200).json({ success: true });
   } catch (error) {
     next(error);
   }

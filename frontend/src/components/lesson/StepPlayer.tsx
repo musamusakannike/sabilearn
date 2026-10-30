@@ -38,6 +38,7 @@ export default function StepPlayer({
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSubmittingCompletion, setIsSubmittingCompletion] = useState(false);
   const [hasCompleted, setHasCompleted] = useState(false);
+  const [hasLoadedProgress, setHasLoadedProgress] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const { saveContentPosition, fetchTopicProgress } = useProgressStore();
@@ -59,16 +60,17 @@ export default function StepPlayer({
   // Resume where the learner last left off
   useEffect(() => {
     let cancelled = false;
-    fetchTopicProgress(topic._id).then((progress) => {
-      if (
-        !cancelled &&
-        progress &&
-        progress.lastContentIndex > 0 &&
-        progress.lastContentIndex < total
-      ) {
-        setIndex(progress.lastContentIndex);
-      }
-    });
+    fetchTopicProgress(topic._id)
+      .then((progress) => {
+        if (!cancelled && progress?.isCompleted) {
+          setIndex(Math.min(progress.lastContentIndex, Math.max(0, total - 1)));
+        } else if (!cancelled && progress && progress.lastContentIndex > 0 && progress.lastContentIndex < total) {
+          setIndex(progress.lastContentIndex);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setHasLoadedProgress(true);
+      });
     return () => {
       cancelled = true;
     };
@@ -77,14 +79,14 @@ export default function StepPlayer({
 
   // Persist the learner's position
   useEffect(() => {
-    if (finished) return;
+    if (finished || !hasLoadedProgress) return;
     saveContentPosition({
       course: topic.course,
       topic: topic._id,
       contentIndex: index,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index, topic._id, finished]);
+  }, [index, topic._id, finished, hasLoadedProgress]);
 
   const triggerConfettiFall = useCallback(() => {
     // Initial center burst
@@ -195,7 +197,6 @@ export default function StepPlayer({
   const step = steps[index];
   const isLastStep = index === total - 1;
   const isQuizStep = step?.type === "quiz";
-  const canAdvance = !isQuizStep || quizAnswered;
 
   const markTopicComplete = async () => {
     if (hasCompleted) return;
@@ -400,7 +401,10 @@ export default function StepPlayer({
           </button>
 
           {/* Segmented Pill Progress Bar */}
-          <div className="flex items-center gap-1.5 flex-1 max-w-xs sm:max-w-sm mx-2">
+          <div
+            className="flex items-center gap-1.5 flex-1 max-w-xs sm:max-w-sm mx-2"
+            aria-label={`Step ${index + 1} of ${total}`}
+          >
             {steps.map((_, i) => {
               const isActive = i === index;
               const isCompleted = i < index;
@@ -418,6 +422,7 @@ export default function StepPlayer({
               );
             })}
           </div>
+          <span className="sr-only">Step {index + 1} of {total}</span>
 
           {/* Hearts / Lives Counter (In-Lesson AI Tutor Dropdown) */}
           {step && (
@@ -518,13 +523,16 @@ export default function StepPlayer({
             </button>
           )}
 
+          {(!isQuizStep || quizAnswered) && (
           <button
-            onClick={handleNext}
-            disabled={!canAdvance || isSubmittingCompletion}
-            className="flex-1 flex items-center justify-center py-4 px-8 rounded-2xl bg-[#FF8A00] hover:bg-[#F07D00] active:scale-[0.98] text-white text-lg font-bold tracking-wide shadow-lg shadow-orange-500/20 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
-          >
-            <span>{isLastStep ? "Finish" : "Continue"}</span>
-          </button>
+              onClick={handleNext}
+              disabled={isSubmittingCompletion}
+              aria-label={isLastStep ? 'Finish lesson' : 'Continue to next step'}
+              className="flex-1 flex items-center justify-center py-4 px-8 rounded-2xl bg-[#FF8A00] hover:bg-[#F07D00] active:scale-[0.98] text-white text-lg font-bold tracking-wide shadow-lg shadow-orange-500/20 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
+            >
+              <span>{isLastStep ? "Finish" : "Continue"}</span>
+            </button>
+          )}
         </div>
       </footer>
     </div>

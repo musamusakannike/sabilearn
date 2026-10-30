@@ -67,9 +67,24 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
         })}
       </div>
 
+      {checked && (
+        <div
+          role="status"
+          aria-live="polite"
+          className={`rounded-xl px-4 py-3 text-sm font-bold ${
+            shuffledOptions[selected ?? -1]?.isCorrect
+              ? 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200'
+              : 'bg-rose-50 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200'
+          }`}
+        >
+          {shuffledOptions[selected ?? -1]?.isCorrect ? 'Correct!' : 'Incorrect. Review the correct answer below.'}
+        </div>
+      )}
+
       {!checked ? (
         <button
           onClick={handleCheck}
+          aria-label="Check quiz answer"
           disabled={selected === null}
           className="w-full sm:w-auto cursor-pointer rounded-2xl bg-[#FF8A00] px-8 py-3 text-sm font-bold text-white shadow-md hover:bg-[#F07D00] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >

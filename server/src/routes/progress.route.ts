@@ -13,9 +13,12 @@ import {
   completeTopic,
   submitExercise,
   savePosition,
+  getAssessmentProgress,
+  saveAssessmentProgress,
+  clearAssessmentProgress,
 } from '../controllers/progress.controller';
 import { protect } from '../middlewares/auth.middleware';
-import { requireCourseAccess, resolveCourseIdFromParam, resolveCourseIdFromTopicParam } from '../middlewares/access.middleware';
+import { requireCourseAccess, resolveCourseIdFromParam, resolveCourseIdFromTopicParam, resolveCourseIdFromChapterParam } from '../middlewares/access.middleware';
 import { validateFlashcardSession, validateMcqSession, validateContentPosition } from '../validations/progress.validation';
 
 const router = Router();
@@ -27,6 +30,9 @@ router.get('/continue', protect, getContinueStudying);
 router.get('/needs-improvement', protect, getNeedsImprovement);
 router.get('/course/:courseId', protect, requireCourseAccess(resolveCourseIdFromParam('courseId')), getCourseProgress);
 router.get('/topic/:topicId', protect, requireCourseAccess(resolveCourseIdFromTopicParam('topicId')), getTopicProgress);
+router.get('/assessment/:chapterId', protect, requireCourseAccess(resolveCourseIdFromChapterParam('chapterId')), getAssessmentProgress);
+router.put('/assessment/:chapterId', protect, requireCourseAccess(resolveCourseIdFromChapterParam('chapterId')), saveAssessmentProgress);
+router.delete('/assessment/:chapterId', protect, requireCourseAccess(resolveCourseIdFromChapterParam('chapterId')), clearAssessmentProgress);
 router.post('/topic-complete', protect, requireCourseAccess(resolveCourseIdFromParam('courseId')), completeTopic);
 router.post('/exercise-submit', protect, requireCourseAccess(resolveCourseIdFromParam('courseId')), submitExercise);
 router.post('/save-position', protect, requireCourseAccess(resolveCourseIdFromParam('courseId')), savePosition);

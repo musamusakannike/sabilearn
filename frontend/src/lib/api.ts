@@ -122,6 +122,10 @@ export const progressApi = {
     api.post('/progress/content-position', data),
   courseProgress: (courseId: string) => api.get(`/progress/course/${courseId}`),
   topicProgress: (topicId: string) => api.get(`/progress/topic/${topicId}`),
+  assessmentProgress: (chapterId: string) => api.get(`/progress/assessment/${chapterId}`),
+  saveAssessmentProgress: (chapterId: string, data: { currentIndex: number; userAnswers: Record<string, string>; checkedSteps: Record<string, boolean> }) =>
+    api.put(`/progress/assessment/${chapterId}`, data),
+  clearAssessmentProgress: (chapterId: string) => api.delete(`/progress/assessment/${chapterId}`),
 };
 
 export const paymentApi = {

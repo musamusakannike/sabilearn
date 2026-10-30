@@ -2,6 +2,7 @@ import { Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import Course from '../models/course.model';
 import Topic from '../models/topic.model';
+import Chapter from '../models/chapter.model';
 import Transaction from '../models/transaction.model';
 import Subscription from '../models/subscription.model';
 import { AuthenticatedRequest } from './auth.middleware';
@@ -94,4 +95,15 @@ export const resolveCourseIdFromTopicParam = (paramName = 'topicId') => async (r
   if (!topicId || !mongoose.isValidObjectId(topicId)) return null;
   const topic = await Topic.findById(topicId).select('course');
   return topic ? String(topic.course) : null;
+};
+
+export const resolveCourseIdFromChapterParam = (paramName = 'chapterId') => async (req: AuthenticatedRequest) => {
+  const chapterId =
+    (req.params?.[paramName] as string) ||
+    (req.body?.chapterId as string) ||
+    null;
+
+  if (!chapterId || !mongoose.isValidObjectId(chapterId)) return null;
+  const chapter = await Chapter.findById(chapterId).select('course');
+  return chapter ? String(chapter.course) : null;
 };

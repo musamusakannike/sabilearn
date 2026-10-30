@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  Alert,
   StyleProp,
   ViewStyle,
 } from 'react-native';
@@ -82,15 +83,18 @@ export default function ChapterAssessmentScreen() {
   const [earnedXp, setEarnedXp] = useState<number>(0);
   const [alreadyRewarded, setAlreadyRewarded] = useState<boolean>(false);
   const startedAt = useRef<number>(Date.now());
+  const saveQueue = useRef<Promise<void>>(Promise.resolve());
+  const textSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Load Chapter and Exercise from API
   useEffect(() => {
     (async () => {
       try {
         if (!id || !chapterId) return;
-        const [chaptersRes, assessmentRes] = await Promise.all([
+        const [chaptersRes, assessmentRes, savedRes] = await Promise.all([
           chapterApi.byCourse(id),
           chapterApi.getAssessment(chapterId).catch(() => null),
+          progressApi.assessmentProgress(chapterId).catch(() => null),
         ]);
         const chapters: Chapter[] = chaptersRes.data.data || [];
         const found = chapters.find((c) => c._id === chapterId);
@@ -100,7 +104,17 @@ export default function ChapterAssessmentScreen() {
           setChapter(found);
           if (ex && ex.questions && ex.questions.length > 0) {
             setExercise(ex);
-            initRandomizedQuestions(ex);
+            const randomized = prepareRandomizedQuestions(ex);
+            setQuestions(randomized);
+            const saved = savedRes?.data?.data;
+            if (saved) {
+              setCurrentIndex(Math.min(saved.currentIndex, randomized.length - 1));
+              setUserAnswers(saved.userAnswers || {});
+              setCheckedSteps(saved.checkedSteps || {});
+              startedAt.current = Date.now();
+            } else {
+              startedAt.current = Date.now();
+            }
           }
         }
       } catch (e) {
@@ -111,8 +125,8 @@ export default function ChapterAssessmentScreen() {
     })();
   }, [id, chapterId]);
 
-  const initRandomizedQuestions = (ex: Exercise) => {
-    if (!ex.questions) return;
+  const prepareRandomizedQuestions = (ex: Exercise): ShuffledQuestion[] => {
+    if (!ex.questions) return [];
     const randomized = ex.questions.map((q) => {
       if (q.type === 'mcq' && q.options && q.options.length > 0) {
         return {
@@ -122,7 +136,12 @@ export default function ChapterAssessmentScreen() {
       }
       return { ...q };
     });
-    setQuestions(randomized);
+    return randomized;
+  };
+
+  const initRandomizedQuestions = (ex: Exercise) => {
+    if (!ex.questions) return;
+    setQuestions(prepareRandomizedQuestions(ex));
     setCurrentIndex(0);
     setUserAnswers({});
     setCheckedSteps({});
@@ -130,13 +149,39 @@ export default function ChapterAssessmentScreen() {
     startedAt.current = Date.now();
   };
 
-  const handleClose = () => {
+  const navigateAway = () => {
     haptics.light();
     if (router.canGoBack()) {
       router.back();
     } else {
       router.replace({ pathname: '/course/[id]', params: { id } } as any);
     }
+  };
+
+  const handleClose = async () => {
+    if (!finished && Object.keys(userAnswers).length > 0 && chapterId) {
+      try {
+        await saveQueue.current.catch(() => undefined);
+        await progressApi.saveAssessmentProgress(chapterId, { currentIndex, userAnswers, checkedSteps });
+        Alert.alert('Progress saved', 'Your assessment answers are saved. Leave now?', [
+          { text: 'Stay', style: 'cancel' },
+          { text: 'Leave', style: 'destructive', onPress: navigateAway },
+        ]);
+      } catch {
+        Alert.alert('Could not save progress', 'Check your connection and try again.');
+      }
+      return;
+    }
+    navigateAway();
+  };
+
+  const saveAssessmentState = (index = currentIndex, answers = userAnswers, checked = checkedSteps) => {
+    if (!chapterId) return;
+    const request = saveQueue.current.catch(() => undefined).then(async () => {
+      await progressApi.saveAssessmentProgress(chapterId, { currentIndex: index, userAnswers: answers, checkedSteps: checked });
+    });
+    saveQueue.current = request;
+    void request.catch((error) => console.error('Failed to save assessment progress:', error));
   };
 
   const total = questions.length;
@@ -151,12 +196,17 @@ export default function ChapterAssessmentScreen() {
   const handleSelectOption = (option: string) => {
     if (isCurrentChecked) return;
     haptics.selection();
-    setUserAnswers((prev) => ({ ...prev, [currentIndex]: option }));
+    const answers = { ...userAnswers, [currentIndex]: option };
+    setUserAnswers(answers);
+    saveAssessmentState(currentIndex, answers);
   };
 
   const handleTextChange = (val: string) => {
     if (isCurrentChecked) return;
-    setUserAnswers((prev) => ({ ...prev, [currentIndex]: val }));
+    const answers = { ...userAnswers, [currentIndex]: val };
+    setUserAnswers(answers);
+    if (textSaveTimer.current) clearTimeout(textSaveTimer.current);
+    textSaveTimer.current = setTimeout(() => saveAssessmentState(currentIndex, answers), 500);
   };
 
   const handleCheckAnswer = () => {
@@ -166,13 +216,17 @@ export default function ChapterAssessmentScreen() {
     } else {
       haptics.error();
     }
-    setCheckedSteps((prev) => ({ ...prev, [currentIndex]: true }));
+    const checked = { ...checkedSteps, [currentIndex]: true };
+    setCheckedSteps(checked);
+    saveAssessmentState(currentIndex, userAnswers, checked);
   };
 
   const handleNext = async () => {
     haptics.light();
     if (currentIndex < total - 1) {
-      setCurrentIndex((prev) => prev + 1);
+      const nextIndex = currentIndex + 1;
+      setCurrentIndex(nextIndex);
+      saveAssessmentState(nextIndex);
     } else {
       await handleSubmitAssessment();
     }
@@ -203,6 +257,7 @@ export default function ChapterAssessmentScreen() {
       });
 
       if (res.data) {
+        if (chapterId) void progressApi.clearAssessmentProgress(chapterId).catch(() => {});
         const data = res.data;
         void fetchDashboard();
         setResultScore(data.scorePercent ?? 0);
@@ -285,7 +340,7 @@ export default function ChapterAssessmentScreen() {
               </Text>
             </View>
           </View>
-          <Pressable onPress={handleClose} hitSlop={10} style={s.closeBtn}>
+          <Pressable accessibilityRole="button" accessibilityLabel="Close assessment results" onPress={handleClose} hitSlop={10} style={s.closeBtn}>
             <IconX size={22} color={colors.textPrimary} />
           </Pressable>
         </View>
@@ -330,12 +385,17 @@ export default function ChapterAssessmentScreen() {
 
             {/* Actions */}
             <View style={s.resultsActionCol}>
-              <Pressable onPress={handleClose} style={s.continueBtn}>
+              <Pressable accessibilityRole="button" accessibilityLabel="Back to course" onPress={handleClose} style={s.continueBtn}>
                 <Text style={s.continueBtnText}>Back to Course</Text>
               </Pressable>
 
               <Pressable
-                onPress={() => exercise && initRandomizedQuestions(exercise)}
+                accessibilityRole="button"
+                accessibilityLabel="Retake assessment"
+                onPress={() => {
+                  if (chapterId) void progressApi.clearAssessmentProgress(chapterId).catch(() => {});
+                  exercise && initRandomizedQuestions(exercise);
+                }}
                 style={s.retakeOutlineBtn}
               >
                 <IconRotateClockwise size={16} color={colors.textPrimary} />
@@ -414,7 +474,7 @@ export default function ChapterAssessmentScreen() {
         {/* Top Header */}
         <View style={s.headerRow}>
           <View style={s.headerLeft}>
-            <Pressable onPress={handleClose} hitSlop={10} style={s.closeBtn}>
+            <Pressable accessibilityRole="button" accessibilityLabel="Close assessment" onPress={handleClose} hitSlop={10} style={s.closeBtn}>
               <IconX size={22} color={colors.textPrimary} />
             </Pressable>
             <View style={{ flex: 1 }}>
@@ -482,6 +542,8 @@ export default function ChapterAssessmentScreen() {
 
                 return (
                   <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={`Answer ${option}`}
                     key={oIdx}
                     disabled={isCurrentChecked}
                     onPress={() => handleSelectOption(option)}
@@ -510,6 +572,7 @@ export default function ChapterAssessmentScreen() {
             <View style={s.inputWrap}>
               <Text style={s.inputLabel}>Type your answer:</Text>
               <TextInput
+                accessibilityLabel={`Answer to question ${currentIndex + 1}: ${currentQ.question}`}
                 editable={!isCurrentChecked}
                 value={currentUserAns}
                 onChangeText={handleTextChange}
@@ -561,6 +624,8 @@ export default function ChapterAssessmentScreen() {
         <View style={s.bottomActionBar}>
           {!isCurrentChecked ? (
             <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Check answer"
               disabled={!currentUserAns.trim()}
               onPress={handleCheckAnswer}
               style={[s.continueBtn, !currentUserAns.trim() && s.btnDisabled]}
@@ -568,7 +633,7 @@ export default function ChapterAssessmentScreen() {
               <Text style={s.continueBtnText}>Check Answer</Text>
             </Pressable>
           ) : (
-            <Pressable disabled={isSubmitting} onPress={handleNext} style={s.continueBtn}>
+            <Pressable accessibilityRole="button" accessibilityLabel={currentIndex < total - 1 ? 'Continue to next question' : 'Submit assessment'} disabled={isSubmitting} onPress={handleNext} style={s.continueBtn}>
               <Text style={s.continueBtnText}>
                 {isSubmitting
                   ? 'Submitting Assessment...'

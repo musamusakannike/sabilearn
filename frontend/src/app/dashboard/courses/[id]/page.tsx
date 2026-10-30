@@ -560,13 +560,25 @@ export default function CourseDetailsPage() {
                             topic.title.toLowerCase().includes('terminal');
 
                           return (
-                            <div
+                            <Link
                               key={topic._id}
-                              onClick={() => {
+                              href={`/dashboard/courses/${id}/topics/${topic._id}/learn`}
+                              prefetch={false}
+                              aria-disabled={!hasAccess || !topic.isUnlocked}
+                              tabIndex={!hasAccess || !topic.isUnlocked ? -1 : undefined}
+                              onClick={(event) => {
                                 if (!hasAccess) {
+                                  event.preventDefault();
                                   setIsPaywallOpen(true);
-                                } else if (topic.isUnlocked) {
-                                  handleOpenTopic(chapter, topic);
+                                } else if (!topic.isUnlocked) {
+                                  event.preventDefault();
+                                } else {
+                                  progressApi.savePosition({
+                                    courseId: id,
+                                    chapterId: chapter._id,
+                                    topicId: topic._id,
+                                    contentIndex: 0,
+                                  }).catch(() => {});
                                 }
                               }}
                               className={`group flex items-center justify-between rounded-lg px-2.5 py-2.5 transition-colors ${
@@ -614,7 +626,7 @@ export default function CourseDetailsPage() {
                                   </div>
                                 )}
                               </div>
-                            </div>
+                            </Link>
                           );
                         })
                       ) : (

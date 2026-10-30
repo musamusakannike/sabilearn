@@ -67,6 +67,14 @@ export interface Exercise {
   questions: Question[];
 }
 
+export interface AssessmentProgress {
+  chapter: string;
+  currentIndex: number;
+  userAnswers: Record<string, string>;
+  checkedSteps: Record<string, boolean>;
+  updatedAt: string;
+}
+
 export interface TopicContent {
   _id?: string;
   type: TopicContentType;

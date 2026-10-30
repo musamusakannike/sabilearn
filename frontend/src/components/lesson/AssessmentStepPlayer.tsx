@@ -11,7 +11,7 @@ import {
   ArrowRight,
   RotateCcw,
 } from "lucide-react";
-import { Exercise, Question } from "@/lib/types";
+import { AssessmentProgress, Exercise, Question } from "@/lib/types";
 import { RichText } from "@/components/lesson/RichText";
 import { progressApi } from "@/lib/api";
 import { emitProgressUpdated } from "@/lib/progress-events";
@@ -21,6 +21,7 @@ interface AssessmentStepPlayerProps {
   courseId: string;
   chapterId: string;
   chapterTitle?: string;
+  savedProgress?: AssessmentProgress | null;
   onClose: () => void;
 }
 
@@ -43,6 +44,7 @@ export default function AssessmentStepPlayer({
   courseId,
   chapterId,
   chapterTitle,
+  savedProgress,
   onClose,
 }: AssessmentStepPlayerProps) {
   const [questions, setQuestions] = useState<ShuffledQuestion[]>([]);
@@ -56,9 +58,26 @@ export default function AssessmentStepPlayer({
   const [earnedXp, setEarnedXp] = useState<number>(0);
   const [alreadyRewarded, setAlreadyRewarded] = useState<boolean>(false);
   const startedAt = useRef<number>(Date.now());
+  const saveQueue = useRef<Promise<void>>(Promise.resolve());
+
+  const persistProgress = useCallback((
+    currentIndexToSave: number,
+    answersToSave: Record<number, string>,
+    checkedToSave: Record<number, boolean>,
+  ) => {
+    const request = saveQueue.current.catch(() => undefined).then(async () => {
+      await progressApi.saveAssessmentProgress(chapterId, {
+        currentIndex: currentIndexToSave,
+        userAnswers: answersToSave,
+        checkedSteps: checkedToSave,
+      });
+    });
+    saveQueue.current = request;
+    return request;
+  }, [chapterId]);
 
   // Initialize and randomly reorder MCQ options on mount / reset
-  const initQuestions = useCallback(() => {
+  const initQuestions = useCallback((restoreSavedProgress = true) => {
     if (!exercise?.questions) return;
     const randomized = exercise.questions.map((q) => {
       if (q.type === "mcq" && q.options && q.options.length > 0) {
@@ -70,16 +89,41 @@ export default function AssessmentStepPlayer({
       return { ...q };
     });
     setQuestions(randomized);
-    setCurrentIndex(0);
-    setUserAnswers({});
-    setCheckedSteps({});
+    setCurrentIndex(restoreSavedProgress && savedProgress
+      ? Math.min(savedProgress.currentIndex, randomized.length - 1)
+      : 0);
+    setUserAnswers(restoreSavedProgress ? savedProgress?.userAnswers || {} : {});
+    setCheckedSteps(restoreSavedProgress ? savedProgress?.checkedSteps || {} : {});
     setFinished(false);
     startedAt.current = Date.now();
-  }, [exercise]);
+  }, [exercise, savedProgress]);
 
   useEffect(() => {
     initQuestions();
   }, [initQuestions]);
+
+  const requestClose = async () => {
+    const hasAnswers = Object.values(userAnswers).some((answer) => answer.trim().length > 0);
+    if (!finished && hasAnswers) {
+      try {
+        await persistProgress(currentIndex, userAnswers, checkedSteps);
+      } catch {
+        window.alert('Your latest answer could not be saved. Please check your connection and try again.');
+        return;
+      }
+      if (!window.confirm('Your assessment answers are saved. Leave the assessment?')) return;
+    }
+    onClose();
+  };
+
+  const handleRetake = async () => {
+    try {
+      await progressApi.clearAssessmentProgress(chapterId);
+    } catch (error) {
+      console.error('Failed to clear saved assessment answers:', error);
+    }
+    initQuestions(false);
+  };
 
   const triggerConfetti = useCallback(() => {
     confetti({
@@ -119,12 +163,20 @@ export default function AssessmentStepPlayer({
 
   const handleCheckAnswer = () => {
     if (!currentUserAns.trim()) return;
-    setCheckedSteps((prev) => ({ ...prev, [currentIndex]: true }));
+    const nextChecked = { ...checkedSteps, [currentIndex]: true };
+    setCheckedSteps(nextChecked);
+    void persistProgress(currentIndex, userAnswers, nextChecked).catch((error) => {
+      console.error('Failed to save assessment answer:', error);
+    });
   };
 
   const handleNext = async () => {
     if (currentIndex < total - 1) {
-      setCurrentIndex((prev) => prev + 1);
+      const nextIndex = currentIndex + 1;
+      await persistProgress(nextIndex, userAnswers, checkedSteps).catch((error) => {
+        console.error('Failed to save assessment position:', error);
+      });
+      setCurrentIndex(nextIndex);
     } else {
       // Final step -> Submit to server
       await handleSubmitAssessment();
@@ -161,6 +213,7 @@ export default function AssessmentStepPlayer({
         setEarnedXp(data.earnedXp ?? 0);
         setAlreadyRewarded(!!data.alreadyRewarded);
         setFinished(true);
+        void progressApi.clearAssessmentProgress(chapterId).catch(() => {});
 
         if (data.isPassed) {
           triggerConfetti();
@@ -222,6 +275,7 @@ export default function AssessmentStepPlayer({
           </div>
           <button
             onClick={onClose}
+            aria-label="Close assessment results"
             className="flex size-9 cursor-pointer items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--surface-card)] transition-colors hover:bg-[var(--line)]"
           >
             <X className="size-5" />
@@ -300,7 +354,7 @@ export default function AssessmentStepPlayer({
                 <span>Back to Course</span>
               </button>
               <button
-                onClick={initQuestions}
+                onClick={handleRetake}
                 className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] px-6 py-3.5 text-sm font-bold text-[var(--ink-900)] transition-colors hover:bg-[var(--line)]"
               >
                 <RotateCcw className="size-4" />
@@ -409,7 +463,8 @@ export default function AssessmentStepPlayer({
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3 sm:px-6">
           <div className="flex items-center gap-3">
             <button
-              onClick={onClose}
+              onClick={requestClose}
+              aria-label="Close assessment"
               className="flex size-9 cursor-pointer items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--surface-card)] transition-colors hover:bg-[var(--line)]"
             >
               <X className="size-5 text-[var(--ink-900)]" />
@@ -608,6 +663,7 @@ export default function AssessmentStepPlayer({
             <button
               disabled={isSubmitting}
               onClick={handleNext}
+              aria-label={currentIndex < total - 1 ? `Continue to question ${currentIndex + 2}` : 'Complete assessment'}
               className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-[var(--brand-gold)] py-3.5 text-sm font-bold text-slate-950 shadow-md transition-all hover:brightness-105"
             >
               <span>

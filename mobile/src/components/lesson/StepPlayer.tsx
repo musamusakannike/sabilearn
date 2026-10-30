@@ -33,6 +33,7 @@ export default function StepPlayer({
   const [isCourseComplete, setIsCourseComplete] = useState(false);
   const [hasCompleted, setHasCompleted] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
+  const [hasLoadedProgress, setHasLoadedProgress] = useState(false);
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
   const lastScrollY = useRef(0);
@@ -69,11 +70,17 @@ export default function StepPlayer({
   // Resume where the learner last left off
   useEffect(() => {
     let cancelled = false;
-    fetchTopicProgress(topic._id).then((progress) => {
-      if (!cancelled && progress && progress.lastContentIndex > 0 && progress.lastContentIndex < total) {
-        setIndex(progress.lastContentIndex);
-      }
-    });
+    fetchTopicProgress(topic._id)
+      .then((progress) => {
+        if (!cancelled && progress?.isCompleted) {
+          setIndex(Math.min(progress.lastContentIndex, Math.max(0, total - 1)));
+        } else if (!cancelled && progress && progress.lastContentIndex > 0 && progress.lastContentIndex < total) {
+          setIndex(progress.lastContentIndex);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setHasLoadedProgress(true);
+      });
     return () => {
       cancelled = true;
     };
@@ -82,10 +89,10 @@ export default function StepPlayer({
 
   // Save learner's position
   useEffect(() => {
-    if (finished) return;
+    if (finished || !hasLoadedProgress) return;
     saveContentPosition({ course: topic.course, topic: topic._id, contentIndex: index });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index, topic._id, finished]);
+  }, [index, topic._id, finished, hasLoadedProgress]);
 
   // Trigger confetti + haptic sequence on topic completion
   useEffect(() => {
@@ -307,7 +314,7 @@ export default function StepPlayer({
         </View>
 
         <View style={styles.footer}>
-          <Pressable onPress={onContinue || onClose} style={styles.orangeContinueBtn}>
+          <Pressable accessibilityRole="button" accessibilityLabel="Continue to next lesson" onPress={onContinue || onClose} style={styles.orangeContinueBtn}>
             <Text style={styles.orangeContinueText}>Continue</Text>
           </Pressable>
         </View>
@@ -325,7 +332,7 @@ export default function StepPlayer({
     <SafeAreaView style={[styles.container, { backgroundColor: colors.bgApp }]} edges={['top', 'bottom']}>
       {/* Top Header Bar */}
       <View style={styles.headerRow}>
-        <Pressable onPress={onClose} hitSlop={12} style={styles.closeBtn}>
+        <Pressable accessibilityRole="button" accessibilityLabel="Close lesson" onPress={onClose} hitSlop={12} style={styles.closeBtn}>
           <IconX size={26} color={colors.textPrimary} />
         </Pressable>
 
@@ -349,6 +356,7 @@ export default function StepPlayer({
             );
           })}
         </View>
+        <Text accessibilityLiveRegion="polite" style={styles.stepCount}>Step {index + 1} of {total}</Text>
 
         {/* In-Lesson AI Tutor */}
         {step && (
@@ -411,6 +419,8 @@ export default function StepPlayer({
       <View style={[styles.footer, { borderTopColor: colors.borderSubtle }]}>
         {index > 0 && (
           <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Previous step"
             onPress={handlePrev}
             style={[styles.backBtn, { borderColor: colors.borderSubtle, backgroundColor: colors.surfaceCard }]}
           >
@@ -418,16 +428,17 @@ export default function StepPlayer({
           </Pressable>
         )}
 
-        <Pressable
-          onPress={handleNext}
-          disabled={!canAdvance || isCompleting}
-          style={[
-            styles.orangeContinueBtn,
-            { opacity: !canAdvance || isCompleting ? 0.4 : 1 },
-          ]}
-        >
-          <Text style={styles.orangeContinueText}>{isLastStep ? 'Finish' : 'Continue'}</Text>
-        </Pressable>
+        {canAdvance && (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={isLastStep ? 'Finish lesson' : 'Continue to next step'}
+            onPress={handleNext}
+            disabled={isCompleting}
+            style={[styles.orangeContinueBtn, { opacity: isCompleting ? 0.4 : 1 }]}
+          >
+            <Text style={styles.orangeContinueText}>{isLastStep ? 'Finish' : 'Continue'}</Text>
+          </Pressable>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -455,6 +466,12 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 6,
     marginHorizontal: spacing.sm,
+  },
+  stepCount: {
+    position: 'absolute',
+    width: 1,
+    height: 1,
+    overflow: 'hidden',
   },
   pillSegment: {
     height: 10,

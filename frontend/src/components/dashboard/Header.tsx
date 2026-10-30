@@ -154,7 +154,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
           />
           <div className="absolute inset-y-0 right-0 pr-3 hidden sm:flex items-center pointer-events-none">
             <kbd className="px-1.5 py-0.5 text-[10px] font-bold text-stone-400 bg-stone-100 rounded border border-stone-300">
-              ⌘K
+              Ctrl K
             </kbd>
           </div>
 

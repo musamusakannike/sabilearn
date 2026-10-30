@@ -141,16 +141,17 @@ export default function Sidebar({
   const isAdmin = user?.role === "admin";
   const isAdminRoute = pathname.startsWith("/dashboard/admin");
   const [adminExpanded, setAdminExpanded] = useState(isAdminRoute);
-  const [collapsed, setCollapsed] = useState(() => {
-    if (typeof window === "undefined") return false;
-    try {
-      return localStorage.getItem("sabilearn_sidebar_collapsed") === "1";
-    } catch {
-      return false;
-    }
-  });
+  const [collapsed, setCollapsed] = useState(false);
   const [activeCourses, setActiveCourses] = useState(0);
   const [payment, setPayment] = useState<PaymentStatus | null>(null);
+
+  useEffect(() => {
+    try {
+      setCollapsed(localStorage.getItem("sabilearn_sidebar_collapsed") === "1");
+    } catch {
+      // Keep the expanded default when storage is unavailable.
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {

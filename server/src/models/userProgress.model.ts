@@ -9,6 +9,13 @@ export interface IUserProgress extends Document {
   completedTopics: mongoose.Types.ObjectId[];
   completedChapters: mongoose.Types.ObjectId[];
   passedExercises: string[];
+  assessmentProgress: {
+    chapter: mongoose.Types.ObjectId;
+    currentIndex: number;
+    userAnswers: Record<string, string>;
+    checkedSteps: Record<string, boolean>;
+    updatedAt: Date;
+  }[];
   percentCompleted: number;
   isCompleted: boolean;
   lastStudiedAt: Date;
@@ -62,6 +69,16 @@ const UserProgressSchema: Schema = new Schema<IUserProgress>(
       },
     ],
     passedExercises: [{ type: String }],
+    assessmentProgress: [
+      {
+        _id: false,
+        chapter: { type: Schema.Types.ObjectId, ref: 'Chapter', required: true },
+        currentIndex: { type: Number, default: 0, min: 0 },
+        userAnswers: { type: Schema.Types.Mixed, default: {} },
+        checkedSteps: { type: Schema.Types.Mixed, default: {} },
+        updatedAt: { type: Date, default: Date.now },
+      },
+    ],
     percentCompleted: {
       type: Number,
       default: 0,
