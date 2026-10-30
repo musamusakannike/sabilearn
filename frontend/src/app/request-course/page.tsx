@@ -40,7 +40,7 @@ export default function RequestCoursePage() {
         <div className="mx-auto grid max-w-5xl items-center gap-10 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
           <section>
             <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-[var(--brand-gold-100)] px-3.5 py-2 text-sm font-semibold text-[var(--ink-900)]">
-              <Sparkles className="size-4" /> Your next course starts here
+              Your next course starts here
             </div>
             <h1 className="max-w-xl font-[var(--font-display)] text-4xl font-bold leading-tight text-[var(--ink-900)] sm:text-5xl">
               What do you really want to learn?
