@@ -21,7 +21,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import EmptyState from '@/components/ui/EmptyState';
 import { BlogPost, PaginatedResponse } from '@/lib/types';
 
-const CATEGORIES = ['Study tips', 'Learning science', 'Web development', 'Career', 'Product updates', 'Announcements'];
+const CATEGORIES = ['Study tips', 'Learning science', 'Web development', 'Career', 'Product updates', 'Announcements', 'News'];
 
 const emptyForm = {
   title: '',

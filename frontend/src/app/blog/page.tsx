@@ -30,14 +30,32 @@ export const metadata: Metadata = {
     siteName: 'SabiLearn',
     locale: 'en_NG',
     type: 'website',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'The SabiLearn Blog' }],
+    images: [
+      {
+        url: `${SITE_URL}/blog/blog-og.jpeg`,
+        secureUrl: `${SITE_URL}/blog/blog-og.jpeg`,
+        width: 1200,
+        height: 630,
+        alt: 'The SabiLearn Blog — Study Smarter, Learn Faster',
+        type: 'image/jpeg',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'The SabiLearn Blog — Study Smarter, Learn Faster',
     description:
       'Practical study guides, learning science, and how-tos to help you learn faster and sabi it for life.',
-    images: ['/og-image.png'],
+    site: '@sabilearn',
+    creator: '@sabilearn',
+    images: [
+      {
+        url: `${SITE_URL}/blog/blog-og.jpeg`,
+        alt: 'The SabiLearn Blog — Study Smarter, Learn Faster',
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
 };
 

@@ -1,7 +1,7 @@
 import { blogApi } from './api';
 import { BlogPost, PaginatedResponse } from './types';
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.sabilearn.online';
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://sabilearn.online').replace(/\/+$/, '');
 
 export async function fetchBlogPosts(params: Record<string, unknown>): Promise<PaginatedResponse<BlogPost>> {
   try {

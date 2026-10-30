@@ -2,12 +2,25 @@ import { Request, Response, NextFunction } from 'express';
 import BlogPost from '../models/blog.model';
 import { slugify, estimateReadingTime } from '../utils/slug.util';
 import { uploadToR2 } from '../utils/r2.util';
+import sharp from 'sharp';
 import { AuthenticatedRequest } from '../middlewares/auth.middleware';
 import { broadcastBlogPostPublished } from '../services/notification.service';
 
 interface MulterRequest extends AuthenticatedRequest {
   file?: Express.Multer.File;
 }
+
+const processBlogCoverImage = async (buffer: Buffer): Promise<{ buffer: Buffer; mimetype: string; extension: string }> => {
+  try {
+    const optimized = await sharp(buffer)
+      .resize(1200, 630, { fit: 'cover' })
+      .jpeg({ quality: 85, progressive: true })
+      .toBuffer();
+    return { buffer: optimized, mimetype: 'image/jpeg', extension: 'jpg' };
+  } catch {
+    return { buffer, mimetype: 'image/jpeg', extension: 'jpg' };
+  }
+};
 
 const generateUniqueSlug = async (title: string, ignoreId?: string): Promise<string> => {
   const base = slugify(title);
@@ -129,8 +142,10 @@ export const createBlogPost = async (req: MulterRequest, res: Response, next: Ne
 
     let coverImageUrl = typeof coverImage === 'string' ? coverImage : '';
     if (req.file) {
-      const fileKey = `blog/${Date.now()}-${req.file.originalname.replace(/\s+/g, '-')}`;
-      coverImageUrl = await uploadToR2(req.file.buffer, fileKey, req.file.mimetype);
+      const processed = await processBlogCoverImage(req.file.buffer);
+      const safeName = req.file.originalname.replace(/\.[^/.]+$/, '').replace(/\s+/g, '-');
+      const fileKey = `blog/${Date.now()}-${safeName}.${processed.extension}`;
+      coverImageUrl = await uploadToR2(processed.buffer, fileKey, processed.mimetype);
     }
 
     const slug = await generateUniqueSlug(title);
@@ -192,8 +207,10 @@ export const updateBlogPost = async (req: MulterRequest, res: Response, next: Ne
     if (seoDescription !== undefined) updates.seoDescription = seoDescription;
 
     if (req.file) {
-      const fileKey = `blog/${Date.now()}-${req.file.originalname.replace(/\s+/g, '-')}`;
-      updates.coverImage = await uploadToR2(req.file.buffer, fileKey, req.file.mimetype);
+      const processed = await processBlogCoverImage(req.file.buffer);
+      const safeName = req.file.originalname.replace(/\.[^/.]+$/, '').replace(/\s+/g, '-');
+      const fileKey = `blog/${Date.now()}-${safeName}.${processed.extension}`;
+      updates.coverImage = await uploadToR2(processed.buffer, fileKey, processed.mimetype);
     }
 
     let wasNewlyPublished = false;

@@ -17,6 +17,37 @@ function formatDate(value: string | null): string {
   return new Date(value).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
+function resolveBlogImageUrl(rawImage?: string | null): { url: string; type: string } {
+  const defaultUrl = `${SITE_URL}/blog/blog-og.jpeg`;
+  if (!rawImage || typeof rawImage !== 'string' || !rawImage.trim()) {
+    return { url: defaultUrl, type: 'image/jpeg' };
+  }
+  const clean = rawImage.trim();
+  const url = clean.startsWith('http://') || clean.startsWith('https://')
+    ? clean
+    : `${SITE_URL}${clean.startsWith('/') ? '' : '/'}${clean}`;
+
+  const lower = url.toLowerCase().split('?')[0];
+  const type = lower.endsWith('.png')
+    ? 'image/png'
+    : lower.endsWith('.webp')
+      ? 'image/webp'
+      : 'image/jpeg';
+
+  return { url, type };
+}
+
+function getPostImage(post: Record<string, unknown>): string | undefined {
+  return (
+    (typeof post.coverImage === 'string' && post.coverImage) ||
+    (typeof post.featuredImage === 'string' && post.featuredImage) ||
+    (typeof post.image === 'string' && post.image) ||
+    (typeof post.banner === 'string' && post.banner) ||
+    (typeof post.thumbnail === 'string' && post.thumbnail) ||
+    undefined
+  );
+}
+
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
 }
@@ -34,7 +65,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const description = post.seoDescription || post.excerpt;
   const url = `${SITE_URL}/blog/${post.slug}`;
   const authorName = typeof post.author === 'object' && post.author ? post.author.name : 'SabiLearn';
-  const ogImage = post.coverImage || '/og-image.png';
+  const postImage = getPostImage(post as unknown as Record<string, unknown>);
+  const { url: ogImageUrl, type: ogImageType } = resolveBlogImageUrl(postImage);
 
   return {
     title: `${title} — SabiLearn Blog`,
@@ -55,10 +87,12 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       tags: post.tags,
       images: [
         {
-          url: ogImage,
+          url: ogImageUrl,
+          secureUrl: ogImageUrl,
           width: 1200,
           height: 630,
           alt: post.title,
+          type: ogImageType,
         },
       ],
     },
@@ -68,7 +102,14 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       description,
       creator: '@sabilearn',
       site: '@sabilearn',
-      images: [ogImage],
+      images: [
+        {
+          url: ogImageUrl,
+          alt: post.title,
+          width: 1200,
+          height: 630,
+        },
+      ],
     },
   };
 }
@@ -85,13 +126,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const author = typeof post.author === 'object' ? post.author : null;
   const url = `${SITE_URL}/blog/${post.slug}`;
   const wordCount = post.content ? post.content.split(/\s+/).filter(Boolean).length : undefined;
+  const postImage = getPostImage(post as unknown as Record<string, unknown>);
+  const { url: ogImageUrl } = resolveBlogImageUrl(postImage);
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: post.coverImage || `${SITE_URL}/og-image.png`,
+    image: ogImageUrl,
     datePublished: post.publishedAt || undefined,
     dateModified: post.updatedAt,
     inLanguage: 'en-NG',
@@ -150,9 +193,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <span className="inline-flex items-center gap-1"><Clock className="size-3.5" />{post.readingTimeMinutes} min read</span>
           </div>
 
-          {post.coverImage && (
+          {postImage && (
             <div className="relative mb-10 h-[280px] w-full overflow-hidden rounded-[var(--radius-2xl)] shadow-[var(--shadow-md)] sm:h-[440px]">
-              <Image src={post.coverImage} alt={post.title} fill priority sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
+              <Image src={postImage} alt={post.title} fill priority sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
             </div>
           )}
 
