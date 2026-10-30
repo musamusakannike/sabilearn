@@ -25,6 +25,25 @@ export async function sendEmail({
   html: string;
   text?: string;
 }): Promise<void> {
+  const from = process.env.EMAIL_FROM || DEFAULT_FROM;
+  let resendError: unknown;
+
+  try {
+    const resend = getResendClient();
+    const { error } = await resend.emails.send({
+      from,
+      to,
+      subject,
+      html,
+      ...(text ? { text } : {}),
+    });
+    if (error) throw new Error(error.message);
+    return;
+  } catch (error) {
+    resendError = error;
+    console.error('[Email] Resend delivery failed; trying SMTP:', error);
+  }
+
   const smtpHost = process.env.SMTP_HOST;
   const smtpUser = process.env.SMTP_USER;
   const smtpPass = process.env.SMTP_PASS?.replace(/\s+/g, '');
@@ -47,20 +66,13 @@ export async function sendEmail({
       });
       return;
     } catch (smtpError) {
-      console.error('[Email] SMTP delivery failed; trying Resend:', smtpError);
+      throw new Error(
+        `Resend failed (${resendError instanceof Error ? resendError.message : 'unknown error'}); SMTP fallback failed (${smtpError instanceof Error ? smtpError.message : 'unknown error'})`,
+      );
     }
   }
 
-  const from = process.env.EMAIL_FROM || DEFAULT_FROM;
-  const resend = getResendClient();
-  const { error } = await resend.emails.send({
-    from,
-    to,
-    subject,
-    html,
-    ...(text ? { text } : {}),
-  });
-  if (error) {
-    throw new Error(`Resend failed: ${error.message}`);
-  }
+  throw new Error(
+    `Resend failed (${resendError instanceof Error ? resendError.message : 'unknown error'}); SMTP is not configured`,
+  );
 }
