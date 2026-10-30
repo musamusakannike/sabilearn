@@ -176,6 +176,12 @@ export const adminApi = {
   recentActivity: () => api.get('/admin/recent-activity'),
 };
 
+export const courseRequestApi = {
+  submit: (data: { courseName: string; category: 'academic' | 'non-academic'; details?: string }) =>
+    api.post('/course-requests', data),
+  list: () => api.get('/course-requests'),
+};
+
 export const appReviewApi = {
   getStatus: (os?: string, version?: string) => api.get('/app-review/status', { params: { os, version } }),
   getAll: () => api.get('/app-review'),

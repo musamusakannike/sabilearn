@@ -27,6 +27,7 @@ import chapterRoutes from './routes/chapter.route';
 import leaderboardRoutes from './routes/leaderboard.route';
 import appReviewRoutes from './routes/appReview.route';
 import playgroundRoutes from './routes/playground.route';
+import courseRequestRoutes from './routes/courseRequest.route';
 import { errorHandler } from './middlewares/error.middleware';
 import { startScheduler } from './jobs/scheduler';
 
@@ -84,6 +85,7 @@ app.use('/api/v1/ai/course-architect', courseArchitectRoutes);
 app.use('/api/v1/ai/courses', aiCoursesRouter);
 app.use('/api/v1/playground', playgroundRoutes);
 app.use('/api/v1/app-review', appReviewRoutes);
+app.use('/api/v1/course-requests', courseRequestRoutes);
 
 // Handle 404 routes
 app.use((req, res) => {

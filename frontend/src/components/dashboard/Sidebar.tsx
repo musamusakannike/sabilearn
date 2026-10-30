@@ -13,6 +13,7 @@ import {
   BookOpen,
   Newspaper,
   Smartphone,
+  Lightbulb,
 } from "lucide-react";
 import { useAuthStore } from "@/store/auth.store";
 import { paymentApi, progressApi } from "@/lib/api";
@@ -117,6 +118,7 @@ const adminItems = [
   { href: "/dashboard/admin/courses", label: "Courses", icon: BookOpen },
   { href: "/dashboard/admin/blog", label: "Blog", icon: Newspaper },
   { href: "/dashboard/admin/users", label: "Users", icon: Users },
+  { href: "/dashboard/admin/course-requests", label: "Course requests", icon: Lightbulb },
   { href: "/dashboard/admin/activity", label: "Activity", icon: Activity },
   {
     href: "/dashboard/admin/app-review",

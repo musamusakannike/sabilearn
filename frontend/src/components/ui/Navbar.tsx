@@ -13,6 +13,7 @@ export interface NavLink {
 export const DEFAULT_NAV_LINKS: NavLink[] = [
   { label: 'Features', href: '/#features' },
   { label: 'Courses', href: '/courses' },
+  { label: 'Request a course', href: '/request-course' },
   { label: 'Pricing', href: '/#pricing' },
   { label: 'Blog', href: '/blog' },
   { label: 'FAQ', href: '/#faq' },
