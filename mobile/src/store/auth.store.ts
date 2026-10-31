@@ -132,17 +132,23 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   loginWithGoogle: async () => {
     set({ isLoading: true });
     try {
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      const signInResult = await GoogleSignin.signIn();
-      const idToken = signInResult.data?.idToken || (signInResult as any).idToken;
-      if (!idToken) {
-        set({ isLoading: false });
-        return { success: false, error: 'Google sign-in failed. No ID token received.' };
+      let firebaseIdToken: string | undefined;
+      if (Platform.OS === 'web') {
+        const { googleSignInWeb } = await import('@/lib/googleWeb');
+        firebaseIdToken = await googleSignInWeb();
+      } else {
+        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+        const signInResult = await GoogleSignin.signIn();
+        const idToken = signInResult.data?.idToken || (signInResult as any).idToken;
+        if (!idToken) {
+          set({ isLoading: false });
+          return { success: false, error: 'Google sign-in failed. No ID token received.' };
+        }
+        const googleCredential = GoogleAuthProvider.credential(idToken);
+        const authInstance = getAuth();
+        await signInWithCredential(authInstance, googleCredential);
+        firebaseIdToken = await authInstance.currentUser?.getIdToken();
       }
-      const googleCredential = GoogleAuthProvider.credential(idToken);
-      const authInstance = getAuth();
-      await signInWithCredential(authInstance, googleCredential);
-      const firebaseIdToken = await authInstance.currentUser?.getIdToken();
       if (!firebaseIdToken) {
         set({ isLoading: false });
         return { success: false, error: 'Failed to get Firebase token.' };
