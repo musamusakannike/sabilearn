@@ -1,7 +1,4 @@
-const fs = require('fs');
-try {
-  require('graceful-fs').gracefulify(fs);
-} catch {}
+require('./scripts/patch-fs');
 const path = require('path');
 const { getDefaultConfig } = require('expo/metro-config');
 
