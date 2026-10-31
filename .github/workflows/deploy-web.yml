@@ -1,0 +1,52 @@
+name: Deploy Mobile Web to EAS Hosting
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'mobile/**'
+      - '.github/workflows/deploy-web.yml'
+  workflow_dispatch:
+    inputs:
+      prod:
+        description: 'Deploy to production (true) or preview (false)'
+        required: true
+        default: true
+        type: boolean
+
+jobs:
+  deploy-web:
+    name: Build and Deploy Web
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web bundle
+        run: npx expo export -p web
+
+      - name: Deploy to EAS Hosting (Production)
+        if: github.event_name == 'push' || inputs.prod == true
+        run: npx eas-cli@latest deploy --prod --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Deploy to EAS Hosting (Preview)
+        if: github.event_name == 'workflow_dispatch' && inputs.prod == false
+        run: npx eas-cli@latest deploy --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
