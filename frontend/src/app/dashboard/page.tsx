@@ -281,7 +281,7 @@ export default function DashboardHome() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 py-5 ">
       {/* BEGIN: WelcomeAndQuickActionSection */}
       <section
         className="grid grid-cols-12 gap-6 items-stretch"

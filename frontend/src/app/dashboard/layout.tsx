@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <NotificationDrawer />
         <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-cream-100">
           <Header onMenuClick={() => setSidebarOpen(true)} />
-          <main className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto bg-cream-100 px-4 py-6 sm:px-6 lg:px-8 lg:py-7">
+          <main className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto bg-cream-100 px-4 sm:px-6 lg:px-8">
             <div className="w-full">{children}</div>
           </main>
         </div>

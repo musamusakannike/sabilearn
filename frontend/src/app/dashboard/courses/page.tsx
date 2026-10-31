@@ -301,7 +301,7 @@ function CoursesContent() {
   }, [resumptionCards]);
 
   return (
-    <div className="max-w-7xl w-full mx-auto space-y-8">
+    <div className="max-w-7xl w-full mx-auto space-y-8 py-6">
       {/* Header & Tabs Section (Directly matching code.html) */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2 border-b border-stone-200/60">
         <div>
