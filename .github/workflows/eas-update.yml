@@ -35,8 +35,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Publish EAS update
-        run: npx eas-cli@latest update --branch "$EAS_BRANCH" --platform all --message "$UPDATE_MESSAGE" --non-interactive
+      - name: Publish iOS EAS update
+        run: npx eas-cli@latest update --branch "$EAS_BRANCH" --platform ios --message "$UPDATE_MESSAGE" --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EAS_BRANCH: ${{ inputs.branch }}
+          UPDATE_MESSAGE: ${{ inputs.message }}
+
+      - name: Publish Android EAS update
+        run: npx eas-cli@latest update --branch "$EAS_BRANCH" --platform android --message "$UPDATE_MESSAGE" --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           EAS_BRANCH: ${{ inputs.branch }}
