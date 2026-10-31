@@ -11,6 +11,7 @@ import EmptyState from '@/components/ui/EmptyState';
 import GlassSurface from '@/components/ui/GlassSurface';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import ScreenHeader from '@/components/common/ScreenHeader';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
 import { fontFamilies, spacing } from '@/theme';
 import { ACCENT, FAINT, INK, MUTED, TINT_GLASS, TINT_ORANGE } from '@/theme/brand';
 import * as haptics from '@/lib/haptics';
@@ -83,44 +84,46 @@ export default function NotificationsScreen() {
   return (
     <View collapsable={false} style={styles.container}>
       <ScreenBackdrop />
-      <FlatList
-        data={items}
-        keyExtractor={(item) => item._id}
-        contentContainerStyle={[styles.list, { paddingTop: insets.top + 8 }]}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={ACCENT} colors={[ACCENT]} />}
-        ListHeaderComponent={
-          <ScreenHeader
-            title="Alerts"
-            showBack
-            right={
-              items.some((i) => !i.isRead) ? (
-                <Pressable onPress={markAllRead} hitSlop={8} accessibilityLabel="Mark all as read" accessibilityRole="button">
-                  <Text style={styles.markAll}>Mark all read</Text>
-                </Pressable>
-              ) : undefined
-            }
-          />
-        }
-        renderItem={({ item }) => (
-          <Pressable onPress={() => handlePress(item)} style={({ pressed }) => [pressed && styles.pressed]}>
-            <GlassSurface style={styles.card} isInteractive tintColor={item.isRead ? TINT_GLASS : TINT_ORANGE}>
-              <View style={styles.row}>
-                {!item.isRead ? <View style={styles.dot} /> : <IconCircleCheck size={16} color={FAINT} style={{ marginTop: 2 }} />}
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.notifTitle}>{item.title}</Text>
-                  <Text style={styles.notifMessage} numberOfLines={2}>
-                    {item.message}
-                  </Text>
+      <ResponsiveContainer maxWidth={680} style={{ flex: 1 }}>
+        <FlatList
+          data={items}
+          keyExtractor={(item) => item._id}
+          contentContainerStyle={[styles.list, { paddingTop: insets.top + 8 }]}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={ACCENT} colors={[ACCENT]} />}
+          ListHeaderComponent={
+            <ScreenHeader
+              title="Alerts"
+              showBack
+              right={
+                items.some((i) => !i.isRead) ? (
+                  <Pressable onPress={markAllRead} hitSlop={8} accessibilityLabel="Mark all as read" accessibilityRole="button">
+                    <Text style={styles.markAll}>Mark all read</Text>
+                  </Pressable>
+                ) : undefined
+              }
+            />
+          }
+          renderItem={({ item }) => (
+            <Pressable onPress={() => handlePress(item)} style={({ pressed }) => [pressed && styles.pressed]}>
+              <GlassSurface style={styles.card} isInteractive tintColor={item.isRead ? TINT_GLASS : TINT_ORANGE}>
+                <View style={styles.row}>
+                  {!item.isRead ? <View style={styles.dot} /> : <IconCircleCheck size={16} color={FAINT} style={{ marginTop: 2 }} />}
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.notifTitle}>{item.title}</Text>
+                    <Text style={styles.notifMessage} numberOfLines={2}>
+                      {item.message}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            </GlassSurface>
-          </Pressable>
-        )}
-        ItemSeparatorComponent={() => <View style={{ height: spacing.sm }} />}
-        ListEmptyComponent={
-          <EmptyState icon={<IconBell size={44} color={FAINT} />} title="No notifications yet" description="We'll let you know when there's something new." />
-        }
-      />
+              </GlassSurface>
+            </Pressable>
+          )}
+          ItemSeparatorComponent={() => <View style={{ height: spacing.sm }} />}
+          ListEmptyComponent={
+            <EmptyState icon={<IconBell size={44} color={FAINT} />} title="No notifications yet" description="We'll let you know when there's something new." />
+          }
+        />
+      </ResponsiveContainer>
     </View>
   );
 }

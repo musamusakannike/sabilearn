@@ -18,6 +18,8 @@ import { authApi } from '@/lib/api';
 import { fontFamilies, spacing } from '@/theme';
 import OnboardingSpeechBubble from '@/components/auth/OnboardingSpeechBubble';
 import AuthHeader from '@/components/auth/AuthHeader';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
+import { useResponsive } from '@/hooks/useResponsive';
 import * as haptics from '@/lib/haptics';
 
 export default function ForgotPasswordScreen() {
@@ -60,104 +62,106 @@ export default function ForgotPasswordScreen() {
         <Text style={styles.binaryText}>1 0 0 1 0 1 1 0 0 1 1 0 1 0 1 0 0 1</Text>
       </View>
 
-      <AuthHeader fallbackRoute="/(auth)/login" />
+      <ResponsiveContainer maxWidth={520} paddingHorizontal={0} style={{ flex: 1, width: '100%' }}>
+        <AuthHeader fallbackRoute="/(auth)/login" />
 
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{ flex: 1 }}
-      >
-        <ScrollView
-          style={styles.scroll}
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          style={{ flex: 1 }}
         >
-          {/* Mascot Speech Bubble */}
-          <OnboardingSpeechBubble
-            text={
-              sent
-                ? 'Check your inbox! We sent instructions to reset your password.'
-                : 'Forgot your password? Enter your email and we’ll help you reset it.'
-            }
-          />
+          <ScrollView
+            style={styles.scroll}
+            contentContainerStyle={styles.scrollContent}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            {/* Mascot Speech Bubble */}
+            <OnboardingSpeechBubble
+              text={
+                sent
+                  ? 'Check your inbox! We sent instructions to reset your password.'
+                  : 'Forgot your password? Enter your email and we’ll help you reset it.'
+              }
+            />
 
-          {sent ? (
-            <View style={styles.formContainer}>
-              <View style={styles.successBox}>
-                <View style={styles.checkCircle}>
-                  <IconCheck size={20} color="#16A34A" strokeWidth={2.6} />
+            {sent ? (
+              <View style={styles.formContainer}>
+                <View style={styles.successBox}>
+                  <View style={styles.checkCircle}>
+                    <IconCheck size={20} color="#16A34A" strokeWidth={2.6} />
+                  </View>
+                  <View style={styles.successTextWrap}>
+                    <Text style={styles.successTitle}>Reset link dispatched</Text>
+                    <Text style={styles.successDescription}>
+                      If an account exists for <Text style={styles.boldEmail}>{email}</Text>, a reset
+                      email with recovery instructions is on its way.
+                    </Text>
+                  </View>
                 </View>
-                <View style={styles.successTextWrap}>
-                  <Text style={styles.successTitle}>Reset link dispatched</Text>
-                  <Text style={styles.successDescription}>
-                    If an account exists for <Text style={styles.boldEmail}>{email}</Text>, a reset
-                    email with recovery instructions is on its way.
-                  </Text>
-                </View>
-              </View>
 
-              <TouchableOpacity
-                activeOpacity={0.88}
-                onPress={handleReturnToLogin}
-                style={styles.primaryButton}
-              >
-                <Text style={styles.primaryButtonText}>Return to Sign In</Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={styles.formContainer}>
-              {/* Error Message */}
-              {!!error && (
-                <View style={styles.errorBox}>
-                  <IconAlertTriangle size={18} color="#DC2626" />
-                  <Text style={styles.errorText}>{error}</Text>
-                </View>
-              )}
-
-              <View style={styles.field}>
-                <Text style={styles.label}>Email address</Text>
-                <TextInput
-                  value={email}
-                  onChangeText={setEmail}
-                  onFocus={() => setIsFocused(true)}
-                  onBlur={() => setIsFocused(false)}
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                  autoComplete="email"
-                  placeholder="you@example.com"
-                  placeholderTextColor="#8E8E9F"
-                  style={[styles.input, isFocused && styles.inputFocused]}
-                />
-              </View>
-
-              {/* Primary Action Button */}
-              <TouchableOpacity
-                activeOpacity={0.88}
-                disabled={isLoading}
-                onPress={handleSubmit}
-                style={[styles.primaryButton, isLoading && styles.primaryButtonDisabled]}
-              >
-                {isLoading ? (
-                  <ActivityIndicator color="#0E0E1A" size="small" />
-                ) : (
-                  <Text style={styles.primaryButtonText}>Send Reset Link</Text>
-                )}
-              </TouchableOpacity>
-
-              {/* Footer Navigation */}
-              <View style={styles.footerRow}>
-                <Text style={styles.footerText}>Remembered your password? </Text>
-                <Pressable
+                <TouchableOpacity
+                  activeOpacity={0.88}
                   onPress={handleReturnToLogin}
-                  style={({ pressed }) => [pressed && styles.pressedOpacity]}
+                  style={styles.primaryButton}
                 >
-                  <Text style={styles.footerLink}>Sign in</Text>
-                </Pressable>
+                  <Text style={styles.primaryButtonText}>Return to Sign In</Text>
+                </TouchableOpacity>
               </View>
-            </View>
-          )}
-        </ScrollView>
-      </KeyboardAvoidingView>
+            ) : (
+              <View style={styles.formContainer}>
+                {/* Error Message */}
+                {!!error && (
+                  <View style={styles.errorBox}>
+                    <IconAlertTriangle size={18} color="#DC2626" />
+                    <Text style={styles.errorText}>{error}</Text>
+                  </View>
+                )}
+
+                <View style={styles.field}>
+                  <Text style={styles.label}>Email address</Text>
+                  <TextInput
+                    value={email}
+                    onChangeText={setEmail}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    autoComplete="email"
+                    placeholder="you@example.com"
+                    placeholderTextColor="#8E8E9F"
+                    style={[styles.input, isFocused && styles.inputFocused]}
+                  />
+                </View>
+
+                {/* Primary Action Button */}
+                <TouchableOpacity
+                  activeOpacity={0.88}
+                  disabled={isLoading}
+                  onPress={handleSubmit}
+                  style={[styles.primaryButton, isLoading && styles.primaryButtonDisabled]}
+                >
+                  {isLoading ? (
+                    <ActivityIndicator color="#0E0E1A" size="small" />
+                  ) : (
+                    <Text style={styles.primaryButtonText}>Send Reset Link</Text>
+                  )}
+                </TouchableOpacity>
+
+                {/* Footer Navigation */}
+                <View style={styles.footerRow}>
+                  <Text style={styles.footerText}>Remembered your password? </Text>
+                  <Pressable
+                    onPress={handleReturnToLogin}
+                    style={({ pressed }) => [pressed && styles.pressedOpacity]}
+                  >
+                    <Text style={styles.footerLink}>Sign in</Text>
+                  </Pressable>
+                </View>
+              </View>
+            )}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </ResponsiveContainer>
     </SafeAreaView>
   );
 }

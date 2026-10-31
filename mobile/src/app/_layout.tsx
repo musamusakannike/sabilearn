@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Platform, View, useWindowDimensions } from 'react-native';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -35,30 +34,6 @@ const ONBOARDING_PRELOAD_ASSETS = [
   require('@/assets/images/onboarding/mascot_hero_classroom.webp'),
   require('@/assets/images/onboarding/tutor-mascot.webp'),
 ];
-
-const WEB_BREAKPOINT = 768;
-const WEB_MAX_WIDTH = 760;
-
-function WebShell({ children }: { children: React.ReactNode }) {
-  const { width } = useWindowDimensions();
-  if (Platform.OS !== 'web' || width < WEB_BREAKPOINT) return <>{children}</>;
-  return (
-    <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#EEF0F4' }}>
-      <View
-        style={{
-          flex: 1,
-          width: '100%',
-          maxWidth: WEB_MAX_WIDTH,
-          overflow: 'hidden',
-          backgroundColor: '#FFFFFF',
-          boxShadow: '0 0 40px rgba(0,0,0,0.08)',
-        }}
-      >
-        {children}
-      </View>
-    </View>
-  );
-}
 
 function AppContent() {
   const { colors } = useTheme();
@@ -186,7 +161,6 @@ function AppContent() {
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.bgApp }}>
       <SafeAreaProvider>
         <StatusBar style="dark" />
-        <WebShell>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(auth)" />
           <Stack.Screen name="(tabs)" />
@@ -198,7 +172,6 @@ function AppContent() {
           <Stack.Screen name="generate-course" />
           <Stack.Screen name="payment-callback" />
         </Stack>
-        </WebShell>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

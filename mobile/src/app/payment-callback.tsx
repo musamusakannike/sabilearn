@@ -10,6 +10,7 @@ import ScreenHeader from '@/components/common/ScreenHeader';
 import GlassSurface from '@/components/ui/GlassSurface';
 import Button from '@/components/ui/Button';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
 import { fontFamilies, spacing } from '@/theme';
 import { INK, MUTED, TINT_GLASS } from '@/theme/brand';
 
@@ -43,7 +44,8 @@ export default function PaymentCallbackScreen() {
   return (
     <View style={styles.container}>
       <ScreenBackdrop />
-      <View style={[styles.inner, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + spacing.lg }]}>
+      <ResponsiveContainer maxWidth={540} style={{ flex: 1 }}>
+        <View style={[styles.inner, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + spacing.lg }]}>
         <ScreenHeader title="Checkout" subtitle="Payment confirmation." showBack onBack={() => router.replace('/(tabs)/courses')} />
         <GlassSurface style={styles.card} tintColor={TINT_GLASS}>
           {isLoading ? (
@@ -85,6 +87,7 @@ export default function PaymentCallbackScreen() {
           </Button>
         </GlassSurface>
       </View>
+      </ResponsiveContainer>
     </View>
   );
 }

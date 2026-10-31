@@ -27,6 +27,7 @@ import Badge from '@/components/ui/Badge';
 import ProgressBar from '@/components/ui/ProgressBar';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import OfflineBanner from '@/components/common/OfflineBanner';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
 import { useTheme, fontFamilies, fontSizes, radii, spacing } from '@/theme';
 import * as haptics from '@/lib/haptics';
 
@@ -187,8 +188,9 @@ export default function MobileAIQuizAttemptScreen() {
     <SafeAreaView style={s.container} edges={['top']}>
       <OfflineBanner />
 
-      {/* Top Header */}
-      <View style={s.topBar}>
+      <ResponsiveContainer maxWidth={760} style={{ flex: 1 }}>
+        {/* Top Header */}
+        <View style={s.topBar}>
         <Pressable
           onPress={() => {
             haptics.light();
@@ -358,6 +360,7 @@ export default function MobileAIQuizAttemptScreen() {
           })}
         </ScrollView>
       )}
+      </ResponsiveContainer>
     </SafeAreaView>
   );
 }

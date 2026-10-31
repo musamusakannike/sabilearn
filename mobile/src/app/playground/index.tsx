@@ -22,6 +22,8 @@ import EmptyState from '@/components/ui/EmptyState';
 import Button from '@/components/ui/Button';
 import ProjectCard from '@/components/playground/ProjectCard';
 import CreateProjectSheet from '@/components/playground/CreateProjectSheet';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
+import { useResponsive } from '@/hooks/useResponsive';
 import { usePlaygroundStore } from '@/store/playground.store';
 import { PlaygroundKind, PlaygroundProject } from '@/lib/types';
 import * as haptics from '@/lib/haptics';
@@ -105,59 +107,69 @@ export default function PlaygroundLibraryScreen() {
     void syncNow();
   }, [syncNow]);
 
+  const { isTablet, isDesktop } = useResponsive();
+  const numColumns = isDesktop ? 3 : isTablet ? 2 : 1;
+
   return (
     <View style={styles.container}>
       <ScreenBackdrop />
-      <View style={[styles.headerPad, { paddingTop: insets.top + 8 }]}>
-        <ScreenHeader
-          title="Playground"
-          subtitle="Write and run HTML, CSS, JS and Python."
-          showBack
-          onBack={() => router.back()}
-          right={
-            <GlassIconButton onPress={() => setCreateOpen(true)} accessibilityLabel="New project">
-              <IconPlus size={22} color={INK} />
-            </GlassIconButton>
-          }
-        />
-        <View style={styles.search}>
-          <IconSearch size={18} color={MUTED} />
-          <TextInput
-            value={query}
-            onChangeText={setQuery}
-            placeholder="Search projects"
-            placeholderTextColor={MUTED}
-            style={styles.searchInput}
-          />
-        </View>
-      </View>
-
-      <FlatList
-        data={filtered}
-        keyExtractor={(item) => item.localId}
-        contentContainerStyle={styles.list}
-        refreshControl={<RefreshControl refreshing={syncing} onRefresh={onRefresh} />}
-        ItemSeparatorComponent={() => <View style={{ height: spacing.sm }} />}
-        ListEmptyComponent={
-          <EmptyState
-            icon={<IconCode size={36} color={MUTED} />}
-            title="No projects yet"
-            description="Create a web page or a Python file and it will save on this device and your account."
-            action={
-              <Button onPress={() => setCreateOpen(true)} style={{ marginTop: spacing.md }}>
-                Create your first project
-              </Button>
+      <ResponsiveContainer maxWidth={1100} paddingHorizontal={0} style={{ flex: 1, width: '100%' }}>
+        <View style={[styles.headerPad, { paddingTop: insets.top + 8 }]}>
+          <ScreenHeader
+            title="Playground"
+            subtitle="Write and run HTML, CSS, JS and Python."
+            showBack
+            onBack={() => router.back()}
+            right={
+              <GlassIconButton onPress={() => setCreateOpen(true)} accessibilityLabel="New project">
+                <IconPlus size={22} color={INK} />
+              </GlassIconButton>
             }
           />
-        }
-        renderItem={({ item }) => (
-          <ProjectCard
-            project={item}
-            onPress={() => router.push(`/playground/${item.localId}`)}
-            onMenu={() => openMenu(item)}
-          />
-        )}
-      />
+          <View style={styles.search}>
+            <IconSearch size={18} color={MUTED} />
+            <TextInput
+              value={query}
+              onChangeText={setQuery}
+              placeholder="Search projects"
+              placeholderTextColor={MUTED}
+              style={styles.searchInput}
+            />
+          </View>
+        </View>
+
+        <FlatList
+          key={`playground-${numColumns}`}
+          data={filtered}
+          numColumns={numColumns}
+          columnWrapperStyle={numColumns > 1 ? styles.columnWrapper : undefined}
+          keyExtractor={(item) => item.localId}
+          contentContainerStyle={styles.list}
+          refreshControl={<RefreshControl refreshing={syncing} onRefresh={onRefresh} />}
+          ItemSeparatorComponent={() => <View style={{ height: spacing.sm }} />}
+          ListEmptyComponent={
+            <EmptyState
+              icon={<IconCode size={36} color={MUTED} />}
+              title="No projects yet"
+              description="Create a web page or a Python file and it will save on this device and your account."
+              action={
+                <Button onPress={() => setCreateOpen(true)} style={{ marginTop: spacing.md }}>
+                  Create your first project
+                </Button>
+              }
+            />
+          }
+          renderItem={({ item }) => (
+            <View style={[styles.cardItem, numColumns > 1 && styles.cardItemGrid]}>
+              <ProjectCard
+                project={item}
+                onPress={() => router.push(`/playground/${item.localId}`)}
+                onMenu={() => openMenu(item)}
+              />
+            </View>
+          )}
+        />
+      </ResponsiveContainer>
 
       <CreateProjectSheet visible={createOpen} onClose={() => setCreateOpen(false)} onCreate={onCreate} />
 
@@ -206,6 +218,15 @@ const styles = StyleSheet.create({
   },
   searchInput: { flex: 1, fontFamily: fontFamilies.sans, fontSize: fontSizes.base, color: INK, paddingVertical: 6 },
   list: { paddingHorizontal: spacing.lg, paddingBottom: spacing['3xl'] },
+  columnWrapper: {
+    gap: spacing.md,
+  },
+  cardItem: {
+    width: '100%',
+  },
+  cardItemGrid: {
+    flex: 1,
+  },
   modalBg: {
     flex: 1,
     backgroundColor: 'rgba(14,14,26,0.4)',
@@ -217,6 +238,9 @@ const styles = StyleSheet.create({
     borderRadius: radii.lg,
     padding: spacing.lg,
     gap: spacing.md,
+    maxWidth: 480,
+    width: '100%',
+    alignSelf: 'center',
   },
   renameTitle: { fontFamily: fontFamilies.sansSemiBold, fontSize: fontSizes.lg, color: INK },
   renameInput: {

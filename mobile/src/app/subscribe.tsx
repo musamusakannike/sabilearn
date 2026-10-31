@@ -10,6 +10,7 @@ import { usePaystackPurchase } from '@/hooks/usePaystackPurchase';
 import { useAppReview } from '@/hooks/useAppReview';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import ScreenHeader from '@/components/common/ScreenHeader';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
 import GlassSurface from '@/components/ui/GlassSurface';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
@@ -101,101 +102,103 @@ export default function SubscribeScreen() {
   return (
     <View style={styles.container}>
       <ScreenBackdrop />
-      <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + spacing['4xl'] }]}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={ACCENT} />}
-        showsVerticalScrollIndicator={false}
-      >
-        <ScreenHeader
-          title="All-access"
-          subtitle={
-            isPaystack
-              ? 'Unlock every premium course with Paystack.'
-              : 'Unlock every premium course with an App Store subscription.'
-          }
-          showBack
-        />
+      <ResponsiveContainer maxWidth={640} style={{ flex: 1 }}>
+        <ScrollView
+          contentContainerStyle={[styles.scroll, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + spacing['4xl'] }]}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={ACCENT} />}
+          showsVerticalScrollIndicator={false}
+        >
+          <ScreenHeader
+            title="All-access"
+            subtitle={
+              isPaystack
+                ? 'Unlock every premium course with Paystack.'
+                : 'Unlock every premium course with an App Store subscription.'
+            }
+            showBack
+          />
 
-        {isActive && (
-          <GlassSurface style={styles.card} tintColor={TINT_ORANGE}>
-            <Badge variant="success">Active</Badge>
-            <Text style={styles.body}>
-              You have all-access.
-              {sub?.currentPeriodEnd ? (
-                <>
-                  {' '}
-                  {isWebBilled || isPaystack ? 'Access ends' : 'Renews'} on {new Date(sub.currentPeriodEnd).toLocaleDateString()}.
-                </>
+          {isActive && (
+            <GlassSurface style={styles.card} tintColor={TINT_ORANGE}>
+              <Badge variant="success">Active</Badge>
+              <Text style={styles.body}>
+                You have all-access.
+                {sub?.currentPeriodEnd ? (
+                  <>
+                    {' '}
+                    {isWebBilled || isPaystack ? 'Access ends' : 'Renews'} on {new Date(sub.currentPeriodEnd).toLocaleDateString()}.
+                  </>
+                ) : null}
+              </Text>
+              {isWebBilled && isAppleIap ? (
+                <Text style={styles.hint}>
+                  This plan was started on the website. Renew there, or subscribe in the app with Apple when it ends.
+                </Text>
               ) : null}
-            </Text>
-            {isWebBilled && isAppleIap ? (
+              {isIap && isAppleIap ? (
+                <Button fullWidth variant="secondary" onPress={openManage}>
+                  Manage subscription
+                </Button>
+              ) : null}
+            </GlassSurface>
+          )}
+
+          {(!isActive || isWebBilled) && (
+            <GlassSurface style={styles.card} tintColor={TINT_GLASS}>
+              <View style={styles.priceRow}>
+                <Text style={styles.price}>{loadingOffer ? '…' : priceString || 'Premium'}</Text>
+                {priceString ? <Text style={styles.per}>/month</Text> : null}
+              </View>
+              {sub?.status === 'expired' && (
+                <Text style={styles.warn}>Your subscription expired — subscribe again to restore access.</Text>
+              )}
+              {sub?.status === 'past_due' && (
+                <Text style={styles.warn}>There is a billing issue — update your payment method and try again.</Text>
+              )}
+
+              {perks.map((perk) => (
+                <View key={perk} style={styles.perkRow}>
+                  <IconCheck size={16} color="#1F9D55" />
+                  <Text style={styles.perk}>{perk}</Text>
+                </View>
+              ))}
+              <View style={styles.perkRow}>
+                <IconSparkles size={16} color="#1F9D55" />
+                <Text style={styles.perk}>
+                  {isPaystack
+                    ? 'Payment is processed by Paystack. Access lasts 30 days per payment.'
+                    : 'Payment is processed by Apple. You can cancel anytime.'}
+                </Text>
+              </View>
+
+              {isWeb ? (
+                <View style={{ gap: spacing.sm }}>
+                  <Button fullWidth loading={busy} onPress={() => void onPurchase(false)}>
+                    Subscribe with bank transfer / USSD{priceString ? ` · ${priceString}` : ''}
+                  </Button>
+                  <Button fullWidth variant="secondary" loading={busy} onPress={() => void onPurchase(true)}>
+                    Subscribe with debit card (auto-renews)
+                  </Button>
+                </View>
+              ) : (
+                <Button fullWidth loading={busy} disabled={loadingOffer} onPress={() => void onPurchase(false)}>
+                  Subscribe{priceString ? ` · ${priceString}` : ''}
+                </Button>
+              )}
+              {isAppleIap && (
+                <Button fullWidth variant="secondary" loading={busy} onPress={() => void onRestore()}>
+                  Restore purchases
+                </Button>
+              )}
               <Text style={styles.hint}>
-                This plan was started on the website. Renew there, or subscribe in the app with Apple when it ends.
-              </Text>
-            ) : null}
-            {isIap && isAppleIap ? (
-              <Button fullWidth variant="secondary" onPress={openManage}>
-                Manage subscription
-              </Button>
-            ) : null}
-          </GlassSurface>
-        )}
-
-        {(!isActive || isWebBilled) && (
-          <GlassSurface style={styles.card} tintColor={TINT_GLASS}>
-            <View style={styles.priceRow}>
-              <Text style={styles.price}>{loadingOffer ? '…' : priceString || 'Premium'}</Text>
-              {priceString ? <Text style={styles.per}>/month</Text> : null}
-            </View>
-            {sub?.status === 'expired' && (
-              <Text style={styles.warn}>Your subscription expired — subscribe again to restore access.</Text>
-            )}
-            {sub?.status === 'past_due' && (
-              <Text style={styles.warn}>There is a billing issue — update your payment method and try again.</Text>
-            )}
-
-            {perks.map((perk) => (
-              <View key={perk} style={styles.perkRow}>
-                <IconCheck size={16} color="#1F9D55" />
-                <Text style={styles.perk}>{perk}</Text>
-              </View>
-            ))}
-            <View style={styles.perkRow}>
-              <IconSparkles size={16} color="#1F9D55" />
-              <Text style={styles.perk}>
                 {isPaystack
-                  ? 'Payment is processed by Paystack. Access lasts 30 days per payment.'
-                  : 'Payment is processed by Apple. You can cancel anytime.'}
+                  ? 'Individual courses can also be bought directly on each course page.'
+                  : 'Subscriptions auto-renew unless cancelled at least 24 hours before the period ends. Individual courses can still be bought on sabilearn.online.'}
               </Text>
-            </View>
-
-            {isWeb ? (
-              <View style={{ gap: spacing.sm }}>
-                <Button fullWidth loading={busy} onPress={() => void onPurchase(false)}>
-                  Subscribe with bank transfer / USSD{priceString ? ` · ${priceString}` : ''}
-                </Button>
-                <Button fullWidth variant="secondary" loading={busy} onPress={() => void onPurchase(true)}>
-                  Subscribe with debit card (auto-renews)
-                </Button>
-              </View>
-            ) : (
-              <Button fullWidth loading={busy} disabled={loadingOffer} onPress={() => void onPurchase(false)}>
-                Subscribe{priceString ? ` · ${priceString}` : ''}
-              </Button>
-            )}
-            {isAppleIap && (
-              <Button fullWidth variant="secondary" loading={busy} onPress={() => void onRestore()}>
-                Restore purchases
-              </Button>
-            )}
-            <Text style={styles.hint}>
-              {isPaystack
-                ? 'Individual courses can also be bought directly on each course page.'
-                : 'Subscriptions auto-renew unless cancelled at least 24 hours before the period ends. Individual courses can still be bought on sabilearn.online.'}
-            </Text>
-          </GlassSurface>
-        )}
-      </ScrollView>
+            </GlassSurface>
+          )}
+        </ScrollView>
+      </ResponsiveContainer>
     </View>
   );
 }

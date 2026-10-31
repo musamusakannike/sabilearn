@@ -16,6 +16,7 @@ import { ACCENT, INK, MUTED, TINT_GLASS } from '@/theme/brand';
 import GlassSurface from '@/components/ui/GlassSurface';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import ScreenHeader from '@/components/common/ScreenHeader';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
 import * as haptics from '@/lib/haptics';
 
 export default function SettingsScreen() {
@@ -203,11 +204,12 @@ export default function SettingsScreen() {
   return (
     <View collapsable={false} style={styles.container}>
       <ScreenBackdrop />
-      <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingTop: insets.top + 8 }]}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-      >
+      <ResponsiveContainer maxWidth={680} style={{ flex: 1 }}>
+        <ScrollView
+          contentContainerStyle={[styles.scroll, { paddingTop: insets.top + 8 }]}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
         <ScreenHeader title="Settings" subtitle="Profile, alerts, and account." showBack />
 
         <Pressable onPress={pickAvatar} disabled={isUploadingAvatar} style={styles.avatarWrap}>
@@ -309,6 +311,7 @@ export default function SettingsScreen() {
           <Text style={styles.deleteBtnText}>Delete account</Text>
         </Pressable>
       </ScrollView>
+      </ResponsiveContainer>
     </View>
   );
 }

@@ -8,6 +8,7 @@ import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import ScreenHeader from '@/components/common/ScreenHeader';
 import GlassIconButton from '@/components/common/GlassIconButton';
 import GlassSurface from '@/components/ui/GlassSurface';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
 
 export default function TermsOfServiceScreen() {
   const insets = useSafeAreaInsets();
@@ -18,7 +19,8 @@ export default function TermsOfServiceScreen() {
   return (
     <View style={styles.container}>
       <ScreenBackdrop />
-      <ScrollView contentContainerStyle={[styles.scroll, { paddingTop: insets.top + 8 }]} showsVerticalScrollIndicator={false}>
+      <ResponsiveContainer maxWidth={760} style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={[styles.scroll, { paddingTop: insets.top + 8 }]} showsVerticalScrollIndicator={false}>
         <ScreenHeader
           title="Terms"
           subtitle="The agreement that covers using SabiLearn."
@@ -49,6 +51,7 @@ export default function TermsOfServiceScreen() {
           </Text>
         </GlassSurface>
       </ScrollView>
+      </ResponsiveContainer>
     </View>
   );
 }

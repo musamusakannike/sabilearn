@@ -39,6 +39,8 @@ import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import GlassSurface from '@/components/ui/GlassSurface';
 import GlassIconButton from '@/components/common/GlassIconButton';
 import CoursePaywall from '@/components/payments/CoursePaywall';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
+import { useResponsive } from '@/hooks/useResponsive';
 import { useAppReview } from '@/hooks/useAppReview';
 import * as haptics from '@/lib/haptics';
 
@@ -234,6 +236,8 @@ export default function CourseDetailScreen() {
     ),
   });
 
+  const { isTablet, isDesktop } = useResponsive();
+
   return (
     <View collapsable={false} style={s.container}>
       <ScreenBackdrop />
@@ -241,17 +245,20 @@ export default function CourseDetailScreen() {
         contentContainerStyle={[s.scroll, { paddingTop: insets.top + 8 }]}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={ACCENT} colors={[ACCENT]} />}
       >
-        <View style={s.navRow}>
-          <GlassIconButton onPress={() => router.back()} accessibilityLabel="Back to courses">
-            <IconArrowLeft size={22} color={INK} />
-          </GlassIconButton>
-          <GlassIconButton onPress={handleShare} accessibilityLabel="Share course">
-            <IconShare size={18} color={INK} />
-          </GlassIconButton>
-        </View>
+        <ResponsiveContainer maxWidth={1100} paddingHorizontal={0} style={{ width: '100%' }}>
+          <View style={s.navRow}>
+            <GlassIconButton onPress={() => router.back()} accessibilityLabel="Back to courses">
+              <IconArrowLeft size={22} color={INK} />
+            </GlassIconButton>
+            <GlassIconButton onPress={handleShare} accessibilityLabel="Share course">
+              <IconShare size={18} color={INK} />
+            </GlassIconButton>
+          </View>
 
-        {/* Hero stays a real panel — it's the cover, not a content card */}
-        <GlassSurface style={s.heroCard} tintColor={TINT_GLASS}>
+          <View style={[s.contentGrid, isDesktop && s.contentGridDesktop]}>
+            <View style={[s.overviewColumn, isDesktop && s.overviewColumnDesktop]}>
+              {/* Hero stays a real panel — it's the cover, not a content card */}
+              <GlassSurface style={s.heroCard} tintColor={TINT_GLASS}>
           {course.banner ? (
             <Image source={{ uri: course.banner }} style={s.banner} resizeMode="cover" />
           ) : null}
@@ -360,10 +367,12 @@ export default function CourseDetailScreen() {
             </View>
           ))}
         </View>
+      </View>
 
-        {/* Course Structure (Chapters & Topics) */}
-        <View style={s.structureSection}>
-          <Text style={s.sectionTitle}>Course Structure</Text>
+        <View style={[s.structureColumn, isDesktop && s.structureColumnDesktop]}>
+          {/* Course Structure (Chapters & Topics) */}
+          <View style={s.structureSection}>
+            <Text style={s.sectionTitle}>Course Structure</Text>
 
           {chapters.length === 0 ? (
             <EmptyState
@@ -603,7 +612,10 @@ export default function CourseDetailScreen() {
               })}
             </View>
           )}
-        </View>
+              </View>
+            </View>
+          </View>
+        </ResponsiveContainer>
       </ScrollView>
     </View>
   );
@@ -613,6 +625,26 @@ function makeStyles(c: any) {
   return StyleSheet.create({
     container: { flex: 1, backgroundColor: PAGE },
     scroll: { paddingHorizontal: spacing.lg, paddingBottom: spacing['3xl'], gap: spacing.md },
+    contentGrid: {
+      gap: spacing.md,
+    },
+    contentGridDesktop: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: spacing.xl,
+    },
+    overviewColumn: {
+      gap: spacing.md,
+    },
+    overviewColumnDesktop: {
+      width: 440,
+    },
+    structureColumn: {
+      flex: 1,
+    },
+    structureColumnDesktop: {
+      flex: 1,
+    },
     navRow: {
       flexDirection: 'row',
       alignItems: 'center',

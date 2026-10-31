@@ -19,6 +19,8 @@ import { fontFamilies, spacing } from '@/theme';
 import SocialAuthButtons from '@/components/auth/SocialAuthButtons';
 import OnboardingSpeechBubble from '@/components/auth/OnboardingSpeechBubble';
 import AuthHeader from '@/components/auth/AuthHeader';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
+import { useResponsive } from '@/hooks/useResponsive';
 import * as haptics from '@/lib/haptics';
 
 export default function LoginScreen() {
@@ -85,134 +87,136 @@ export default function LoginScreen() {
         <Text style={styles.binaryText}>1 0 0 1 0 1 1 0 0 1 1 0 1 0 1 0 0 1</Text>
       </View>
 
-      <AuthHeader fallbackRoute="/(auth)/onboarding" />
+      <ResponsiveContainer maxWidth={520} paddingHorizontal={0} style={{ flex: 1, width: '100%' }}>
+        <AuthHeader fallbackRoute="/(auth)/onboarding" />
 
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{ flex: 1 }}
-      >
-        <ScrollView
-          style={styles.scroll}
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          style={{ flex: 1 }}
         >
-          {/* Mascot Speech Bubble */}
-          <OnboardingSpeechBubble text="Welcome back! Ready to continue your streak?" />
+          <ScrollView
+            style={styles.scroll}
+            contentContainerStyle={styles.scrollContent}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            {/* Mascot Speech Bubble */}
+            <OnboardingSpeechBubble text="Welcome back! Ready to continue your streak?" />
 
-          {/* Error Message Box */}
-          {!!error && (
-            <View style={styles.errorBox}>
-              <IconAlertTriangle size={18} color="#DC2626" />
-              <Text style={styles.errorText}>{error}</Text>
-            </View>
-          )}
-
-          {/* Form Fields */}
-          <View style={styles.formContainer}>
-            <View style={styles.field}>
-              <Text style={styles.label}>Email</Text>
-              <TextInput
-                value={email}
-                onChangeText={setEmail}
-                onFocus={() => setFocusedField('email')}
-                onBlur={() => setFocusedField(null)}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                autoComplete="email"
-                placeholder="you@example.com"
-                placeholderTextColor="#8E8E9F"
-                style={[
-                  styles.input,
-                  focusedField === 'email' && styles.inputFocused,
-                ]}
-              />
-            </View>
-
-            <View style={styles.field}>
-              <Text style={styles.label}>Password</Text>
-              <View
-                style={[
-                  styles.passwordWrap,
-                  focusedField === 'password' && styles.inputFocused,
-                ]}
-              >
-                <TextInput
-                  value={password}
-                  onChangeText={setPassword}
-                  onFocus={() => setFocusedField('password')}
-                  onBlur={() => setFocusedField(null)}
-                  secureTextEntry={!showPassword}
-                  placeholder="••••••••"
-                  placeholderTextColor="#8E8E9F"
-                  style={styles.passwordInput}
-                />
-                <Pressable
-                  onPress={() => setShowPassword((s) => !s)}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                  style={styles.eyeButton}
-                >
-                  {showPassword ? (
-                    <IconEyeOff size={20} color="#6B6B80" />
-                  ) : (
-                    <IconEye size={20} color="#6B6B80" />
-                  )}
-                </Pressable>
+            {/* Error Message Box */}
+            {!!error && (
+              <View style={styles.errorBox}>
+                <IconAlertTriangle size={18} color="#DC2626" />
+                <Text style={styles.errorText}>{error}</Text>
               </View>
-            </View>
+            )}
 
-            <Link href="/(auth)/forgot-password" asChild>
-              <Pressable
-                onPress={() => haptics.light()}
-                style={({ pressed }) => [styles.forgotLinkWrap, pressed && styles.pressedOpacity]}
-              >
-                <Text style={styles.forgotLink}>Forgot password?</Text>
-              </Pressable>
-            </Link>
+            {/* Form Fields */}
+            <View style={styles.formContainer}>
+              <View style={styles.field}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                  value={email}
+                  onChangeText={setEmail}
+                  onFocus={() => setFocusedField('email')}
+                  onBlur={() => setFocusedField(null)}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  placeholderTextColor="#8E8E9F"
+                  style={[
+                    styles.input,
+                    focusedField === 'email' && styles.inputFocused,
+                  ]}
+                />
+              </View>
 
-            {/* Primary Action Button */}
-            <TouchableOpacity
-              activeOpacity={0.88}
-              disabled={isLoading}
-              onPress={handleLogin}
-              style={[styles.primaryButton, isLoading && styles.primaryButtonDisabled]}
-            >
-              {isLoading ? (
-                <ActivityIndicator color="#0E0E1A" size="small" />
-              ) : (
-                <Text style={styles.primaryButtonText}>Sign In</Text>
-              )}
-            </TouchableOpacity>
+              <View style={styles.field}>
+                <Text style={styles.label}>Password</Text>
+                <View
+                  style={[
+                    styles.passwordWrap,
+                    focusedField === 'password' && styles.inputFocused,
+                  ]}
+                >
+                  <TextInput
+                    value={password}
+                    onChangeText={setPassword}
+                    onFocus={() => setFocusedField('password')}
+                    onBlur={() => setFocusedField(null)}
+                    secureTextEntry={!showPassword}
+                    placeholder="••••••••"
+                    placeholderTextColor="#8E8E9F"
+                    style={styles.passwordInput}
+                  />
+                  <Pressable
+                    onPress={() => setShowPassword((s) => !s)}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    style={styles.eyeButton}
+                  >
+                    {showPassword ? (
+                      <IconEyeOff size={20} color="#6B6B80" />
+                    ) : (
+                      <IconEye size={20} color="#6B6B80" />
+                    )}
+                  </Pressable>
+                </View>
+              </View>
 
-            {/* Divider */}
-            <View style={styles.dividerRow}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>or</Text>
-              <View style={styles.dividerLine} />
-            </View>
-
-            {/* Social Authentication */}
-            <SocialAuthButtons
-              onGoogle={handleGoogle}
-              onApple={handleApple}
-              loading={isLoading}
-            />
-
-            {/* Footer Navigation */}
-            <View style={styles.footerRow}>
-              <Text style={styles.footerText}>Don&apos;t have an account? </Text>
-              <Link href="/(auth)/register" asChild>
+              <Link href="/(auth)/forgot-password" asChild>
                 <Pressable
                   onPress={() => haptics.light()}
-                  style={({ pressed }) => [pressed && styles.pressedOpacity]}
+                  style={({ pressed }) => [styles.forgotLinkWrap, pressed && styles.pressedOpacity]}
                 >
-                  <Text style={styles.footerLink}>Sign up</Text>
+                  <Text style={styles.forgotLink}>Forgot password?</Text>
                 </Pressable>
               </Link>
+
+              {/* Primary Action Button */}
+              <TouchableOpacity
+                activeOpacity={0.88}
+                disabled={isLoading}
+                onPress={handleLogin}
+                style={[styles.primaryButton, isLoading && styles.primaryButtonDisabled]}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color="#0E0E1A" size="small" />
+                ) : (
+                  <Text style={styles.primaryButtonText}>Sign In</Text>
+                )}
+              </TouchableOpacity>
+
+              {/* Divider */}
+              <View style={styles.dividerRow}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerText}>or</Text>
+                <View style={styles.dividerLine} />
+              </View>
+
+              {/* Social Authentication */}
+              <SocialAuthButtons
+                onGoogle={handleGoogle}
+                onApple={handleApple}
+                loading={isLoading}
+              />
+
+              {/* Footer Navigation */}
+              <View style={styles.footerRow}>
+                <Text style={styles.footerText}>Don&apos;t have an account? </Text>
+                <Link href="/(auth)/register" asChild>
+                  <Pressable
+                    onPress={() => haptics.light()}
+                    style={({ pressed }) => [pressed && styles.pressedOpacity]}
+                  >
+                    <Text style={styles.footerLink}>Sign up</Text>
+                  </Pressable>
+                </Link>
+              </View>
             </View>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </ResponsiveContainer>
     </SafeAreaView>
   );
 }

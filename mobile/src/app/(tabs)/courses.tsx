@@ -21,6 +21,8 @@ import NativeSegmentedControl from "@/components/ui/NativeSegmentedControl";
 import Button from "@/components/ui/Button";
 import ScreenBackdrop from "@/components/common/ScreenBackdrop";
 import ScreenHeader from "@/components/common/ScreenHeader";
+import { ResponsiveContainer } from "@/components/ResponsiveContainer";
+import { useResponsive } from "@/hooks/useResponsive";
 import { fontFamilies, spacing } from "@/theme";
 import { ACCENT, FAINT, INK, MUTED, TINT_GLASS } from "@/theme/brand";
 import * as haptics from "@/lib/haptics";
@@ -80,90 +82,100 @@ export default function CoursesScreen() {
     return c.title.toLowerCase().includes(query.toLowerCase());
   });
 
+  const { isTablet, isDesktop } = useResponsive();
+  const numColumns = isDesktop ? 3 : isTablet ? 2 : 1;
+
   if (isLoading) return <LoadingSpinner />;
 
   return (
     <View collapsable={false} style={styles.container}>
       <ScreenBackdrop />
-      <FlatList
-        data={filtered}
-        keyExtractor={(item) => item._id}
-        contentContainerStyle={[styles.list, { paddingTop: insets.top + 8 }]}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={ACCENT}
-            colors={[ACCENT]}
-          />
-        }
-        ListHeaderComponent={
-          <View style={styles.headerBlock}>
-            <ScreenHeader
-              title="Courses"
-              subtitle="Pick a track and start building."
+      <ResponsiveContainer maxWidth={1200} paddingHorizontal={0} style={{ flex: 1, width: "100%" }}>
+        <FlatList
+          key={`courses-${numColumns}`}
+          data={filtered}
+          numColumns={numColumns}
+          columnWrapperStyle={numColumns > 1 ? styles.columnWrapper : undefined}
+          keyExtractor={(item) => item._id}
+          contentContainerStyle={[styles.list, { paddingTop: insets.top + 8 }]}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={ACCENT}
+              colors={[ACCENT]}
             />
-            <GlassSurface
-              style={styles.searchBar}
-              tintColor={TINT_GLASS}
-              glassEffectStyle="clear"
-            >
-              <IconSearch size={18} color={MUTED} />
-              <TextInput
-                value={query}
-                onChangeText={setQuery}
-                placeholder="Search courses"
-                placeholderTextColor={FAINT}
-                style={styles.searchInput}
+          }
+          ListHeaderComponent={
+            <View style={styles.headerBlock}>
+              <ScreenHeader
+                title="Courses"
+                subtitle="Pick a track and start building."
               />
-            </GlassSurface>
-            {!inReview ? (
-              <NativeSegmentedControl
-                values={["Catalog", "Yours"]}
-                selectedIndex={segment}
-                onChange={setSegment}
+              <GlassSurface
+                style={styles.searchBar}
+                tintColor={TINT_GLASS}
+                glassEffectStyle="clear"
+              >
+                <IconSearch size={18} color={MUTED} />
+                <TextInput
+                  value={query}
+                  onChangeText={setQuery}
+                  placeholder="Search courses"
+                  placeholderTextColor={FAINT}
+                  style={styles.searchInput}
+                />
+              </GlassSurface>
+              {!inReview ? (
+                <NativeSegmentedControl
+                  values={["Catalog", "Yours"]}
+                  selectedIndex={segment}
+                  onChange={setSegment}
+                />
+              ) : null}
+            </View>
+          }
+          renderItem={({ item }) => (
+            <View style={[styles.cardItem, numColumns > 1 && styles.cardItemGrid]}>
+              <CourseCard
+                course={item}
+                onPress={() => {
+                  haptics.light();
+                  router.push(`/course/${item._id}` as any);
+                }}
               />
-            ) : null}
-          </View>
-        }
-        renderItem={({ item }) => (
-          <CourseCard
-            course={item}
-            onPress={() => {
-              haptics.light();
-              router.push(`/course/${item._id}` as any);
-            }}
-          />
-        )}
-        ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
-        ListEmptyComponent={
-          segment === 1 && !inReview ? (
-            <EmptyState
-              icon={<IconSparkles size={44} color={FAINT} />}
-              title="No generated courses yet"
-              description="Turn notes or a prompt into a full course."
-              action={
-                <Button
-                  variant="ai"
-                  onPress={() => {
-                    haptics.light();
-                    router.push("/generate-course" as any);
-                  }}
-                >
-                  Generate course
-                </Button>
-              }
-            />
-          ) : (
-            <EmptyState
-              icon={<IconBook size={44} color={FAINT} />}
-              title="No courses found"
-              description="Try a different search, or check back later."
-            />
-          )
-        }
-        ListFooterComponent={<View style={{ height: spacing["4xl"] }} />}
-      />
+            </View>
+          )}
+          ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
+          ListEmptyComponent={
+            segment === 1 && !inReview ? (
+              <EmptyState
+                icon={<IconSparkles size={44} color={FAINT} />}
+                title="No generated courses yet"
+                description="Turn notes or a prompt into a full course."
+                action={
+                  <Button
+                    variant="ai"
+                    onPress={() => {
+                      haptics.light();
+                      router.push("/generate-course" as any);
+                    }}
+                  >
+                    Generate course
+                  </Button>
+                }
+              />
+            ) : (
+              <EmptyState
+                icon={<IconBook size={44} color={FAINT} />}
+                title="No courses found"
+                description="Try a different search, or check back later."
+              />
+            )
+          }
+          ListFooterComponent={<View style={{ height: spacing["4xl"] }} />}
+        />
+      </ResponsiveContainer>
     </View>
   );
 }
@@ -187,4 +199,13 @@ const styles = StyleSheet.create({
     color: INK,
   },
   list: { paddingHorizontal: spacing.lg, paddingBottom: spacing["4xl"] },
+  columnWrapper: {
+    gap: spacing.md,
+  },
+  cardItem: {
+    width: "100%",
+  },
+  cardItemGrid: {
+    flex: 1,
+  },
 });

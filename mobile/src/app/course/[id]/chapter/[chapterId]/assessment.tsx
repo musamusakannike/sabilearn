@@ -31,6 +31,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import RichMathText from '@/components/ui/RichMathText';
 import EmptyState from '@/components/ui/EmptyState';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
 import { fontFamilies, fontSizes, radii, spacing, shadows } from '@/theme';
 import { ACCENT, INK, PAGE } from '@/theme/brand';
 import * as haptics from '@/lib/haptics';
@@ -325,6 +326,7 @@ export default function ChapterAssessmentScreen() {
     return (
       <SafeAreaView style={s.container}>
         <ScreenBackdrop />
+        <ResponsiveContainer maxWidth={760} paddingHorizontal={0} style={{ flex: 1, width: '100%' }}>
         {/* Top bar */}
         <View style={s.headerRow}>
           <View style={s.headerLeft}>
@@ -454,6 +456,7 @@ export default function ChapterAssessmentScreen() {
             );
           })}
         </ScrollView>
+        </ResponsiveContainer>
       </SafeAreaView>
     );
   }
@@ -467,10 +470,11 @@ export default function ChapterAssessmentScreen() {
   return (
     <SafeAreaView style={s.container}>
       <ScreenBackdrop />
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      >
+      <ResponsiveContainer maxWidth={760} paddingHorizontal={0} style={{ flex: 1, width: '100%' }}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
         {/* Top Header */}
         <View style={s.headerRow}>
           <View style={s.headerLeft}>
@@ -644,7 +648,8 @@ export default function ChapterAssessmentScreen() {
             </Pressable>
           )}
         </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ResponsiveContainer>
     </SafeAreaView>
   );
 }

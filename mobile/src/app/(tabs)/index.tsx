@@ -31,6 +31,8 @@ import { useAppReview } from '@/hooks/useAppReview';
 import OnboardingSpeechBubble from '@/components/auth/OnboardingSpeechBubble';
 import GlassSurface, { GlassCluster } from '@/components/ui/GlassSurface';
 import HomeBackdrop from '@/components/home/HomeBackdrop';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
+import { useResponsive } from '@/hooks/useResponsive';
 import { fontFamilies, fontSizes, spacing } from '@/theme';
 import * as haptics from '@/lib/haptics';
 
@@ -161,6 +163,8 @@ export default function DashboardHome() {
     },
   ];
 
+  const { isTablet, isDesktop } = useResponsive();
+
   return (
     <View collapsable={false} style={styles.container}>
       <HomeBackdrop />
@@ -172,231 +176,243 @@ export default function DashboardHome() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={ACCENT} colors={[ACCENT]} />
         }
       >
-        <OfflineBanner />
+        <ResponsiveContainer maxWidth={1200} paddingHorizontal={0} style={{ width: '100%' }}>
+          <OfflineBanner />
 
-        <View style={styles.header}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.kicker}>{greetingForHour(hour)}</Text>
-            <Text style={styles.title} numberOfLines={1}>
-              {firstName ? firstName : 'there'}
-            </Text>
-          </View>
-          <Pressable
-            onPress={() => {
-              haptics.light();
-              router.push('/notifications' as any);
-            }}
-            accessibilityLabel="Alerts"
-            accessibilityRole="button"
-          >
-            <GlassSurface style={styles.bellButton} glassEffectStyle="clear" isInteractive tintColor="rgba(255,255,255,0.45)">
-              <IconBell size={22} color={INK} />
-              {hasUnread && <View style={styles.unreadBadge} />}
-            </GlassSurface>
-          </Pressable>
-        </View>
-
-        <View style={styles.speechWrap}>
-          <OnboardingSpeechBubble text={speech} />
-        </View>
-
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.statsScrollView}
-          contentContainerStyle={styles.statsScrollContent}
-        >
-          <GlassCluster spacing={12} style={styles.statsRow}>
-            <GlassSurface style={styles.statChip} tintColor="rgba(255,138,30,0.18)" glassEffectStyle="clear">
-              <View style={[styles.statIcon, { backgroundColor: 'rgba(255,138,30,0.16)' }]}>
-                <IconFlame size={18} color={ACCENT} />
-              </View>
-              <View>
-                <Text style={styles.statValue}>{streak}</Text>
-                <Text style={styles.statLabel}>day streak</Text>
-              </View>
-            </GlassSurface>
-            <GlassSurface style={styles.statChip} tintColor="rgba(91,79,232,0.12)" glassEffectStyle="clear">
-              <View style={[styles.statIcon, { backgroundColor: 'rgba(91,79,232,0.12)' }]}>
-                <IconBolt size={18} color="#5B4FE8" />
-              </View>
-              <View>
-                <Text style={styles.statValue}>{xp}</Text>
-                <Text style={styles.statLabel}>XP earned</Text>
-              </View>
-            </GlassSurface>
-            <GlassSurface style={styles.statChip} tintColor="rgba(16,185,129,0.14)" glassEffectStyle="clear">
-              <View style={[styles.statIcon, { backgroundColor: 'rgba(16,185,129,0.14)' }]}>
-                <IconTarget size={18} color="#10B981" />
-              </View>
-              <View>
-                <Text style={styles.statValue}>{Math.round(accuracy)}%</Text>
-                <Text style={styles.statLabel}>avg accuracy</Text>
-              </View>
-            </GlassSurface>
-          </GlassCluster>
-        </ScrollView>
-
-        <NotInReview>
-          <Pressable
-            onPress={() => {
-              haptics.light();
-              router.push('/playground' as any);
-            }}
-            style={({ pressed }) => [pressed && styles.pressed]}
-          >
-            <GlassSurface
-              style={styles.playgroundCard}
-              tintColor="rgba(255,138,30,0.22)"
-              isInteractive
-              fallbackStyle={styles.playgroundFallback}
-            >
-              <View style={styles.playgroundIcon}>
-                <IconCode size={22} color={INK} />
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.cardTitle}>Code Playground</Text>
-                <Text style={styles.cardSubtitle}>Write and run HTML, CSS, JavaScript and Python</Text>
-              </View>
-              <View style={styles.openPill}>
-                <Text style={styles.openPillText}>Open</Text>
-              </View>
-            </GlassSurface>
-          </Pressable>
-        </NotInReview>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>AI tools</Text>
-          <View style={styles.aiGrid}>
-            {aiTools.map((tool) => (
-              <Pressable
-                key={tool.kind}
-                onPress={() => {
-                  haptics.light();
-                  if (tool.kind === 'quiz') {
-                    router.push('/ai-quiz' as any);
-                  } else if (tool.kind === 'generate-course') {
-                    router.push('/generate-course' as any);
-                  } else {
-                    setAiTool(tool.kind);
-                  }
-                }}
-                style={({ pressed }) => [styles.aiGridItem, pressed && styles.pressed]}
-              >
-                <GlassSurface style={styles.aiCard} tintColor={tool.tint} isInteractive>
-                  <View style={[styles.aiIconWell, { backgroundColor: tool.well }]}>{tool.icon}</View>
-                  <Text numberOfLines={1} style={styles.aiTitle}>
-                    {tool.title}
-                  </Text>
-                  <Text style={styles.aiDescription} numberOfLines={2}>
-                    {tool.description}
-                  </Text>
-                </GlassSurface>
-              </Pressable>
-            ))}
-          </View>
-        </View>
-        
-        {continueStudying.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Continue studying</Text>
-            <View style={styles.cardList}>
-              {continueStudying.slice(0, 4).map((progress) => {
-                const course = typeof progress.course === 'object' ? (progress.course as Course) : null;
-                const topic = typeof progress.topic === 'object' ? (progress.topic as Topic) : null;
-                const flashcardTotal = progress.flashcardsTotal ?? 0;
-                const flashcardStudied = progress.flashcardsStudied ?? 0;
-                const flashcardProgress = flashcardTotal > 0 ? (flashcardStudied / flashcardTotal) * 100 : 0;
-                return (
-                  <Pressable
-                    key={progress._id}
-                    onPress={() => {
-                      haptics.light();
-                      if (topic && course) router.push(`/course/${course._id}/topic/${topic._id}` as any);
-                      else if (course) router.push(`/course/${course._id}` as any);
-                    }}
-                    style={({ pressed }) => [pressed && styles.pressed]}
-                  >
-                    <GlassSurface style={styles.studyCard} isInteractive tintColor="rgba(255,255,255,0.38)">
-                      <View style={styles.cardHeader}>
-                        <View style={{ flex: 1 }}>
-                          {course && (
-                            <Text style={styles.cardOverline} numberOfLines={1}>
-                              {course.title}
-                            </Text>
-                          )}
-                          <Text style={styles.cardTitle} numberOfLines={1}>
-                            {topic?.title || course?.title || 'Course'}
-                          </Text>
-                        </View>
-                        {course && <Badge variant={course.difficulty}>{course.difficulty}</Badge>}
-                      </View>
-                      <View style={styles.progressSection}>
-                        <View style={styles.progressHeader}>
-                          <Text style={styles.progressLabelText}>Flashcard progress</Text>
-                          <Text style={styles.progressLabelText}>{Math.round(flashcardProgress)}%</Text>
-                        </View>
-                        <ProgressBar value={flashcardProgress} color={ACCENT} trackColor="rgba(14,14,26,0.08)" />
-                      </View>
-                      <View style={styles.continueLink}>
-                        <Text style={styles.continueLinkText}>Continue</Text>
-                        <IconArrowRight size={16} color={ACCENT} />
-                      </View>
-                    </GlassSurface>
-                  </Pressable>
-                );
-              })}
+          <View style={styles.header}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.kicker}>{greetingForHour(hour)}</Text>
+              <Text style={styles.title} numberOfLines={1}>
+                {firstName ? firstName : 'there'}
+              </Text>
             </View>
-          </View>
-        )}
-
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitleFlush}>Popular courses</Text>
-            <Pressable onPress={() => { haptics.light(); router.push('/(tabs)/courses'); }}>
-              <Text style={styles.viewAllLink}>View all</Text>
+            <Pressable
+              onPress={() => {
+                haptics.light();
+                router.push('/notifications' as any);
+              }}
+              accessibilityLabel="Alerts"
+              accessibilityRole="button"
+            >
+              <GlassSurface style={styles.bellButton} glassEffectStyle="clear" isInteractive tintColor="rgba(255,255,255,0.45)">
+                <IconBell size={22} color={INK} />
+                {hasUnread && <View style={styles.unreadBadge} />}
+              </GlassSurface>
             </Pressable>
           </View>
-          {visiblePopular.length === 0 ? (
-            <EmptyState
-              icon={<IconBook size={44} color={FAINT} />}
-              title="No courses available yet"
-              description="Check back later for study content."
-            />
-          ) : (
-            <View style={styles.cardList}>
-              {visiblePopular.map((course) => (
+
+          <View style={[styles.speechWrap, isTablet && styles.speechWrapLarge]}>
+            <OnboardingSpeechBubble text={speech} />
+          </View>
+
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.statsScrollView}
+            contentContainerStyle={styles.statsScrollContent}
+          >
+            <GlassCluster spacing={12} style={styles.statsRow}>
+              <GlassSurface style={styles.statChip} tintColor="rgba(255,138,30,0.18)" glassEffectStyle="clear">
+                <View style={[styles.statIcon, { backgroundColor: 'rgba(255,138,30,0.16)' }]}>
+                  <IconFlame size={18} color={ACCENT} />
+                </View>
+                <View>
+                  <Text style={styles.statValue}>{streak}</Text>
+                  <Text style={styles.statLabel}>day streak</Text>
+                </View>
+              </GlassSurface>
+              <GlassSurface style={styles.statChip} tintColor="rgba(91,79,232,0.12)" glassEffectStyle="clear">
+                <View style={[styles.statIcon, { backgroundColor: 'rgba(91,79,232,0.12)' }]}>
+                  <IconBolt size={18} color="#5B4FE8" />
+                </View>
+                <View>
+                  <Text style={styles.statValue}>{xp}</Text>
+                  <Text style={styles.statLabel}>XP earned</Text>
+                </View>
+              </GlassSurface>
+              <GlassSurface style={styles.statChip} tintColor="rgba(16,185,129,0.14)" glassEffectStyle="clear">
+                <View style={[styles.statIcon, { backgroundColor: 'rgba(16,185,129,0.14)' }]}>
+                  <IconTarget size={18} color="#10B981" />
+                </View>
+                <View>
+                  <Text style={styles.statValue}>{Math.round(accuracy)}%</Text>
+                  <Text style={styles.statLabel}>avg accuracy</Text>
+                </View>
+              </GlassSurface>
+            </GlassCluster>
+          </ScrollView>
+
+          <NotInReview>
+            <Pressable
+              onPress={() => {
+                haptics.light();
+                router.push('/playground' as any);
+              }}
+              style={({ pressed }) => [pressed && styles.pressed]}
+            >
+              <GlassSurface
+                style={styles.playgroundCard}
+                tintColor="rgba(255,138,30,0.22)"
+                isInteractive
+                fallbackStyle={styles.playgroundFallback}
+              >
+                <View style={styles.playgroundIcon}>
+                  <IconCode size={22} color={INK} />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.cardTitle}>Code Playground</Text>
+                  <Text style={styles.cardSubtitle}>Write and run HTML, CSS, JavaScript and Python</Text>
+                </View>
+                <View style={styles.openPill}>
+                  <Text style={styles.openPillText}>Open</Text>
+                </View>
+              </GlassSurface>
+            </Pressable>
+          </NotInReview>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>AI tools</Text>
+            <View style={styles.aiGrid}>
+              {aiTools.map((tool) => (
                 <Pressable
-                  key={course._id}
+                  key={tool.kind}
                   onPress={() => {
                     haptics.light();
-                    router.push(`/course/${course._id}` as any);
+                    if (tool.kind === 'quiz') {
+                      router.push('/ai-quiz' as any);
+                    } else if (tool.kind === 'generate-course') {
+                      router.push('/generate-course' as any);
+                    } else {
+                      setAiTool(tool.kind);
+                    }
                   }}
-                  style={({ pressed }) => [pressed && styles.pressed]}
+                  style={({ pressed }) => [
+                    styles.aiGridItem,
+                    isTablet && (isDesktop ? styles.aiGridItemDesktop : styles.aiGridItemTablet),
+                    pressed && styles.pressed,
+                  ]}
                 >
-                  <GlassSurface style={styles.courseCard} isInteractive tintColor="rgba(255,255,255,0.38)">
-                    <View style={styles.cardHeader}>
-                      <View style={{ flex: 1 }}>
-                        <Text style={styles.cardTitle} numberOfLines={1}>
-                          {course.title}
-                        </Text>
-                        <Text style={styles.progressLabelText}>{course.category}</Text>
-                      </View>
-                      <Badge>{course.topicCount || 0} topics</Badge>
-                    </View>
-                    <Text style={styles.topicDesc} numberOfLines={2}>
-                      {course.description}
+                  <GlassSurface style={styles.aiCard} tintColor={tool.tint} isInteractive>
+                    <View style={[styles.aiIconWell, { backgroundColor: tool.well }]}>{tool.icon}</View>
+                    <Text numberOfLines={1} style={styles.aiTitle}>
+                      {tool.title}
                     </Text>
-                    <View style={styles.continueLink}>
-                      <Text style={styles.continueLinkText}>View course</Text>
-                      <IconArrowRight size={14} color={ACCENT} />
-                    </View>
+                    <Text style={styles.aiDescription} numberOfLines={2}>
+                      {tool.description}
+                    </Text>
                   </GlassSurface>
                 </Pressable>
               ))}
             </View>
+          </View>
+          
+          {continueStudying.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Continue studying</Text>
+              <View style={[styles.cardList, isTablet && styles.cardListLarge]}>
+                {continueStudying.slice(0, 4).map((progress) => {
+                  const course = typeof progress.course === 'object' ? (progress.course as Course) : null;
+                  const topic = typeof progress.topic === 'object' ? (progress.topic as Topic) : null;
+                  const flashcardTotal = progress.flashcardsTotal ?? 0;
+                  const flashcardStudied = progress.flashcardsStudied ?? 0;
+                  const flashcardProgress = flashcardTotal > 0 ? (flashcardStudied / flashcardTotal) * 100 : 0;
+                  return (
+                    <Pressable
+                      key={progress._id}
+                      onPress={() => {
+                        haptics.light();
+                        if (topic && course) router.push(`/course/${course._id}/topic/${topic._id}` as any);
+                        else if (course) router.push(`/course/${course._id}` as any);
+                      }}
+                      style={({ pressed }) => [
+                        isTablet && styles.cardListItemLarge,
+                        pressed && styles.pressed,
+                      ]}
+                    >
+                      <GlassSurface style={styles.studyCard} isInteractive tintColor="rgba(255,255,255,0.38)">
+                        <View style={styles.cardHeader}>
+                          <View style={{ flex: 1 }}>
+                            {course && (
+                              <Text style={styles.cardOverline} numberOfLines={1}>
+                                {course.title}
+                              </Text>
+                            )}
+                            <Text style={styles.cardTitle} numberOfLines={1}>
+                              {topic?.title || course?.title || 'Course'}
+                            </Text>
+                          </View>
+                          {course && <Badge variant={course.difficulty}>{course.difficulty}</Badge>}
+                        </View>
+                        <View style={styles.progressSection}>
+                          <View style={styles.progressHeader}>
+                            <Text style={styles.progressLabelText}>Flashcard progress</Text>
+                            <Text style={styles.progressLabelText}>{Math.round(flashcardProgress)}%</Text>
+                          </View>
+                          <ProgressBar value={flashcardProgress} color={ACCENT} trackColor="rgba(14,14,26,0.08)" />
+                        </View>
+                        <View style={styles.continueLink}>
+                          <Text style={styles.continueLinkText}>Continue</Text>
+                          <IconArrowRight size={16} color={ACCENT} />
+                        </View>
+                      </GlassSurface>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </View>
           )}
-        </View>
+
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitleFlush}>Popular courses</Text>
+              <Pressable onPress={() => { haptics.light(); router.push('/(tabs)/courses'); }}>
+                <Text style={styles.viewAllLink}>View all</Text>
+              </Pressable>
+            </View>
+            {visiblePopular.length === 0 ? (
+              <EmptyState
+                icon={<IconBook size={44} color={FAINT} />}
+                title="No courses available yet"
+                description="Check back later for study content."
+              />
+            ) : (
+              <View style={[styles.cardList, isTablet && styles.cardListLarge]}>
+                {visiblePopular.map((course) => (
+                  <Pressable
+                    key={course._id}
+                    onPress={() => {
+                      haptics.light();
+                      router.push(`/course/${course._id}` as any);
+                    }}
+                    style={({ pressed }) => [
+                      isTablet && (isDesktop ? styles.cardListItemDesktop : styles.cardListItemLarge),
+                      pressed && styles.pressed,
+                    ]}
+                  >
+                    <GlassSurface style={styles.courseCard} isInteractive tintColor="rgba(255,255,255,0.38)">
+                      <View style={styles.cardHeader}>
+                        <View style={{ flex: 1 }}>
+                          <Text style={styles.cardTitle} numberOfLines={1}>
+                            {course.title}
+                          </Text>
+                          <Text style={styles.progressLabelText}>{course.category}</Text>
+                        </View>
+                        <Badge>{course.topicCount || 0} topics</Badge>
+                      </View>
+                      <Text style={styles.topicDesc} numberOfLines={2}>
+                        {course.description}
+                      </Text>
+                      <View style={styles.continueLink}>
+                        <Text style={styles.continueLinkText}>View course</Text>
+                        <IconArrowRight size={14} color={ACCENT} />
+                      </View>
+                    </GlassSurface>
+                  </Pressable>
+                ))}
+              </View>
+            )}
+          </View>
+        </ResponsiveContainer>
       </ScrollView>
       <AIToolDialog kind={aiTool} onClose={() => setAiTool(null)} />
     </View>
@@ -660,5 +676,25 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.9,
     transform: [{ scale: 0.99 }],
+  },
+  speechWrapLarge: {
+    marginHorizontal: 0,
+  },
+  cardListLarge: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.md,
+  },
+  cardListItemLarge: {
+    width: '48.5%',
+  },
+  cardListItemDesktop: {
+    width: '31.8%',
+  },
+  aiGridItemTablet: {
+    width: '48%',
+  },
+  aiGridItemDesktop: {
+    width: '23.5%',
   },
 });

@@ -36,6 +36,7 @@ import NativeSegmentedControl from '@/components/ui/NativeSegmentedControl';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import ScreenHeader from '@/components/common/ScreenHeader';
 import OfflineBanner from '@/components/common/OfflineBanner';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
 import { fontFamilies, fontSizes, spacing } from '@/theme';
 import { AI, FAINT, INK, MUTED, TINT_AI, TINT_GLASS } from '@/theme/brand';
 import * as haptics from '@/lib/haptics';
@@ -311,34 +312,36 @@ export default function GenerateCourseScreen() {
     return (
       <View collapsable={false} style={styles.container}>
         <ScreenBackdrop />
-        <ScrollView
-          contentContainerStyle={[
-            styles.scroll,
-            { paddingTop: insets.top + 8, paddingBottom: insets.bottom + spacing['4xl'] },
-          ]}
-        >
-          <ScreenHeader showBack title="Course ready" subtitle="Your generated course is saved and you are enrolled." />
-          <GlassSurface style={styles.successCard} tintColor="rgba(16,185,129,0.16)" isInteractive>
-            <View style={styles.successIcon}>
-              <IconCheck size={28} color="#10B981" />
-            </View>
-            <Text style={styles.successTitle}>{result.title}</Text>
-            <Text style={styles.successMeta}>
-              {result.stats.chapters} chapters · {result.stats.topics} topics
-            </Text>
-          </GlassSurface>
-          <Button
-            fullWidth
-            variant="ai"
-            onPress={() => router.push(`/course/${result.courseId}` as any)}
+        <ResponsiveContainer maxWidth={680} style={{ flex: 1 }}>
+          <ScrollView
+            contentContainerStyle={[
+              styles.scroll,
+              { paddingTop: insets.top + 8, paddingBottom: insets.bottom + spacing['4xl'] },
+            ]}
           >
-            Open course
-          </Button>
-          <View style={{ height: spacing.md }} />
-          <Button fullWidth variant="secondary" onPress={resetForm}>
-            Generate another
-          </Button>
-        </ScrollView>
+            <ScreenHeader showBack title="Course ready" subtitle="Your generated course is saved and you are enrolled." />
+            <GlassSurface style={styles.successCard} tintColor="rgba(16,185,129,0.16)" isInteractive>
+              <View style={styles.successIcon}>
+                <IconCheck size={28} color="#10B981" />
+              </View>
+              <Text style={styles.successTitle}>{result.title}</Text>
+              <Text style={styles.successMeta}>
+                {result.stats.chapters} chapters · {result.stats.topics} topics
+              </Text>
+            </GlassSurface>
+            <Button
+              fullWidth
+              variant="ai"
+              onPress={() => router.push(`/course/${result.courseId}` as any)}
+            >
+              Open course
+            </Button>
+            <View style={{ height: spacing.md }} />
+            <Button fullWidth variant="secondary" onPress={resetForm}>
+              Generate another
+            </Button>
+          </ScrollView>
+        </ResponsiveContainer>
       </View>
     );
   }
@@ -346,14 +349,15 @@ export default function GenerateCourseScreen() {
   return (
     <View collapsable={false} style={styles.container}>
       <ScreenBackdrop />
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={[
-          styles.scroll,
-          { paddingTop: insets.top + 8, paddingBottom: insets.bottom + spacing['4xl'] },
-        ]}
-        showsVerticalScrollIndicator={false}
-      >
+      <ResponsiveContainer maxWidth={680} style={{ flex: 1 }}>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={[
+            styles.scroll,
+            { paddingTop: insets.top + 8, paddingBottom: insets.bottom + spacing['4xl'] },
+          ]}
+          showsVerticalScrollIndicator={false}
+        >
         <OfflineBanner />
         <ScreenHeader
           showBack
@@ -522,6 +526,7 @@ export default function GenerateCourseScreen() {
           </Button>
         )}
       </ScrollView>
+      </ResponsiveContainer>
     </View>
   );
 }

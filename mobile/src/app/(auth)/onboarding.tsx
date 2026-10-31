@@ -21,6 +21,8 @@ import OnboardingInterestCard from '@/components/auth/OnboardingInterestCard';
 import OnboardingCourseCard from '@/components/auth/OnboardingCourseCard';
 import OnboardingGoalCard from '@/components/auth/OnboardingGoalCard';
 import OnboardingTimePickerModal from '@/components/auth/OnboardingTimePickerModal';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
+import { useResponsive } from '@/hooks/useResponsive';
 import {
   GamesIcon,
   AIProjectsIcon,
@@ -135,194 +137,196 @@ export default function OnboardingScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom', 'left', 'right']}>
-      {/* Top Header with Back Button and Progress (Steps 1-4) */}
-      {currentStep > 0 && (
-        <OnboardingHeader progress={progress} onBack={handleBack} />
-      )}
-
-      <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={[
-          styles.scrollContent,
-          currentStep === 0 && styles.heroScrollContent,
-        ]}
-        showsVerticalScrollIndicator={false}
-        bounces={false}
-      >
-        {/* ========================================================= */}
-        {/* STEP 0: Hero / Intro Screen                               */}
-        {/* ========================================================= */}
-        {currentStep === 0 && (
-          <View style={styles.heroContainer}>
-            {/* Subtle binary backdrop pattern */}
-            <View style={styles.binaryBackdrop} pointerEvents="none">
-              <Text style={styles.binaryText}>0 0 1 0 0 1 0 1 0 0 0 1 1 0 1 0 0</Text>
-              <Text style={styles.binaryText}>1 0 0 1 0 1 1 0 0 1 1 0 1 0 1 0 0 1</Text>
-              <Text style={styles.binaryText}>0 1 0 1 0 0 0 1 1 0 1 0 0 1 0 1 1 0</Text>
-              <Text style={styles.binaryText}>0 0 1 1 0 1 0 0 1 0 1 0 0 0 1 1 0 1</Text>
-            </View>
-
-            {/* Hero Classroom Illustration */}
-            <View style={styles.heroImageWrapper}>
-              <Image
-                source={require('@/assets/images/onboarding/mascot_hero_classroom.webp')}
-                style={styles.heroImage}
-                contentFit="contain"
-                priority="high"
-                cachePolicy="memory-disk"
-                transition={150}
-                recyclingKey="onboarding-mascot-hero"
-              />
-            </View>
-
-            {/* Headline */}
-            <View style={styles.heroHeadlineWrapper}>
-              <Text style={styles.heroHeadline}>
-                Over 1 Million young minds mastering code today.
-              </Text>
-            </View>
-          </View>
+      <ResponsiveContainer maxWidth={600} paddingHorizontal={0} style={{ flex: 1, width: '100%' }}>
+        {/* Top Header with Back Button and Progress (Steps 1-4) */}
+        {currentStep > 0 && (
+          <OnboardingHeader progress={progress} onBack={handleBack} />
         )}
 
-        {/* ========================================================= */}
-        {/* STEP 1: What are you excited to build? (2x2 Grid)         */}
-        {/* ========================================================= */}
-        {currentStep === 1 && (
-          <View style={styles.stepContainer}>
-            <OnboardingSpeechBubble text="What are you excited to build?" />
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={[
+            styles.scrollContent,
+            currentStep === 0 && styles.heroScrollContent,
+          ]}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+        >
+          {/* ========================================================= */}
+          {/* STEP 0: Hero / Intro Screen                               */}
+          {/* ========================================================= */}
+          {currentStep === 0 && (
+            <View style={styles.heroContainer}>
+              {/* Subtle binary backdrop pattern */}
+              <View style={styles.binaryBackdrop} pointerEvents="none">
+                <Text style={styles.binaryText}>0 0 1 0 0 1 0 1 0 0 0 1 1 0 1 0 0</Text>
+                <Text style={styles.binaryText}>1 0 0 1 0 1 1 0 0 1 1 0 1 0 1 0 0 1</Text>
+                <Text style={styles.binaryText}>0 1 0 1 0 0 0 1 1 0 1 0 0 1 0 1 1 0</Text>
+                <Text style={styles.binaryText}>0 0 1 1 0 1 0 0 1 0 1 0 0 0 1 1 0 1</Text>
+              </View>
 
-            <View style={styles.gridContainer}>
-              <View style={styles.gridRow}>
-                <OnboardingInterestCard
-                  icon={INTERESTS[0].icon}
-                  title={INTERESTS[0].title}
-                  subtitle={INTERESTS[0].subtitle}
-                  selected={interest === INTERESTS[0].id}
-                  onSelect={() => setInterest(INTERESTS[0].id)}
-                />
-                <OnboardingInterestCard
-                  icon={INTERESTS[1].icon}
-                  title={INTERESTS[1].title}
-                  subtitle={INTERESTS[1].subtitle}
-                  selected={interest === INTERESTS[1].id}
-                  onSelect={() => setInterest(INTERESTS[1].id)}
+              {/* Hero Classroom Illustration */}
+              <View style={styles.heroImageWrapper}>
+                <Image
+                  source={require('@/assets/images/onboarding/mascot_hero_classroom.webp')}
+                  style={styles.heroImage}
+                  contentFit="contain"
+                  priority="high"
+                  cachePolicy="memory-disk"
+                  transition={150}
+                  recyclingKey="onboarding-mascot-hero"
                 />
               </View>
 
-              <View style={styles.gridRow}>
-                <OnboardingInterestCard
-                  icon={INTERESTS[2].icon}
-                  title={INTERESTS[2].title}
-                  subtitle={INTERESTS[2].subtitle}
-                  selected={interest === INTERESTS[2].id}
-                  onSelect={() => setInterest(INTERESTS[2].id)}
-                />
-                <OnboardingInterestCard
-                  icon={INTERESTS[3].icon}
-                  title={INTERESTS[3].title}
-                  subtitle={INTERESTS[3].subtitle}
-                  selected={interest === INTERESTS[3].id}
-                  onSelect={() => setInterest(INTERESTS[3].id)}
+              {/* Headline */}
+              <View style={styles.heroHeadlineWrapper}>
+                <Text style={styles.heroHeadline}>
+                  Over 1 Million young minds mastering code today.
+                </Text>
+              </View>
+            </View>
+          )}
+
+          {/* ========================================================= */}
+          {/* STEP 1: What are you excited to build? (2x2 Grid)         */}
+          {/* ========================================================= */}
+          {currentStep === 1 && (
+            <View style={styles.stepContainer}>
+              <OnboardingSpeechBubble text="What are you excited to build?" />
+
+              <View style={styles.gridContainer}>
+                <View style={styles.gridRow}>
+                  <OnboardingInterestCard
+                    icon={INTERESTS[0].icon}
+                    title={INTERESTS[0].title}
+                    subtitle={INTERESTS[0].subtitle}
+                    selected={interest === INTERESTS[0].id}
+                    onSelect={() => setInterest(INTERESTS[0].id)}
+                  />
+                  <OnboardingInterestCard
+                    icon={INTERESTS[1].icon}
+                    title={INTERESTS[1].title}
+                    subtitle={INTERESTS[1].subtitle}
+                    selected={interest === INTERESTS[1].id}
+                    onSelect={() => setInterest(INTERESTS[1].id)}
+                  />
+                </View>
+
+                <View style={styles.gridRow}>
+                  <OnboardingInterestCard
+                    icon={INTERESTS[2].icon}
+                    title={INTERESTS[2].title}
+                    subtitle={INTERESTS[2].subtitle}
+                    selected={interest === INTERESTS[2].id}
+                    onSelect={() => setInterest(INTERESTS[2].id)}
+                  />
+                  <OnboardingInterestCard
+                    icon={INTERESTS[3].icon}
+                    title={INTERESTS[3].title}
+                    subtitle={INTERESTS[3].subtitle}
+                    selected={interest === INTERESTS[3].id}
+                    onSelect={() => setInterest(INTERESTS[3].id)}
+                  />
+                </View>
+              </View>
+            </View>
+          )}
+
+          {/* ========================================================= */}
+          {/* STEP 2: Select your first learning path (Vertical List)   */}
+          {/* ========================================================= */}
+          {currentStep === 2 && (
+            <View style={styles.stepContainer}>
+              <OnboardingSpeechBubble text="Select your first learning path." />
+
+              <View style={styles.coursesList}>
+                {COURSES.map((course) => (
+                  <OnboardingCourseCard
+                    key={course.id}
+                    icon={course.icon}
+                    title={course.title}
+                    subtitle={course.subtitle}
+                    selected={starterCourse === course.id}
+                    onSelect={() => setStarterCourse(course.id)}
+                  />
+                ))}
+              </View>
+            </View>
+          )}
+
+          {/* ========================================================= */}
+          {/* STEP 3: Daily Commitment Goal                            */}
+          {/* ========================================================= */}
+          {currentStep === 3 && (
+            <View style={styles.stepContainer}>
+              <OnboardingSpeechBubble text="How much time can you practice daily?" />
+
+              <View style={styles.goalsList}>
+                {GOALS.map((goal) => (
+                  <OnboardingGoalCard
+                    key={`goal-${goal.minutes}`}
+                    title={goal.title}
+                    subtitle={goal.subtitle}
+                    isRecommended={goal.isRecommended}
+                    selected={dailyGoalMinutes === goal.minutes}
+                    onSelect={() => setDailyGoalMinutes(goal.minutes)}
+                  />
+                ))}
+              </View>
+            </View>
+          )}
+
+          {/* ========================================================= */}
+          {/* STEP 4: Habit & Reminder Time Selector                   */}
+          {/* ========================================================= */}
+          {currentStep === 4 && (
+            <View style={styles.stepContainer}>
+              <OnboardingSpeechBubble text="Lock in your habit with a daily study reminder" />
+
+              <View style={styles.reminderCenterArea}>
+                <OnboardingTimePickerModal
+                  value={reminderTime}
+                  onChange={setReminderTime}
                 />
               </View>
             </View>
-          </View>
-        )}
+          )}
+        </ScrollView>
 
         {/* ========================================================= */}
-        {/* STEP 2: Select your first learning path (Vertical List)   */}
+        {/* Bottom Actions Footer                                     */}
         {/* ========================================================= */}
-        {currentStep === 2 && (
-          <View style={styles.stepContainer}>
-            <OnboardingSpeechBubble text="Select your first learning path." />
+        <View style={styles.footer}>
+          {currentStep === 0 ? (
+            <View style={styles.heroFooter}>
+              <TouchableOpacity
+                activeOpacity={0.88}
+                onPress={handleNext}
+                style={styles.primaryButton}
+              >
+                <Text style={styles.primaryButtonText}>Get Started</Text>
+              </TouchableOpacity>
 
-            <View style={styles.coursesList}>
-              {COURSES.map((course) => (
-                <OnboardingCourseCard
-                  key={course.id}
-                  icon={course.icon}
-                  title={course.title}
-                  subtitle={course.subtitle}
-                  selected={starterCourse === course.id}
-                  onSelect={() => setStarterCourse(course.id)}
-                />
-              ))}
+              <Pressable
+                onPress={handleGoToLogin}
+                style={({ pressed }) => [styles.linkButton, pressed && styles.linkButtonPressed]}
+              >
+                <Text style={styles.linkButtonText}>Already have an account? Sign in</Text>
+              </Pressable>
             </View>
-          </View>
-        )}
-
-        {/* ========================================================= */}
-        {/* STEP 3: Daily Commitment Goal                            */}
-        {/* ========================================================= */}
-        {currentStep === 3 && (
-          <View style={styles.stepContainer}>
-            <OnboardingSpeechBubble text="How much time can you practice daily?" />
-
-            <View style={styles.goalsList}>
-              {GOALS.map((goal) => (
-                <OnboardingGoalCard
-                  key={`goal-${goal.minutes}`}
-                  title={goal.title}
-                  subtitle={goal.subtitle}
-                  isRecommended={goal.isRecommended}
-                  selected={dailyGoalMinutes === goal.minutes}
-                  onSelect={() => setDailyGoalMinutes(goal.minutes)}
-                />
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* ========================================================= */}
-        {/* STEP 4: Habit & Reminder Time Selector                   */}
-        {/* ========================================================= */}
-        {currentStep === 4 && (
-          <View style={styles.stepContainer}>
-            <OnboardingSpeechBubble text="Lock in your habit with a daily study reminder" />
-
-            <View style={styles.reminderCenterArea}>
-              <OnboardingTimePickerModal
-                value={reminderTime}
-                onChange={setReminderTime}
-              />
-            </View>
-          </View>
-        )}
-      </ScrollView>
-
-      {/* ========================================================= */}
-      {/* Bottom Actions Footer                                     */}
-      {/* ========================================================= */}
-      <View style={styles.footer}>
-        {currentStep === 0 ? (
-          <View style={styles.heroFooter}>
+          ) : (
             <TouchableOpacity
               activeOpacity={0.88}
               onPress={handleNext}
               style={styles.primaryButton}
             >
-              <Text style={styles.primaryButtonText}>Get Started</Text>
+              <Text style={styles.primaryButtonText}>
+                {currentStep === 4 ? 'Get Started' : 'Continue'}
+              </Text>
             </TouchableOpacity>
-
-            <Pressable
-              onPress={handleGoToLogin}
-              style={({ pressed }) => [styles.linkButton, pressed && styles.linkButtonPressed]}
-            >
-              <Text style={styles.linkButtonText}>Already have an account? Sign in</Text>
-            </Pressable>
-          </View>
-        ) : (
-          <TouchableOpacity
-            activeOpacity={0.88}
-            onPress={handleNext}
-            style={styles.primaryButton}
-          >
-            <Text style={styles.primaryButtonText}>
-              {currentStep === 4 ? 'Get Started' : 'Continue'}
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View>
+          )}
+        </View>
+      </ResponsiveContainer>
     </SafeAreaView>
   );
 }

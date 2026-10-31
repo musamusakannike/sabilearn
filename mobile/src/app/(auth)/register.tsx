@@ -19,6 +19,8 @@ import { fontFamilies, spacing } from '@/theme';
 import SocialAuthButtons from '@/components/auth/SocialAuthButtons';
 import OnboardingSpeechBubble from '@/components/auth/OnboardingSpeechBubble';
 import AuthHeader from '@/components/auth/AuthHeader';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
+import { useResponsive } from '@/hooks/useResponsive';
 import * as haptics from '@/lib/haptics';
 
 export default function RegisterScreen() {
@@ -93,186 +95,188 @@ export default function RegisterScreen() {
         <Text style={styles.binaryText}>1 0 0 1 0 1 1 0 0 1 1 0 1 0 1 0 0 1</Text>
       </View>
 
-      <AuthHeader fallbackRoute="/(auth)/onboarding" />
+      <ResponsiveContainer maxWidth={520} paddingHorizontal={0} style={{ flex: 1, width: '100%' }}>
+        <AuthHeader fallbackRoute="/(auth)/onboarding" />
 
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{ flex: 1 }}
-      >
-        <ScrollView
-          style={styles.scroll}
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          style={{ flex: 1 }}
         >
-          {/* Mascot Speech Bubble */}
-          <OnboardingSpeechBubble text="Join over 1 Million learners mastering code today." />
+          <ScrollView
+            style={styles.scroll}
+            contentContainerStyle={styles.scrollContent}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            {/* Mascot Speech Bubble */}
+            <OnboardingSpeechBubble text="Join over 1 Million learners mastering code today." />
 
-          {/* Error Alert Box */}
-          {!!error && (
-            <View style={styles.errorBox}>
-              <IconAlertTriangle size={18} color="#DC2626" />
-              <Text style={styles.errorText}>{error}</Text>
-            </View>
-          )}
+            {/* Error Alert Box */}
+            {!!error && (
+              <View style={styles.errorBox}>
+                <IconAlertTriangle size={18} color="#DC2626" />
+                <Text style={styles.errorText}>{error}</Text>
+              </View>
+            )}
 
-          {/* Form Fields */}
-          <View style={styles.formContainer}>
-            {/* First & Last Name Row */}
-            <View style={styles.row}>
-              <View style={[styles.field, { flex: 1 }]}>
-                <Text style={styles.label}>First name</Text>
+            {/* Form Fields */}
+            <View style={styles.formContainer}>
+              {/* First & Last Name Row */}
+              <View style={styles.row}>
+                <View style={[styles.field, { flex: 1 }]}>
+                  <Text style={styles.label}>First name</Text>
+                  <TextInput
+                    value={firstName}
+                    onChangeText={setFirstName}
+                    onFocus={() => setFocusedField('firstName')}
+                    onBlur={() => setFocusedField(null)}
+                    placeholder="Ada"
+                    placeholderTextColor="#8E8E9F"
+                    style={[
+                      styles.input,
+                      focusedField === 'firstName' && styles.inputFocused,
+                    ]}
+                  />
+                </View>
+                <View style={[styles.field, { flex: 1 }]}>
+                  <Text style={styles.label}>Last name</Text>
+                  <TextInput
+                    value={lastName}
+                    onChangeText={setLastName}
+                    onFocus={() => setFocusedField('lastName')}
+                    onBlur={() => setFocusedField(null)}
+                    placeholder="Lovelace"
+                    placeholderTextColor="#8E8E9F"
+                    style={[
+                      styles.input,
+                      focusedField === 'lastName' && styles.inputFocused,
+                    ]}
+                  />
+                </View>
+              </View>
+
+              {/* Email */}
+              <View style={styles.field}>
+                <Text style={styles.label}>Email</Text>
                 <TextInput
-                  value={firstName}
-                  onChangeText={setFirstName}
-                  onFocus={() => setFocusedField('firstName')}
+                  value={email}
+                  onChangeText={setEmail}
+                  onFocus={() => setFocusedField('email')}
                   onBlur={() => setFocusedField(null)}
-                  placeholder="Ada"
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  autoComplete="email"
+                  placeholder="you@example.com"
                   placeholderTextColor="#8E8E9F"
                   style={[
                     styles.input,
-                    focusedField === 'firstName' && styles.inputFocused,
+                    focusedField === 'email' && styles.inputFocused,
                   ]}
                 />
               </View>
-              <View style={[styles.field, { flex: 1 }]}>
-                <Text style={styles.label}>Last name</Text>
-                <TextInput
-                  value={lastName}
-                  onChangeText={setLastName}
-                  onFocus={() => setFocusedField('lastName')}
-                  onBlur={() => setFocusedField(null)}
-                  placeholder="Lovelace"
-                  placeholderTextColor="#8E8E9F"
+
+              {/* Password */}
+              <View style={styles.field}>
+                <Text style={styles.label}>Password</Text>
+                <View
                   style={[
-                    styles.input,
-                    focusedField === 'lastName' && styles.inputFocused,
+                    styles.passwordWrap,
+                    focusedField === 'password' && styles.inputFocused,
                   ]}
-                />
-              </View>
-            </View>
-
-            {/* Email */}
-            <View style={styles.field}>
-              <Text style={styles.label}>Email</Text>
-              <TextInput
-                value={email}
-                onChangeText={setEmail}
-                onFocus={() => setFocusedField('email')}
-                onBlur={() => setFocusedField(null)}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                autoComplete="email"
-                placeholder="you@example.com"
-                placeholderTextColor="#8E8E9F"
-                style={[
-                  styles.input,
-                  focusedField === 'email' && styles.inputFocused,
-                ]}
-              />
-            </View>
-
-            {/* Password */}
-            <View style={styles.field}>
-              <Text style={styles.label}>Password</Text>
-              <View
-                style={[
-                  styles.passwordWrap,
-                  focusedField === 'password' && styles.inputFocused,
-                ]}
-              >
-                <TextInput
-                  value={password}
-                  onChangeText={setPassword}
-                  onFocus={() => setFocusedField('password')}
-                  onBlur={() => setFocusedField(null)}
-                  secureTextEntry={!showPassword}
-                  placeholder="At least 6 characters"
-                  placeholderTextColor="#8E8E9F"
-                  style={styles.passwordInput}
-                />
-                <Pressable
-                  onPress={() => setShowPassword((s) => !s)}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                  style={styles.eyeButton}
                 >
-                  {showPassword ? (
-                    <IconEyeOff size={20} color="#6B6B80" />
-                  ) : (
-                    <IconEye size={20} color="#6B6B80" />
-                  )}
-                </Pressable>
+                  <TextInput
+                    value={password}
+                    onChangeText={setPassword}
+                    onFocus={() => setFocusedField('password')}
+                    onBlur={() => setFocusedField(null)}
+                    secureTextEntry={!showPassword}
+                    placeholder="At least 6 characters"
+                    placeholderTextColor="#8E8E9F"
+                    style={styles.passwordInput}
+                  />
+                  <Pressable
+                    onPress={() => setShowPassword((s) => !s)}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    style={styles.eyeButton}
+                  >
+                    {showPassword ? (
+                      <IconEyeOff size={20} color="#6B6B80" />
+                    ) : (
+                      <IconEye size={20} color="#6B6B80" />
+                    )}
+                  </Pressable>
+                </View>
               </View>
-            </View>
 
-            {/* Primary Action Button */}
-            <TouchableOpacity
-              activeOpacity={0.88}
-              disabled={isLoading}
-              onPress={handleRegister}
-              style={[styles.primaryButton, isLoading && styles.primaryButtonDisabled]}
-            >
-              {isLoading ? (
-                <ActivityIndicator color="#0E0E1A" size="small" />
-              ) : (
-                <Text style={styles.primaryButtonText}>Create Account</Text>
-              )}
-            </TouchableOpacity>
+              {/* Primary Action Button */}
+              <TouchableOpacity
+                activeOpacity={0.88}
+                disabled={isLoading}
+                onPress={handleRegister}
+                style={[styles.primaryButton, isLoading && styles.primaryButtonDisabled]}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color="#0E0E1A" size="small" />
+                ) : (
+                  <Text style={styles.primaryButtonText}>Create Account</Text>
+                )}
+              </TouchableOpacity>
 
-            {/* Legal Notice */}
-            <Text style={styles.legalNotice}>
-              By creating an account, you agree to our{' '}
-              <Text
-                style={styles.legalLink}
-                onPress={() => {
-                  haptics.light();
-                  router.push('/terms');
-                }}
-              >
-                Terms of Service
-              </Text>{' '}
-              and{' '}
-              <Text
-                style={styles.legalLink}
-                onPress={() => {
-                  haptics.light();
-                  router.push('/privacy');
-                }}
-              >
-                Privacy Policy
+              {/* Legal Notice */}
+              <Text style={styles.legalNotice}>
+                By creating an account, you agree to our{' '}
+                <Text
+                  style={styles.legalLink}
+                  onPress={() => {
+                    haptics.light();
+                    router.push('/terms');
+                  }}
+                >
+                  Terms of Service
+                </Text>{' '}
+                and{' '}
+                <Text
+                  style={styles.legalLink}
+                  onPress={() => {
+                    haptics.light();
+                    router.push('/privacy');
+                  }}
+                >
+                  Privacy Policy
+                </Text>
+                .
               </Text>
-              .
-            </Text>
 
-            {/* Divider */}
-            <View style={styles.dividerRow}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>or</Text>
-              <View style={styles.dividerLine} />
+              {/* Divider */}
+              <View style={styles.dividerRow}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerText}>or</Text>
+                <View style={styles.dividerLine} />
+              </View>
+
+              {/* Social Authentication */}
+              <SocialAuthButtons
+                onGoogle={handleGoogle}
+                onApple={handleApple}
+                loading={isLoading}
+              />
+
+              {/* Footer Navigation */}
+              <View style={styles.footerRow}>
+                <Text style={styles.footerText}>Already have an account? </Text>
+                <Link href="/(auth)/login" asChild>
+                  <Pressable
+                    onPress={() => haptics.light()}
+                    style={({ pressed }) => [pressed && styles.pressedOpacity]}
+                  >
+                    <Text style={styles.footerLink}>Sign in</Text>
+                  </Pressable>
+                </Link>
+              </View>
             </View>
-
-            {/* Social Authentication */}
-            <SocialAuthButtons
-              onGoogle={handleGoogle}
-              onApple={handleApple}
-              loading={isLoading}
-            />
-
-            {/* Footer Navigation */}
-            <View style={styles.footerRow}>
-              <Text style={styles.footerText}>Already have an account? </Text>
-              <Link href="/(auth)/login" asChild>
-                <Pressable
-                  onPress={() => haptics.light()}
-                  style={({ pressed }) => [pressed && styles.pressedOpacity]}
-                >
-                  <Text style={styles.footerLink}>Sign in</Text>
-                </Pressable>
-              </Link>
-            </View>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </ResponsiveContainer>
     </SafeAreaView>
   );
 }

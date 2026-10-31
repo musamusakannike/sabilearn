@@ -11,6 +11,8 @@ import Badge from '@/components/ui/Badge';
 import GlassSurface from '@/components/ui/GlassSurface';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import ScreenHeader from '@/components/common/ScreenHeader';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
+import { useResponsive } from '@/hooks/useResponsive';
 import * as haptics from '@/lib/haptics';
 import { NotInReview } from '@/components/common/ReviewGuard';
 import type { ReactNode } from 'react';
@@ -59,42 +61,44 @@ export default function ProfileScreen() {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={ACCENT} colors={[ACCENT]} />}
         showsVerticalScrollIndicator={false}
       >
-        <ScreenHeader title="Profile" subtitle="Your account and preferences." />
+        <ResponsiveContainer maxWidth={680} paddingHorizontal={0} style={{ width: '100%' }}>
+          <ScreenHeader title="Profile" subtitle="Your account and preferences." />
 
-        <Pressable onPress={() => router.push('/settings')} style={({ pressed }) => [pressed && styles.pressed]}>
-          <GlassSurface style={styles.profileCard} tintColor={TINT_ORANGE}>
-            {user?.avatar ? (
-              <Image
-                source={{ uri: user.avatar }}
-                style={styles.avatar}
-                contentFit="cover"
-                transition={200}
-              />
-            ) : (
-              <View style={styles.avatarFallback}>
-                <IconUser size={28} color={ACCENT} />
+          <Pressable onPress={() => router.push('/settings')} style={({ pressed }) => [pressed && styles.pressed]}>
+            <GlassSurface style={styles.profileCard} tintColor={TINT_ORANGE}>
+              {user?.avatar ? (
+                <Image
+                  source={{ uri: user.avatar }}
+                  style={styles.avatar}
+                  contentFit="cover"
+                  transition={200}
+                />
+              ) : (
+                <View style={styles.avatarFallback}>
+                  <IconUser size={28} color={ACCENT} />
+                </View>
+              )}
+              <View style={{ flex: 1 }}>
+                <Text style={styles.name}>{user?.name || `${user?.firstName ?? ''} ${user?.lastName ?? ''}`}</Text>
+                <Text style={styles.email}>{user?.email}</Text>
+                {user?.level && <Badge variant={user.level}>{user.level}</Badge>}
               </View>
-            )}
-            <View style={{ flex: 1 }}>
-              <Text style={styles.name}>{user?.name || `${user?.firstName ?? ''} ${user?.lastName ?? ''}`}</Text>
-              <Text style={styles.email}>{user?.email}</Text>
-              {user?.level && <Badge variant={user.level}>{user.level}</Badge>}
-            </View>
-            <IconChevronRight size={18} color={MUTED} />
-          </GlassSurface>
-        </Pressable>
+              <IconChevronRight size={18} color={MUTED} />
+            </GlassSurface>
+          </Pressable>
 
-        <View style={styles.menu}>
-          <NotInReview>
-            <MenuRow
-              icon={<IconSparkles size={20} color={INK} />}
-              label="Subscription"
-              onPress={() => router.push('/subscribe')}
-            />
-          </NotInReview>
-          <MenuRow icon={<IconSettings size={20} color={INK} />} label="Settings" onPress={() => router.push('/settings')} />
-          <MenuRow icon={<IconLogout size={20} color="#E5484D" />} label="Sign out" danger onPress={handleLogout} />
-        </View>
+          <View style={styles.menu}>
+            <NotInReview>
+              <MenuRow
+                icon={<IconSparkles size={20} color={INK} />}
+                label="Subscription"
+                onPress={() => router.push('/subscribe')}
+              />
+            </NotInReview>
+            <MenuRow icon={<IconSettings size={20} color={INK} />} label="Settings" onPress={() => router.push('/settings')} />
+            <MenuRow icon={<IconLogout size={20} color="#E5484D" />} label="Sign out" danger onPress={handleLogout} />
+          </View>
+        </ResponsiveContainer>
       </ScrollView>
     </View>
   );

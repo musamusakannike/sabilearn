@@ -39,6 +39,8 @@ import WebPreview from '@/components/playground/WebPreview';
 import PythonConsole from '@/components/playground/PythonConsole';
 import PyodideRuntime, { PyodideRuntimeHandle } from '@/components/playground/PyodideRuntime';
 import { usePlaygroundStore } from '@/store/playground.store';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
+import { useResponsive } from '@/hooks/useResponsive';
 import { loadProjects } from '@/lib/playgroundStorage';
 import { defaultFiles, fileLanguage, PYTHON_FILES, STARTERS, WEB_FILES } from '@/lib/playgroundTemplates';
 import { PlaygroundProject } from '@/lib/types';
@@ -295,7 +297,9 @@ export default function PlaygroundIdeScreen() {
   const previewJs = files['script.js'] || '';
 
   const language = fileLanguage(activeFile);
-  const showOutput = pane === 'output' && !keyboardUp;
+  const { isDesktop } = useResponsive();
+  const showOutput = (isDesktop || pane === 'output') && !keyboardUp;
+  const showEditor = isDesktop || pane === 'code' || keyboardUp;
 
   const editor = useMemo(
     () => (
@@ -338,6 +342,7 @@ export default function PlaygroundIdeScreen() {
         // measured from the top of this view, which already sits at 0.
         keyboardVerticalOffset={0}
       >
+        <ResponsiveContainer maxWidth={1400} style={{ flex: 1 }}>
         {fullscreen ? (
           // Minimal chrome: just enough to exit fullscreen and act on the file.
           <View style={[styles.fullscreenBar, { paddingTop: insets.top + 8 }]}>
@@ -376,25 +381,28 @@ export default function PlaygroundIdeScreen() {
               }
             />
             <FileTabs files={fileList} active={activeFile} onChange={setActiveFile} />
-            <View style={styles.viewSwitch}>
-              <Pressable onPress={() => setPane('code')} style={[styles.switchBtn, pane === 'code' && styles.switchOn]}>
-                <Text style={[styles.switchLabel, pane === 'code' && styles.switchLabelOn]}>Code</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => setPane('output')}
-                style={[styles.switchBtn, pane === 'output' && styles.switchOn]}
-              >
-                <Text style={[styles.switchLabel, pane === 'output' && styles.switchLabelOn]}>
-                  {project.kind === 'python' ? 'Output' : 'Preview'}
-                </Text>
-              </Pressable>
-            </View>
+            {!isDesktop && (
+              <View style={styles.viewSwitch}>
+                <Pressable onPress={() => setPane('code')} style={[styles.switchBtn, pane === 'code' && styles.switchOn]}>
+                  <Text style={[styles.switchLabel, pane === 'code' && styles.switchLabelOn]}>Code</Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => setPane('output')}
+                  style={[styles.switchBtn, pane === 'output' && styles.switchOn]}
+                >
+                  <Text style={[styles.switchLabel, pane === 'output' && styles.switchLabelOn]}>
+                    {project.kind === 'python' ? 'Output' : 'Preview'}
+                  </Text>
+                </Pressable>
+              </View>
+            )}
           </View>
         )}
 
         <GlassSurface
           style={[
             styles.workspace,
+            isDesktop && styles.workspaceDesktop,
             fullscreen && styles.workspaceFullscreen,
             // Give the editor a little breathing room above our floating
             // keyboard bar so the last line being edited is never hidden.
@@ -402,7 +410,7 @@ export default function PlaygroundIdeScreen() {
           ]}
           tintColor="rgba(255,255,255,0.45)"
         >
-          {fullscreen && (
+          {fullscreen && !isDesktop && (
             <View style={styles.fullscreenSwitch}>
               <Pressable onPress={() => setPane('code')} style={[styles.switchBtn, pane === 'code' && styles.switchOn]}>
                 <Text style={[styles.switchLabel, pane === 'code' && styles.switchLabelOn]}>Code</Text>
@@ -417,14 +425,22 @@ export default function PlaygroundIdeScreen() {
               </Pressable>
             </View>
           )}
-          {(pane === 'code' || keyboardUp) && <View style={styles.editorPane}>{editor}</View>}
-          {showOutput && project.kind === 'web' && (
-            <WebPreview html={previewHtml} css={previewCss} js={previewJs} />
+          {showEditor && (
+            <View style={[styles.editorPane, isDesktop && styles.editorPaneDesktop]}>
+              {editor}
+            </View>
           )}
-          {showOutput && project.kind === 'python' && (
-            <View style={{ flex: 1 }}>
-              <Text style={styles.pyStatus}>{running ? 'Running…' : pythonStatus}</Text>
-              <PythonConsole stdout={stdout} stderr={stderr} />
+          {showOutput && (
+            <View style={[styles.outputPane, isDesktop && styles.outputPaneDesktop]}>
+              {project.kind === 'web' && (
+                <WebPreview html={previewHtml} css={previewCss} js={previewJs} />
+              )}
+              {project.kind === 'python' && (
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.pyStatus}>{running ? 'Running…' : pythonStatus}</Text>
+                  <PythonConsole stdout={stdout} stderr={stderr} />
+                </View>
+              )}
             </View>
           )}
         </GlassSurface>
@@ -468,6 +484,7 @@ export default function PlaygroundIdeScreen() {
             </Pressable>
           </Pressable>
         </Modal>
+        </ResponsiveContainer>
       </KeyboardAvoidingView>
 
       {/* Floating accessory bar: sits exactly above the keyboard regardless of
@@ -571,12 +588,24 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: spacing.sm,
   },
+  workspaceDesktop: {
+    flexDirection: 'row',
+    gap: spacing.md,
+  },
   workspaceFullscreen: {
     marginHorizontal: spacing.sm,
     marginBottom: spacing.sm,
     borderRadius: 14,
   },
   editorPane: { flex: 1, minHeight: 180 },
+  editorPaneDesktop: {
+    flex: 1,
+    borderRightWidth: 1,
+    borderRightColor: '#E2DED2',
+    paddingRight: spacing.sm,
+  },
+  outputPane: { flex: 1 },
+  outputPaneDesktop: { flex: 1 },
   pyStatus: {
     fontFamily: fontFamilies.sansMedium,
     fontSize: fontSizes.xs,

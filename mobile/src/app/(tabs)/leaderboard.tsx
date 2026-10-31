@@ -10,6 +10,8 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import EmptyState from '@/components/ui/EmptyState';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import ScreenHeader from '@/components/common/ScreenHeader';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
+import { useResponsive } from '@/hooks/useResponsive';
 import { fontFamilies, spacing } from '@/theme';
 import { ACCENT, INK, MUTED, FAINT } from '@/theme/brand';
 import * as haptics from '@/lib/haptics';
@@ -92,85 +94,87 @@ function LeaderboardPageContent({
       }
       showsVerticalScrollIndicator={false}
     >
-      {loading ? (
-        <View style={styles.loadingContainer}>
-          <LoadingSpinner />
-        </View>
-      ) : leaderboard.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <EmptyState
-            title="No XP earned yet"
-            description={`Be the first to complete a lesson and lead the ${label.toLowerCase()} ranking.`}
-          />
-        </View>
-      ) : (
-        <View style={styles.list}>
-          <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>Rank</Text>
-            <Text style={[styles.listHeaderText, styles.listHeaderName]}>Learner</Text>
-            <Text style={[styles.listHeaderText, styles.listHeaderXp]}>XP</Text>
+      <ResponsiveContainer maxWidth={900} paddingHorizontal={0} style={{ width: '100%' }}>
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <LoadingSpinner />
           </View>
+        ) : leaderboard.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <EmptyState
+              title="No XP earned yet"
+              description={`Be the first to complete a lesson and lead the ${label.toLowerCase()} ranking.`}
+            />
+          </View>
+        ) : (
+          <View style={styles.list}>
+            <View style={styles.listHeader}>
+              <Text style={styles.listHeaderText}>Rank</Text>
+              <Text style={[styles.listHeaderText, styles.listHeaderName]}>Learner</Text>
+              <Text style={[styles.listHeaderText, styles.listHeaderXp]}>XP</Text>
+            </View>
 
-          {leaderboard.map((user, idx) => {
-            const rank = idx + 1;
-            const isCurrent = currentUser?._id === user._id;
+            {leaderboard.map((user, idx) => {
+              const rank = idx + 1;
+              const isCurrent = currentUser?._id === user._id;
 
-            return (
-              <Pressable
-                key={user._id || idx}
-                onPress={() => haptics.light()}
-                style={({ pressed }) => [
-                  styles.row,
-                  isCurrent && styles.rowCurrent,
-                  idx === leaderboard.length - 1 && styles.rowLast,
-                  pressed && styles.rowPressed,
-                ]}
-              >
-                <Text style={[styles.rank, rank === 1 && styles.rankFirst]}>
-                  {String(rank).padStart(2, '0')}
-                </Text>
-
-                <View style={styles.avatarWrap}>
-                  {user.avatar ? (
-                    <Image
-                      source={{ uri: user.avatar }}
-                      style={styles.avatar}
-                      contentFit="cover"
-                      transition={150}
-                    />
-                  ) : (
-                    <View style={styles.avatarFallback}>
-                      <Text style={styles.avatarInitial}>
-                        {user.name?.charAt(0).toUpperCase() || '?'}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-
-                <View style={styles.nameBlock}>
-                  <Text style={styles.name} numberOfLines={1}>
-                    {user.name}
-                    {isCurrent && <Text style={styles.youInline}>  you</Text>}
+              return (
+                <Pressable
+                  key={user._id || idx}
+                  onPress={() => haptics.light()}
+                  style={({ pressed }) => [
+                    styles.row,
+                    isCurrent && styles.rowCurrent,
+                    idx === leaderboard.length - 1 && styles.rowLast,
+                    pressed && styles.rowPressed,
+                  ]}
+                >
+                  <Text style={[styles.rank, rank === 1 && styles.rankFirst]}>
+                    {String(rank).padStart(2, '0')}
                   </Text>
-                  <Text style={styles.meta} numberOfLines={1}>
-                    {user.currentStreak
-                      ? `${user.currentStreak}-day streak`
-                      : user.level || 'Learner'}
-                  </Text>
-                </View>
 
-                <Text style={styles.xp}>{user.periodXp.toLocaleString()}</Text>
-              </Pressable>
-            );
-          })}
+                  <View style={styles.avatarWrap}>
+                    {user.avatar ? (
+                      <Image
+                        source={{ uri: user.avatar }}
+                        style={styles.avatar}
+                        contentFit="cover"
+                        transition={150}
+                      />
+                    ) : (
+                      <View style={styles.avatarFallback}>
+                        <Text style={styles.avatarInitial}>
+                          {user.name?.charAt(0).toUpperCase() || '?'}
+                        </Text>
+                      </View>
+                    )}
+                  </View>
 
-          {currentUser && currentUserRankIndex === -1 && (
-            <Text style={styles.unrankedNote}>
-              You haven't earned XP this period yet... complete a lesson to enter the ranking.
-            </Text>
-          )}
-        </View>
-      )}
+                  <View style={styles.nameBlock}>
+                    <Text style={styles.name} numberOfLines={1}>
+                      {user.name}
+                      {isCurrent && <Text style={styles.youInline}>  you</Text>}
+                    </Text>
+                    <Text style={styles.meta} numberOfLines={1}>
+                      {user.currentStreak
+                        ? `${user.currentStreak}-day streak`
+                        : user.level || 'Learner'}
+                    </Text>
+                  </View>
+
+                  <Text style={styles.xp}>{user.periodXp.toLocaleString()}</Text>
+                </Pressable>
+              );
+            })}
+
+            {currentUser && currentUserRankIndex === -1 && (
+              <Text style={styles.unrankedNote}>
+                You haven't earned XP this period yet... complete a lesson to enter the ranking.
+              </Text>
+            )}
+          </View>
+        )}
+      </ResponsiveContainer>
     </ScrollView>
   );
 }
@@ -195,37 +199,39 @@ export default function LeaderboardScreen() {
     <View collapsable={false} style={styles.container}>
       <ScreenBackdrop />
 
-      <View style={[styles.headerContainer, { paddingTop: insets.top + 8 }]}>
-        <ScreenHeader
-          title="Leaderboard"
-          subtitle="Top learners earning XP and climbing ranks."
-        />
+      <ResponsiveContainer maxWidth={900} paddingHorizontal={0} style={{ width: '100%' }}>
+        <View style={[styles.headerContainer, { paddingTop: insets.top + 8 }]}>
+          <ScreenHeader
+            title="Leaderboard"
+            subtitle="Top learners earning XP and climbing ranks."
+          />
 
-        {/* Timeframe tabs — plain text, underline on active */}
-        <View style={styles.timeframeRow}>
-          {TIMEFRAMES.map((tf, index) => {
-            const isActive = activeIndex === index;
-            return (
-              <Pressable
-                key={tf.id}
-                onPress={() => handleTabPress(index)}
-                style={styles.timeframeTab}
-                hitSlop={8}
-              >
-                <Text
-                  style={[
-                    styles.timeframeText,
-                    isActive && styles.timeframeTextActive,
-                  ]}
+          {/* Timeframe tabs — plain text, underline on active */}
+          <View style={styles.timeframeRow}>
+            {TIMEFRAMES.map((tf, index) => {
+              const isActive = activeIndex === index;
+              return (
+                <Pressable
+                  key={tf.id}
+                  onPress={() => handleTabPress(index)}
+                  style={styles.timeframeTab}
+                  hitSlop={8}
                 >
-                  {tf.label}
-                </Text>
-                {isActive && <View style={styles.timeframeUnderline} />}
-              </Pressable>
-            );
-          })}
+                  <Text
+                    style={[
+                      styles.timeframeText,
+                      isActive && styles.timeframeTextActive,
+                    ]}
+                  >
+                    {tf.label}
+                  </Text>
+                  {isActive && <View style={styles.timeframeUnderline} />}
+                </Pressable>
+              );
+            })}
+          </View>
         </View>
-      </View>
+      </ResponsiveContainer>
 
       <PagerView
         ref={pagerRef}

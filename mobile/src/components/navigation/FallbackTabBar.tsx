@@ -5,6 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IconHome, IconBook, IconTrophy, IconUser } from '@tabler/icons-react-native';
 import { fontFamilies, fontSizes } from '@/theme';
 import * as haptics from '@/lib/haptics';
+import { useResponsive } from '@/hooks/useResponsive';
+
 
 const ACCENT = '#FF8A1E';
 const MUTED = '#8E8E9F';
@@ -28,6 +30,7 @@ export type FallbackTabBarProps = {
 
 export default function FallbackTabBar({ state, descriptors, navigation }: FallbackTabBarProps) {
   const insets = useSafeAreaInsets();
+  const { isTablet } = useResponsive();
   const visible = useMemo(
     () => state.routes.filter((route) => descriptors[route.key]?.options?.href !== null),
     [state.routes, descriptors],
@@ -59,7 +62,7 @@ export default function FallbackTabBar({ state, descriptors, navigation }: Fallb
   return (
     <View style={[styles.wrap, { paddingBottom: Math.max(insets.bottom, 8) }]}>
       <View
-        style={styles.row}
+        style={[styles.row, isTablet && styles.rowTablet]}
         onLayout={(e) => setBarWidth(e.nativeEvent.layout.width)}
       >
         {tabWidth > 0 && (
@@ -122,6 +125,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     position: 'relative',
+  },
+  rowTablet: {
+    maxWidth: 640,
+    width: '100%',
+    alignSelf: 'center',
   },
   indicator: {
     position: 'absolute',

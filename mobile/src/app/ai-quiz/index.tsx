@@ -39,6 +39,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import GlassSurface from '@/components/ui/GlassSurface';
 import OfflineBanner from '@/components/common/OfflineBanner';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
 import { useTheme, fontFamilies, fontSizes, radii, spacing } from '@/theme';
 import { AI, FAINT, INK, MUTED, TINT_AI, TINT_GLASS } from '@/theme/brand';
 import * as haptics from '@/lib/haptics';
@@ -292,7 +293,8 @@ export default function MobileAIQuizHubScreen() {
       <ScreenBackdrop />
       <OfflineBanner />
 
-      <View style={s.topBar}>
+      <ResponsiveContainer maxWidth={760} style={{ flex: 1 }}>
+        <View style={s.topBar}>
         <Pressable
           onPress={() => {
             haptics.light();
@@ -495,6 +497,7 @@ export default function MobileAIQuizHubScreen() {
           )}
         </View>
       </ScrollView>
+      </ResponsiveContainer>
     </SafeAreaView>
   );
 }

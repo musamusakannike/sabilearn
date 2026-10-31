@@ -12,6 +12,7 @@ import InfoStepBlock from './InfoStepBlock';
 import QuizStep from './QuizStep';
 import ExerciseRunner from './ExerciseRunner';
 import InLessonAiTutor from './InLessonAiTutor';
+import { ResponsiveContainer } from '@/components/ResponsiveContainer';
 
 // Confetti colours matching the brand palette
 const CONFETTI_COLORS = ['#FF8A1E', '#22C55E', '#3B82F6', '#EC4899', '#EAB308', '#8B5CF6'];
@@ -191,70 +192,72 @@ export default function StepPlayer({
   if (finished && isCourseComplete) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.bgApp }]}>
-        {/* Two confetti cannons — one from each top corner */}
-        <ConfettiCannon
-          ref={courseConfettiLeftRef}
-          count={180}
-          origin={{ x: -10, y: 0 }}
-          autoStart={false}
-          fadeOut
-          colors={CONFETTI_COLORS}
-          explosionSpeed={400}
-          fallSpeed={3500}
-        />
-        <ConfettiCannon
-          ref={courseConfettiRightRef}
-          count={180}
-          origin={{ x: 420, y: 0 }}
-          autoStart={false}
-          fadeOut
-          colors={CONFETTI_COLORS}
-          explosionSpeed={400}
-          fallSpeed={3500}
-        />
+        <ResponsiveContainer maxWidth={800} paddingHorizontal={0} style={{ flex: 1, width: '100%' }}>
+          {/* Two confetti cannons — one from each top corner */}
+          <ConfettiCannon
+            ref={courseConfettiLeftRef}
+            count={180}
+            origin={{ x: -10, y: 0 }}
+            autoStart={false}
+            fadeOut
+            colors={CONFETTI_COLORS}
+            explosionSpeed={400}
+            fallSpeed={3500}
+          />
+          <ConfettiCannon
+            ref={courseConfettiRightRef}
+            count={180}
+            origin={{ x: 420, y: 0 }}
+            autoStart={false}
+            fadeOut
+            colors={CONFETTI_COLORS}
+            explosionSpeed={400}
+            fallSpeed={3500}
+          />
 
-        <View style={styles.headerRow}>
-          <Pressable onPress={onClose} hitSlop={12} style={styles.closeBtn}>
-            <IconX size={26} color={colors.textPrimary} />
-          </Pressable>
-        </View>
+          <View style={styles.headerRow}>
+            <Pressable onPress={onClose} hitSlop={12} style={styles.closeBtn}>
+              <IconX size={26} color={colors.textPrimary} />
+            </Pressable>
+          </View>
 
-        <View style={styles.congratsWrap}>
-          {/* Trophy icon — tap to re-fire confetti */}
-          <Pressable
-            onPress={() => {
-              haptics.success();
-              courseConfettiLeftRef.current?.start();
-              courseConfettiRightRef.current?.start();
-            }}
-          >
-            <View style={[styles.congratsIcon, { backgroundColor: 'rgba(255,138,30,0.12)' }]}>
-              <IconAward size={52} color="#FF8A1E" />
+          <View style={styles.congratsWrap}>
+            {/* Trophy icon — tap to re-fire confetti */}
+            <Pressable
+              onPress={() => {
+                haptics.success();
+                courseConfettiLeftRef.current?.start();
+                courseConfettiRightRef.current?.start();
+              }}
+            >
+              <View style={[styles.congratsIcon, { backgroundColor: 'rgba(255,138,30,0.12)' }]}>
+                <IconAward size={52} color="#FF8A1E" />
+              </View>
+            </Pressable>
+
+            <View style={[styles.xpBadge, { backgroundColor: '#FF8A1E' }]}>
+              <Text style={styles.xpBadgeText}>🏆 Course Complete!</Text>
             </View>
-          </Pressable>
 
-          <View style={[styles.xpBadge, { backgroundColor: '#FF8A1E' }]}>
-            <Text style={styles.xpBadgeText}>🏆 Course Complete!</Text>
+            <Text style={[styles.congratsTitle, { color: colors.textPrimary, fontSize: 30 }]}>
+              Outstanding! 🎉
+            </Text>
+            <Text style={[styles.congratsSub, { color: colors.textSecondary }]}>
+              You've completed every topic in this course. Keep the momentum going — your next adventure awaits!
+            </Text>
+
+            <View style={[styles.completedPill, { backgroundColor: 'rgba(255,138,30,0.08)', borderColor: 'rgba(255,138,30,0.3)' }]}>
+              <IconCheck size={16} color="#FF8A1E" />
+              <Text style={[styles.completedPillText, { color: '#FF8A1E' }]}>All topics completed · Progress saved</Text>
+            </View>
           </View>
 
-          <Text style={[styles.congratsTitle, { color: colors.textPrimary, fontSize: 30 }]}>
-            Outstanding! 🎉
-          </Text>
-          <Text style={[styles.congratsSub, { color: colors.textSecondary }]}>
-            You've completed every topic in this course. Keep the momentum going — your next adventure awaits!
-          </Text>
-
-          <View style={[styles.completedPill, { backgroundColor: 'rgba(255,138,30,0.08)', borderColor: 'rgba(255,138,30,0.3)' }]}>
-            <IconCheck size={16} color="#FF8A1E" />
-            <Text style={[styles.completedPillText, { color: '#FF8A1E' }]}>All topics completed · Progress saved</Text>
+          <View style={styles.footer}>
+            <Pressable onPress={onClose} style={styles.orangeContinueBtn}>
+              <Text style={styles.orangeContinueText}>Back to Course</Text>
+            </Pressable>
           </View>
-        </View>
-
-        <View style={styles.footer}>
-          <Pressable onPress={onClose} style={styles.orangeContinueBtn}>
-            <Text style={styles.orangeContinueText}>Back to Course</Text>
-          </Pressable>
-        </View>
+        </ResponsiveContainer>
       </SafeAreaView>
     );
   }
@@ -266,58 +269,60 @@ export default function StepPlayer({
   if (finished) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.bgApp }]}>
-        {/* Confetti fires from top-left corner */}
-        <ConfettiCannon
-          ref={topicConfettiRef}
-          count={130}
-          origin={{ x: -10, y: 0 }}
-          autoStart={false}
-          fadeOut
-          colors={CONFETTI_COLORS}
-          explosionSpeed={350}
-          fallSpeed={3000}
-        />
+        <ResponsiveContainer maxWidth={800} paddingHorizontal={0} style={{ flex: 1, width: '100%' }}>
+          {/* Confetti fires from top-left corner */}
+          <ConfettiCannon
+            ref={topicConfettiRef}
+            count={130}
+            origin={{ x: -10, y: 0 }}
+            autoStart={false}
+            fadeOut
+            colors={CONFETTI_COLORS}
+            explosionSpeed={350}
+            fallSpeed={3000}
+          />
 
-        <View style={styles.headerRow}>
-          <Pressable onPress={onClose} hitSlop={12} style={styles.closeBtn}>
-            <IconX size={26} color={colors.textPrimary} />
-          </Pressable>
-        </View>
+          <View style={styles.headerRow}>
+            <Pressable onPress={onClose} hitSlop={12} style={styles.closeBtn}>
+              <IconX size={26} color={colors.textPrimary} />
+            </Pressable>
+          </View>
 
-        <View style={styles.congratsWrap}>
-          {/* Tap the icon to re-fire confetti */}
-          <Pressable
-            onPress={() => {
-              haptics.success();
-              topicConfettiRef.current?.start();
-            }}
-            hitSlop={8}
-          >
-            <View style={[styles.congratsIcon, { backgroundColor: 'rgba(34, 197, 94, 0.12)' }]}>
-              <IconConfetti size={48} color="#16A34A" />
+          <View style={styles.congratsWrap}>
+            {/* Tap the icon to re-fire confetti */}
+            <Pressable
+              onPress={() => {
+                haptics.success();
+                topicConfettiRef.current?.start();
+              }}
+              hitSlop={8}
+            >
+              <View style={[styles.congratsIcon, { backgroundColor: 'rgba(34, 197, 94, 0.12)' }]}>
+                <IconConfetti size={48} color="#16A34A" />
+              </View>
+            </Pressable>
+
+            <View style={styles.xpBadge}>
+              <Text style={styles.xpBadgeText}>+{topic.xp || 50} XP</Text>
             </View>
-          </Pressable>
 
-          <View style={styles.xpBadge}>
-            <Text style={styles.xpBadgeText}>+{topic.xp || 50} XP</Text>
+            <Text style={[styles.congratsTitle, { color: colors.textPrimary }]}>Lesson Complete!</Text>
+            <Text style={[styles.congratsSub, { color: colors.textSecondary }]}>
+              You&apos;ve successfully finished &ldquo;{topic.title}&rdquo;.
+            </Text>
+
+            <View style={[styles.completedPill, { backgroundColor: 'rgba(34, 197, 94, 0.08)', borderColor: 'rgba(34, 197, 94, 0.2)' }]}>
+              <IconCheck size={16} color="#16A34A" />
+              <Text style={styles.completedPillText}>Progress saved</Text>
+            </View>
           </View>
 
-          <Text style={[styles.congratsTitle, { color: colors.textPrimary }]}>Lesson Complete!</Text>
-          <Text style={[styles.congratsSub, { color: colors.textSecondary }]}>
-            You&apos;ve successfully finished &ldquo;{topic.title}&rdquo;.
-          </Text>
-
-          <View style={[styles.completedPill, { backgroundColor: 'rgba(34, 197, 94, 0.08)', borderColor: 'rgba(34, 197, 94, 0.2)' }]}>
-            <IconCheck size={16} color="#16A34A" />
-            <Text style={styles.completedPillText}>Progress saved</Text>
+          <View style={styles.footer}>
+            <Pressable accessibilityRole="button" accessibilityLabel="Continue to next lesson" onPress={onContinue || onClose} style={styles.orangeContinueBtn}>
+              <Text style={styles.orangeContinueText}>Continue</Text>
+            </Pressable>
           </View>
-        </View>
-
-        <View style={styles.footer}>
-          <Pressable accessibilityRole="button" accessibilityLabel="Continue to next lesson" onPress={onContinue || onClose} style={styles.orangeContinueBtn}>
-            <Text style={styles.orangeContinueText}>Continue</Text>
-          </Pressable>
-        </View>
+        </ResponsiveContainer>
       </SafeAreaView>
     );
   }
@@ -330,8 +335,9 @@ export default function StepPlayer({
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.bgApp }]} edges={['top', 'bottom']}>
-      {/* Top Header Bar */}
-      <View style={styles.headerRow}>
+      <ResponsiveContainer maxWidth={800} paddingHorizontal={0} style={{ flex: 1, width: '100%' }}>
+        {/* Top Header Bar */}
+        <View style={styles.headerRow}>
         <Pressable accessibilityRole="button" accessibilityLabel="Close lesson" onPress={onClose} hitSlop={12} style={styles.closeBtn}>
           <IconX size={26} color={colors.textPrimary} />
         </Pressable>
@@ -440,7 +446,8 @@ export default function StepPlayer({
           </Pressable>
         )}
       </View>
-    </SafeAreaView>
+    </ResponsiveContainer>
+  </SafeAreaView>
   );
 }
 
