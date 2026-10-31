@@ -1,0 +1,43 @@
+name: Publish mobile EAS update
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: EAS branch to publish to
+        required: true
+        default: production
+        type: string
+      message:
+        description: Update message
+        required: true
+        default: Manual EAS update
+        type: string
+
+jobs:
+  publish-update:
+    name: Publish iOS and Android update
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Publish EAS update
+        run: npx eas-cli@latest update --branch "$EAS_BRANCH" --platform all --message "$UPDATE_MESSAGE" --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EAS_BRANCH: ${{ inputs.branch }}
+          UPDATE_MESSAGE: ${{ inputs.message }}
