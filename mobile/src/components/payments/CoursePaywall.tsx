@@ -19,20 +19,20 @@ interface CoursePaywallProps {
 export default function CoursePaywall({ course, paymentStatus, onUnlocked }: CoursePaywallProps) {
   const iap = useIapPurchase();
   const paystack = usePaystackPurchase();
-  const isAndroid = Platform.OS === 'android';
+  const isPaystack = Platform.OS === 'android' || Platform.OS === 'web';
   const subActive = paymentStatus?.subscription?.status === 'active';
-  const busy = isAndroid ? paystack.busy : iap.busy;
-  const priceString = isAndroid
+  const busy = isPaystack ? paystack.busy : iap.busy;
+  const priceString = isPaystack
     ? paystack.priceString
     : iap.priceString;
 
   const onSubscribe = async () => {
-    const ok = isAndroid ? await paystack.purchaseSubscription() : await iap.purchase();
+    const ok = isPaystack ? await paystack.purchaseSubscription() : await iap.purchase();
     if (ok) onUnlocked();
   };
 
   const onBuyCourse = async () => {
-    if (!isAndroid) return;
+    if (!isPaystack) return;
     const ok = await paystack.purchaseCourse(course._id, course.price);
     if (ok) onUnlocked();
   };
@@ -44,7 +44,7 @@ export default function CoursePaywall({ course, paymentStatus, onUnlocked }: Cou
         <Text style={styles.title}>Premium course</Text>
       </View>
       <Text style={styles.body}>
-        {isAndroid
+        {isPaystack
           ? `${course.title} is a premium course. Pay with Paystack to unlock this course, or subscribe for all-access.`
           : `${course.title} is included in SabiLearn Premium. Subscribe with the App Store to unlock every premium course.`}
       </Text>
@@ -53,7 +53,7 @@ export default function CoursePaywall({ course, paymentStatus, onUnlocked }: Cou
           Subscribe{priceString ? ` · ${priceString}` : ''}
         </Button>
       )}
-      {isAndroid && !subActive && course.price > 0 && (
+      {isPaystack && !subActive && course.price > 0 && (
         <Button fullWidth variant="secondary" loading={busy} onPress={() => void onBuyCourse()}>
           Unlock this course · {formatKobo(course.price)}
         </Button>

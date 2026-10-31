@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { usePaystack } from 'react-native-paystack-webview';
 import { useAuthStore } from '@/store/auth.store';
 import { paymentApi } from '@/lib/api';
@@ -13,7 +13,8 @@ function apiErrorMessage(err: unknown, fallback: string): string {
 
 export function usePaystackPurchase() {
   const user = useAuthStore((s) => s.user);
-  const { popup } = usePaystack();
+  const paystackContext = usePaystack();
+  const popup = paystackContext?.popup;
   const [busy, setBusy] = useState(false);
 
   const priceString = formatKobo(SUBSCRIPTION_AMOUNT_KOBO);
@@ -36,12 +37,17 @@ export function usePaystackPurchase() {
   const checkout = useCallback(
     async (opts: { email: string; amountKobo: number; reference: string }): Promise<boolean> => {
       return new Promise((resolve) => {
+        if (!popup) {
+          Alert.alert('Payment error', 'Paystack popup is not available.');
+          resolve(false);
+          return;
+        }
         popup.checkout({
           email: opts.email,
           amount: koboToNaira(opts.amountKobo),
           reference: opts.reference,
           metadata: {
-            platform: 'android',
+            platform: Platform.OS,
             source: 'mobile',
           },
           onSuccess: () => {
@@ -59,32 +65,50 @@ export function usePaystackPurchase() {
     [complete, popup]
   );
 
-  const purchaseSubscription = useCallback(async (): Promise<boolean> => {
-    if (!user?.email) {
-      Alert.alert('Sign in required', 'Sign in to subscribe.');
-      return false;
-    }
-    if (!isPaystackConfigured()) {
-      Alert.alert('Payments unavailable', 'Paystack is not configured for this build.');
-      return false;
-    }
-    setBusy(true);
-    try {
-      const res = await paymentApi.initializeManualSubscription({ clientCheckout: true });
-      const { reference, amount } = res.data.data;
-      return await checkout({
-        email: user.email,
-        amountKobo: amount ?? SUBSCRIPTION_AMOUNT_KOBO,
-        reference,
-      });
-    } catch (err) {
-      haptics.error();
-      Alert.alert('Could not start payment', apiErrorMessage(err, 'Please try again.'));
-      return false;
-    } finally {
-      setBusy(false);
-    }
-  }, [checkout, user?.email]);
+  const purchaseSubscription = useCallback(
+    async (opts?: { recurring?: boolean }): Promise<boolean> => {
+      if (!user?.email) {
+        Alert.alert('Sign in required', 'Sign in to subscribe.');
+        return false;
+      }
+      if (!isPaystackConfigured()) {
+        Alert.alert('Payments unavailable', 'Paystack is not configured for this build.');
+        return false;
+      }
+      setBusy(true);
+      try {
+        if (Platform.OS === 'web') {
+          // Web implementation matches frontend: redirect browser to Paystack authorizationUrl
+          const res = opts?.recurring
+            ? await paymentApi.initializeSubscription()
+            : await paymentApi.initializeManualSubscription();
+          const authorizationUrl = res.data?.data?.authorizationUrl;
+          if (authorizationUrl && typeof window !== 'undefined') {
+            window.location.href = authorizationUrl;
+            return true;
+          }
+          throw new Error('Payment gateway did not return an authorization URL.');
+        }
+
+        const res = await paymentApi.initializeManualSubscription({ clientCheckout: true });
+        const { reference, amount } = res.data.data;
+        return await checkout({
+          email: user.email,
+          amountKobo: amount ?? SUBSCRIPTION_AMOUNT_KOBO,
+          reference,
+        });
+      } catch (err) {
+        haptics.error();
+        Alert.alert('Could not start payment', apiErrorMessage(err, 'Please try again.'));
+        return false;
+      } finally {
+        if (Platform.OS !== 'web') {
+          setBusy(false);
+        }
+      }
+    },
+    [checkout, user?.email]
+  );
 
   const purchaseCourse = useCallback(
     async (courseId: string, amountKobo: number): Promise<boolean> => {
@@ -98,6 +122,17 @@ export function usePaystackPurchase() {
       }
       setBusy(true);
       try {
+        if (Platform.OS === 'web') {
+          // Web implementation matches frontend: redirect browser to Paystack authorizationUrl
+          const res = await paymentApi.initializeCoursePurchase(courseId);
+          const authorizationUrl = res.data?.data?.authorizationUrl;
+          if (authorizationUrl && typeof window !== 'undefined') {
+            window.location.href = authorizationUrl;
+            return true;
+          }
+          throw new Error('Payment gateway did not return an authorization URL.');
+        }
+
         const res = await paymentApi.initializeCoursePurchase(courseId, { clientCheckout: true });
         const { reference, amount } = res.data.data;
         return await checkout({
@@ -110,7 +145,9 @@ export function usePaystackPurchase() {
         Alert.alert('Could not start payment', apiErrorMessage(err, 'Please try again.'));
         return false;
       } finally {
-        setBusy(false);
+        if (Platform.OS !== 'web') {
+          setBusy(false);
+        }
       }
     },
     [checkout, user?.email]

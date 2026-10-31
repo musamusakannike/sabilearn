@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import { getToken, deleteToken } from './secureStorage';
 
@@ -172,22 +173,29 @@ export const playgroundApi = {
 };
 
 // Payment callback URL scheme
+export const getPaymentCallbackUrl = (): string => {
+  if (Platform.OS === 'web' && typeof window !== 'undefined' && window.location?.origin) {
+    return `${window.location.origin}/payment-callback`;
+  }
+  return 'sabilearn://payment-callback';
+};
+
 export const PAYMENT_CALLBACK_URL = 'sabilearn://payment-callback';
 
 export const paymentApi = {
-  initializeCoursePurchase: (courseId: string, opts?: { clientCheckout?: boolean }) =>
+  initializeCoursePurchase: (courseId: string, opts?: { clientCheckout?: boolean; callbackUrl?: string }) =>
     api.post(`/payments/courses/${courseId}/initialize`, {
-      callbackUrl: PAYMENT_CALLBACK_URL,
+      callbackUrl: opts?.callbackUrl ?? getPaymentCallbackUrl(),
       clientCheckout: opts?.clientCheckout,
     }),
-  initializeSubscription: (opts?: { clientCheckout?: boolean }) =>
+  initializeSubscription: (opts?: { clientCheckout?: boolean; callbackUrl?: string }) =>
     api.post('/payments/subscription/initialize', {
-      callbackUrl: PAYMENT_CALLBACK_URL,
+      callbackUrl: opts?.callbackUrl ?? getPaymentCallbackUrl(),
       clientCheckout: opts?.clientCheckout,
     }),
-  initializeManualSubscription: (opts?: { clientCheckout?: boolean }) =>
+  initializeManualSubscription: (opts?: { clientCheckout?: boolean; callbackUrl?: string }) =>
     api.post('/payments/subscription/manual/initialize', {
-      callbackUrl: PAYMENT_CALLBACK_URL,
+      callbackUrl: opts?.callbackUrl ?? getPaymentCallbackUrl(),
       clientCheckout: opts?.clientCheckout,
     }),
   verify: (reference: string) => api.get(`/payments/verify/${reference}`),

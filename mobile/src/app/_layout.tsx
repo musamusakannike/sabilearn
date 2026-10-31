@@ -73,7 +73,11 @@ function AppContent() {
   useEffect(() => {
     if (!isInitialized || !fontsLoaded || !onboardingInitialized) return;
 
-    const isPublicPage = segments[0] === '(auth)' || segments[0] === 'privacy' || segments[0] === 'terms';
+    const isPublicPage =
+      segments[0] === '(auth)' ||
+      segments[0] === 'privacy' ||
+      segments[0] === 'terms' ||
+      segments[0] === 'payment-callback';
 
     if (!isAuthenticated && !isPublicPage) {
       if (!hasOnboarded) {

@@ -33,7 +33,9 @@ export default function SubscribeScreen() {
   const { inReview } = useAppReview();
   const iap = useIapPurchase();
   const paystack = usePaystackPurchase();
-  const isAndroid = Platform.OS === 'android';
+  const isAppleIap = Platform.OS === 'ios';
+  const isPaystack = Platform.OS === 'android' || Platform.OS === 'web';
+  const isWeb = Platform.OS === 'web';
   const [status, setStatus] = useState<PaymentStatus | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -60,13 +62,13 @@ export default function SubscribeScreen() {
   const onRefresh = useCallback(async () => {
     haptics.light();
     setRefreshing(true);
-    await Promise.all([load(), isAndroid ? Promise.resolve() : iap.reload()]);
+    await Promise.all([load(), isAppleIap ? iap.reload() : Promise.resolve()]);
     setRefreshing(false);
-  }, [load, iap, isAndroid]);
+  }, [load, iap, isAppleIap]);
 
-  const onPurchase = async () => {
-    const ok = isAndroid ? await paystack.purchaseSubscription() : await iap.purchase();
-    if (ok) {
+  const onPurchase = async (recurring = false) => {
+    const ok = isPaystack ? await paystack.purchaseSubscription({ recurring }) : await iap.purchase();
+    if (ok && !isWeb) {
       Alert.alert('You are Premium', 'All premium courses are unlocked.');
       await load();
     }
@@ -91,10 +93,10 @@ export default function SubscribeScreen() {
   const isActive = sub?.status === 'active';
   const isIap = sub?.billingType === 'iap';
   const isWebBilled = sub?.billingType === 'manual' || sub?.billingType === 'recurring';
-  const busy = isAndroid ? paystack.busy : iap.busy;
-  const priceString = isAndroid ? paystack.priceString : iap.priceString;
-  const loadingOffer = isAndroid ? false : iap.loadingOffer;
-  const perks = isAndroid ? ANDROID_PERKS : IOS_PERKS;
+  const busy = isPaystack ? paystack.busy : iap.busy;
+  const priceString = isPaystack ? paystack.priceString : iap.priceString;
+  const loadingOffer = isPaystack ? false : iap.loadingOffer;
+  const perks = isPaystack ? ANDROID_PERKS : IOS_PERKS;
 
   return (
     <View style={styles.container}>
@@ -107,7 +109,7 @@ export default function SubscribeScreen() {
         <ScreenHeader
           title="All-access"
           subtitle={
-            isAndroid
+            isPaystack
               ? 'Unlock every premium course with Paystack.'
               : 'Unlock every premium course with an App Store subscription.'
           }
@@ -122,16 +124,16 @@ export default function SubscribeScreen() {
               {sub?.currentPeriodEnd ? (
                 <>
                   {' '}
-                  {isWebBilled || isAndroid ? 'Access ends' : 'Renews'} on {new Date(sub.currentPeriodEnd).toLocaleDateString()}.
+                  {isWebBilled || isPaystack ? 'Access ends' : 'Renews'} on {new Date(sub.currentPeriodEnd).toLocaleDateString()}.
                 </>
               ) : null}
             </Text>
-            {isWebBilled && !isAndroid ? (
+            {isWebBilled && isAppleIap ? (
               <Text style={styles.hint}>
                 This plan was started on the website. Renew there, or subscribe in the app with Apple when it ends.
               </Text>
             ) : null}
-            {isIap && !isAndroid ? (
+            {isIap && isAppleIap ? (
               <Button fullWidth variant="secondary" onPress={openManage}>
                 Manage subscription
               </Button>
@@ -161,23 +163,34 @@ export default function SubscribeScreen() {
             <View style={styles.perkRow}>
               <IconSparkles size={16} color="#1F9D55" />
               <Text style={styles.perk}>
-                {isAndroid
+                {isPaystack
                   ? 'Payment is processed by Paystack. Access lasts 30 days per payment.'
                   : 'Payment is processed by Apple. You can cancel anytime.'}
               </Text>
             </View>
 
-            <Button fullWidth loading={busy} disabled={loadingOffer} onPress={() => void onPurchase()}>
-              Subscribe{priceString ? ` · ${priceString}` : ''}
-            </Button>
-            {!isAndroid && (
+            {isWeb ? (
+              <View style={{ gap: spacing.sm }}>
+                <Button fullWidth loading={busy} onPress={() => void onPurchase(false)}>
+                  Subscribe with bank transfer / USSD{priceString ? ` · ${priceString}` : ''}
+                </Button>
+                <Button fullWidth variant="secondary" loading={busy} onPress={() => void onPurchase(true)}>
+                  Subscribe with debit card (auto-renews)
+                </Button>
+              </View>
+            ) : (
+              <Button fullWidth loading={busy} disabled={loadingOffer} onPress={() => void onPurchase(false)}>
+                Subscribe{priceString ? ` · ${priceString}` : ''}
+              </Button>
+            )}
+            {isAppleIap && (
               <Button fullWidth variant="secondary" loading={busy} onPress={() => void onRestore()}>
                 Restore purchases
               </Button>
             )}
             <Text style={styles.hint}>
-              {isAndroid
-                ? 'This is a one-month all-access pass. It does not auto-renew. Individual courses can also be bought in the app.'
+              {isPaystack
+                ? 'Individual courses can also be bought directly on each course page.'
                 : 'Subscriptions auto-renew unless cancelled at least 24 hours before the period ends. Individual courses can still be bought on sabilearn.online.'}
             </Text>
           </GlassSurface>
