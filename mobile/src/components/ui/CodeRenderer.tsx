@@ -1,83 +1,34 @@
-import { useCallback, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import WebView, { WebViewMessageEvent } from 'react-native-webview';
+import { useMemo, useState } from 'react';
+import { View, Text, StyleSheet, Pressable, ScrollView, Platform } from 'react-native';
+import Highlighter from 'react-syntax-highlighter';
+import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import { IconCopy, IconCheck } from '@tabler/icons-react-native';
 import { fontFamilies, fontSizes, radii, spacing } from '@/theme';
-import LoadingSpinner from './LoadingSpinner';
 
 interface CodeRendererProps {
   code: string;
   language?: string;
 }
 
-const HLJS_VERSION = '11.9.0';
-
-// Dark code-block styling, independent of the light app theme — matches the
-// LatexRenderer WebView+CDN pattern, swapping KaTeX for highlight.js.
-function buildHtml(code: string, language: string): string {
-  const safe = JSON.stringify(code);
-  const lang = JSON.stringify(language || 'plaintext');
-  return `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@${HLJS_VERSION}/styles/atom-one-dark.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/highlight.js@${HLJS_VERSION}/lib/highlight.min.js"></script>
-<style>
-  html, body { margin: 0; padding: 0; background: #1E1E2A; }
-  pre { margin: 0; padding: 14px 16px; overflow-x: auto; }
-  code { font-family: 'Menlo', 'Courier New', monospace; font-size: 13px; line-height: 1.55; white-space: pre; }
-  ::-webkit-scrollbar { height: 4px; }
-</style>
-</head>
-<body>
-<pre><code id="code"></code></pre>
-<script>
-  (function () {
-    var el = document.getElementById('code');
-    el.textContent = ${safe};
-    try {
-      var lang = ${lang};
-      if (lang && hljs.getLanguage(lang)) {
-        el.innerHTML = hljs.highlight(${safe}, { language: lang }).value;
-      } else {
-        el.innerHTML = hljs.highlightAuto(${safe}).value;
-      }
-    } catch (e) {}
-    function report() {
-      var h = Math.ceil(document.body.getBoundingClientRect().height);
-      window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'height', height: h }));
-    }
-    if (document.readyState === 'complete') {
-      requestAnimationFrame(report);
-    } else {
-      window.addEventListener('load', function () { requestAnimationFrame(report); });
-    }
-  })();
-</script>
-</body>
-</html>`;
-}
+const FONT_FAMILY = Platform.OS === 'ios' ? 'Menlo' : 'monospace';
+const FONT_SIZE = 13;
+const LINE_HEIGHT = 20;
 
 export default function CodeRenderer({ code, language }: CodeRendererProps) {
-  const webviewRef = useRef<WebView>(null);
-  const [height, setHeight] = useState(80);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const html = buildHtml(code, language ?? '');
-
-  const onMessage = useCallback((event: WebViewMessageEvent) => {
-    try {
-      const data = JSON.parse(event.nativeEvent.data);
-      if (data.type === 'height' && typeof data.height === 'number' && data.height > 0) {
-        setHeight(data.height);
-        setIsLoaded(true);
+  // Clean styles to remove any web-only or conflicting properties
+  const cleanStylesheet = useMemo(() => {
+    const clean: Record<string, any> = {};
+    for (const [key, value] of Object.entries(atomOneDark)) {
+      if (typeof value === 'object' && value !== null) {
+        const { display, overflowX, ...rest } = value as Record<string, any>;
+        clean[key] = rest;
+      } else {
+        clean[key] = value;
       }
-    } catch {
-      // ignore malformed messages
     }
+    return clean;
   }, []);
 
   const handleCopy = async () => {
@@ -92,10 +43,64 @@ export default function CodeRenderer({ code, language }: CodeRendererProps) {
     }
   };
 
+  const renderNode = (nodes: any[], key = '0'): any => {
+    return nodes.reduce((acc: any[], node: any, idx: number) => {
+      const nodeKey = `${key}.${idx}`;
+
+      if (node.children) {
+        const classNames: string[] = node.properties?.className || [];
+        const matchedStyles = classNames.map((c) => cleanStylesheet[c]).filter(Boolean);
+
+        const childElement = (
+          <Text
+            key={nodeKey}
+            style={[
+              {
+                color: cleanStylesheet.hljs?.color || '#abb2bf',
+                fontFamily: FONT_FAMILY,
+                fontSize: FONT_SIZE,
+                lineHeight: LINE_HEIGHT,
+              },
+              ...matchedStyles,
+            ]}
+          >
+            {renderNode(node.children, nodeKey)}
+          </Text>
+        );
+        acc.push(childElement);
+      } else if (node.value) {
+        acc.push(node.value);
+      }
+
+      return acc;
+    }, []);
+  };
+
+  const nativeRenderer = ({ rows }: { rows: any[] }) => {
+    return (
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.codeContent}
+      >
+        <Text
+          style={[
+            styles.baseCodeText,
+            { color: cleanStylesheet.hljs?.color || '#abb2bf' },
+          ]}
+        >
+          {renderNode(rows)}
+        </Text>
+      </ScrollView>
+    );
+  };
+
+  const normalizedLanguage = (language || '').toLowerCase().trim();
+
   return (
-    <View style={[styles.container, { height }]}>
+    <View style={styles.container}>
       <View style={styles.langBar}>
-        <Text style={styles.langLabel}>{language ? language.toLowerCase() : 'code'}</Text>
+        <Text style={styles.langLabel}>{normalizedLanguage || 'code'}</Text>
         <Pressable onPress={handleCopy} style={styles.copyBtn} hitSlop={8}>
           {copied ? (
             <View style={styles.copyRow}>
@@ -110,24 +115,19 @@ export default function CodeRenderer({ code, language }: CodeRendererProps) {
           )}
         </Pressable>
       </View>
-      {!isLoaded && (
-        <View style={styles.loadingOverlay} pointerEvents="none">
-          <LoadingSpinner size="small" fill={false} />
-        </View>
-      )}
-      <WebView
-        ref={webviewRef}
-        originWhitelist={['*']}
-        source={{ html }}
-        style={[styles.webview, { height }]}
-        scrollEnabled
-        javaScriptEnabled
-        domStorageEnabled
-        onMessage={onMessage}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        containerStyle={{ height }}
-      />
+
+      <View style={styles.codeWrap}>
+        <Highlighter
+          language={normalizedLanguage || 'plaintext'}
+          style={cleanStylesheet}
+          customStyle={{ padding: 0, margin: 0, backgroundColor: 'transparent' }}
+          CodeTag={View}
+          PreTag={View}
+          renderer={nativeRenderer}
+        >
+          {code}
+        </Highlighter>
+      </View>
     </View>
   );
 }
@@ -142,9 +142,12 @@ const styles = StyleSheet.create({
   langBar: {
     paddingHorizontal: spacing.base,
     paddingTop: spacing.sm,
+    paddingBottom: spacing.xs,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.05)',
   },
   langLabel: {
     color: '#8B8BA0',
@@ -167,17 +170,17 @@ const styles = StyleSheet.create({
     fontFamily: fontFamilies.sansMedium,
     fontSize: fontSizes.xs,
   },
-  loadingOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  webview: {
+  codeWrap: {
     width: '100%',
-    backgroundColor: 'transparent',
+    paddingVertical: spacing.sm,
+  },
+  codeContent: {
+    paddingHorizontal: spacing.base,
+    paddingVertical: spacing.xs,
+  },
+  baseCodeText: {
+    fontFamily: FONT_FAMILY,
+    fontSize: FONT_SIZE,
+    lineHeight: LINE_HEIGHT,
   },
 });
