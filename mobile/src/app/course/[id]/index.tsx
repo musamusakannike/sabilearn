@@ -47,6 +47,7 @@ import * as haptics from '@/lib/haptics';
 export default function CourseDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
+  const { isDesktop } = useResponsive();
   const { inReview, androidInReview } = useAppReview();
   const colors = {
     textPrimary: INK,
@@ -235,8 +236,6 @@ export default function CourseDetailScreen() {
       </View>
     ),
   });
-
-  const { isTablet, isDesktop } = useResponsive();
 
   return (
     <View collapsable={false} style={s.container}>

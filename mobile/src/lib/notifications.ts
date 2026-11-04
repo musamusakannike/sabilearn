@@ -22,14 +22,16 @@ const LOCAL_REMINDER_ID = 'sabilearn-daily-reminder';
 
 // SDK 57's NotificationBehavior: banner and list replaced the old
 // `shouldShowAlert`, which is silently ignored if passed.
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+if (Platform.OS !== 'web') {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }),
+  });
+}
 
 async function ensureAndroidChannels(): Promise<void> {
   if (Platform.OS !== 'android') return;
@@ -199,6 +201,10 @@ export function mapActionUrlToMobileRoute(url?: string | null): string {
 export function setupNotificationHandlers(
   onNotificationTap?: (mobileRoute: string, data: any) => void
 ) {
+  if (Platform.OS === 'web') {
+    return () => {};
+  }
+
   const handleResponse = (response: Notifications.NotificationResponse) => {
     const data = response.notification.request.content.data as
       | { actionUrl?: string; url?: string; [key: string]: unknown }

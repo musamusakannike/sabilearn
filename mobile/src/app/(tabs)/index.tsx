@@ -49,6 +49,7 @@ function greetingForHour(hour: number): string {
 
 export default function DashboardHome() {
   const insets = useSafeAreaInsets();
+  const { isTablet, isDesktop } = useResponsive();
   const { user, fetchMe } = useAuthStore();
   const { inReview } = useAppReview();
   const { dashboard, isLoading, fetchDashboard } = useProgressStore();
@@ -162,8 +163,6 @@ export default function DashboardHome() {
       tint: 'rgba(91,79,232,0.14)',
     },
   ];
-
-  const { isTablet, isDesktop } = useResponsive();
 
   return (
     <View collapsable={false} style={styles.container}>
