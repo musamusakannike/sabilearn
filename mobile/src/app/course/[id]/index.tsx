@@ -8,6 +8,8 @@ import {
   Pressable,
   Share,
   RefreshControl,
+  Alert,
+  Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
@@ -97,12 +99,16 @@ export default function CourseDetailScreen() {
       setPaymentStatus(paymentRes.data.data);
 
       // Auto-expand the chapter the user should read next:
-      // 1st priority: in-progress chapter
+      // 1st priority: in-progress chapter that has actually been started
       // 2nd priority: first chapter with at least one incomplete topic
       // Fallback: first chapter
       if (fetchedChapters.length > 0) {
         const targetChapter =
-          fetchedChapters.find((ch) => ch.status === 'inprogress') ||
+          fetchedChapters.find(
+            (ch) =>
+              ch.status === 'inprogress' &&
+              ((ch.progressPercent || 0) > 0 || (ch.topics || []).some((t) => t.isCompleted || t.inProgress))
+          ) ||
           fetchedChapters.find((ch) =>
             (ch.topics || []).some((t) => !t.isCompleted)
           ) ||
@@ -155,6 +161,22 @@ export default function CourseDetailScreen() {
     } catch {
       // ignore
     }
+  };
+
+  const handleRetakeChapter = (chapter: Chapter, firstTopic: Topic) => {
+    haptics.light();
+    const message =
+      'Reviewing this chapter will open Lesson 1 for practice. Your completed progress and earned XP will not be reset.';
+    if (Platform.OS === 'web' && typeof window !== 'undefined' && typeof window.confirm === 'function') {
+      if (window.confirm(`Retake Chapter?\n\n${message}`)) {
+        handleOpenTopic(chapter, firstTopic);
+      }
+      return;
+    }
+    Alert.alert('Retake Chapter?', message, [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Retake Chapter', onPress: () => handleOpenTopic(chapter, firstTopic) },
+    ]);
   };
 
   const handleOpenTopic = (chapter: Chapter, topic: Topic) => {
@@ -390,6 +412,13 @@ export default function CourseDetailScreen() {
                 const exercise = chapter.exercise;
                 const hasExercise = !!(exercise && exercise.questions && exercise.questions.length > 0);
                 const progressPct = isCompleted ? 100 : (chapter.progressPercent || 0);
+                const hasStarted =
+                  isCompleted ||
+                  progressPct > 0 ||
+                  topics.some((t) => t.isCompleted || t.inProgress);
+                const allTopicsCompleted = topics.length > 0 && topics.every((t) => t.isCompleted);
+                const isCapstonePending =
+                  !isCompleted && hasExercise && allTopicsCompleted && !chapter.isAssessmentPassed;
 
                 return (
                   <View
@@ -408,22 +437,45 @@ export default function CourseDetailScreen() {
                         <Text style={s.chapterTitle} numberOfLines={1}>
                           {chapter.title}
                         </Text>
-                        <Badge variant={isCompleted ? 'success' : isLocked ? 'default' : isInProgress ? 'intermediate' : 'default'}>
-                          {isCompleted ? 'Completed' : isLocked ? 'Locked' : isInProgress ? 'In Progress' : 'Available'}
+                        <Badge
+                          variant={
+                            isCompleted
+                              ? 'success'
+                              : isLocked
+                              ? 'default'
+                              : isInProgress && hasStarted
+                              ? 'intermediate'
+                              : 'default'
+                          }
+                        >
+                          {isCompleted
+                            ? 'Completed'
+                            : isLocked
+                            ? 'Locked'
+                            : isInProgress && hasStarted
+                            ? 'In Progress'
+                            : 'Not Started'}
                         </Badge>
                       </View>
 
                       {/* Progress Bar & Percentage */}
-                      <View style={s.chapterProgressContainer}>
-                        <View style={s.progressBarTrack}>
-                          <View
-                            style={[
-                              s.progressBarFill,
-                              { width: `${progressPct}%` },
-                            ]}
-                          />
+                      <View style={s.chapterProgressCol}>
+                        <View style={s.chapterProgressContainer}>
+                          <View style={s.progressBarTrack}>
+                            <View
+                              style={[
+                                s.progressBarFill,
+                                { width: `${progressPct}%` },
+                              ]}
+                            />
+                          </View>
+                          <Text style={s.progressPctText}>{progressPct}%</Text>
                         </View>
-                        <Text style={s.progressPctText}>{progressPct}%</Text>
+                        {isCapstonePending && (
+                          <Text style={s.capstonePendingText}>
+                            {topics.length}/{topics.length} lessons · Capstone pending
+                          </Text>
+                        )}
                       </View>
                     </View>
 
@@ -463,7 +515,7 @@ export default function CourseDetailScreen() {
                         <Pressable
                           onPress={() => {
                             if (topics.length > 0) {
-                              handleOpenTopic(chapter, topics[0]);
+                              handleRetakeChapter(chapter, topics[0]);
                             }
                           }}
                           style={s.retakeBtn}
@@ -477,12 +529,22 @@ export default function CourseDetailScreen() {
                             const firstIncomplete = topics.find((topic) => topic.isUnlocked && !topic.isCompleted);
                             if (firstIncomplete) {
                               handleOpenTopic(chapter, firstIncomplete);
+                            } else if (isCapstonePending) {
+                              haptics.light();
+                              router.push({
+                                pathname: '/course/[id]/chapter/[chapterId]/assessment',
+                                params: { id, chapterId: chapter._id },
+                              } as any);
                             }
                           }}
                           style={s.continueBtn}
                         >
                           <Text style={s.continueBtnText}>
-                            {chapter.progressPercent && chapter.progressPercent > 0 ? 'Continue Chapter' : 'Start Chapter'}
+                            {isCapstonePending
+                              ? 'Start Capstone'
+                              : hasStarted
+                              ? 'Continue Chapter'
+                              : 'Start Chapter'}
                           </Text>
                         </Pressable>
                       )}
@@ -874,10 +936,19 @@ function makeStyles(c: any) {
       color: c.textPrimary,
       flexShrink: 1,
     },
+    chapterProgressCol: {
+      alignItems: 'flex-end',
+      gap: 2,
+    },
     chapterProgressContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 6,
+    },
+    capstonePendingText: {
+      fontSize: 10,
+      fontFamily: fontFamilies.sansMedium,
+      color: c.brandPrimaryHover,
     },
     progressBarTrack: {
       width: 56,

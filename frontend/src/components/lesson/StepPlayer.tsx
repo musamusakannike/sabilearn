@@ -40,6 +40,7 @@ export default function StepPlayer({
   const [hasCompleted, setHasCompleted] = useState(false);
   const [hasLoadedProgress, setHasLoadedProgress] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const lastAdvancedFromIndexRef = useRef<number>(-1);
 
   const { saveContentPosition, fetchTopicProgress } = useProgressStore();
   const total = steps.length;
@@ -220,6 +221,8 @@ export default function StepPlayer({
   };
 
   const handleNext = async () => {
+    if ((isQuizStep && !quizAnswered) || isSubmittingCompletion || lastAdvancedFromIndexRef.current === index) return;
+    lastAdvancedFromIndexRef.current = index;
     if (isLastStep) {
       setFinished(true);
       await markTopicComplete();
@@ -231,6 +234,7 @@ export default function StepPlayer({
 
   const handlePrev = () => {
     if (index > 0) {
+      lastAdvancedFromIndexRef.current = -1;
       setQuizAnswered(true);
       setIndex((i) => i - 1);
     }

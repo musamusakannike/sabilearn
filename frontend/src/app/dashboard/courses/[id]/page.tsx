@@ -28,6 +28,8 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import ExerciseModal from '@/components/courses/ExerciseModal';
 import CoursePaywallModal from '@/components/courses/CoursePaywallModal';
 import CoursePaywallBanner from '@/components/courses/CoursePaywallBanner';
+import Dialog from '@/components/ui/Dialog';
+import Button from '@/components/ui/Button';
 
 export default function CourseDetailsPage() {
   const params = useParams();
@@ -53,6 +55,7 @@ export default function CourseDetailsPage() {
   const [openChapters, setOpenChapters] = useState<Record<string, boolean>>({});
   const [expandedAuthors, setExpandedAuthors] = useState(false);
   const [activeExercise, setActiveExercise] = useState<{ exercise: Exercise; chapterId: string } | null>(null);
+  const [retakeTarget, setRetakeTarget] = useState<{ chapter: Chapter; topic: Topic } | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -87,12 +90,16 @@ export default function CourseDetailsPage() {
         }
 
         // Auto-expand the chapter the user should read next:
-        // 1st priority: in-progress chapter
+        // 1st priority: in-progress chapter that has actually been started
         // 2nd priority: first chapter with at least one incomplete topic
         // Fallback: first chapter
         if (fetchedChapters.length > 0) {
           const targetChapter =
-            fetchedChapters.find((ch) => ch.status === 'inprogress') ||
+            fetchedChapters.find(
+              (ch) =>
+                ch.status === 'inprogress' &&
+                ((ch.progressPercent || 0) > 0 || (ch.topics || []).some((t) => t.isCompleted || t.inProgress))
+            ) ||
             fetchedChapters.find((ch) =>
               (ch.topics || []).some((t) => !t.isCompleted)
             ) ||
@@ -419,6 +426,16 @@ export default function CourseDetailsPage() {
               const isLocked = chapter.status === 'locked';
               const isCompleted = chapter.status === 'completed';
               const isInProgress = chapter.status === 'inprogress';
+              const topics = chapter.topics || [];
+              const hasExercise = !!(chapter.exercise && chapter.exercise.questions && chapter.exercise.questions.length > 0);
+              const progressPct = isCompleted ? 100 : (chapter.progressPercent || 0);
+              const hasStarted =
+                isCompleted ||
+                progressPct > 0 ||
+                topics.some((t) => t.isCompleted || t.inProgress);
+              const allTopicsCompleted = topics.length > 0 && topics.every((t) => t.isCompleted);
+              const isCapstonePending =
+                !isCompleted && hasExercise && allTopicsCompleted && !chapter.isAssessmentPassed;
 
               return (
                 <div
@@ -444,7 +461,7 @@ export default function CourseDetailsPage() {
                             ? 'success'
                             : isLocked
                             ? 'dark'
-                            : isInProgress
+                            : isInProgress && hasStarted
                             ? 'gold'
                             : 'neutral'
                         }
@@ -455,23 +472,30 @@ export default function CourseDetailsPage() {
                           ? 'Completed'
                           : isLocked
                           ? 'Locked'
-                          : isInProgress
+                          : isInProgress && hasStarted
                           ? 'In Progress'
-                          : 'Available'}
+                          : 'Not Started'}
                       </Badge>
                     </div>
 
                     {/* Progress Bar & Percentage */}
-                    <div className="flex shrink-0 items-center gap-3">
-                      <div className="h-2 w-24 overflow-hidden rounded-full bg-[var(--surface-sunken)] sm:w-36 md:w-44">
-                        <div
-                          className="h-full rounded-full bg-[var(--brand-gold)] transition-all duration-300"
-                          style={{ width: `${isCompleted ? 100 : chapter.progressPercent || 0}%` }}
-                        />
+                    <div className="flex shrink-0 flex-col items-end gap-1">
+                      <div className="flex items-center gap-3">
+                        <div className="h-2 w-24 overflow-hidden rounded-full bg-[var(--surface-sunken)] sm:w-36 md:w-44">
+                          <div
+                            className="h-full rounded-full bg-[var(--brand-gold)] transition-all duration-300"
+                            style={{ width: `${progressPct}%` }}
+                          />
+                        </div>
+                        <span className="text-xs font-semibold text-[var(--text-muted)] md:text-sm">
+                          {progressPct}%
+                        </span>
                       </div>
-                      <span className="text-xs font-semibold text-[var(--text-muted)] md:text-sm">
-                        {isCompleted ? 100 : chapter.progressPercent || 0}%
-                      </span>
+                      {isCapstonePending && (
+                        <span className="text-[11px] font-semibold text-[var(--brand-gold-600)]">
+                          {topics.length}/{topics.length} lessons · Capstone pending
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -517,7 +541,7 @@ export default function CourseDetailsPage() {
                           onClick={() => {
                             const firstTopic = (chapter.topics || [])[0];
                             if (firstTopic) {
-                              handleOpenTopic(chapter, firstTopic);
+                              setRetakeTarget({ chapter, topic: firstTopic });
                             }
                           }}
                           className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)] px-5 py-2.5 text-sm font-semibold text-[var(--ink-900)] transition-colors hover:bg-[var(--line)]"
@@ -533,11 +557,19 @@ export default function CourseDetailsPage() {
                             );
                             if (firstIncomplete) {
                               handleOpenTopic(chapter, firstIncomplete);
+                            } else if (isCapstonePending) {
+                              router.push(`/dashboard/courses/${id}/chapters/${chapter._id}/assessment`);
                             }
                           }}
                           className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[var(--brand-gold)] px-5 py-2.5 text-sm font-bold text-slate-950 shadow-xs transition-all hover:brightness-105"
                         >
-                          <span>{chapter.progressPercent && chapter.progressPercent > 0 ? 'Continue Chapter' : 'Start Chapter'}</span>
+                          <span>
+                            {isCapstonePending
+                              ? 'Start Capstone'
+                              : hasStarted
+                              ? 'Continue Chapter'
+                              : 'Start Chapter'}
+                          </span>
                         </button>
                       )}
                     </div>
@@ -689,6 +721,35 @@ export default function CourseDetailsPage() {
           </div>
         )}
       </div>
+
+      {/* Retake Chapter Confirmation Modal */}
+      <Dialog
+        open={!!retakeTarget}
+        onClose={() => setRetakeTarget(null)}
+        title="Retake Chapter?"
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setRetakeTarget(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => {
+                if (retakeTarget) {
+                  handleOpenTopic(retakeTarget.chapter, retakeTarget.topic);
+                  setRetakeTarget(null);
+                }
+              }}
+            >
+              Retake Chapter
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm leading-relaxed text-[var(--text-muted)]">
+          Reviewing this chapter will open Lesson 1 for practice. Your completed progress and earned XP will not be reset.
+        </p>
+      </Dialog>
 
       {/* Course Paywall Modal */}
       {course && (

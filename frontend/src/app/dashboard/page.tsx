@@ -15,7 +15,6 @@ import {
   LeaderboardUser,
 } from "@/lib/types";
 import { useAuthStore } from "@/store/auth.store";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import {
   SummarizerDialog,
   QuizGeneratorDialog,
@@ -189,14 +188,6 @@ export default function DashboardHome() {
   else if (resumptionCards.length === 0 && !streak)
     speech = "“Let’s pick up where you left off.”";
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
-
   const myId = user?.id || user?._id;
 
   // Render cards list: if user has active cards, render them. If not, fallback to sample reference courses.
@@ -330,9 +321,13 @@ export default function DashboardHome() {
                 Day Streak
               </p>
               <div className="flex items-baseline gap-1 mt-0.5">
-                <span className="text-lg font-black text-stone-900">
-                  {streak}
-                </span>
+                {isLoading && !dashboard && user?.currentStreak === undefined ? (
+                  <span className="inline-block h-6 w-10 animate-pulse rounded bg-stone-200/80" />
+                ) : (
+                  <span className="text-lg font-black text-stone-900">
+                    {streak}
+                  </span>
+                )}
                 <span className="text-xs text-stone-500">Days</span>
               </div>
             </div>
@@ -341,9 +336,13 @@ export default function DashboardHome() {
                 Total XP
               </p>
               <div className="flex items-baseline gap-1 mt-0.5">
-                <span className="text-lg font-black text-purple-700">
-                  {xp.toLocaleString()}
-                </span>
+                {isLoading && !dashboard && user?.totalXp === undefined ? (
+                  <span className="inline-block h-6 w-14 animate-pulse rounded bg-stone-200/80" />
+                ) : (
+                  <span className="text-lg font-black text-purple-700">
+                    {xp.toLocaleString()}
+                  </span>
+                )}
                 <span className="text-xs text-stone-500">Pts</span>
               </div>
             </div>
@@ -584,7 +583,28 @@ export default function DashboardHome() {
 
         {/* Courses Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayCourses.map((course) => (
+          {isLoading
+            ? [0, 1, 2].map((idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-lg border border-stone-200/80 shadow-xs overflow-hidden flex flex-col justify-between"
+                >
+                  <div className="h-36 w-full animate-pulse bg-stone-200/70" />
+                  <div className="p-5 space-y-3">
+                    <div className="h-3 w-28 animate-pulse rounded bg-stone-200/80" />
+                    <div className="h-5 w-4/5 animate-pulse rounded bg-stone-200/80" />
+                    <div className="h-3 w-full animate-pulse rounded bg-stone-200/70" />
+                    <div className="pt-4 border-t border-stone-100 space-y-2">
+                      <div className="h-2 w-full animate-pulse rounded-full bg-stone-200/70" />
+                      <div className="flex justify-between items-center pt-2">
+                        <div className="h-3 w-16 animate-pulse rounded bg-stone-200/80" />
+                        <div className="h-7 w-28 animate-pulse rounded-lg bg-stone-200/80" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            : displayCourses.map((course) => (
             <article
               key={course._id}
               className="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition group"

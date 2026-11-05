@@ -86,6 +86,9 @@ export default function ChapterAssessmentScreen() {
   const startedAt = useRef<number>(Date.now());
   const saveQueue = useRef<Promise<void>>(Promise.resolve());
   const textSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const questionScrollRef = useRef<ScrollView>(null);
+  const lastAdvancedFromIndexRef = useRef<number>(-1);
+  const lastCheckedIndexRef = useRef<number>(-1);
 
   // Load Chapter and Exercise from API
   useEffect(() => {
@@ -142,6 +145,8 @@ export default function ChapterAssessmentScreen() {
 
   const initRandomizedQuestions = (ex: Exercise) => {
     if (!ex.questions) return;
+    lastAdvancedFromIndexRef.current = -1;
+    lastCheckedIndexRef.current = -1;
     setQuestions(prepareRandomizedQuestions(ex));
     setCurrentIndex(0);
     setUserAnswers({});
@@ -211,7 +216,8 @@ export default function ChapterAssessmentScreen() {
   };
 
   const handleCheckAnswer = () => {
-    if (!currentUserAns.trim()) return;
+    if (!currentUserAns.trim() || isCurrentChecked || lastCheckedIndexRef.current === currentIndex) return;
+    lastCheckedIndexRef.current = currentIndex;
     if (isCurrentCorrect) {
       haptics.success();
     } else {
@@ -223,10 +229,13 @@ export default function ChapterAssessmentScreen() {
   };
 
   const handleNext = async () => {
+    if (isSubmitting || !isCurrentChecked || lastAdvancedFromIndexRef.current === currentIndex) return;
+    lastAdvancedFromIndexRef.current = currentIndex;
     haptics.light();
     if (currentIndex < total - 1) {
       const nextIndex = currentIndex + 1;
       setCurrentIndex(nextIndex);
+      questionScrollRef.current?.scrollTo({ y: 0, animated: false });
       saveAssessmentState(nextIndex);
     } else {
       await handleSubmitAssessment();
@@ -272,6 +281,7 @@ export default function ChapterAssessmentScreen() {
         }
       }
     } catch (e) {
+      lastAdvancedFromIndexRef.current = -1;
       console.error('Failed to submit assessment in mobile:', e);
     } finally {
       setIsSubmitting(false);
@@ -503,7 +513,11 @@ export default function ChapterAssessmentScreen() {
         </View>
 
         {/* Question Area */}
-        <ScrollView contentContainerStyle={s.questionScroll}>
+        <ScrollView
+          ref={questionScrollRef}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={s.questionScroll}
+        >
           {/* Question Tag */}
           <View style={s.tagRow}>
             <View style={s.typePill}>
@@ -551,7 +565,7 @@ export default function ChapterAssessmentScreen() {
                     key={oIdx}
                     disabled={isCurrentChecked}
                     onPress={() => handleSelectOption(option)}
-                    style={optCardStyle}
+                    style={({ pressed }) => [optCardStyle, pressed && !isCurrentChecked && s.btnPressed]}
                   >
                     <View style={s.optionContentRow}>
                       <View style={optBadgeStyle}>
@@ -632,12 +646,26 @@ export default function ChapterAssessmentScreen() {
               accessibilityLabel="Check answer"
               disabled={!currentUserAns.trim()}
               onPress={handleCheckAnswer}
-              style={[s.continueBtn, !currentUserAns.trim() && s.btnDisabled]}
+              style={({ pressed }) => [
+                s.continueBtn,
+                !currentUserAns.trim() && s.btnDisabled,
+                pressed && !!currentUserAns.trim() && s.btnPressed,
+              ]}
             >
               <Text style={s.continueBtnText}>Check Answer</Text>
             </Pressable>
           ) : (
-            <Pressable accessibilityRole="button" accessibilityLabel={currentIndex < total - 1 ? 'Continue to next question' : 'Submit assessment'} disabled={isSubmitting} onPress={handleNext} style={s.continueBtn}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={currentIndex < total - 1 ? 'Continue to next question' : 'Submit assessment'}
+              disabled={isSubmitting}
+              onPress={handleNext}
+              style={({ pressed }) => [
+                s.continueBtn,
+                isSubmitting && s.btnDisabled,
+                pressed && !isSubmitting && s.btnPressed,
+              ]}
+            >
               <Text style={s.continueBtnText}>
                 {isSubmitting
                   ? 'Submitting Assessment...'
@@ -910,6 +938,10 @@ function makeStyles(c: any) {
     btnDisabled: {
       backgroundColor: '#E8E8EE',
       opacity: 0.6,
+    },
+    btnPressed: {
+      opacity: 0.85,
+      transform: [{ scale: 0.985 }],
     },
     continueBtnText: {
       fontFamily: fontFamilies.sans,

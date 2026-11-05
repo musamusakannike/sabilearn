@@ -59,6 +59,8 @@ export default function AssessmentStepPlayer({
   const [alreadyRewarded, setAlreadyRewarded] = useState<boolean>(false);
   const startedAt = useRef<number>(Date.now());
   const saveQueue = useRef<Promise<void>>(Promise.resolve());
+  const lastAdvancedFromIndexRef = useRef<number>(-1);
+  const lastCheckedIndexRef = useRef<number>(-1);
 
   const persistProgress = useCallback((
     currentIndexToSave: number,
@@ -89,6 +91,8 @@ export default function AssessmentStepPlayer({
       return { ...q };
     });
     setQuestions(randomized);
+    lastAdvancedFromIndexRef.current = -1;
+    lastCheckedIndexRef.current = -1;
     setCurrentIndex(restoreSavedProgress && savedProgress
       ? Math.min(savedProgress.currentIndex, randomized.length - 1)
       : 0);
@@ -162,7 +166,8 @@ export default function AssessmentStepPlayer({
   };
 
   const handleCheckAnswer = () => {
-    if (!currentUserAns.trim()) return;
+    if (!currentUserAns.trim() || isCurrentChecked || lastCheckedIndexRef.current === currentIndex) return;
+    lastCheckedIndexRef.current = currentIndex;
     const nextChecked = { ...checkedSteps, [currentIndex]: true };
     setCheckedSteps(nextChecked);
     void persistProgress(currentIndex, userAnswers, nextChecked).catch((error) => {
@@ -171,12 +176,14 @@ export default function AssessmentStepPlayer({
   };
 
   const handleNext = async () => {
+    if (isSubmitting || !isCurrentChecked || lastAdvancedFromIndexRef.current === currentIndex) return;
+    lastAdvancedFromIndexRef.current = currentIndex;
     if (currentIndex < total - 1) {
       const nextIndex = currentIndex + 1;
-      await persistProgress(nextIndex, userAnswers, checkedSteps).catch((error) => {
+      setCurrentIndex(nextIndex);
+      void persistProgress(nextIndex, userAnswers, checkedSteps).catch((error) => {
         console.error('Failed to save assessment position:', error);
       });
-      setCurrentIndex(nextIndex);
     } else {
       // Final step -> Submit to server
       await handleSubmitAssessment();
@@ -220,6 +227,7 @@ export default function AssessmentStepPlayer({
         }
       }
     } catch (e) {
+      lastAdvancedFromIndexRef.current = -1;
       console.error("Failed to submit assessment:", e);
     } finally {
       setIsSubmitting(false);
@@ -651,10 +659,10 @@ export default function AssessmentStepPlayer({
             <button
               disabled={!currentUserAns.trim()}
               onClick={handleCheckAnswer}
-              className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-bold shadow-md transition-all ${
+              className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-bold shadow-md transition-all active:scale-[0.985] ${
                 currentUserAns.trim()
                   ? "bg-[var(--brand-gold)] text-slate-950 hover:brightness-105"
-                  : "cursor-not-allowed bg-slate-200 text-slate-400 opacity-70"
+                  : "cursor-not-allowed bg-slate-200 text-slate-400 opacity-70 active:scale-100"
               }`}
             >
               <span>Check Answer</span>
@@ -664,7 +672,7 @@ export default function AssessmentStepPlayer({
               disabled={isSubmitting}
               onClick={handleNext}
               aria-label={currentIndex < total - 1 ? `Continue to question ${currentIndex + 2}` : 'Complete assessment'}
-              className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-[var(--brand-gold)] py-3.5 text-sm font-bold text-slate-950 shadow-md transition-all hover:brightness-105"
+              className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-[var(--brand-gold)] py-3.5 text-sm font-bold text-slate-950 shadow-md transition-all hover:brightness-105 active:scale-[0.985] disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <span>
                 {isSubmitting

@@ -39,6 +39,7 @@ export default function StepPlayer({
   const scrollRef = useRef<ScrollView>(null);
   const lastScrollY = useRef(0);
   const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastAdvancedFromIndexRef = useRef<number>(-1);
 
   // Confetti refs — one for topic completion, two for course completion (both sides)
   const topicConfettiRef = useRef<any>(null);
@@ -150,6 +151,8 @@ export default function StepPlayer({
   };
 
   const handleNext = async () => {
+    if (!canAdvance || isCompleting || lastAdvancedFromIndexRef.current === index) return;
+    lastAdvancedFromIndexRef.current = index;
     haptics.light();
     if (isLastStep) {
       setFinished(true);
@@ -163,6 +166,7 @@ export default function StepPlayer({
 
   const handlePrev = () => {
     if (index > 0) {
+      lastAdvancedFromIndexRef.current = -1;
       haptics.light();
       setQuizAnswered(true);
       setIndex((i) => i - 1);
@@ -385,6 +389,7 @@ export default function StepPlayer({
       {/* Main Content Scroll Area */}
       <ScrollView
         ref={scrollRef}
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.body}
         showsVerticalScrollIndicator={false}
         onScroll={handleScroll}
@@ -428,7 +433,11 @@ export default function StepPlayer({
             accessibilityRole="button"
             accessibilityLabel="Previous step"
             onPress={handlePrev}
-            style={[styles.backBtn, { borderColor: colors.borderSubtle, backgroundColor: colors.surfaceCard }]}
+            style={({ pressed }) => [
+              styles.backBtn,
+              { borderColor: colors.borderSubtle, backgroundColor: colors.surfaceCard },
+              pressed && styles.btnPressed,
+            ]}
           >
             <IconChevronLeft size={24} color={colors.textPrimary} />
           </Pressable>
@@ -440,7 +449,11 @@ export default function StepPlayer({
             accessibilityLabel={isLastStep ? 'Finish lesson' : 'Continue to next step'}
             onPress={handleNext}
             disabled={isCompleting}
-            style={[styles.orangeContinueBtn, { opacity: isCompleting ? 0.4 : 1 }]}
+            style={({ pressed }) => [
+              styles.orangeContinueBtn,
+              { opacity: isCompleting ? 0.4 : 1 },
+              pressed && !isCompleting && styles.btnPressed,
+            ]}
           >
             <Text style={styles.orangeContinueText}>{isLastStep ? 'Finish' : 'Continue'}</Text>
           </Pressable>
@@ -562,6 +575,10 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.md,
     fontWeight: '700',
     letterSpacing: 0.3,
+  },
+  btnPressed: {
+    opacity: 0.85,
+    transform: [{ scale: 0.985 }],
   },
   emptyState: {
     flex: 1,

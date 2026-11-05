@@ -5,16 +5,27 @@ import { fontFamilies } from '@/theme';
 /** Warm wash + binary motif so Liquid Glass has something to refract. */
 export default function ScreenBackdrop() {
   return (
-    <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+    <View
+      pointerEvents="none"
+      aria-hidden={true}
+      accessibilityElementsHidden={true}
+      importantForAccessibility="no-hide-descendants"
+      style={StyleSheet.absoluteFill}
+    >
       <LinearGradient
         colors={['#FFF7EE', '#FFFFFF', '#F6F3FF']}
         locations={[0, 0.42, 1]}
         style={StyleSheet.absoluteFill}
       />
-      <View style={styles.binaryBackdrop}>
-        <Text style={styles.binaryText}>0 0 1 0 0 1 0 1 0 0 0 1 1 0 1 0 0</Text>
-        <Text style={styles.binaryText}>1 0 0 1 0 1 1 0 0 1 1 0 1 0 1 0 0 1</Text>
-        <Text style={styles.binaryText}>0 1 0 1 0 0 0 1 1 0 1 0 0 1 0 1 1 0</Text>
+      <View
+        aria-hidden={true}
+        accessibilityElementsHidden={true}
+        importantForAccessibility="no-hide-descendants"
+        style={styles.binaryBackdrop}
+      >
+        <Text selectable={false} style={styles.binaryText}>0 0 1 0 0 1 0 1 0 0 0 1 1 0 1 0 0</Text>
+        <Text selectable={false} style={styles.binaryText}>1 0 0 1 0 1 1 0 0 1 1 0 1 0 1 0 0 1</Text>
+        <Text selectable={false} style={styles.binaryText}>0 1 0 1 0 0 0 1 1 0 1 0 0 1 0 1 1 0</Text>
       </View>
     </View>
   );

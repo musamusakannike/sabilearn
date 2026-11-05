@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import api from '@/lib/api';
 import { DashboardData, ProgressStats, UserProgress } from '@/lib/types';
-import { isOnline, queueSession } from '@/lib/offlineSync';
+import { cacheDashboard, getCachedDashboard, isOnline, queueSession } from '@/lib/offlineSync';
 
 interface ProgressState {
   dashboard: DashboardData | null;
@@ -22,7 +22,7 @@ interface ProgressState {
   submitExercise: (data: { courseId: string; topicId?: string; chapterId?: string; answers: unknown[] }) => Promise<{ success: boolean; scorePercent?: number; isPassed?: boolean; earnedXp?: number } | null>;
 }
 
-export const useProgressStore = create<ProgressState>((set) => ({
+export const useProgressStore = create<ProgressState>((set, get) => ({
   dashboard: null,
   stats: null,
   continueStudying: [],
@@ -31,9 +31,20 @@ export const useProgressStore = create<ProgressState>((set) => ({
 
   fetchDashboard: async () => {
     set({ isLoading: true });
+    if (!get().dashboard) {
+      getCachedDashboard()
+        .then((cached) => {
+          if (cached && !get().dashboard) {
+            set({ dashboard: cached });
+          }
+        })
+        .catch(() => {});
+    }
     try {
       const res = await api.get('/progress');
-      set({ dashboard: res.data.data, isLoading: false });
+      const data = res.data.data;
+      set({ dashboard: data, isLoading: false });
+      if (data) void cacheDashboard(data);
     } catch {
       set({ isLoading: false });
     }

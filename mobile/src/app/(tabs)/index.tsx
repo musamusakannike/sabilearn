@@ -19,10 +19,10 @@ import {
 import { useProgressStore } from '@/store/progress.store';
 import { useAuthStore } from '@/store/auth.store';
 import { courseApi, notificationApi } from '@/lib/api';
+import { cachePopularCourses, getCachedPopularCourses } from '@/lib/offlineSync';
 import { Course, Topic } from '@/lib/types';
 import Badge from '@/components/ui/Badge';
 import ProgressBar from '@/components/ui/ProgressBar';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import EmptyState from '@/components/ui/EmptyState';
 import AIToolDialog, { AIToolKind } from '@/components/ai/AIToolDialogs';
 import OfflineBanner from '@/components/common/OfflineBanner';
@@ -54,6 +54,7 @@ export default function DashboardHome() {
   const { inReview } = useAppReview();
   const { dashboard, isLoading, fetchDashboard } = useProgressStore();
   const [popularCourses, setPopularCourses] = useState<Course[]>([]);
+  const [isLoadingPopular, setIsLoadingPopular] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [aiTool, setAiTool] = useState<AIToolKind | null>(null);
   const [hasUnread, setHasUnread] = useState(false);
@@ -70,10 +71,21 @@ export default function DashboardHome() {
 
   const fetchPopularCourses = useCallback(async () => {
     try {
+      const cached = await getCachedPopularCourses();
+      if (cached.length > 0) {
+        setPopularCourses((prev) => (prev.length > 0 ? prev : cached));
+        setIsLoadingPopular(false);
+      }
       const res = await courseApi.popular();
-      setPopularCourses(res.data.data);
+      const fresh = res.data.data || [];
+      setPopularCourses(fresh);
+      if (fresh.length > 0) {
+        void cachePopularCourses(fresh);
+      }
     } catch {
       // silently fail — offline or server error
+    } finally {
+      setIsLoadingPopular(false);
     }
   }, []);
 
@@ -93,9 +105,7 @@ export default function DashboardHome() {
     setRefreshing(false);
   }, [fetchDashboard, fetchMe, fetchPopularCourses, fetchUnreadStatus]);
 
-  if (isLoading && !dashboard) {
-    return <LoadingSpinner />;
-  }
+  const isDashboardInitialLoad = isLoading && !dashboard;
 
   const continueStudying = (dashboard?.continueStudying || []).filter((progress) => {
     if (!inReview) return true;
@@ -216,7 +226,11 @@ export default function DashboardHome() {
                   <IconFlame size={18} color={ACCENT} />
                 </View>
                 <View>
-                  <Text style={styles.statValue}>{streak}</Text>
+                  {isDashboardInitialLoad && user?.currentStreak === undefined ? (
+                    <View style={styles.statValueSkeleton} />
+                  ) : (
+                    <Text style={styles.statValue}>{streak}</Text>
+                  )}
                   <Text style={styles.statLabel}>day streak</Text>
                 </View>
               </GlassSurface>
@@ -225,7 +239,11 @@ export default function DashboardHome() {
                   <IconBolt size={18} color="#5B4FE8" />
                 </View>
                 <View>
-                  <Text style={styles.statValue}>{xp}</Text>
+                  {isDashboardInitialLoad && user?.totalXp === undefined ? (
+                    <View style={styles.statValueSkeleton} />
+                  ) : (
+                    <Text style={styles.statValue}>{xp}</Text>
+                  )}
                   <Text style={styles.statLabel}>XP earned</Text>
                 </View>
               </GlassSurface>
@@ -234,7 +252,11 @@ export default function DashboardHome() {
                   <IconTarget size={18} color="#10B981" />
                 </View>
                 <View>
-                  <Text style={styles.statValue}>{Math.round(accuracy)}%</Text>
+                  {isDashboardInitialLoad ? (
+                    <View style={styles.statValueSkeleton} />
+                  ) : (
+                    <Text style={styles.statValue}>{Math.round(accuracy)}%</Text>
+                  )}
                   <Text style={styles.statLabel}>avg accuracy</Text>
                 </View>
               </GlassSurface>
@@ -368,7 +390,33 @@ export default function DashboardHome() {
                 <Text style={styles.viewAllLink}>View all</Text>
               </Pressable>
             </View>
-            {visiblePopular.length === 0 ? (
+            {isLoadingPopular && visiblePopular.length === 0 ? (
+              <View style={[styles.cardList, isTablet && styles.cardListLarge]}>
+                {[0, 1, 2].map((idx) => (
+                  <View
+                    key={idx}
+                    style={[
+                      isTablet && (isDesktop ? styles.cardListItemDesktop : styles.cardListItemLarge),
+                    ]}
+                  >
+                    <GlassSurface style={styles.courseCard} tintColor="rgba(255,255,255,0.38)">
+                      <View style={styles.cardHeader}>
+                        <View style={{ flex: 1, gap: 6 }}>
+                          <View style={[styles.skeletonLine, { width: '72%', height: 18 }]} />
+                          <View style={[styles.skeletonLine, { width: '38%', height: 12 }]} />
+                        </View>
+                        <View style={[styles.skeletonLine, { width: 64, height: 22, borderRadius: 11 }]} />
+                      </View>
+                      <View style={{ gap: 6, marginBottom: spacing.sm }}>
+                        <View style={[styles.skeletonLine, { width: '94%', height: 13 }]} />
+                        <View style={[styles.skeletonLine, { width: '66%', height: 13 }]} />
+                      </View>
+                      <View style={[styles.skeletonLine, { width: 88, height: 14 }]} />
+                    </GlassSurface>
+                  </View>
+                ))}
+              </View>
+            ) : visiblePopular.length === 0 ? (
               <EmptyState
                 icon={<IconBook size={44} color={FAINT} />}
                 title="No courses available yet"
@@ -500,6 +548,17 @@ const styles = StyleSheet.create({
     fontFamily: fontFamilies.sansBold,
     color: INK,
     letterSpacing: -0.3,
+  },
+  statValueSkeleton: {
+    width: 38,
+    height: 18,
+    borderRadius: 6,
+    backgroundColor: 'rgba(14,14,26,0.08)',
+    marginBottom: 4,
+  },
+  skeletonLine: {
+    borderRadius: 6,
+    backgroundColor: 'rgba(14,14,26,0.08)',
   },
   statLabel: {
     fontSize: 12,

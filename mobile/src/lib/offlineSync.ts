@@ -1,14 +1,50 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 import api from './api';
-import { Course, Flashcard, MCQ } from './types';
+import { Course, DashboardData, Flashcard, MCQ } from './types';
 
 const CACHE_KEYS = {
+  DASHBOARD: 'cache_dashboard',
+  POPULAR_COURSES: 'cache_popular_courses',
   COURSES: 'cache_courses',
   FLASHCARDS: (courseId: string) => `cache_flashcards_${courseId}`,
   MCQS: (courseId: string) => `cache_mcqs_${courseId}`,
   SESSION_QUEUE: 'session_queue',
 };
+
+export async function cacheDashboard(data: DashboardData): Promise<void> {
+  try {
+    await AsyncStorage.setItem(CACHE_KEYS.DASHBOARD, JSON.stringify(data));
+  } catch {
+    // ignore storage quota errors
+  }
+}
+
+export async function getCachedDashboard(): Promise<DashboardData | null> {
+  try {
+    const data = await AsyncStorage.getItem(CACHE_KEYS.DASHBOARD);
+    return data ? JSON.parse(data) : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function cachePopularCourses(courses: Course[]): Promise<void> {
+  try {
+    await AsyncStorage.setItem(CACHE_KEYS.POPULAR_COURSES, JSON.stringify(courses));
+  } catch {
+    // ignore storage quota errors
+  }
+}
+
+export async function getCachedPopularCourses(): Promise<Course[]> {
+  try {
+    const data = await AsyncStorage.getItem(CACHE_KEYS.POPULAR_COURSES);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+}
 
 export async function cacheCourses(courses: Course[]): Promise<void> {
   await AsyncStorage.setItem(CACHE_KEYS.COURSES, JSON.stringify(courses));

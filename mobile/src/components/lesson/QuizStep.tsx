@@ -23,7 +23,7 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
   const [checked, setChecked] = useState(false);
 
   const handleCheck = () => {
-    if (selected === null) return;
+    if (selected === null || checked) return;
     setChecked(true);
     haptics.medium();
     onAnswered(!!shuffledOptions[selected]?.isCorrect);
@@ -66,13 +66,14 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
                 }
               }}
               disabled={checked}
-              style={[
+              style={({ pressed }) => [
                 styles.option,
                 {
                   borderColor,
                   backgroundColor: bgColor,
                   borderWidth: isSelected || showState ? 2 : 1.5,
                 },
+                pressed && !checked && styles.pressed,
               ]}
             >
               <View style={{ flex: 1 }}>
@@ -91,12 +92,13 @@ export default function QuizStep({ quiz, onAnswered }: { quiz: TopicQuiz; onAnsw
           accessibilityLabel="Check answer"
           onPress={handleCheck}
           disabled={selected === null}
-          style={[
+          style={({ pressed }) => [
             styles.checkBtn,
             {
               backgroundColor: '#FF8A00',
               opacity: selected === null ? 0.4 : 1,
             },
+            pressed && selected !== null && styles.pressed,
           ]}
         >
           <Text style={styles.checkBtnText}>Check Answer</Text>
@@ -184,5 +186,9 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontFamily: fontFamilies.sansBold || fontFamilies.sansSemiBold,
     letterSpacing: 0.8,
+  },
+  pressed: {
+    opacity: 0.85,
+    transform: [{ scale: 0.985 }],
   },
 });
