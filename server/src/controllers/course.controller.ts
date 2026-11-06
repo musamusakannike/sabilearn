@@ -57,13 +57,19 @@ export const getCourses = async (req: Request, res: Response, next: NextFunction
     }
 
     if (req.query.search) {
+      const rawSearch = String(req.query.search).trim();
+      const compactSearch = rawSearch.replace(/\s+/g, '');
+      const codeRegex = compactSearch.split('').join('\\s*');
       filter.$or = [
-        { title: { $regex: req.query.search, $options: 'i' } },
-        { description: { $regex: req.query.search, $options: 'i' } },
-        { category: { $regex: req.query.search, $options: 'i' } },
-        { 'academicMeta.courseCode': { $regex: req.query.search, $options: 'i' } },
-        { 'academicMeta.faculty': { $regex: req.query.search, $options: 'i' } },
-        { 'academicMeta.department': { $regex: req.query.search, $options: 'i' } },
+        { title: { $regex: rawSearch, $options: 'i' } },
+        { description: { $regex: rawSearch, $options: 'i' } },
+        { category: { $regex: rawSearch, $options: 'i' } },
+        { tags: { $regex: rawSearch, $options: 'i' } },
+        { tags: { $regex: compactSearch, $options: 'i' } },
+        { 'academicMeta.courseCode': { $regex: rawSearch, $options: 'i' } },
+        { 'academicMeta.courseCode': { $regex: codeRegex, $options: 'i' } },
+        { 'academicMeta.faculty': { $regex: rawSearch, $options: 'i' } },
+        { 'academicMeta.department': { $regex: rawSearch, $options: 'i' } },
       ];
     }
 
@@ -230,6 +236,7 @@ export const createCourse = async (req: MulterRequest, res: Response, next: Next
       description,
       longDescription,
       category,
+      tags,
       track,
       academicMeta,
       difficulty,
@@ -250,6 +257,7 @@ export const createCourse = async (req: MulterRequest, res: Response, next: Next
     }
 
     const parsedAuthors = parseJsonOrArray<ICourseAuthor>(authors);
+    const parsedTags = parseJsonOrArray<string>(tags);
     const parsedLearn = parseJsonOrArray<string>(whatYouWillLearn);
     const parsedPrereqs = parseJsonOrArray<string>(prerequisites);
     const parsedAcademicMeta = parseJsonOrObject<Record<string, unknown>>(academicMeta);
@@ -264,6 +272,7 @@ export const createCourse = async (req: MulterRequest, res: Response, next: Next
       description,
       longDescription: longDescription || '',
       category,
+      tags: parsedTags || [],
       track: courseTrack,
       academicMeta: parsedAcademicMeta || undefined,
       difficulty: difficulty || 'beginner',
@@ -296,6 +305,7 @@ export const updateCourse = async (req: MulterRequest, res: Response, next: Next
       description,
       longDescription,
       category,
+      tags,
       track,
       academicMeta,
       difficulty,
@@ -319,6 +329,10 @@ export const updateCourse = async (req: MulterRequest, res: Response, next: Next
     if (description !== undefined) updates.description = description;
     if (longDescription !== undefined) updates.longDescription = longDescription;
     if (category !== undefined) updates.category = category;
+    if (tags !== undefined) {
+      const parsedTags = parseJsonOrArray<string>(tags);
+      if (parsedTags !== undefined) updates.tags = parsedTags;
+    }
     if (track !== undefined) updates.track = track === 'academic' ? 'academic' : 'tech';
     if (academicMeta !== undefined) {
       const parsedAcademicMeta = parseJsonOrObject<Record<string, unknown>>(academicMeta);

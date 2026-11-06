@@ -82,10 +82,20 @@ export default function CoursesScreen() {
     if (inReview && !c.isFree) return false;
     if (trackSegment === 1 && (c.track || "tech") !== "tech") return false;
     if (trackSegment === 2 && c.track !== "academic") return false;
-    const q = query.toLowerCase();
+    const q = query.trim().toLowerCase();
+    const compactQ = q.replace(/\s+/g, "");
+    const code = c.academicMeta?.courseCode?.toLowerCase() || "";
+    const compactCode = code.replace(/\s+/g, "");
+    const matchesCode = code.includes(q) || (compactQ ? compactCode.includes(compactQ) : false);
+    const matchesTags = (c.tags || []).some(
+      (t) => t.toLowerCase().includes(q) || (compactQ && t.toLowerCase().replace(/\s+/g, "").includes(compactQ))
+    );
+
     return (
       c.title.toLowerCase().includes(q) ||
-      (c.academicMeta?.courseCode && c.academicMeta.courseCode.toLowerCase().includes(q))
+      matchesCode ||
+      matchesTags ||
+      (c.academicMeta?.department && c.academicMeta.department.toLowerCase().includes(q))
     );
   });
 

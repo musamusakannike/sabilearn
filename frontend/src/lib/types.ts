@@ -156,6 +156,7 @@ export interface Course {
   longDescription: string;
   banner: string;
   category: string;
+  tags?: string[];
   track?: 'tech' | 'academic';
   academicMeta?: AcademicMeta;
   difficulty: 'beginner' | 'intermediate' | 'advanced';

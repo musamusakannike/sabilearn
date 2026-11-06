@@ -24,6 +24,8 @@ export interface ICourse extends Document {
   longDescription: string;
   banner: string;
   category: string;
+  /** Search tags and alternate codes (e.g., maths, MTH, MAT101, algebra) */
+  tags?: string[];
   /** Primary track: 'tech' for coding/engineering/software, 'academic' for university courses */
   track: 'tech' | 'academic';
   /** Metadata specific to academic university courses */
@@ -100,6 +102,11 @@ const CourseSchema: Schema = new Schema<ICourse>(
       type: String,
       required: true,
       trim: true,
+    },
+    tags: {
+      type: [String],
+      default: [],
+      index: true,
     },
     track: {
       type: String,

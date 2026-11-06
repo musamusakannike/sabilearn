@@ -71,17 +71,29 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
     filteredByTrack.filter((c) => c.category === cat).length;
 
   const term = search.trim().toLowerCase();
-  const courses = all.filter(
-    (c) =>
-      (track === "all" || (c.track || "tech") === track) &&
-      (category === "all" || c.category === category) &&
-      (level === "all" || c.academicMeta?.level === level) &&
-      (!term ||
-        c.title.toLowerCase().includes(term) ||
-        c.description.toLowerCase().includes(term) ||
-        (c.academicMeta?.courseCode && c.academicMeta.courseCode.toLowerCase().includes(term)) ||
-        (c.academicMeta?.faculty && c.academicMeta.faculty.toLowerCase().includes(term))),
-  );
+  const compactTerm = term.replace(/\s+/g, "");
+  const courses = all.filter((c) => {
+    if (track !== "all" && (c.track || "tech") !== track) return false;
+    if (category !== "all" && c.category !== category) return false;
+    if (level !== "all" && c.academicMeta?.level !== level) return false;
+    if (!term) return true;
+
+    const code = c.academicMeta?.courseCode?.toLowerCase() || "";
+    const compactCode = code.replace(/\s+/g, "");
+    const matchesCode = code.includes(term) || (compactTerm && compactCode.includes(compactTerm));
+    const matchesTags = (c.tags || []).some(
+      (t) => t.toLowerCase().includes(term) || (compactTerm && t.toLowerCase().replace(/\s+/g, "").includes(compactTerm))
+    );
+
+    return (
+      c.title.toLowerCase().includes(term) ||
+      c.description.toLowerCase().includes(term) ||
+      matchesCode ||
+      matchesTags ||
+      (c.academicMeta?.faculty && c.academicMeta.faculty.toLowerCase().includes(term)) ||
+      (c.academicMeta?.department && c.academicMeta.department.toLowerCase().includes(term))
+    );
+  });
   const isFiltered = track !== "all" || category !== "all" || level !== "all" || term !== "";
 
   const buildUrl = (overrides: Record<string, string | undefined>) => {
