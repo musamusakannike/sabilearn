@@ -22,6 +22,10 @@ export const validateUpdateProfile = (req: Request, res: Response, next: NextFun
     errors.push('Level must be beginner, intermediate, or advanced.');
   }
 
+  if (req.body.activeTrack !== undefined && !['tech', 'academic'].includes(req.body.activeTrack)) {
+    errors.push('activeTrack must be either "tech" or "academic".');
+  }
+
   if (errors.length > 0) {
     res.status(400).json({ success: false, errors });
     return;
@@ -84,6 +88,10 @@ export const validateUpdateSettings = (req: Request, res: Response, next: NextFu
     if (!Number.isInteger(minutes) || minutes < 1 || minutes > 480) {
       errors.push('dailyGoalMinutes must be an integer between 1 and 480.');
     }
+  }
+
+  if (req.body.preferredTrack !== undefined && !['tech', 'academic'].includes(req.body.preferredTrack)) {
+    errors.push('preferredTrack must be either "tech" or "academic".');
   }
 
   if (errors.length > 0) {

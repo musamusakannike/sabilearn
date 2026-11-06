@@ -21,6 +21,8 @@ export interface IUserSettings {
   timezoneOffset: number;
   /** Minutes of study the user wants to complete each day. */
   dailyGoalMinutes: number;
+  /** User's preferred default track: tech vs academic */
+  preferredTrack?: 'tech' | 'academic';
 }
 
 export interface IUser extends Document {
@@ -33,6 +35,8 @@ export interface IUser extends Document {
   bio?: string;
   avatar?: string;
   level: 'beginner' | 'intermediate' | 'advanced';
+  /** Currently active track for learning sessions: tech skills vs academic university hub */
+  activeTrack: 'tech' | 'academic';
   firebaseUid?: string;
   role: 'user' | 'admin';
   settings?: IUserSettings;
@@ -135,6 +139,13 @@ const UserSchema: Schema = new Schema<IUser>(
       reminderMinute: { type: Number, default: 0, min: 0, max: 59 },
       timezoneOffset: { type: Number, default: 0, min: -840, max: 840 },
       dailyGoalMinutes: { type: Number, default: 15, min: 1, max: 480 },
+      preferredTrack: { type: String, enum: ['tech', 'academic'], default: 'tech' },
+    },
+    activeTrack: {
+      type: String,
+      enum: ['tech', 'academic'],
+      default: 'tech',
+      index: true,
     },
     expoPushToken: {
       type: String,

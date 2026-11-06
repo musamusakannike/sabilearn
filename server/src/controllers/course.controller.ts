@@ -28,8 +28,28 @@ export const getCourses = async (req: Request, res: Response, next: NextFunction
       filter.isAiGenerated = { $ne: true };
     }
 
+    if (req.query.track && req.query.track !== 'all') {
+      filter.track = req.query.track;
+    }
+
     if (req.query.category && req.query.category !== 'all') {
       filter.category = req.query.category;
+    }
+
+    if (req.query.level && req.query.level !== 'all') {
+      filter['academicMeta.level'] = req.query.level;
+    }
+
+    if (req.query.faculty && req.query.faculty !== 'all') {
+      filter['academicMeta.faculty'] = req.query.faculty;
+    }
+
+    if (req.query.department && req.query.department !== 'all') {
+      filter['academicMeta.department'] = req.query.department;
+    }
+
+    if (req.query.courseCode) {
+      filter['academicMeta.courseCode'] = { $regex: req.query.courseCode, $options: 'i' };
     }
 
     if (req.query.difficulty && req.query.difficulty !== 'all') {
@@ -41,6 +61,9 @@ export const getCourses = async (req: Request, res: Response, next: NextFunction
         { title: { $regex: req.query.search, $options: 'i' } },
         { description: { $regex: req.query.search, $options: 'i' } },
         { category: { $regex: req.query.search, $options: 'i' } },
+        { 'academicMeta.courseCode': { $regex: req.query.search, $options: 'i' } },
+        { 'academicMeta.faculty': { $regex: req.query.search, $options: 'i' } },
+        { 'academicMeta.department': { $regex: req.query.search, $options: 'i' } },
       ];
     }
 
@@ -187,6 +210,19 @@ const parseJsonOrArray = <T>(val: unknown): T[] | undefined => {
   return undefined;
 };
 
+const parseJsonOrObject = <T>(val: unknown): T | undefined => {
+  if (val === undefined || val === null || val === '') return undefined;
+  if (typeof val === 'object') return val as T;
+  if (typeof val === 'string') {
+    try {
+      return JSON.parse(val) as T;
+    } catch {
+      return undefined;
+    }
+  }
+  return undefined;
+};
+
 export const createCourse = async (req: MulterRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const {
@@ -194,6 +230,8 @@ export const createCourse = async (req: MulterRequest, res: Response, next: Next
       description,
       longDescription,
       category,
+      track,
+      academicMeta,
       difficulty,
       isPublished,
       banner,
@@ -214,8 +252,11 @@ export const createCourse = async (req: MulterRequest, res: Response, next: Next
     const parsedAuthors = parseJsonOrArray<ICourseAuthor>(authors);
     const parsedLearn = parseJsonOrArray<string>(whatYouWillLearn);
     const parsedPrereqs = parseJsonOrArray<string>(prerequisites);
+    const parsedAcademicMeta = parseJsonOrObject<Record<string, unknown>>(academicMeta);
 
     const slug = await generateUniqueCourseSlug(title);
+
+    const courseTrack: 'tech' | 'academic' = track === 'academic' ? 'academic' : 'tech';
 
     const newCourseData = {
       title,
@@ -223,6 +264,8 @@ export const createCourse = async (req: MulterRequest, res: Response, next: Next
       description,
       longDescription: longDescription || '',
       category,
+      track: courseTrack,
+      academicMeta: parsedAcademicMeta || undefined,
       difficulty: difficulty || 'beginner',
       isPublished: isPublished === 'true' || isPublished === true,
       banner: bannerUrl,
@@ -253,6 +296,8 @@ export const updateCourse = async (req: MulterRequest, res: Response, next: Next
       description,
       longDescription,
       category,
+      track,
+      academicMeta,
       difficulty,
       isPublished,
       banner,
@@ -274,6 +319,11 @@ export const updateCourse = async (req: MulterRequest, res: Response, next: Next
     if (description !== undefined) updates.description = description;
     if (longDescription !== undefined) updates.longDescription = longDescription;
     if (category !== undefined) updates.category = category;
+    if (track !== undefined) updates.track = track === 'academic' ? 'academic' : 'tech';
+    if (academicMeta !== undefined) {
+      const parsedAcademicMeta = parseJsonOrObject<Record<string, unknown>>(academicMeta);
+      updates.academicMeta = parsedAcademicMeta;
+    }
     if (difficulty !== undefined) updates.difficulty = difficulty;
     if (isPublished !== undefined) updates.isPublished = isPublished === 'true' || isPublished === true;
     if (typeof banner === 'string') updates.banner = banner;

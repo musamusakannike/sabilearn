@@ -7,6 +7,15 @@ export interface ICourseAuthor {
   bio?: string;
 }
 
+export interface IAcademicMeta {
+  courseCode?: string;
+  faculty?: string;
+  department?: string;
+  level?: '100L' | '200L' | '300L' | '400L' | '500L' | 'postgraduate';
+  semester?: 'first' | 'second';
+  creditUnits?: number;
+}
+
 export interface ICourse extends Document {
   title: string;
   /** URL-safe unique slug used for public course pages (/courses/:slug) */
@@ -15,6 +24,10 @@ export interface ICourse extends Document {
   longDescription: string;
   banner: string;
   category: string;
+  /** Primary track: 'tech' for coding/engineering/software, 'academic' for university courses */
+  track: 'tech' | 'academic';
+  /** Metadata specific to academic university courses */
+  academicMeta?: IAcademicMeta;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   authors: ICourseAuthor[];
   whatYouWillLearn: string[];
@@ -87,6 +100,27 @@ const CourseSchema: Schema = new Schema<ICourse>(
       type: String,
       required: true,
       trim: true,
+    },
+    track: {
+      type: String,
+      enum: ['tech', 'academic'],
+      default: 'tech',
+      index: true,
+    },
+    academicMeta: {
+      courseCode: { type: String, trim: true, uppercase: true, index: true },
+      faculty: { type: String, trim: true },
+      department: { type: String, trim: true },
+      level: {
+        type: String,
+        enum: ['100L', '200L', '300L', '400L', '500L', 'postgraduate'],
+        index: true,
+      },
+      semester: {
+        type: String,
+        enum: ['first', 'second'],
+      },
+      creditUnits: { type: Number, min: 0 },
     },
     difficulty: {
       type: String,

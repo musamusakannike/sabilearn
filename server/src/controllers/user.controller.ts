@@ -41,7 +41,7 @@ export const getProfile = async (req: AuthenticatedRequest, res: Response, next:
 
 export const updateProfile = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { firstName, lastName, phone, bio, level, email } = req.body;
+    const { firstName, lastName, phone, bio, level, email, activeTrack } = req.body;
 
     const updates: Record<string, unknown> = {};
     if (firstName !== undefined) updates.firstName = firstName;
@@ -50,6 +50,7 @@ export const updateProfile = async (req: AuthenticatedRequest, res: Response, ne
     if (bio !== undefined) updates.bio = bio;
     if (level !== undefined) updates.level = level;
     if (email !== undefined) updates.email = email;
+    if (activeTrack !== undefined) updates.activeTrack = activeTrack;
 
     if (firstName || lastName) {
       const fn = firstName || req.user!.firstName;
@@ -164,6 +165,7 @@ export const updateSettings = async (req: AuthenticatedRequest, res: Response, n
       reminderMinute,
       timezoneOffset,
       dailyGoalMinutes,
+      preferredTrack,
     } = req.body;
 
     const settingsUpdate: Record<string, unknown> = {};
@@ -177,6 +179,7 @@ export const updateSettings = async (req: AuthenticatedRequest, res: Response, n
     if (reminderMinute !== undefined) settingsUpdate['settings.reminderMinute'] = reminderMinute;
     if (timezoneOffset !== undefined) settingsUpdate['settings.timezoneOffset'] = timezoneOffset;
     if (dailyGoalMinutes !== undefined) settingsUpdate['settings.dailyGoalMinutes'] = dailyGoalMinutes;
+    if (preferredTrack !== undefined) settingsUpdate['settings.preferredTrack'] = preferredTrack;
 
     const user = await User.findByIdAndUpdate(
       req.user!._id,

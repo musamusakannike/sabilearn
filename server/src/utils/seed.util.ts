@@ -37,6 +37,7 @@ const coursesSeed: CourseSeed[] = [
       description: 'Learn to write real Python code from scratch.',
       longDescription: 'A hands-on introduction to Python covering variables, control flow, functions, and data structures — with runnable code examples throughout.',
       category: 'Programming',
+      track: 'tech',
       difficulty: 'beginner',
       whatYouWillLearn: [
         'Write and run Python scripts',
@@ -141,6 +142,7 @@ const coursesSeed: CourseSeed[] = [
       description: 'Build habits that make independent learning stick.',
       longDescription: 'Practical, non-technical strategies for staying consistent, retaining what you study, and avoiding burnout — useful alongside any course on SabiLearn.',
       category: 'Study Skills',
+      track: 'tech',
       difficulty: 'beginner',
       whatYouWillLearn: [
         'Build a sustainable daily study streak',
@@ -170,6 +172,66 @@ const coursesSeed: CourseSeed[] = [
               { text: 'Switching devices', isCorrect: false },
             ],
             explanation: 'Streaks are tracked per local day; a missed day resets the streak.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    course: {
+      title: 'Elementary Mathematics I (MTH 101)',
+      description: 'Foundational algebra, trigonometry, and coordinate geometry for 100L STEM students.',
+      longDescription: 'Comprehensive 100-level university mathematics covering set theory, quadratic equations, progressions (AP & GP), binomial theorem, and circular functions.',
+      category: 'Mathematics',
+      track: 'academic',
+      academicMeta: {
+        courseCode: 'MTH 101',
+        faculty: 'Physical Sciences',
+        department: 'Mathematics',
+        level: '100L',
+        semester: 'first',
+        creditUnits: 3,
+      },
+      difficulty: 'beginner',
+      whatYouWillLearn: [
+        'Solve quadratic equations using factoring and the quadratic formula $x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$',
+        'Analyze sets, mappings, and real number properties',
+        'Compute sums of Arithmetic and Geometric Progressions',
+        'Apply binomial expansion for rational indices',
+      ],
+      isPublished: true,
+      order: 3,
+    },
+    topics: [
+      {
+        title: 'Quadratic Equations & Roots',
+        description: 'Derivation and application of the quadratic formula.',
+        contents: [
+          {
+            type: 'text',
+            content: 'A quadratic equation in standard form is written as:\n\n$$ax^2 + bx + c = 0$$\n\nwhere $a \\neq 0$. The roots are given by the quadratic formula:\n\n$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$\n\nThe discriminant $\\Delta = b^2 - 4ac$ determines the nature of the roots:\n- If $\\Delta > 0$, roots are real and distinct.\n- If $\\Delta = 0$, roots are real and equal.\n- If $\\Delta < 0$, roots are complex conjugates.',
+          },
+        ],
+        flashcards: [
+          {
+            question: 'What is the discriminant formula for $ax^2 + bx + c = 0$?',
+            answer: '$\\Delta = b^2 - 4ac$',
+          },
+          {
+            question: 'What does $\\Delta < 0$ indicate about the roots of a quadratic equation?',
+            answer: 'The roots are complex conjugates (no real solutions).',
+          },
+        ],
+        mcqs: [
+          {
+            question: 'If the discriminant $\\Delta = b^2 - 4ac = 0$, what can you say about the roots?',
+            options: [
+              { text: 'They are real and equal', isCorrect: true },
+              { text: 'They are real and distinct', isCorrect: false },
+              { text: 'They are imaginary numbers', isCorrect: false },
+              { text: 'No roots exist', isCorrect: false },
+            ],
+            explanation: 'When $\\Delta = 0$, $\\sqrt{0} = 0$, giving the single repeated root $x = -b / (2a)$.',
           },
         ],
       },
