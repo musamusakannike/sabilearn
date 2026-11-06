@@ -47,6 +47,20 @@ export default function CourseCard({ course, onPress }: CourseCardProps) {
           ) : null}
         </View>
         <View style={styles.body}>
+          {course.academicMeta?.courseCode || course.track === "academic" ? (
+            <View style={styles.academicRow}>
+              {course.academicMeta?.courseCode ? (
+                <View style={styles.academicCodeBadge}>
+                  <Text style={styles.academicCodeText}>{course.academicMeta.courseCode}</Text>
+                </View>
+              ) : null}
+              {course.academicMeta?.level ? (
+                <View style={styles.levelBadge}>
+                  <Text style={styles.levelBadgeText}>{course.academicMeta.level}</Text>
+                </View>
+              ) : null}
+            </View>
+          ) : null}
           <Text style={styles.title} numberOfLines={1}>
             {course.title}
           </Text>
@@ -155,5 +169,36 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.9,
     transform: [{ scale: 0.99 }],
+  },
+  academicRow: {
+    flexDirection: "row",
+    gap: 6,
+    marginBottom: 4,
+  },
+  academicCodeBadge: {
+    backgroundColor: "rgba(249, 178, 51, 0.15)",
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: "rgba(249, 178, 51, 0.3)",
+  },
+  academicCodeText: {
+    fontSize: 11,
+    fontFamily: fontFamilies.sansBold,
+    color: "#D97706",
+  },
+  levelBadge: {
+    backgroundColor: "rgba(99, 102, 241, 0.12)",
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: "rgba(99, 102, 241, 0.25)",
+  },
+  levelBadgeText: {
+    fontSize: 11,
+    fontFamily: fontFamilies.sansMedium,
+    color: "#6366F1",
   },
 });

@@ -33,6 +33,7 @@ export default function CoursesScreen() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [mine, setMine] = useState<Course[]>([]);
   const [segment, setSegment] = useState(0);
+  const [trackSegment, setTrackSegment] = useState(0);
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -79,7 +80,13 @@ export default function CoursesScreen() {
   const source = segment === 1 && !inReview ? mine : courses;
   const filtered = source.filter((c) => {
     if (inReview && !c.isFree) return false;
-    return c.title.toLowerCase().includes(query.toLowerCase());
+    if (trackSegment === 1 && (c.track || "tech") !== "tech") return false;
+    if (trackSegment === 2 && c.track !== "academic") return false;
+    const q = query.toLowerCase();
+    return (
+      c.title.toLowerCase().includes(q) ||
+      (c.academicMeta?.courseCode && c.academicMeta.courseCode.toLowerCase().includes(q))
+    );
   });
 
   const { isTablet, isDesktop } = useResponsive();
@@ -126,12 +133,22 @@ export default function CoursesScreen() {
                   style={styles.searchInput}
                 />
               </GlassSurface>
+              <NativeSegmentedControl
+                values={["All Tracks", "Tech Skills", "Academic Hub"]}
+                selectedIndex={trackSegment}
+                onChange={(idx) => {
+                  haptics.selection();
+                  setTrackSegment(idx);
+                }}
+              />
               {!inReview ? (
-                <NativeSegmentedControl
-                  values={["Catalog", "Yours"]}
-                  selectedIndex={segment}
-                  onChange={setSegment}
-                />
+                <View style={{ marginTop: spacing.xs }}>
+                  <NativeSegmentedControl
+                    values={["Catalog", "Yours"]}
+                    selectedIndex={segment}
+                    onChange={setSegment}
+                  />
+                </View>
               ) : null}
             </View>
           }

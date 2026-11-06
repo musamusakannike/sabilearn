@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "katex/dist/katex.min.css";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
+import { TrackProvider } from "@/context/TrackContext";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sabilearn.online";
 
@@ -136,7 +138,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="h-full antialiased">
       <body className="flex min-h-full flex-col">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-        {children}
+        <TrackProvider>
+          {children}
+        </TrackProvider>
         <Toaster position="top-right" richColors closeButton />
         <Analytics />
       </body>

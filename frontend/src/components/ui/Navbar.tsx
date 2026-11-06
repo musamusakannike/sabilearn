@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
+import TrackSwitcher from '@/components/navigation/TrackSwitcher';
 
 export interface NavLink {
   label: string;
@@ -87,6 +88,11 @@ export default function Navbar({
           ))}
         </nav>
 
+        {/* Track Switcher (Desktop) */}
+        <div className="hidden lg:flex items-center">
+          <TrackSwitcher size="sm" />
+        </div>
+
         {/* Right: Auth CTAs (Desktop) */}
         <div className="hidden items-center gap-6 sm:flex">
           <Link
@@ -125,6 +131,9 @@ export default function Navbar({
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div className="mt-4 rounded-xl border border-[var(--line)] bg-[var(--surface-card)] p-5 shadow-lg md:hidden">
+          <div className="mb-3 flex justify-center pb-2 border-b border-[var(--line)]">
+            <TrackSwitcher size="sm" />
+          </div>
           <nav className="flex flex-col gap-3">
             {resolvedLinks.map((l) => (
               <Link

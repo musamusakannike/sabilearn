@@ -11,6 +11,7 @@ export interface IUserSettings {
   reminderMinute?: number;
   timezoneOffset?: number;
   dailyGoalMinutes?: number;
+  preferredTrack?: 'tech' | 'academic';
 }
 
 export interface User {
@@ -24,6 +25,7 @@ export interface User {
   bio?: string;
   avatar?: string;
   level: 'beginner' | 'intermediate' | 'advanced';
+  activeTrack?: 'tech' | 'academic';
   role: 'user' | 'admin';
   totalXp?: number;
   currentStreak?: number;
@@ -133,6 +135,15 @@ export interface CourseAuthor {
   bio?: string;
 }
 
+export interface AcademicMeta {
+  courseCode?: string;
+  faculty?: string;
+  department?: string;
+  level?: '100L' | '200L' | '300L' | '400L' | '500L' | 'postgraduate';
+  semester?: 'first' | 'second';
+  creditUnits?: number;
+}
+
 export interface Course {
   _id: string;
   title: string;
@@ -140,6 +151,8 @@ export interface Course {
   longDescription: string;
   banner: string;
   category: string;
+  track?: 'tech' | 'academic';
+  academicMeta?: AcademicMeta;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   authors?: CourseAuthor[];
   whatYouWillLearn: string[];

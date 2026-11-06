@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/auth.store';
 import { useNotificationStore } from '@/store/notification.store';
 import { progressApi, searchApi } from '@/lib/api';
 import { PROGRESS_UPDATED_EVENT } from '@/lib/progress-events';
+import TrackSwitcher from '@/components/navigation/TrackSwitcher';
 
 type SearchHit = {
   _id: string;
@@ -199,6 +200,11 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
 
       {/* Top Right Indicators and Utilities */}
       <div className="flex items-center gap-2 sm:gap-4 shrink-0 pl-2">
+        {/* Track Switcher */}
+        <div className="hidden sm:block">
+          <TrackSwitcher size="sm" />
+        </div>
+
         {/* Streak Pill */}
         <div className="hidden sm:flex items-center gap-2 bg-amber-50 border border-amber-200/70 px-3.5 py-1.5 rounded-full shadow-xs">
           <span className="text-amber-500 flex items-center">

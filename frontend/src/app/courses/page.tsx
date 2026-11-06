@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 };
 
 interface CoursesPageProps {
-  searchParams: Promise<{ category?: string; search?: string }>;
+  searchParams: Promise<{ category?: string; search?: string; track?: string; level?: string }>;
 }
 
 const GOLD = "var(--brand-gold-500,#F9B233)";
@@ -57,30 +57,40 @@ const pill = (active: boolean) =>
   }`;
 
 export default async function CoursesPage({ searchParams }: CoursesPageProps) {
-  const { category = "all", search = "" } = await searchParams;
+  const { category = "all", search = "", track = "all", level = "all" } = await searchParams;
 
   // Catalog is small, so fetch everything published once and filter in memory;
   // this also gives us an accurate category list (only categories that have courses).
   const { data: all } = await fetchPublicCourses({ limit: 100 });
-  const categories = Array.from(new Set(all.map((c) => c.category))).sort();
+  const techCount = all.filter((c) => (c.track || "tech") === "tech").length;
+  const academicCount = all.filter((c) => c.track === "academic").length;
+
+  const filteredByTrack = all.filter((c) => track === "all" || (c.track || "tech") === track);
+  const categories = Array.from(new Set(filteredByTrack.map((c) => c.category))).sort();
   const countFor = (cat: string) =>
-    all.filter((c) => c.category === cat).length;
-  const freeCount = all.filter((c) => c.isFree).length;
+    filteredByTrack.filter((c) => c.category === cat).length;
 
   const term = search.trim().toLowerCase();
   const courses = all.filter(
     (c) =>
+      (track === "all" || (c.track || "tech") === track) &&
       (category === "all" || c.category === category) &&
+      (level === "all" || c.academicMeta?.level === level) &&
       (!term ||
         c.title.toLowerCase().includes(term) ||
-        c.description.toLowerCase().includes(term)),
+        c.description.toLowerCase().includes(term) ||
+        (c.academicMeta?.courseCode && c.academicMeta.courseCode.toLowerCase().includes(term)) ||
+        (c.academicMeta?.faculty && c.academicMeta.faculty.toLowerCase().includes(term))),
   );
-  const isFiltered = category !== "all" || term !== "";
+  const isFiltered = track !== "all" || category !== "all" || level !== "all" || term !== "";
 
-  const href = (nextCategory: string) => {
+  const buildUrl = (overrides: Record<string, string | undefined>) => {
     const params = new URLSearchParams();
-    if (search) params.set("search", search);
-    if (nextCategory !== "all") params.set("category", nextCategory);
+    const current = { track, category, level, search, ...overrides };
+    if (current.search) params.set("search", current.search);
+    if (current.track && current.track !== "all") params.set("track", current.track);
+    if (current.category && current.category !== "all") params.set("category", current.category);
+    if (current.level && current.level !== "all") params.set("level", current.level);
     const qs = params.toString();
     return qs ? `/courses?${qs}` : "/courses";
   };
@@ -139,9 +149,11 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
               role="search"
               className="flex max-w-lg items-center gap-2 rounded-[var(--radius-full)] border border-[var(--line)] bg-[var(--surface-card)] p-1.5 shadow-[var(--shadow-sm)] focus-within:border-[var(--ink-900)]"
             >
+              {track !== "all" && <input type="hidden" name="track" value={track} />}
               {category !== "all" && (
                 <input type="hidden" name="category" value={category} />
               )}
+              {level !== "all" && <input type="hidden" name="level" value={level} />}
               <Search
                 className="ml-3 size-5 shrink-0 text-[var(--ink-500)]"
                 aria-hidden
@@ -150,7 +162,7 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
                 type="search"
                 name="search"
                 defaultValue={search}
-                placeholder="Search React, Python, AI..."
+                placeholder="Search React, Python, MTH 101, Physics..."
                 aria-label="Search courses"
                 className="min-w-0 flex-1 bg-transparent px-1 py-2 text-sm text-[var(--ink-900)] outline-none placeholder:text-[var(--ink-500)]"
               />
@@ -183,21 +195,79 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
       {/* Catalog */}
       <section className="border-t border-[var(--line)] bg-[var(--surface-card)] px-6 py-10 sm:px-8 sm:py-14">
         <div className="mx-auto max-w-[var(--container-max)]">
+          {/* Top Track Segment */}
+          <div className="mb-6 flex flex-wrap items-center gap-2 border-b border-[var(--line)] pb-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] mr-2">Track:</span>
+            <Link
+              href={buildUrl({ track: "all", category: "all", level: "all" })}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-all ${
+                track === "all"
+                  ? "bg-[var(--ink-900)] text-white shadow-sm"
+                  : "bg-black/5 text-[var(--ink-700)] hover:bg-black/10"
+              }`}
+            >
+              All Tracks
+              <span className="text-xs opacity-75">{all.length}</span>
+            </Link>
+            <Link
+              href={buildUrl({ track: "tech", category: "all", level: "all" })}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-all ${
+                track === "tech"
+                  ? "bg-cyan-600 text-white shadow-sm"
+                  : "bg-cyan-500/10 text-cyan-700 hover:bg-cyan-500/20"
+              }`}
+            >
+              💻 Tech Skills
+              <span className="text-xs opacity-75">{techCount}</span>
+            </Link>
+            <Link
+              href={buildUrl({ track: "academic", category: "all", level: "all" })}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-all ${
+                track === "academic"
+                  ? "bg-amber-600 text-white shadow-sm"
+                  : "bg-amber-500/10 text-amber-700 hover:bg-amber-500/20"
+              }`}
+            >
+              🎓 Academic Hub
+              <span className="text-xs opacity-75">{academicCount}</span>
+            </Link>
+          </div>
+
+          {/* Academic Level filter */}
+          {(track === "academic" || (track === "all" && academicCount > 0)) && (
+            <div className="mb-4 flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+              <span className="font-semibold text-[var(--text-muted)]">Level:</span>
+              {["all", "100L", "200L", "300L", "400L", "500L"].map((lvl) => (
+                <Link
+                  key={lvl}
+                  href={buildUrl({ level: lvl })}
+                  className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
+                    level === lvl
+                      ? "bg-[var(--ink-900)] text-white"
+                      : "bg-black/5 text-[var(--ink-700)] hover:bg-black/10"
+                  }`}
+                >
+                  {lvl === "all" ? "All Levels" : lvl}
+                </Link>
+              ))}
+            </div>
+          )}
+
           {/* Category pills: single scrolling row on mobile, wrapping on larger screens */}
           <nav aria-label="Course categories" className="-mx-6 mb-6 sm:mx-0">
             <div className="flex gap-2 overflow-x-auto px-6 pb-2 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0 [&::-webkit-scrollbar]:hidden">
               <Link
-                href={href("all")}
+                href={buildUrl({ category: "all" })}
                 className={pill(category === "all")}
                 aria-current={category === "all" ? "page" : undefined}
               >
-                All
-                <span className="text-xs opacity-70">{all.length}</span>
+                All Categories
+                <span className="text-xs opacity-70">{filteredByTrack.length}</span>
               </Link>
               {categories.map((c) => (
                 <Link
                   key={c}
-                  href={href(c)}
+                  href={buildUrl({ category: c })}
                   className={pill(category === c)}
                   aria-current={category === c ? "page" : undefined}
                 >
@@ -210,7 +280,13 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
 
           <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-2xl font-[var(--font-display)] font-bold tracking-[var(--tracking-tight)] text-[var(--ink-900)] sm:text-3xl">
-              {category === "all" ? "All courses" : category}
+              {category === "all"
+                ? track === "academic"
+                  ? "Academic Courses"
+                  : track === "tech"
+                  ? "Tech Skills Courses"
+                  : "All courses"
+                : category}
             </h2>
             <div className="flex items-center gap-3 text-sm text-[var(--text-muted)]">
               <span>

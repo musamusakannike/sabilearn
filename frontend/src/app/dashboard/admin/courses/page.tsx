@@ -30,6 +30,13 @@ interface CourseFormState {
   longDescription: string;
   banner: string;
   category: string;
+  track: 'tech' | 'academic';
+  courseCode: string;
+  faculty: string;
+  department: string;
+  level: '100L' | '200L' | '300L' | '400L' | '500L' | 'postgraduate';
+  semester: 'first' | 'second';
+  creditUnits: number;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   isPublished: boolean;
   isFree: boolean;
@@ -46,6 +53,13 @@ const initialFormState: CourseFormState = {
   longDescription: '',
   banner: '',
   category: DEFAULT_CATEGORIES[0],
+  track: 'tech',
+  courseCode: '',
+  faculty: '',
+  department: '',
+  level: '100L',
+  semester: 'first',
+  creditUnits: 3,
   difficulty: 'beginner',
   isPublished: false,
   isFree: true,
@@ -197,6 +211,20 @@ function AdminCoursesContent() {
     fd.append('description', form.description.trim());
     fd.append('longDescription', form.longDescription.trim());
     fd.append('category', form.category);
+    fd.append('track', form.track);
+    if (form.track === 'academic') {
+      fd.append(
+        'academicMeta',
+        JSON.stringify({
+          courseCode: form.courseCode.trim().toUpperCase(),
+          faculty: form.faculty.trim(),
+          department: form.department.trim(),
+          level: form.level,
+          semester: form.semester,
+          creditUnits: form.creditUnits,
+        })
+      );
+    }
     fd.append('difficulty', form.difficulty);
     fd.append('isPublished', String(form.isPublished));
     fd.append('banner', form.banner || '');
@@ -261,6 +289,13 @@ function AdminCoursesContent() {
       longDescription: course.longDescription || '',
       banner: course.banner || '',
       category: course.category,
+      track: course.track || 'tech',
+      courseCode: course.academicMeta?.courseCode || '',
+      faculty: course.academicMeta?.faculty || '',
+      department: course.academicMeta?.department || '',
+      level: course.academicMeta?.level || '100L',
+      semester: course.academicMeta?.semester || 'first',
+      creditUnits: course.academicMeta?.creditUnits || 3,
       difficulty: course.difficulty,
       isPublished: course.isPublished,
       isFree: course.isFree ?? true,
@@ -546,6 +581,80 @@ function AdminCoursesContent() {
                   }
                   options={['beginner', 'intermediate', 'advanced']}
                 />
+              </div>
+
+              {/* Track Selector & Academic Details */}
+              <div className="space-y-3 rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)] p-3.5">
+                <Select
+                  label="Learning Track"
+                  value={form.track}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      track: e.target.value as 'tech' | 'academic',
+                    })
+                  }
+                  options={[
+                    { value: 'tech', label: '💻 Tech Skills Track' },
+                    { value: 'academic', label: '🎓 Academic Hub Track' },
+                  ]}
+                />
+
+                {form.track === 'academic' && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-[var(--line)]">
+                    <Input
+                      label="Course Code (e.g. MTH 101)"
+                      value={form.courseCode}
+                      onChange={(e) => setForm({ ...form, courseCode: e.target.value })}
+                      placeholder="MTH 101"
+                    />
+                    <Select
+                      label="Academic Level"
+                      value={form.level}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          level: e.target.value as any,
+                        })
+                      }
+                      options={['100L', '200L', '300L', '400L', '500L', 'postgraduate']}
+                    />
+                    <Input
+                      label="Faculty"
+                      value={form.faculty}
+                      onChange={(e) => setForm({ ...form, faculty: e.target.value })}
+                      placeholder="e.g. Physical Sciences"
+                    />
+                    <Input
+                      label="Department"
+                      value={form.department}
+                      onChange={(e) => setForm({ ...form, department: e.target.value })}
+                      placeholder="e.g. Mathematics"
+                    />
+                    <Select
+                      label="Semester"
+                      value={form.semester}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          semester: e.target.value as any,
+                        })
+                      }
+                      options={[
+                        { value: 'first', label: 'First / Harmattan' },
+                        { value: 'second', label: 'Second / Rain' },
+                      ]}
+                    />
+                    <Input
+                      label="Credit Units"
+                      type="number"
+                      value={String(form.creditUnits)}
+                      onChange={(e) =>
+                        setForm({ ...form, creditUnits: parseInt(e.target.value, 10) || 0 })
+                      }
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="flex flex-col gap-1.5">

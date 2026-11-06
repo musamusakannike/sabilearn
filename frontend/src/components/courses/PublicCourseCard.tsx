@@ -39,6 +39,25 @@ export default function PublicCourseCard({ course }: { course: Course }) {
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
+        {(course.academicMeta?.courseCode || course.track === 'academic') && (
+          <div className="flex items-center gap-2 flex-wrap">
+            {course.academicMeta?.courseCode && (
+              <span className="inline-flex items-center rounded-md bg-amber-500/10 px-2.5 py-0.5 text-xs font-bold text-amber-700 dark:text-amber-400 border border-amber-500/20">
+                {course.academicMeta.courseCode}
+              </span>
+            )}
+            {course.academicMeta?.level && (
+              <span className="inline-flex items-center rounded-md bg-indigo-500/10 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:text-indigo-400 border border-indigo-500/20">
+                {course.academicMeta.level}
+              </span>
+            )}
+            {course.academicMeta?.creditUnits && (
+              <span className="text-xs text-[var(--text-muted)] font-medium">
+                {course.academicMeta.creditUnits} Units
+              </span>
+            )}
+          </div>
+        )}
         <h3 className="line-clamp-2 text-lg leading-[var(--leading-snug)] font-[var(--font-display)] font-bold text-[var(--ink-900)] sm:text-xl">
           {course.title}
         </h3>

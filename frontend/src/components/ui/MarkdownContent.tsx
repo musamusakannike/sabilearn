@@ -6,14 +6,85 @@ import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Check, Copy } from 'lucide-react';
+import katex from 'katex';
 
 interface MarkdownContentProps {
   content: string;
   isStreaming?: boolean;
 }
 
+function renderMath(text: string): React.ReactNode {
+  if (!text.includes('$')) return text;
+
+  const parts: React.ReactNode[] = [];
+  const regex = /(\$\$[\s\S]*?\$\$|\$[^\$\n]+?\$)/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    const token = match[0];
+    const isBlock = token.startsWith('$$') && token.endsWith('$$');
+    const mathContent = isBlock ? token.slice(2, -2) : token.slice(1, -1);
+
+    try {
+      const html = katex.renderToString(mathContent, {
+        displayMode: isBlock,
+        throwOnError: false,
+      });
+      parts.push(
+        <span
+          key={match.index}
+          className={isBlock ? 'my-2 block overflow-x-auto text-center' : 'inline-block px-0.5 align-middle'}
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      );
+    } catch {
+      parts.push(token);
+    }
+    lastIndex = match.index + token.length;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return parts;
+}
+
+function processChildrenWithMath(children: React.ReactNode): React.ReactNode {
+  if (typeof children === 'string') {
+    return renderMath(children);
+  }
+  if (Array.isArray(children)) {
+    return children.map((child, i) =>
+      typeof child === 'string' ? <React.Fragment key={i}>{renderMath(child)}</React.Fragment> : child
+    );
+  }
+  return children;
+}
+
 function CodeBlock({ language, value }: { language?: string; value: string }) {
   const [copied, setCopied] = useState(false);
+
+  if (language === 'latex' || language === 'math') {
+    try {
+      const html = katex.renderToString(value, {
+        displayMode: true,
+        throwOnError: false,
+      });
+      return (
+        <div
+          className="my-3 overflow-x-auto rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)]/50 p-4 text-center"
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      );
+    } catch {
+      // fallback to syntax highlighter below
+    }
+  }
 
   const handleCopy = async () => {
     try {
@@ -87,7 +158,7 @@ export default function MarkdownContent({ content, isStreaming }: MarkdownConten
           ),
           p: ({ children }) => (
             <p className="mb-2.5 last:mb-0 leading-relaxed text-[var(--text-body)]">
-              {children}
+              {processChildrenWithMath(children)}
             </p>
           ),
           ul: ({ children }) => (
@@ -100,7 +171,7 @@ export default function MarkdownContent({ content, isStreaming }: MarkdownConten
               {children}
             </ol>
           ),
-          li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+          li: ({ children }) => <li className="leading-relaxed">{processChildrenWithMath(children)}</li>,
           blockquote: ({ children }) => (
             <blockquote className="my-2 border-l-2 border-[#FF8A00] bg-[var(--surface-sunken)]/60 px-3 py-1.5 rounded-r text-[var(--text-muted)] italic">
               {children}
