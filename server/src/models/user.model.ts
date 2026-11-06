@@ -25,6 +25,8 @@ export interface IUserSettings {
   preferredTrack?: 'tech' | 'academic';
 }
 
+export type ClientPlatform = 'web' | 'ios' | 'android';
+
 export interface IUser extends Document {
   email: string;
   password?: string;
@@ -41,6 +43,10 @@ export interface IUser extends Document {
   role: 'user' | 'admin';
   settings?: IUserSettings;
   expoPushToken?: string;
+  /** Last client OS/platform detected from requests (web | ios | android). */
+  lastPlatform?: ClientPlatform | null;
+  /** Timestamp of most recent authenticated activity. */
+  lastActiveAt?: Date | null;
   /** Consecutive days with at least one study session, as of lastStudyDate. */
   currentStreak: number;
   longestStreak: number;
@@ -150,6 +156,17 @@ const UserSchema: Schema = new Schema<IUser>(
     expoPushToken: {
       type: String,
       default: '',
+    },
+    lastPlatform: {
+      type: String,
+      enum: ['web', 'ios', 'android'],
+      default: null,
+      index: true,
+    },
+    lastActiveAt: {
+      type: Date,
+      default: null,
+      index: true,
     },
     currentStreak: {
       type: Number,

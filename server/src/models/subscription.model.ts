@@ -5,9 +5,10 @@ export type SubscriptionStatus = 'active' | 'cancelled' | 'past_due' | 'none';
  * 'recurring' = Paystack Plan, card-only, auto-debits monthly (web).
  * 'manual' = one-off Paystack charge (web).
  * 'iap' = Apple/Google via RevenueCat (mobile).
+ * 'admin_grant' = granted directly by admin for a fixed duration.
  */
-export type SubscriptionBillingType = 'recurring' | 'manual' | 'iap';
-export type SubscriptionStore = 'app_store' | 'play_store' | 'web';
+export type SubscriptionBillingType = 'recurring' | 'manual' | 'iap' | 'admin_grant';
+export type SubscriptionStore = 'app_store' | 'play_store' | 'web' | 'admin';
 
 export interface ISubscription extends Document {
   user: mongoose.Types.ObjectId;
@@ -20,6 +21,10 @@ export interface ISubscription extends Document {
   store?: SubscriptionStore;
   status: SubscriptionStatus;
   currentPeriodEnd?: Date;
+  grantedBy?: mongoose.Types.ObjectId | null;
+  grantNote?: string;
+  grantedDays?: number;
+  grantedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,7 +40,7 @@ const SubscriptionSchema: Schema = new Schema<ISubscription>(
     },
     billingType: {
       type: String,
-      enum: ['recurring', 'manual', 'iap'],
+      enum: ['recurring', 'manual', 'iap', 'admin_grant'],
       default: 'manual',
     },
     rcAppUserId: {
@@ -44,7 +49,7 @@ const SubscriptionSchema: Schema = new Schema<ISubscription>(
     },
     store: {
       type: String,
-      enum: ['app_store', 'play_store', 'web'],
+      enum: ['app_store', 'play_store', 'web', 'admin'],
     },
     paystackCustomerCode: {
       type: String,
@@ -66,6 +71,23 @@ const SubscriptionSchema: Schema = new Schema<ISubscription>(
     },
     currentPeriodEnd: {
       type: Date,
+    },
+    grantedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+    grantNote: {
+      type: String,
+      default: '',
+    },
+    grantedDays: {
+      type: Number,
+      default: null,
+    },
+    grantedAt: {
+      type: Date,
+      default: null,
     },
   },
   {

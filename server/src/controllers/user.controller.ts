@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from '../middlewares/auth.middleware';
 import User from '../models/user.model';
+import Subscription from '../models/subscription.model';
+import UserProgress from '../models/userProgress.model';
 import { uploadToR2 } from '../utils/r2.util';
 
 interface MulterRequest extends AuthenticatedRequest {
@@ -104,13 +106,102 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
         { email: { $regex: req.query.search, $options: 'i' } },
       ];
     }
+    if (req.query.role && (req.query.role === 'user' || req.query.role === 'admin')) {
+      filter.role = req.query.role;
+    }
+    if (req.query.track && (req.query.track === 'tech' || req.query.track === 'academic')) {
+      filter.activeTrack = req.query.track;
+    }
+    if (req.query.platform && ['web', 'ios', 'android'].includes(req.query.platform as string)) {
+      filter.lastPlatform = req.query.platform;
+    }
 
-    const users = await User.find(filter).select('-password').sort({ createdAt: -1 }).skip(skip).limit(limit);
-    const total = await User.countDocuments(filter);
+    // Sort order
+    let sortOptions: Record<string, 1 | -1> = { createdAt: -1 };
+    if (req.query.sortBy === 'lastActiveAt') {
+      sortOptions = { lastActiveAt: -1, createdAt: -1 };
+    } else if (req.query.sortBy === 'totalXp') {
+      sortOptions = { totalXp: -1 };
+    } else if (req.query.sortBy === 'currentStreak') {
+      sortOptions = { currentStreak: -1 };
+    }
+
+    const [users, total] = await Promise.all([
+      User.find(filter).select('-password').sort(sortOptions).skip(skip).limit(limit).lean(),
+      User.countDocuments(filter),
+    ]);
+
+    const userIds = users.map((u) => u._id);
+
+    // Fetch subscriptions & enrolled courses count in bulk
+    const now = new Date();
+    const [subscriptions, progressEnrollmentAgg] = await Promise.all([
+      Subscription.find({ user: { $in: userIds } }).lean(),
+      UserProgress.aggregate([
+        { $match: { user: { $in: userIds }, 'completedTopics.0': { $exists: true } } },
+        {
+          $group: {
+            _id: '$user',
+            enrolledCount: { $sum: 1 },
+            completedCount: { $sum: { $cond: ['$isCompleted', 1, 0] } },
+          },
+        },
+      ]),
+    ]);
+
+    const subMap = new Map(subscriptions.map((s) => [String(s.user), s]));
+    const progMap = new Map(progressEnrollmentAgg.map((p) => [String(p._id), p]));
+
+    const enrichedUsers = users.map((u) => {
+      const uId = String(u._id);
+      const sub = subMap.get(uId);
+      const prog = progMap.get(uId);
+
+      const isProActive = Boolean(
+        sub &&
+        sub.status === 'active' &&
+        (!sub.currentPeriodEnd || new Date(sub.currentPeriodEnd).getTime() > now.getTime())
+      );
+
+      // Inferred platform fallback if null
+      let platform = (u as any).lastPlatform;
+      if (!platform) {
+        if (sub?.store === 'app_store') platform = 'ios';
+        else if (sub?.store === 'play_store') platform = 'android';
+        else if (sub?.store === 'web') platform = 'web';
+        else platform = 'web';
+      }
+
+      return {
+        ...u,
+        lastPlatform: platform,
+        lastActiveAt: (u as any).lastActiveAt || (u as any).lastStudyDate || (u as any).updatedAt,
+        subscription: sub
+          ? {
+              status: sub.status,
+              billingType: sub.billingType,
+              store: sub.store,
+              currentPeriodEnd: sub.currentPeriodEnd,
+              isProActive,
+            }
+          : null,
+        isPro: isProActive,
+        enrolledCoursesCount: prog?.enrolledCount || 0,
+        completedCoursesCount: prog?.completedCount || 0,
+      };
+    });
+
+    // Optional filter by status if requested (pro / free)
+    let finalUsers = enrichedUsers;
+    if (req.query.status === 'pro') {
+      finalUsers = enrichedUsers.filter((u) => u.isPro);
+    } else if (req.query.status === 'free') {
+      finalUsers = enrichedUsers.filter((u) => !u.isPro);
+    }
 
     res.status(200).json({
       success: true,
-      data: users,
+      data: finalUsers,
       pagination: { page, limit, total, pages: Math.ceil(total / limit) },
     });
   } catch (error) {
@@ -195,7 +286,7 @@ export const updateSettings = async (req: AuthenticatedRequest, res: Response, n
 
 export const savePushToken = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { token, timezoneOffset } = req.body;
+    const { token, timezoneOffset, platform } = req.body;
 
     if (!token || typeof token !== 'string') {
       res.status(400).json({ success: false, message: 'Push token is required.' });
@@ -203,6 +294,10 @@ export const savePushToken = async (req: AuthenticatedRequest, res: Response, ne
     }
 
     const update: Record<string, unknown> = { expoPushToken: token };
+
+    if (platform === 'ios' || platform === 'android') {
+      update.lastPlatform = platform;
+    }
 
     // The app re-reports its offset on every launch, which is how the server
     // picks up travel and daylight-saving shifts without a timezone database.

@@ -1,11 +1,46 @@
 import { Request, Response, NextFunction } from 'express';
 import { getAuth, DecodedIdToken } from 'firebase-admin/auth';
 import { verifyToken } from '../utils/token.util';
-import User, { IUser } from '../models/user.model';
+import User, { IUser, ClientPlatform } from '../models/user.model';
 
 export interface AuthenticatedRequest extends Request {
   user?: IUser;
   firebaseUser?: DecodedIdToken;
+}
+
+export function detectClientPlatform(req: Request): ClientPlatform {
+  const header = String(req.headers['x-client-platform'] || '').trim().toLowerCase();
+  if (header === 'ios' || header === 'android' || header === 'web') {
+    return header;
+  }
+  const ua = String(req.headers['user-agent'] || '').toLowerCase();
+  if (ua.includes('cfnetwork') || ua.includes('darwin') || ua.includes('iphone') || ua.includes('ipad')) {
+    return 'ios';
+  }
+  if (ua.includes('android') || ua.includes('okhttp')) {
+    return 'android';
+  }
+  return 'web';
+}
+
+export function recordClientActivity(req: Request, user: IUser): void {
+  try {
+    const platform = detectClientPlatform(req);
+    const now = new Date();
+    const shouldUpdatePlatform = user.lastPlatform !== platform;
+    const shouldUpdateActive = !user.lastActiveAt || now.getTime() - new Date(user.lastActiveAt).getTime() > 5 * 60 * 1000;
+
+    if (shouldUpdatePlatform || shouldUpdateActive) {
+      user.lastPlatform = platform;
+      user.lastActiveAt = now;
+      void User.updateOne(
+        { _id: user._id },
+        { $set: { lastPlatform: platform, lastActiveAt: now } }
+      ).catch(() => {});
+    }
+  } catch {
+    // Non-blocking
+  }
 }
 
 /**
@@ -38,6 +73,7 @@ export const protect = async (
       }
 
       req.user = user;
+      recordClientActivity(req, user);
       next();
     } catch (err) {
       res.status(401).json({ success: false, message: 'Not authorized, token verification failed.' });
@@ -85,6 +121,7 @@ export const protectFirebase = async (
       
       if (user) {
         req.user = user;
+        recordClientActivity(req, user);
       }
       
       next();
@@ -132,6 +169,7 @@ export const optionalAuth = async (
         const user = await User.findById(decoded.id);
         if (user) {
           req.user = user;
+          recordClientActivity(req, user);
         }
       } catch (err) {
         // ignore invalid token for optional auth

@@ -6,6 +6,7 @@ const api = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
+    'X-Client-Platform': 'web',
   },
 });
 
@@ -174,10 +175,14 @@ export const blogApi = {
 };
 
 export const adminApi = {
-  analytics: () => api.get('/admin/analytics'),
+  analytics: (timeframe?: string) => api.get('/admin/analytics', { params: { timeframe } }),
   coursePerformance: () => api.get('/admin/course-performance'),
   userGrowth: () => api.get('/admin/user-growth'),
   recentActivity: () => api.get('/admin/recent-activity'),
+  userDetail: (id: string) => api.get(`/admin/users/${id}`),
+  upgradeUser: (id: string, data: { durationDays: number; note?: string; sendEmail?: boolean }) =>
+    api.post(`/admin/users/${id}/upgrade`, data),
+  revokeSubscription: (id: string) => api.post(`/admin/users/${id}/revoke-subscription`),
 };
 
 export const courseRequestApi = {
@@ -273,6 +278,7 @@ export async function streamAiExplain(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'X-Client-Platform': 'web',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: JSON.stringify({ ...params, stream: true }),

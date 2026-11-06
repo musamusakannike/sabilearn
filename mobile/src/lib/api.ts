@@ -8,10 +8,13 @@ const DEFAULT_API_URL = 'https://api.sabilearn.online/api/v1';
 const API_BASE_URL: string =
   (Constants.expoConfig?.extra?.apiUrl as string | undefined) ?? DEFAULT_API_URL;
 
+const clientPlatform = Platform.OS === 'ios' ? 'ios' : Platform.OS === 'android' ? 'android' : 'web';
+
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+    'X-Client-Platform': clientPlatform,
   },
   timeout: 15000,
 });
@@ -136,7 +139,8 @@ export const userApi = {
       headers: { 'Content-Type': 'multipart/form-data' },
       transformRequest: (data) => data,
     }),
-  registerPushToken: (data: { token: string; timezoneOffset: number }) => api.post('/users/me/push-token', data),
+  registerPushToken: (data: { token: string; timezoneOffset: number; platform?: 'ios' | 'android' }) =>
+    api.post('/users/me/push-token', { ...data, platform: data.platform || (Platform.OS === 'ios' ? 'ios' : 'android') }),
   removePushToken: (token: string) => api.delete('/users/me/push-token', { data: { token } }),
 };
 
@@ -272,6 +276,7 @@ export function streamAiExplainMobile(
       const token = await getToken();
       xhr.open('POST', `${API_BASE_URL}/ai/explain`, true);
       xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('X-Client-Platform', clientPlatform);
       if (token) {
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       }

@@ -467,6 +467,93 @@ SabiLearn — Learn a skill. Sabi it for life.
 ${HOME_URL}`;
 }
 
+export function proUpgradeCelebrationHtml(props: {
+  name: string;
+  days: number;
+  currentPeriodEnd: Date;
+  note?: string;
+  dashboardUrl?: string;
+}): string {
+  const name = escapeHtml(props.name);
+  const expiryFormatted = props.currentPeriodEnd.toLocaleDateString('en-US', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+  const noteBlock = props.note
+    ? `<div style="margin: 16px 0; padding: 14px 16px; background-color: #F8F6F0; border-left: 4px solid #F2A900; border-radius: 8px; font-size: 14px; color: #35354A; font-style: italic;">
+        “${escapeHtml(props.note)}”
+      </div>`
+    : '';
+
+  return wrapEmail({
+    title: 'Congratulations! You have been upgraded to SabiLearn Pro',
+    preheader: `You now have ${props.days} days of full SabiLearn Pro access until ${expiryFormatted}.`,
+    bodyHtml: `
+      <p style="margin: 0 0 12px 0; font-size: 16px; color: #35354A;">Hi ${name},</p>
+      <h1 style="margin: 0 0 12px 0; font-size: 24px; line-height: 1.3; color: #0E0E1A; font-weight: 800;">
+        🎉 You’re Upgraded to SabiLearn Pro!
+      </h1>
+      <p style="margin: 0 0 12px 0; font-size: 15px; line-height: 1.6; color: #35354A;">
+        Great news! Your SabiLearn account has been upgraded to <strong>SabiLearn Pro</strong> for <strong>${props.days} days</strong>.
+        Your full Pro membership is active and valid until <strong>${expiryFormatted}</strong>.
+      </p>
+      ${noteBlock}
+      <div style="margin: 20px 0; padding: 18px 20px; background-color: #FFF8E6; border: 1px solid #FFE4A0; border-radius: 12px;">
+        <p style="margin: 0 0 8px 0; font-size: 14px; font-weight: 700; color: #8A5A00; text-transform: uppercase; letter-spacing: 0.5px;">
+          What’s unlocked with your Pro membership:
+        </p>
+        <ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.8; color: #4A3E2A;">
+          <li><strong>Unlimited access</strong> to all premium courses & learning tracks</li>
+          <li><strong>AI Course Architect</strong> — create custom syllabus & full curriculum</li>
+          <li><strong>AI Quiz & Flashcards generator</strong> from documents & notes</li>
+          <li><strong>Interactive Code Playground</strong> with full runtime & preview</li>
+          <li><strong>Priority AI Lesson Tutor</strong> for instant deep-dives</li>
+        </ul>
+      </div>
+      <p style="margin: 0 0 16px 0; font-size: 15px; line-height: 1.6; color: #35354A;">
+        Jump in now and make the most of your unlimited learning tools!
+      </p>
+      ${ctaButton(props.dashboardUrl || DASHBOARD_URL, 'Go to SabiLearn Pro Dashboard')}
+    `,
+  });
+}
+
+export function proUpgradeCelebrationText(props: {
+  name: string;
+  days: number;
+  currentPeriodEnd: Date;
+  note?: string;
+  dashboardUrl?: string;
+}): string {
+  const expiryFormatted = props.currentPeriodEnd.toLocaleDateString('en-US', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+  const noteStr = props.note ? `\n\nAdmin note: "${props.note}"` : '';
+
+  return `Hi ${props.name},
+
+Congratulations! You have been upgraded to SabiLearn Pro for ${props.days} days.
+Your Pro membership is active until ${expiryFormatted}.${noteStr}
+
+What’s unlocked:
+- Unlimited access to all premium courses & tracks
+- AI Course Architect & document generation
+- AI Quiz & Flashcard generation
+- Interactive Code Playground
+- Priority AI Lesson Tutor
+
+Go to your dashboard:
+${props.dashboardUrl || DASHBOARD_URL}
+
+SabiLearn — Learn a skill. Sabi it for life.
+${HOME_URL}`;
+}
+
 export const SITE_HOME = HOME_URL;
 export const LEARN_URL = (courseId: string, topicId: string) =>
   `${HOME_URL}/dashboard/courses/${courseId}/topics/${topicId}/learn`;

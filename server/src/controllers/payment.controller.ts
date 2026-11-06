@@ -302,7 +302,9 @@ export const getMyPaymentStatus = async (
     const isExpiredPeriod =
       !!subscription &&
       subscription.status === 'active' &&
-      (subscription.billingType === 'manual' || subscription.billingType === 'iap') &&
+      (subscription.billingType === 'manual' ||
+        subscription.billingType === 'iap' ||
+        subscription.billingType === 'admin_grant') &&
       !isSubscriptionActive(subscription);
 
     res.status(200).json({

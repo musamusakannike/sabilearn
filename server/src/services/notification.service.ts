@@ -322,6 +322,30 @@ function hashString(s: string): number {
 }
 
 /**
+ * "Pro Upgrade Celebration" — notified when an admin upgrades the user's tier.
+ */
+export async function sendProUpgradeNotification(
+  user: Pick<IUser, '_id' | 'firstName' | 'name'>,
+  days: number,
+  currentPeriodEnd: Date
+): Promise<void> {
+  const expiryFormatted = currentPeriodEnd.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+  await notify({
+    user: user._id as mongoose.Types.ObjectId,
+    type: 'success',
+    category: 'achievement',
+    title: '🎉 You’ve Been Upgraded to Pro!',
+    message: `You have ${days} days of full SabiLearn Pro access until ${expiryFormatted}. Enjoy unlimited courses & AI tools!`,
+    actionUrl: '/dashboard',
+    data: { days, currentPeriodEnd: currentPeriodEnd.toISOString() },
+  });
+}
+
+/**
  * Retention sweep: read notifications older than 30 days are gone, and unread
  * generic nudges (reminder/streak) older than 14 days are stale by definition.
  * Returns how many documents were removed.
