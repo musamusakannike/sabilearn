@@ -7,7 +7,6 @@ import { paymentApi } from '@/lib/api';
 import { PaymentStatus } from '@/lib/types';
 import { useIapPurchase } from '@/hooks/useIapPurchase';
 import { usePaystackPurchase } from '@/hooks/usePaystackPurchase';
-import { useAppReview } from '@/hooks/useAppReview';
 import ScreenBackdrop from '@/components/common/ScreenBackdrop';
 import ScreenHeader from '@/components/common/ScreenHeader';
 import { ResponsiveContainer } from '@/components/ResponsiveContainer';
@@ -31,7 +30,6 @@ const ANDROID_PERKS = [
 
 export default function SubscribeScreen() {
   const insets = useSafeAreaInsets();
-  const { inReview } = useAppReview();
   const iap = useIapPurchase();
   const paystack = usePaystackPurchase();
   const isAppleIap = Platform.OS === 'ios';
@@ -53,12 +51,8 @@ export default function SubscribeScreen() {
   }, []);
 
   useEffect(() => {
-    if (inReview) {
-      router.replace('/(tabs)/profile');
-      return;
-    }
     void load();
-  }, [inReview, load]);
+  }, [load]);
 
   const onRefresh = useCallback(async () => {
     haptics.light();
@@ -87,7 +81,6 @@ export default function SubscribeScreen() {
     void Linking.openURL('https://apps.apple.com/account/subscriptions');
   };
 
-  if (inReview) return null;
   if (isLoading) return <LoadingSpinner />;
 
   const sub = status?.subscription;
@@ -132,7 +125,7 @@ export default function SubscribeScreen() {
               </Text>
               {isWebBilled && isAppleIap ? (
                 <Text style={styles.hint}>
-                  This plan was started on the website. Renew there, or subscribe in the app with Apple when it ends.
+                  This plan was activated outside the App Store. You can subscribe with Apple when it ends.
                 </Text>
               ) : null}
               {isIap && isAppleIap ? (
@@ -193,7 +186,7 @@ export default function SubscribeScreen() {
               <Text style={styles.hint}>
                 {isPaystack
                   ? 'Individual courses can also be bought directly on each course page.'
-                  : 'Subscriptions auto-renew unless cancelled at least 24 hours before the period ends. Individual courses can still be bought on sabilearn.online.'}
+                  : 'Subscriptions auto-renew unless cancelled at least 24 hours before the period ends. Manage or cancel anytime in your Apple ID Subscriptions settings.'}
               </Text>
             </GlassSurface>
           )}

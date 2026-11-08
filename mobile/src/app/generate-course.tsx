@@ -29,7 +29,6 @@ import {
   CourseArchitectQuota,
   GeneratedCourseResult,
 } from '@/lib/types';
-import { useAppReview } from '@/hooks/useAppReview';
 import Button from '@/components/ui/Button';
 import GlassSurface from '@/components/ui/GlassSurface';
 import NativeSegmentedControl from '@/components/ui/NativeSegmentedControl';
@@ -78,7 +77,6 @@ function axiosMessage(err: any): { status?: number; message: string } {
 
 export default function GenerateCourseScreen() {
   const insets = useSafeAreaInsets();
-  const { inReview } = useAppReview();
 
   const [quota, setQuota] = useState<CourseArchitectQuota | null>(null);
   const [title, setTitle] = useState('');
@@ -91,12 +89,6 @@ export default function GenerateCourseScreen() {
   const [result, setResult] = useState<GeneratedCourseResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const stageTimer = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    if (inReview) {
-      router.replace('/(tabs)/courses');
-    }
-  }, [inReview]);
 
   const loadQuota = useCallback(async () => {
     try {

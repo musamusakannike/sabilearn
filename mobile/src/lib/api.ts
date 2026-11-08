@@ -209,9 +209,6 @@ export const paymentApi = {
 
 const AI_TIMEOUT_MS = 120000;
 
-export const appReviewApi = {
-  getStatus: (os?: string, version?: string) => api.get('/app-review/status', { params: { os, version } }),
-};
 
 export interface ExplainLessonParams {
   mode: 'eli5' | 'analogy' | 'custom';

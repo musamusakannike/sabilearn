@@ -43,14 +43,12 @@ import GlassIconButton from '@/components/common/GlassIconButton';
 import CoursePaywall from '@/components/payments/CoursePaywall';
 import { ResponsiveContainer } from '@/components/ResponsiveContainer';
 import { useResponsive } from '@/hooks/useResponsive';
-import { useAppReview } from '@/hooks/useAppReview';
 import * as haptics from '@/lib/haptics';
 
 export default function CourseDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
   const { isDesktop } = useResponsive();
-  const { inReview, androidInReview } = useAppReview();
   const colors = {
     textPrimary: INK,
     textSecondary: '#6B6B80',
@@ -200,9 +198,6 @@ export default function CourseDetailScreen() {
 
   if (isLoading) return <LoadingSpinner />;
   if (!course) return <EmptyState title="Course not found" />;
-  if (inReview && !course.isFree) {
-    return <EmptyState title="Course not available" description="This course is not available right now." />;
-  }
 
   const authors = course.authors || [];
   const s = makeStyles(colors);
@@ -295,12 +290,11 @@ export default function CourseDetailScreen() {
           </View>
 
           <Text style={s.title}>{course.title}</Text>
-          {!androidInReview &&
-            (!course.isFree ? (
-              <Text style={s.priceLine}>{hasAccess ? 'Included in your access' : 'Included with Premium'}</Text>
-            ) : (
-              <Text style={s.priceLine}>Free</Text>
-            ))}
+          {!course.isFree ? (
+            <Text style={s.priceLine}>{hasAccess ? 'Included in your access' : 'Included with Premium'}</Text>
+          ) : (
+            <Text style={s.priceLine}>Free</Text>
+          )}
 
           {authors.length > 0 && (
             <View style={s.authorsRow}>

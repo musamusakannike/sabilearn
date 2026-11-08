@@ -11,7 +11,6 @@ import { router } from "expo-router";
 import { IconSearch, IconBook, IconSparkles } from "@tabler/icons-react-native";
 import { courseApi, courseArchitectApi } from "@/lib/api";
 import { Course } from "@/lib/types";
-import { useAppReview } from "@/hooks/useAppReview";
 import { cacheCourses, getCachedCourses } from "@/lib/offlineSync";
 import CourseCard from "@/components/ui/CourseCard";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -29,7 +28,6 @@ import * as haptics from "@/lib/haptics";
 
 export default function CoursesScreen() {
   const insets = useSafeAreaInsets();
-  const { inReview } = useAppReview();
   const [courses, setCourses] = useState<Course[]>([]);
   const [mine, setMine] = useState<Course[]>([]);
   const [segment, setSegment] = useState(0);
@@ -60,9 +58,9 @@ export default function CoursesScreen() {
   }, []);
 
   const loadCourses = useCallback(async () => {
-    await Promise.all([loadCatalog(), inReview ? Promise.resolve() : loadMine()]);
+    await Promise.all([loadCatalog(), loadMine()]);
     setIsLoading(false);
-  }, [inReview, loadCatalog, loadMine]);
+  }, [loadCatalog, loadMine]);
 
   useEffect(() => {
     /* eslint-disable react-hooks/set-state-in-effect -- initial catalog fetch */
@@ -77,9 +75,8 @@ export default function CoursesScreen() {
     setRefreshing(false);
   }, [loadCourses]);
 
-  const source = segment === 1 && !inReview ? mine : courses;
+  const source = segment === 1 ? mine : courses;
   const filtered = source.filter((c) => {
-    if (inReview && !c.isFree) return false;
     if (trackSegment === 1 && (c.track || "tech") !== "tech") return false;
     if (trackSegment === 2 && c.track !== "academic") return false;
     const q = query.trim().toLowerCase();
@@ -151,15 +148,13 @@ export default function CoursesScreen() {
                   setTrackSegment(idx);
                 }}
               />
-              {!inReview ? (
-                <View style={{ marginTop: spacing.xs }}>
-                  <NativeSegmentedControl
-                    values={["Catalog", "Yours"]}
-                    selectedIndex={segment}
-                    onChange={setSegment}
-                  />
-                </View>
-              ) : null}
+              <View style={{ marginTop: spacing.xs }}>
+                <NativeSegmentedControl
+                  values={["Catalog", "Yours"]}
+                  selectedIndex={segment}
+                  onChange={setSegment}
+                />
+              </View>
             </View>
           }
           renderItem={({ item }) => (
@@ -175,7 +170,7 @@ export default function CoursesScreen() {
           )}
           ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
           ListEmptyComponent={
-            segment === 1 && !inReview ? (
+            segment === 1 ? (
               <EmptyState
                 icon={<IconSparkles size={44} color={FAINT} />}
                 title="No generated courses yet"
