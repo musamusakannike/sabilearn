@@ -20,6 +20,7 @@ import { useProgressStore } from '@/store/progress.store';
 import { useAuthStore } from '@/store/auth.store';
 import { courseApi, notificationApi } from '@/lib/api';
 import { cachePopularCourses, getCachedPopularCourses } from '@/lib/offlineSync';
+import { getBundledCourseList } from '@/lib/offlineCourses';
 import { Course, Topic } from '@/lib/types';
 import Badge from '@/components/ui/Badge';
 import ProgressBar from '@/components/ui/ProgressBar';
@@ -67,20 +68,36 @@ export default function DashboardHome() {
   }, []);
 
   const fetchPopularCourses = useCallback(async () => {
+    const bundled = getBundledCourseList();
     try {
       const cached = await getCachedPopularCourses();
       if (cached.length > 0) {
         setPopularCourses((prev) => (prev.length > 0 ? prev : cached));
         setIsLoadingPopular(false);
+      } else if (bundled.length > 0) {
+        setPopularCourses(bundled);
+        setIsLoadingPopular(false);
       }
       const res = await courseApi.popular();
       const fresh = res.data.data || [];
-      setPopularCourses(fresh);
-      if (fresh.length > 0) {
-        void cachePopularCourses(fresh);
+      const map = new Map<string, Course>();
+      fresh.forEach((c: Course) => map.set(c._id, c));
+      bundled.forEach((bc) => {
+        if (!map.has(bc._id)) map.set(bc._id, bc);
+      });
+      const merged = Array.from(map.values());
+      setPopularCourses(merged);
+      if (merged.length > 0) {
+        void cachePopularCourses(merged);
       }
     } catch {
-      // silently fail — offline or server error
+      const cached = await getCachedPopularCourses();
+      const map = new Map<string, Course>();
+      cached.forEach((c) => map.set(c._id, c));
+      bundled.forEach((bc) => {
+        if (!map.has(bc._id)) map.set(bc._id, bc);
+      });
+      setPopularCourses(Array.from(map.values()));
     } finally {
       setIsLoadingPopular(false);
     }

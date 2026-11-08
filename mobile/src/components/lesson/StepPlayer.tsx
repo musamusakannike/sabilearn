@@ -61,7 +61,7 @@ export default function StepPlayer({
     }, 400);
   };
 
-  const { saveContentPosition, fetchTopicProgress, fetchDashboard } = useProgressStore();
+  const { saveContentPosition, fetchTopicProgress, fetchDashboard, completeTopic } = useProgressStore();
   const total = steps.length;
 
   // Scroll to top whenever step index changes
@@ -133,18 +133,17 @@ export default function StepPlayer({
     if (hasCompleted) return;
     try {
       setIsCompleting(true);
-      const res = await progressApi.completeTopic({
+      const res = await completeTopic({
         courseId: topic.course,
         topicId: topic._id,
       });
       setHasCompleted(true);
       void fetchDashboard();
-      // Detect course completion from the server response
-      if (res.data?.progress?.isCompleted === true) {
+      if (res.isCourseComplete) {
         setIsCourseComplete(true);
       }
     } catch (e) {
-      console.error('Failed to complete topic on server:', e);
+      console.error('Failed to complete topic:', e);
     } finally {
       setIsCompleting(false);
     }

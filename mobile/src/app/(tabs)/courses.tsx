@@ -12,6 +12,7 @@ import { IconSearch, IconBook, IconSparkles } from "@tabler/icons-react-native";
 import { courseApi, courseArchitectApi } from "@/lib/api";
 import { Course } from "@/lib/types";
 import { cacheCourses, getCachedCourses } from "@/lib/offlineSync";
+import { getBundledCourseList } from "@/lib/offlineCourses";
 import CourseCard from "@/components/ui/CourseCard";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import EmptyState from "@/components/ui/EmptyState";
@@ -37,14 +38,27 @@ export default function CoursesScreen() {
   const [refreshing, setRefreshing] = useState(false);
 
   const loadCatalog = useCallback(async () => {
+    const bundled = getBundledCourseList();
     try {
       const res = await courseApi.list();
       const data: Course[] = res.data.data;
-      setCourses(data);
-      await cacheCourses(data);
+      // Merge bundled courses if not present
+      const map = new Map<string, Course>();
+      data.forEach((c) => map.set(c._id, c));
+      bundled.forEach((bc) => {
+        if (!map.has(bc._id)) map.set(bc._id, bc);
+      });
+      const merged = Array.from(map.values());
+      setCourses(merged);
+      await cacheCourses(merged);
     } catch {
       const cached = await getCachedCourses();
-      setCourses(cached);
+      const map = new Map<string, Course>();
+      cached.forEach((c) => map.set(c._id, c));
+      bundled.forEach((bc) => {
+        if (!map.has(bc._id)) map.set(bc._id, bc);
+      });
+      setCourses(Array.from(map.values()));
     }
   }, []);
 

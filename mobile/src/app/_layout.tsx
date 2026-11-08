@@ -141,10 +141,10 @@ function AppContent() {
   ]);
 
   useEffect(() => {
-    syncQueuedSessions();
+    void syncQueuedSessions();
     const unsubscribe = NetInfo.addEventListener((state) => {
       if (state.isConnected) {
-        syncQueuedSessions();
+        void syncQueuedSessions();
       }
     });
     return () => unsubscribe();

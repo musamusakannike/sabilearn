@@ -30,6 +30,23 @@ import {
 } from '@tabler/icons-react-native';
 import { courseApi, chapterApi, progressApi, paymentApi } from '@/lib/api';
 import { Course, Chapter, Topic, PaymentStatus, Exercise } from '@/lib/types';
+import {
+  cacheCourseChapters,
+  cacheCourseDetail,
+  cachePaymentStatus,
+  getCachedPaymentStatus,
+  getLocalCourseProgress,
+  isOnline,
+} from '@/lib/offlineSync';
+import {
+  checkOfflineCourseAccess,
+  computeChaptersWithStatus,
+  getOfflineChapters,
+  getOfflineCourseDetail,
+  getOfflineTopics,
+  isBundledCourse,
+} from '@/lib/offlineCourses';
+import { useAuthStore } from '@/store/auth.store';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import EmptyState from '@/components/ui/EmptyState';
 import Badge from '@/components/ui/Badge';
@@ -84,22 +101,68 @@ export default function CourseDetailScreen() {
 
   const loadData = useCallback(async () => {
     if (!id) return;
+    const user = useAuthStore.getState().user;
     try {
+      const online = await isOnline();
+      if (!online) {
+        // Offline: resolve from offline store/bundles with server guards applied
+        const offlineCourse = await getOfflineCourseDetail(id);
+        const rawChapters = await getOfflineChapters(id);
+        const rawTopics = await getOfflineTopics(id);
+        const offlinePayment = await getCachedPaymentStatus();
+        const localProgress = await getLocalCourseProgress(id, user?._id);
+
+        setCourse(offlineCourse);
+        setPaymentStatus(offlinePayment);
+
+        const hasAccessOffline = offlineCourse
+          ? checkOfflineCourseAccess(offlineCourse, user, offlinePayment)
+          : false;
+
+        const guardedChapters = computeChaptersWithStatus(
+          rawChapters,
+          rawTopics,
+          localProgress,
+          hasAccessOffline
+        );
+        setChapters(guardedChapters);
+
+        if (guardedChapters.length > 0) {
+          const targetChapter =
+            guardedChapters.find(
+              (ch) =>
+                ch.status === 'inprogress' &&
+                ((ch.progressPercent || 0) > 0 || (ch.topics || []).some((t) => t.isCompleted || t.inProgress))
+            ) ||
+            guardedChapters.find((ch) =>
+              (ch.topics || []).some((t) => !t.isCompleted)
+            ) ||
+            guardedChapters[0];
+          setOpenChapters((prev) => ({ ...prev, [targetChapter._id]: true }));
+        }
+        return;
+      }
+
+      // Online: fetch fresh data from server
       const [courseRes, chaptersRes, paymentRes] = await Promise.all([
         courseApi.get(id),
         chapterApi.byCourse(id),
         paymentApi.me().catch(() => ({ data: { data: null } })),
       ]);
 
-      setCourse(courseRes.data.data);
+      const freshCourse = courseRes.data.data;
       const fetchedChapters: Chapter[] = chaptersRes.data.data || [];
-      setChapters(fetchedChapters);
-      setPaymentStatus(paymentRes.data.data);
+      const freshPayment = paymentRes.data.data;
 
-      // Auto-expand the chapter the user should read next:
-      // 1st priority: in-progress chapter that has actually been started
-      // 2nd priority: first chapter with at least one incomplete topic
-      // Fallback: first chapter
+      setCourse(freshCourse);
+      setChapters(fetchedChapters);
+      setPaymentStatus(freshPayment);
+
+      // Cache fresh data for offline use
+      if (freshCourse) void cacheCourseDetail(id, freshCourse);
+      if (fetchedChapters.length > 0) void cacheCourseChapters(id, fetchedChapters);
+      if (freshPayment) void cachePaymentStatus(freshPayment);
+
       if (fetchedChapters.length > 0) {
         const targetChapter =
           fetchedChapters.find(
@@ -114,7 +177,42 @@ export default function CourseDetailScreen() {
         setOpenChapters((prev) => ({ ...prev, [targetChapter._id]: true }));
       }
     } catch (e) {
-      console.error('Failed to load course details:', e);
+      console.warn('Network error fetching course details, falling back to offline:', e);
+      // Fallback on network error
+      const offlineCourse = await getOfflineCourseDetail(id);
+      const rawChapters = await getOfflineChapters(id);
+      const rawTopics = await getOfflineTopics(id);
+      const offlinePayment = await getCachedPaymentStatus();
+      const localProgress = await getLocalCourseProgress(id, user?._id);
+
+      setCourse(offlineCourse);
+      setPaymentStatus(offlinePayment);
+
+      const hasAccessOffline = offlineCourse
+        ? checkOfflineCourseAccess(offlineCourse, user, offlinePayment)
+        : false;
+
+      const guardedChapters = computeChaptersWithStatus(
+        rawChapters,
+        rawTopics,
+        localProgress,
+        hasAccessOffline
+      );
+      setChapters(guardedChapters);
+
+      if (guardedChapters.length > 0) {
+        const targetChapter =
+          guardedChapters.find(
+            (ch) =>
+              ch.status === 'inprogress' &&
+              ((ch.progressPercent || 0) > 0 || (ch.topics || []).some((t) => t.isCompleted || t.inProgress))
+          ) ||
+          guardedChapters.find((ch) =>
+            (ch.topics || []).some((t) => !t.isCompleted)
+          ) ||
+          guardedChapters[0];
+        setOpenChapters((prev) => ({ ...prev, [targetChapter._id]: true }));
+      }
     } finally {
       setIsLoading(false);
       setRefreshing(false);

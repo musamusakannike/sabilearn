@@ -9,6 +9,11 @@ import { getToken, saveToken, deleteToken } from '@/lib/secureStorage';
 import { User, IUserSettings } from '@/lib/types';
 import { useOnboardingStore } from './onboarding.store';
 import { resetPurchasesUser } from '@/lib/iap';
+import {
+  cacheUserProfile,
+  getCachedUserProfile,
+  clearCachedUserProfile,
+} from '@/lib/offlineSync';
 
 interface AuthState {
   user: User | null;
@@ -74,6 +79,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       const token = await getToken();
       if (token) {
+        // Hydrate from offline cache first so app can open immediately without internet
+        const cachedUser = await getCachedUserProfile();
+        if (cachedUser) {
+          set({ user: cachedUser, isAuthenticated: true });
+        }
         await get().fetchMe();
       }
     } catch {
@@ -91,6 +101,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         await saveToken(res.data.token);
         if (res.data.user) {
           set({ user: res.data.user, isAuthenticated: true });
+          void cacheUserProfile(res.data.user);
         } else {
           await get().fetchMe();
         }
@@ -114,6 +125,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         await saveToken(res.data.token);
         if (res.data.user) {
           set({ user: res.data.user, isAuthenticated: true });
+          void cacheUserProfile(res.data.user);
         } else {
           await get().fetchMe();
         }
@@ -158,6 +170,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         await saveToken(res.data.token);
         if (res.data.user) {
           set({ user: res.data.user, isAuthenticated: true });
+          void cacheUserProfile(res.data.user);
         } else {
           await get().fetchMe();
         }
@@ -203,6 +216,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         await saveToken(res.data.token);
         if (res.data.user) {
           set({ user: res.data.user, isAuthenticated: true });
+          void cacheUserProfile(res.data.user);
         } else {
           await get().fetchMe();
         }
@@ -224,6 +238,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   logout: async () => {
     try {
       await deleteToken();
+      await clearCachedUserProfile();
       if (Platform.OS !== 'web') {
         try {
           const authInstance = getAuth();
@@ -256,6 +271,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const res = await api.delete('/users/me');
       if (res.data.success) {
         await deleteToken();
+        await clearCachedUserProfile();
         if (Platform.OS !== 'web') {
           try {
             const authInstance = getAuth();
@@ -296,6 +312,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           : res.data.data?.user || null;
 
         set({ user: updatedUser });
+        if (updatedUser) void cacheUserProfile(updatedUser);
         return { success: true, avatar: newAvatar };
       }
       return { success: false, error: res.data.message || 'Failed to upload photo.' };
@@ -312,10 +329,23 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const res = await api.get('/auth/me');
       if (res.data.success) {
         set({ user: res.data.user, isAuthenticated: true });
+        void cacheUserProfile(res.data.user);
       }
-    } catch {
-      await deleteToken();
-      set({ user: null, isAuthenticated: false });
+    } catch (err: any) {
+      // Only clear token if server explicitly returned 401 unauthorized
+      if (err?.response?.status === 401) {
+        await deleteToken();
+        await clearCachedUserProfile();
+        set({ user: null, isAuthenticated: false });
+      } else {
+        // Offline or server temporarily unreachable: keep existing user or fallback to cache
+        if (!get().user) {
+          const cached = await getCachedUserProfile();
+          if (cached) {
+            set({ user: cached, isAuthenticated: true });
+          }
+        }
+      }
     }
   },
 
@@ -324,6 +354,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const res = await api.put('/users/me', data);
       if (res.data.success) {
         set({ user: res.data.data });
+        void cacheUserProfile(res.data.data);
         return { success: true };
       }
       return { success: false, error: res.data.message || 'Failed to update profile.' };
@@ -336,26 +367,28 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const previous = get().user;
     if (!previous) return { success: false, error: 'Not signed in.' };
 
-    // Applied optimistically so toggles respond instantly, then rolled back if
-    // the write fails — a switch that lags a round trip feels broken.
     const merged = { ...DEFAULT_SETTINGS, ...previous.settings, ...data };
-    set({ user: { ...previous, settings: merged } });
+    const optimisticUser = { ...previous, settings: merged };
+    set({ user: optimisticUser });
+    void cacheUserProfile(optimisticUser);
 
     try {
       const res = await api.put('/users/me/settings', data);
       if (res.data.success) {
-        set({
-          user: {
-            ...get().user!,
-            settings: { ...merged, ...(res.data.data?.settings || {}) },
-          },
-        });
+        const updatedUser = {
+          ...get().user!,
+          settings: { ...merged, ...(res.data.data?.settings || {}) },
+        };
+        set({ user: updatedUser });
+        void cacheUserProfile(updatedUser);
         return { success: true };
       }
       set({ user: previous });
+      void cacheUserProfile(previous);
       return { success: false, error: res.data.message || 'Failed to update settings.' };
     } catch (err: any) {
       set({ user: previous });
+      void cacheUserProfile(previous);
       return { success: false, error: err.response?.data?.message || 'Failed to update settings.' };
     }
   },

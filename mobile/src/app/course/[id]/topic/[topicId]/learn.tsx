@@ -3,6 +3,20 @@ import { View, Text, StyleSheet } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { chapterApi, topicApi } from '@/lib/api';
 import { Chapter, Topic } from '@/lib/types';
+import {
+  checkOfflineCourseAccess,
+  computeChaptersWithStatus,
+  getOfflineChapters,
+  getOfflineCourseDetail,
+  getOfflineTopicById,
+  getOfflineTopics,
+} from '@/lib/offlineCourses';
+import {
+  getCachedPaymentStatus,
+  getLocalCourseProgress,
+  isOnline,
+} from '@/lib/offlineSync';
+import { useAuthStore } from '@/store/auth.store';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import EmptyState from '@/components/ui/EmptyState';
 import StepPlayer from '@/components/lesson/StepPlayer';
@@ -24,8 +38,24 @@ export default function TopicLearnScreen() {
 
   const loadNextTopic = useCallback(async (currentTopic: Topic) => {
     try {
-      const res = await chapterApi.byCourse(id);
-      const chapters: Chapter[] = res.data.data || [];
+      const online = await isOnline();
+      let chapters: Chapter[] = [];
+      if (online) {
+        const res = await chapterApi.byCourse(id);
+        chapters = res.data.data || [];
+      } else {
+        const user = useAuthStore.getState().user;
+        const offlineCourse = await getOfflineCourseDetail(id);
+        const rawChapters = await getOfflineChapters(id);
+        const rawTopics = await getOfflineTopics(id);
+        const offlinePayment = await getCachedPaymentStatus();
+        const localProgress = await getLocalCourseProgress(id, user?._id);
+        const hasAccess = offlineCourse
+          ? checkOfflineCourseAccess(offlineCourse, user, offlinePayment)
+          : false;
+        chapters = computeChaptersWithStatus(rawChapters, rawTopics, localProgress, hasAccess);
+      }
+
       const orderedTopics = chapters.flatMap((chapter) =>
         (chapter.topics || []).map((chapterTopic) => ({ chapter, topic: chapterTopic })),
       );
@@ -42,9 +72,39 @@ export default function TopicLearnScreen() {
     }
   }, [id]);
 
+  const fetchTopicRef = useRef<((attempt?: number) => Promise<void>) | null>(null);
+
   const fetchTopic = useCallback(async (attempt: number = 0): Promise<void> => {
     if (!topicId) return;
     try {
+      const online = await isOnline();
+      if (!online) {
+        const offlineTopic = await getOfflineTopicById(topicId);
+        if (!offlineTopic) {
+          setErrorState('not_found');
+          setIsLoading(false);
+          setIsPolling(false);
+          return;
+        }
+
+        // Check offline entitlement guard
+        const user = useAuthStore.getState().user;
+        const offlineCourse = await getOfflineCourseDetail(id);
+        const offlinePayment = await getCachedPaymentStatus();
+        if (offlineCourse && !checkOfflineCourseAccess(offlineCourse, user, offlinePayment)) {
+          setErrorState('not_found');
+          setIsLoading(false);
+          setIsPolling(false);
+          return;
+        }
+
+        setTopic(offlineTopic);
+        void loadNextTopic(offlineTopic);
+        setIsLoading(false);
+        setIsPolling(false);
+        return;
+      }
+
       const res = await topicApi.get(topicId);
       const fetchedTopic: Topic = res.data.data;
 
@@ -72,7 +132,7 @@ export default function TopicLearnScreen() {
         setIsLoading(false);
         setPollAttempt(attempt + 1);
         pollTimerRef.current = setTimeout(() => {
-          fetchTopic(attempt + 1);
+          fetchTopicRef.current?.(attempt + 1);
         }, POLL_INTERVAL_MS);
       } else {
         // Ran out of retries — show the topic anyway (StepPlayer handles empty state gracefully)
@@ -83,6 +143,16 @@ export default function TopicLearnScreen() {
         setErrorState('generation_failed');
       }
     } catch (err: any) {
+      // If network failure, attempt offline fallback before failing
+      const offlineTopic = await getOfflineTopicById(topicId);
+      if (offlineTopic) {
+        setTopic(offlineTopic);
+        void loadNextTopic(offlineTopic);
+        setIsLoading(false);
+        setIsPolling(false);
+        return;
+      }
+
       if (err?.response?.status === 404) {
         setErrorState('not_found');
         setIsLoading(false);
@@ -93,7 +163,7 @@ export default function TopicLearnScreen() {
         setIsLoading(false);
         setPollAttempt(attempt + 1);
         pollTimerRef.current = setTimeout(() => {
-          fetchTopic(attempt + 1);
+          fetchTopicRef.current?.(attempt + 1);
         }, POLL_INTERVAL_MS);
       } else {
         setErrorState('generation_failed');
@@ -101,7 +171,11 @@ export default function TopicLearnScreen() {
         setIsPolling(false);
       }
     }
-  }, [topicId, loadNextTopic]);
+  }, [topicId, loadNextTopic, id]);
+
+  useEffect(() => {
+    fetchTopicRef.current = fetchTopic;
+  }, [fetchTopic]);
 
   useEffect(() => {
     fetchTopic(0);

@@ -27,6 +27,15 @@ import {
 } from '@tabler/icons-react-native';
 import { chapterApi, progressApi } from '@/lib/api';
 import { Chapter, Exercise, Question } from '@/lib/types';
+import {
+  clearAssessmentProgressOffline,
+  getAssessmentProgressOffline,
+  getOfflineChapters,
+  getOfflineCourseDetail,
+  saveAssessmentProgressOffline,
+} from '@/lib/offlineCourses';
+import { isOnline } from '@/lib/offlineSync';
+import { useAuthStore } from '@/store/auth.store';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import RichMathText from '@/components/ui/RichMathText';
 import EmptyState from '@/components/ui/EmptyState';
@@ -52,7 +61,7 @@ function shuffleArray<T>(array: T[]): T[] {
 
 export default function ChapterAssessmentScreen() {
   const { id, chapterId } = useLocalSearchParams<{ id: string; chapterId: string }>();
-  const fetchDashboard = useProgressStore((state) => state.fetchDashboard);
+  const submitExercise = useProgressStore((state) => state.submitExercise);
 
   const colors = {
     textPrimary: INK,
@@ -90,11 +99,50 @@ export default function ChapterAssessmentScreen() {
   const lastAdvancedFromIndexRef = useRef<number>(-1);
   const lastCheckedIndexRef = useRef<number>(-1);
 
-  // Load Chapter and Exercise from API
+  const prepareRandomizedQuestions = (ex: Exercise): ShuffledQuestion[] => {
+    if (!ex.questions) return [];
+    const randomized = ex.questions.map((q) => {
+      if (q.type === 'mcq' && q.options && q.options.length > 0) {
+        return {
+          ...q,
+          shuffledOptions: shuffleArray(q.options),
+        };
+      }
+      return { ...q };
+    });
+    return randomized;
+  };
+
+  // Load Chapter and Exercise from API or local offline bundle
   useEffect(() => {
     (async () => {
       try {
         if (!id || !chapterId) return;
+        const online = await isOnline();
+        const currentUserId = useAuthStore.getState().user?._id;
+
+        if (!online) {
+          const offlineChapters = await getOfflineChapters(id);
+          const found = offlineChapters.find((c) => c._id === chapterId);
+          const saved = await getAssessmentProgressOffline(chapterId, currentUserId);
+          if (found) {
+            setChapter(found);
+            const ex = found.exercise;
+            if (ex && ex.questions && ex.questions.length > 0) {
+              setExercise(ex);
+              const randomized = prepareRandomizedQuestions(ex);
+              setQuestions(randomized);
+              if (saved) {
+                setCurrentIndex(Math.min(saved.currentIndex, randomized.length - 1));
+                setUserAnswers(saved.userAnswers || {});
+                setCheckedSteps(saved.checkedSteps || {});
+              }
+              startedAt.current = Date.now();
+            }
+          }
+          return;
+        }
+
         const [chaptersRes, assessmentRes, savedRes] = await Promise.all([
           chapterApi.byCourse(id),
           chapterApi.getAssessment(chapterId).catch(() => null),
@@ -122,26 +170,35 @@ export default function ChapterAssessmentScreen() {
           }
         }
       } catch (e) {
-        console.error('Failed to load assessment in mobile:', e);
+        console.warn('Network error loading assessment, falling back to offline bundle:', e);
+        try {
+          const currentUserId = useAuthStore.getState().user?._id;
+          const offlineChapters = await getOfflineChapters(id);
+          const found = offlineChapters.find((c) => c._id === chapterId);
+          const saved = await getAssessmentProgressOffline(chapterId, currentUserId);
+          if (found) {
+            setChapter(found);
+            const ex = found.exercise;
+            if (ex && ex.questions && ex.questions.length > 0) {
+              setExercise(ex);
+              const randomized = prepareRandomizedQuestions(ex);
+              setQuestions(randomized);
+              if (saved) {
+                setCurrentIndex(Math.min(saved.currentIndex, randomized.length - 1));
+                setUserAnswers(saved.userAnswers || {});
+                setCheckedSteps(saved.checkedSteps || {});
+              }
+              startedAt.current = Date.now();
+            }
+          }
+        } catch {
+          // ignore
+        }
       } finally {
         setIsLoading(false);
       }
     })();
   }, [id, chapterId]);
-
-  const prepareRandomizedQuestions = (ex: Exercise): ShuffledQuestion[] => {
-    if (!ex.questions) return [];
-    const randomized = ex.questions.map((q) => {
-      if (q.type === 'mcq' && q.options && q.options.length > 0) {
-        return {
-          ...q,
-          shuffledOptions: shuffleArray(q.options),
-        };
-      }
-      return { ...q };
-    });
-    return randomized;
-  };
 
   const initRandomizedQuestions = (ex: Exercise) => {
     if (!ex.questions) return;
@@ -168,7 +225,13 @@ export default function ChapterAssessmentScreen() {
     if (!finished && Object.keys(userAnswers).length > 0 && chapterId) {
       try {
         await saveQueue.current.catch(() => undefined);
-        await progressApi.saveAssessmentProgress(chapterId, { currentIndex, userAnswers, checkedSteps });
+        const online = await isOnline();
+        const currentUserId = useAuthStore.getState().user?._id;
+        if (!online) {
+          await saveAssessmentProgressOffline(chapterId, { currentIndex, userAnswers, checkedSteps }, currentUserId);
+        } else {
+          await progressApi.saveAssessmentProgress(chapterId, { currentIndex, userAnswers, checkedSteps });
+        }
         Alert.alert('Progress saved', 'Your assessment answers are saved. Leave now?', [
           { text: 'Stay', style: 'cancel' },
           { text: 'Leave', style: 'destructive', onPress: navigateAway },
@@ -183,8 +246,14 @@ export default function ChapterAssessmentScreen() {
 
   const saveAssessmentState = (index = currentIndex, answers = userAnswers, checked = checkedSteps) => {
     if (!chapterId) return;
+    const currentUserId = useAuthStore.getState().user?._id;
     const request = saveQueue.current.catch(() => undefined).then(async () => {
-      await progressApi.saveAssessmentProgress(chapterId, { currentIndex: index, userAnswers: answers, checkedSteps: checked });
+      const online = await isOnline();
+      if (!online) {
+        await saveAssessmentProgressOffline(chapterId, { currentIndex: index, userAnswers: answers, checkedSteps: checked }, currentUserId);
+      } else {
+        await progressApi.saveAssessmentProgress(chapterId, { currentIndex: index, userAnswers: answers, checkedSteps: checked });
+      }
     });
     saveQueue.current = request;
     void request.catch((error) => console.error('Failed to save assessment progress:', error));
@@ -258,18 +327,24 @@ export default function ChapterAssessmentScreen() {
       });
 
       const duration = Math.round((Date.now() - startedAt.current) / 1000);
+      const currentUserId = useAuthStore.getState().user?._id;
 
-      const res = await progressApi.submitExercise({
+      const data = await submitExercise({
         courseId: id,
         chapterId,
         answers: answersPayload,
         duration,
       });
 
-      if (res.data) {
-        if (chapterId) void progressApi.clearAssessmentProgress(chapterId).catch(() => {});
-        const data = res.data;
-        void fetchDashboard();
+      if (data) {
+        if (chapterId) {
+          const online = await isOnline();
+          if (!online) {
+            void clearAssessmentProgressOffline(chapterId, currentUserId);
+          } else {
+            void progressApi.clearAssessmentProgress(chapterId).catch(() => {});
+          }
+        }
         setResultScore(data.scorePercent ?? 0);
         setIsPassed(!!data.isPassed);
         setEarnedXp(data.earnedXp ?? 0);
@@ -404,8 +479,16 @@ export default function ChapterAssessmentScreen() {
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel="Retake assessment"
-                onPress={() => {
-                  if (chapterId) void progressApi.clearAssessmentProgress(chapterId).catch(() => {});
+                onPress={async () => {
+                  if (chapterId) {
+                    const online = await isOnline();
+                    const currentUserId = useAuthStore.getState().user?._id;
+                    if (!online) {
+                      void clearAssessmentProgressOffline(chapterId, currentUserId);
+                    } else {
+                      void progressApi.clearAssessmentProgress(chapterId).catch(() => {});
+                    }
+                  }
                   exercise && initRandomizedQuestions(exercise);
                 }}
                 style={s.retakeOutlineBtn}
