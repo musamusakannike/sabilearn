@@ -3733,7 +3733,7 @@
         "__v": 0
       }
     ],
-    "exportedAt": "2026-11-08T04:14:28.088Z"
+    "exportedAt": "2026-11-08T05:44:57.634Z"
   },
   "6aed0a971bcf73a2815c6e4f": {
     "course": {
@@ -5307,7 +5307,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Welcome to **Python Programming for Beginners**!\n\nCreated by Dutch programmer Guido van Rossum and released in 1991, **Python** was built with one primary philosophy: **code should look like plain English**.\n\nIn many programming languages, printing a simple message requires 5 to 10 lines of complex boilerplate:\n\n```c\n// In C++, printing \"Hello\" requires all of this:\n#include <iostream>\nint main() {\n    std::cout << \"Hello, World!\" << std::endl;\n    return 0;\n}\n```\n\nIn Python, the exact same task is **one single readable line**:\n\n```python\n# In Python:\nprint(\"Hello, World!\")\n```\n\nBecause Python is so readable, you spend your time solving actual problems instead of fighting syntax punctuation!"
+                "content": "Welcome to Python Programming for Beginners!\n\nCreated by Dutch programmer Guido van Rossum and released in 1991, Python was built with one primary philosophy: code should look like plain English.\n\nIn many programming languages, printing a simple message requires 5 to 10 lines of complex boilerplate:\n\n```c\n// In C++, printing \"Hello\" requires all of this:\n#include <iostream>\nint main() {\n    std::cout << \"Hello, World!\" << std::endl;\n    return 0;\n}\n```\n\nIn Python, the exact same task is one single readable line:\n\n```python\n# In Python:\nprint(\"Hello, World!\")\n```\n\nBecause Python is so readable, you spend your time solving actual problems instead of fighting syntax punctuation!"
               }
             ],
             "_id": "6aed0a971bcf73a2815c6e5c"
@@ -5318,7 +5318,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Python is the universal Swiss Army knife of modern software engineering:\n\n1. **Artificial Intelligence & Machine Learning**: 95% of AI research and production systems (OpenAI, Google DeepMind, PyTorch, TensorFlow) use Python.\n2. **Backend Web Development**: Frameworks like Django and FastAPI power platforms like Instagram, Netflix, Pinterest, and Spotify.\n3. **Data Science & Analytics**: Pandas, NumPy, and Jupyter notebooks analyze billions of rows of financial, medical, and scientific data.\n4. **Automation & Scripting**: Automate renaming thousands of files, scraping websites, downloading reports, and sending emails in seconds.\n5. **Robotics & IoT**: Program Raspberry Pi boards, drones, and robot controllers effortlessly.\n\n**Remember:** Learning Python gives you a superpower that opens doors across AI, software engineering, finance, and automation!"
+                "content": "Python is the universal Swiss Army knife of modern software engineering:\n\n1. Artificial Intelligence & Machine Learning: 95% of AI research and production systems (OpenAI, Google DeepMind, PyTorch, TensorFlow) use Python.\n2. Backend Web Development: Frameworks like Django and FastAPI power platforms like Instagram, Netflix, Pinterest, and Spotify.\n3. Data Science & Analytics: Pandas, NumPy, and Jupyter notebooks analyze billions of rows of financial, medical, and scientific data.\n4. Automation & Scripting: Automate renaming thousands of files, scraping websites, downloading reports, and sending emails in seconds.\n5. Robotics & IoT: Program Raspberry Pi boards, drones, and robot controllers effortlessly.\n\nRemember: Learning Python gives you a superpower that opens doors across AI, software engineering, finance, and automation!"
               }
             ],
             "_id": "6aed0a971bcf73a2815c6e5d"
@@ -5356,7 +5356,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Computers only understand binary electricity: zeros and ones (`010101`).\n\n- **Compiled Languages (C++, Rust, Go)**: You run a compiler that turns your entire code into an executable machine file before you can run it.\n- **Interpreted Languages (Python, JavaScript)**: A program called an **Interpreter** reads your Python script line by line and executes it on the fly.\n\nThis means you can make an edit, save the file, and test it immediately without waiting for long compile cycles!"
+                "content": "Computers only understand binary electricity: zeros and ones (`010101`).\n\n- Compiled Languages (C++, Rust, Go): You run a compiler that turns your entire code into an executable machine file before you can run it.\n- Interpreted Languages (Python, JavaScript): A program called an Interpreter reads your Python script line by line and executes it on the fly.\n\nThis means you can make an edit, save the file, and test it immediately without waiting for long compile cycles!"
               }
             ],
             "_id": "6aed0a971bcf73a2815c6e5f"
@@ -5394,7 +5394,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Let's verify Python on your computer.\n\n### Step 1: Open your terminal\nOpen Terminal (macOS/Linux) or Command Prompt / PowerShell (Windows).\n\n### Step 2: Check your Python version\nType:\n```bash\npython3 --version\n```\n*(On Windows, you can also type `python --version`)*\n\nYou should see something like `Python 3.11.x` or `Python 3.12.x`. Congratulations! Your computer is ready to code."
+                "content": "Let's verify Python on your computer.\n\nStep 1: Open your terminal\nOpen Terminal (macOS/Linux) or Command Prompt / PowerShell (Windows).\n\nStep 2: Check your Python version\nType:\n```bash\npython3 --version\n```\n*(On Windows, you can also type `python --version`)*\n\nYou should see something like `Python 3.11.x` or `Python 3.12.x`. Congratulations! Your computer is ready to code."
               }
             ],
             "_id": "6aed0a971bcf73a2815c6e61"
@@ -5404,7 +5404,7 @@
         "order": 1,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:39.983Z",
-        "updatedAt": "2026-11-05T23:00:39.983Z",
+        "updatedAt": "2026-11-08T05:44:03.666Z",
         "__v": 0
       },
       {
@@ -5426,7 +5426,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "One of Python's greatest strengths is that you rarely need third-party packages for basic engineering tasks.\n\nThe **Python Standard Library** includes dozens of built-in modules ready on day one:\n- **`datetime`**: For dates, timezones, and duration calculations.\n- **`pathlib`**: For navigating folders and files cross-platform.\n- **`math`**: For precision trigonometry, square roots, and logarithms.\n- **`os` & `sys`**: For operating system interactions and terminal flags."
+                "content": "One of Python's greatest strengths is that you rarely need third-party packages for basic engineering tasks.\n\nThe Python Standard Library includes dozens of built-in modules ready on day one:\n- `datetime`: For dates, timezones, and duration calculations.\n- `pathlib`: For navigating folders and files cross-platform.\n- `math`: For precision trigonometry, square roots, and logarithms.\n- `os` & `sys`: For operating system interactions and terminal flags."
               }
             ],
             "_id": "6aed0a9e1bcf73a2815c6f63"
@@ -5437,7 +5437,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Never concatenate file paths with slashes (`\"folder/\" + \"file.txt\"`) because Windows uses backslashes (`\\`) while Mac/Linux uses forward slashes (`/`).\n\nUse **`pathlib.Path`**:\n\n```python\nfrom pathlib import Path\n\n# Create a cross-platform path object:\ncurrent_dir = Path.cwd()\ndata_file = current_dir / \"data\" / \"users.json\" # Slash operator works cross-platform!\n\nprint(\"Full Path:\", data_file)\nprint(\"File exists?\", data_file.exists())\nprint(\"File extension:\", data_file.suffix)\nprint(\"Parent directory:\", data_file.parent)\n```\n\nPathlib automatically handles Windows and Unix slash differences for you!"
+                "content": "Never concatenate file paths with slashes (`\"folder/\" + \"file.txt\"`) because Windows uses backslashes (`\\`) while Mac/Linux uses forward slashes (`/`).\n\nUse `pathlib.Path`:\n\n```python\nfrom pathlib import Path\n\n# Create a cross-platform path object:\ncurrent_dir = Path.cwd()\ndata_file = current_dir / \"data\" / \"users.json\" # Slash operator works cross-platform!\n\nprint(\"Full Path:\", data_file)\nprint(\"File exists?\", data_file.exists())\nprint(\"File extension:\", data_file.suffix)\nprint(\"Parent directory:\", data_file.parent)\n```\n\nPathlib automatically handles Windows and Unix slash differences for you!"
               }
             ],
             "_id": "6aed0a9e1bcf73a2815c6f64"
@@ -5523,7 +5523,7 @@
         "order": 1,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:46.638Z",
-        "updatedAt": "2026-11-05T23:00:46.638Z",
+        "updatedAt": "2026-11-08T05:44:08.564Z",
         "__v": 0
       },
       {
@@ -5545,7 +5545,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Imagine your computer's memory (RAM) is a giant warehouse with millions of storage boxes.\n\nA **Variable** is simply a friendly label you paste onto one of those boxes so you can find and use its content later:\n\n```python\n# Creating variables in Python:\nuser_name = \"Ada\"\nuser_age = 24\naccount_balance = 125000.50\nis_active = True\n```\n\nUnlike C++ or Java, where you must declare the data type upfront (`int age = 24;`), Python features **Dynamic Typing**:\nPython automatically figures out the data type based on the value you assign!"
+                "content": "Imagine your computer's memory (RAM) is a giant warehouse with millions of storage boxes.\n\nA Variable is simply a friendly label you paste onto one of those boxes so you can find and use its content later:\n\n```python\n# Creating variables in Python:\nuser_name = \"Ada\"\nuser_age = 24\naccount_balance = 125000.50\nis_active = True\n```\n\nUnlike C++ or Java, where you must declare the data type upfront (`int age = 24;`), Python features Dynamic Typing:\nPython automatically figures out the data type based on the value you assign!"
               }
             ],
             "_id": "6aed0a981bcf73a2815c6e83"
@@ -5556,7 +5556,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Python has clear rules and conventions for variable names:\n\n### Mandatory Rules (Syntax will fail if violated):\n1. Must begin with a letter (a-z) or an underscore (`_`).\n2. Cannot start with a number (e.g. `1st_user` is illegal; `user_1` is legal).\n3. Can only contain letters, numbers, and underscores (no spaces, dashes, or punctuation).\n4. Cannot use Python reserved keywords (like `if`, `for`, `class`, `def`, `return`).\n\n### The PEP 8 Style Guide:\n- Always use **`snake_case`**: all lowercase words separated by underscores (e.g. `total_monthly_expense`, `student_id`).\n- Use descriptive names: prefer `days_remaining` over cryptic single letters like `d`.\n- Constants (values that never change) are written in **`ALL_CAPS`**: `TAX_RATE = 0.075`."
+                "content": "Python has clear rules and conventions for variable names:\n\nMandatory Rules (Syntax will fail if violated):\n1. Must begin with a letter (a-z) or an underscore (`_`).\n2. Cannot start with a number (e.g. `1st_user` is illegal; `user_1` is legal).\n3. Can only contain letters, numbers, and underscores (no spaces, dashes, or punctuation).\n4. Cannot use Python reserved keywords (like `if`, `for`, `class`, `def`, `return`).\n\nThe PEP 8 Style Guide:\n- Always use `snake_case`: all lowercase words separated by underscores (e.g. `total_monthly_expense`, `student_id`).\n- Use descriptive names: prefer `days_remaining` over cryptic single letters like `d`.\n- Constants (values that never change) are written in `ALL_CAPS`: `TAX_RATE = 0.075`."
               }
             ],
             "_id": "6aed0a981bcf73a2815c6e84"
@@ -5642,7 +5642,7 @@
         "order": 1,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:40.992Z",
-        "updatedAt": "2026-11-05T23:00:40.992Z",
+        "updatedAt": "2026-11-08T05:44:04.344Z",
         "__v": 0
       },
       {
@@ -5664,7 +5664,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "In the real world, everything is an **Object** that has:\n1. **Attributes (Data / State)**: What it *has* (e.g. color, balance, model).\n2. **Methods (Behaviors / Actions)**: What it *does* (e.g. drive, deposit, accelerate).\n\nUp until now, our data (dictionaries) and our logic (functions) were separate.\n\n**Object-Oriented Programming (OOP)** binds data and the functions that manipulate that data together into a single cohesive package called an **Object**!"
+                "content": "In the real world, everything is an Object that has:\n1. Attributes (Data / State): What it *has* (e.g. color, balance, model).\n2. Methods (Behaviors / Actions): What it *does* (e.g. drive, deposit, accelerate).\n\nUp until now, our data (dictionaries) and our logic (functions) were separate.\n\nObject-Oriented Programming (OOP) binds data and the functions that manipulate that data together into a single cohesive package called an Object!"
               }
             ],
             "_id": "6aed0a9d1bcf73a2815c6f3d"
@@ -5675,7 +5675,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Think of a **Class** as an architectural blueprint for a house:\n- The blueprint is not a physical house; you cannot sleep inside a blueprint!\n- But using that single blueprint, you can build 50 actual physical **House Objects**.\n- Each house can have its own wall color and family living inside, but they all share the same structural design.\n\nHere is how to create a Class in Python:\n\n```python\nclass BankAccount:\n    \"\"\"Blueprint for a customer bank account.\"\"\"\n\n    # Constructor method: runs automatically when an object is created!\n    def __init__(self, owner: str, starting_balance: float = 0.0):\n        self.owner = owner          # Instance attribute\n        self.balance = starting_balance # Instance attribute\n\n    # Method (Action the object can perform)\n    def deposit(self, amount: float):\n        if amount <= 0:\n            print(\"Deposit must be positive.\")\n            return\n        self.balance += amount\n        print(f\"Deposited ₦{amount:,.2f}. New Balance: ₦{self.balance:,.2f}\")\n\n    def withdraw(self, amount: float):\n        if amount > self.balance:\n            print(f\"Declined: Insufficient funds for {self.owner}!\")\n            return\n        self.balance -= amount\n        print(f\"Withdrew ₦{amount:,.2f}. Remaining Balance: ₦{self.balance:,.2f}\")\n\n# Creating two distinct Object instances from the same Class:\nacc1 = BankAccount(\"Ada Lovelace\", 50000)\nacc2 = BankAccount(\"Musa Kannike\", 10000)\n\nacc1.deposit(25000)\nacc2.withdraw(5000)\n```\n\nNotice that `acc1` and `acc2` maintain completely **independent balances**! Changes to `acc1` never affect `acc2`."
+                "content": "Think of a Class as an architectural blueprint for a house:\n- The blueprint is not a physical house; you cannot sleep inside a blueprint!\n- But using that single blueprint, you can build 50 actual physical House Objects.\n- Each house can have its own wall color and family living inside, but they all share the same structural design.\n\nHere is how to create a Class in Python:\n\n```python\nclass BankAccount:\n    \"\"\"Blueprint for a customer bank account.\"\"\"\n\n    # Constructor method: runs automatically when an object is created!\n    def __init__(self, owner: str, starting_balance: float = 0.0):\n        self.owner = owner          # Instance attribute\n        self.balance = starting_balance # Instance attribute\n\n    # Method (Action the object can perform)\n    def deposit(self, amount: float):\n        if amount <= 0:\n            print(\"Deposit must be positive.\")\n            return\n        self.balance += amount\n        print(f\"Deposited ₦{amount:,.2f}. New Balance: ₦{self.balance:,.2f}\")\n\n    def withdraw(self, amount: float):\n        if amount > self.balance:\n            print(f\"Declined: Insufficient funds for {self.owner}!\")\n            return\n        self.balance -= amount\n        print(f\"Withdrew ₦{amount:,.2f}. Remaining Balance: ₦{self.balance:,.2f}\")\n\n# Creating two distinct Object instances from the same Class:\nacc1 = BankAccount(\"Ada Lovelace\", 50000)\nacc2 = BankAccount(\"Musa Kannike\", 10000)\n\nacc1.deposit(25000)\nacc2.withdraw(5000)\n```\n\nNotice that `acc1` and `acc2` maintain completely independent balances! Changes to `acc1` never affect `acc2`."
               }
             ],
             "_id": "6aed0a9d1bcf73a2815c6f3e"
@@ -5713,7 +5713,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "If you print an object directly:\n`print(acc1)` -> outputs something cryptic like `<__main__.BankAccount object at 0x104b2a8d0>`!\n\nTo give your object a beautiful human-readable representation, implement the **`__str__`** dunder method:\n\n```python\nclass BankAccount:\n    # ... __init__ and methods ...\n\n    def __str__(self) -> str:\n        return f\"BankAccount(Owner: '{self.owner}', Balance: ₦{self.balance:,.2f})\"\n\nacc = BankAccount(\"Ada Lovelace\", 75000)\nprint(acc) # Outputs: BankAccount(Owner: 'Ada Lovelace', Balance: ₦75,000.00)\n```\n\nPython developers call methods surrounded by double underscores **\"Dunder Methods\"** (Double-UNDERscore)."
+                "content": "If you print an object directly:\n`print(acc1)` -> outputs something cryptic like `<__main__.BankAccount object at 0x104b2a8d0>`!\n\nTo give your object a beautiful human-readable representation, implement the `__str__` dunder method:\n\n```python\nclass BankAccount:\n    # ... __init__ and methods ...\n\n    def __str__(self) -> str:\n        return f\"BankAccount(Owner: '{self.owner}', Balance: ₦{self.balance:,.2f})\"\n\nacc = BankAccount(\"Ada Lovelace\", 75000)\nprint(acc) # Outputs: BankAccount(Owner: 'Ada Lovelace', Balance: ₦75,000.00)\n```\n\nPython developers call methods surrounded by double underscores \"Dunder Methods\" (Double-UNDERscore)."
               }
             ],
             "_id": "6aed0a9d1bcf73a2815c6f40"
@@ -5761,7 +5761,7 @@
         "order": 1,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:45.791Z",
-        "updatedAt": "2026-11-05T23:00:45.791Z",
+        "updatedAt": "2026-11-08T05:44:07.938Z",
         "__v": 0
       },
       {
@@ -5783,7 +5783,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Computers excel at doing repetitive tasks billions of times without getting tired or bored.\n\nA **`while` loop** executes an indented block of code repeatedly **as long as its condition evaluates to `True`**:\n\n```python\ncount = 1\n\nwhile count <= 5:\n    print(f\"Cycle number: {count}\")\n    count += 1  # Equivalent to: count = count + 1\n\nprint(\"Loop finished!\")\n```\n\nHere is what happens step by step:\n1. Python checks: `is count <= 5?` Yes (1 <= 5), so it runs the block and sets `count = 2`.\n2. Python loops back and checks: `is 2 <= 5?` Yes, runs block, sets `count = 3`.\n3. ...continues until `count = 6`.\n4. Python checks: `is 6 <= 5?` **False!** The loop stops and execution continues below.\n\n**Crucial:** You must always update the condition variable inside the loop body (e.g. `count += 1`), or the loop will run forever!"
+                "content": "Computers excel at doing repetitive tasks billions of times without getting tired or bored.\n\nA `while` loop executes an indented block of code repeatedly as long as its condition evaluates to `True`:\n\n```python\ncount = 1\n\nwhile count <= 5:\n    print(f\"Cycle number: {count}\")\n    count += 1  # Equivalent to: count = count + 1\n\nprint(\"Loop finished!\")\n```\n\nHere is what happens step by step:\n1. Python checks: `is count <= 5?` Yes (1 <= 5), so it runs the block and sets `count = 2`.\n2. Python loops back and checks: `is 2 <= 5?` Yes, runs block, sets `count = 3`.\n3. ...continues until `count = 6`.\n4. Python checks: `is 6 <= 5?` False! The loop stops and execution continues below.\n\nCrucial: You must always update the condition variable inside the loop body (e.g. `count += 1`), or the loop will run forever!"
               }
             ],
             "_id": "6aed0a9a1bcf73a2815c6eaa"
@@ -5794,7 +5794,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "In real applications (like ATM machines, games, or command-line tools), you want the program to stay running until the user explicitly chooses to exit:\n\n```python\nwhile True:\n    command = input(\"Type 'exit' to quit or any text to echo: \").strip()\n    \n    if command.lower() == 'exit':\n        print(\"Goodbye! Thanks for using the app.\")\n        break  # Immediately terminates the infinite while loop!\n        \n    print(f\"ECHO: {command.upper()}\")\n```\n\nNotice the **`while True:`** pattern paired with **`break`**. This is the standard architectural pattern for interactive terminal applications!"
+                "content": "In real applications (like ATM machines, games, or command-line tools), you want the program to stay running until the user explicitly chooses to exit:\n\n```python\nwhile True:\n    command = input(\"Type 'exit' to quit or any text to echo: \").strip()\n    \n    if command.lower() == 'exit':\n        print(\"Goodbye! Thanks for using the app.\")\n        break  # Immediately terminates the infinite while loop!\n        \n    print(f\"ECHO: {command.upper()}\")\n```\n\nNotice the `while True:` pattern paired with `break`. This is the standard architectural pattern for interactive terminal applications!"
               }
             ],
             "_id": "6aed0a9a1bcf73a2815c6eab"
@@ -5880,7 +5880,7 @@
         "order": 1,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:42.010Z",
-        "updatedAt": "2026-11-05T23:00:42.010Z",
+        "updatedAt": "2026-11-08T05:44:05.095Z",
         "__v": 0
       },
       {
@@ -5902,7 +5902,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Everything we have stored in variables so far disappears the moment your program closes!\n\nTo create real-world software, data must **persist** on the computer hard drive:\n- Storing user accounts and settings.\n- Saving transaction logs.\n- Exporting spreadsheets and reports.\n\nIn Python, we interact with files using **`open()`**."
+                "content": "Everything we have stored in variables so far disappears the moment your program closes!\n\nTo create real-world software, data must persist on the computer hard drive:\n- Storing user accounts and settings.\n- Saving transaction logs.\n- Exporting spreadsheets and reports.\n\nIn Python, we interact with files using `open()`."
               }
             ],
             "_id": "6aed0a9c1bcf73a2815c6f19"
@@ -5913,7 +5913,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "In older programming languages, you had to manually open and close files:\n```python\n# DANGEROUS OLD WAY:\nf = open(\"log.txt\", \"w\")\nf.write(\"System online\")\n# If code crashes right here, the file stays locked in RAM forever!\nf.close()\n```\n\nIn modern Python, **ALWAYS use the `with` statement**:\n\n```python\n# MODERN, SAFE, IDIOMATIC PYTHON:\nwith open(\"log.txt\", \"w\", encoding=\"utf-8\") as file:\n    file.write(\"System online\n\")\n    file.write(\"All tests passed successfully.\n\")\n# File is AUTOMATICALLY closed here, even if errors occur!\n```\n\nThe `with` statement creates a **Context Manager** that automatically flushes buffers and closes the file when execution leaves the block!"
+                "content": "In older programming languages, you had to manually open and close files:\n```python\n# DANGEROUS OLD WAY:\nf = open(\"log.txt\", \"w\")\nf.write(\"System online\")\n# If code crashes right here, the file stays locked in RAM forever!\nf.close()\n```\n\nIn modern Python, ALWAYS use the `with` statement:\n\n```python\n# MODERN, SAFE, IDIOMATIC PYTHON:\nwith open(\"log.txt\", \"w\", encoding=\"utf-8\") as file:\n    file.write(\"System online\n\")\n    file.write(\"All tests passed successfully.\n\")\n# File is AUTOMATICALLY closed here, even if errors occur!\n```\n\nThe `with` statement creates a Context Manager that automatically flushes buffers and closes the file when execution leaves the block!"
               }
             ],
             "_id": "6aed0a9c1bcf73a2815c6f1a"
@@ -5951,7 +5951,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "When calling `open(filename, mode)`, you specify what you intend to do:\n\n| Mode | Name | Behavior |\n| :--- | :--- | :--- |\n| **`\"r\"`** | Read (Default) | Opens for reading. Fails with `FileNotFoundError` if file does not exist. |\n| **`\"w\"`** | Write | Creates a new file or **overwrites and wipes** existing content! |\n| **`\"a\"`** | Append | Creates file if missing; appends new lines to the **end** without wiping! |\n| **`\"r+\"`**| Read & Write | Opens existing file for simultaneous reading and writing. |\n\n```python\n# Appending a log record:\nwith open(\"activity.log\", \"a\", encoding=\"utf-8\") as f:\n    f.write(\"User logged in at 10:45 AM\n\")\n```"
+                "content": "When calling `open(filename, mode)`, you specify what you intend to do:\n\n| Mode | Name | Behavior |\n| :--- | :--- | :--- |\n| `\"r\"` | Read (Default) | Opens for reading. Fails with `FileNotFoundError` if file does not exist. |\n| `\"w\"` | Write | Creates a new file or overwrites and wipes existing content! |\n| `\"a\"` | Append | Creates file if missing; appends new lines to the end without wiping! |\n| `\"r+\"`| Read & Write | Opens existing file for simultaneous reading and writing. |\n\n```python\n# Appending a log record:\nwith open(\"activity.log\", \"a\", encoding=\"utf-8\") as f:\n    f.write(\"User logged in at 10:45 AM\n\")\n```"
               }
             ],
             "_id": "6aed0a9c1bcf73a2815c6f1c"
@@ -5999,7 +5999,7 @@
         "order": 1,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:44.875Z",
-        "updatedAt": "2026-11-05T23:00:44.875Z",
+        "updatedAt": "2026-11-08T05:44:07.311Z",
         "__v": 0
       },
       {
@@ -6021,7 +6021,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "In programming, there is a golden rule called **DRY** (**D**on't **R**epeat **Y**ourself).\n\nIf you find yourself copying and pasting the same 10 lines of code across your project:\n- Put those lines inside a **Function**!\n- Give the function a descriptive name.\n- Call that function whenever you need that task done.\n\nIn Python, we declare functions using **`def`**:\n\n```python\ndef greet_user(name):\n    \"\"\"Prints a customized greeting message.\"\"\"\n    print(f\"Hello, {name}! Welcome back to SabiLearn.\")\n\n# Calling the function:\ngreet_user(\"Ada\")\ngreet_user(\"Musa\")\n```"
+                "content": "In programming, there is a golden rule called DRY (Don't Repeat Yourself).\n\nIf you find yourself copying and pasting the same 10 lines of code across your project:\n- Put those lines inside a Function!\n- Give the function a descriptive name.\n- Call that function whenever you need that task done.\n\nIn Python, we declare functions using `def`:\n\n```python\ndef greet_user(name):\n    \"\"\"Prints a customized greeting message.\"\"\"\n    print(f\"Hello, {name}! Welcome back to SabiLearn.\")\n\n# Calling the function:\ngreet_user(\"Ada\")\ngreet_user(\"Musa\")\n```"
               }
             ],
             "_id": "6aed0a9b1bcf73a2815c6ef5"
@@ -6032,7 +6032,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "A very common beginner confusion is the difference between `print()` and `return`:\n\n- **`print()`**: Just displays text on the human computer screen. The program itself cannot use that text for further calculations!\n- **`return`**: Hands the calculated result back to the code that called the function so it can be saved in a variable:\n\n```python\ndef calculate_vat(amount, tax_rate=0.075):\n    # Returns the calculated tax number!\n    return round(amount * tax_rate, 2)\n\n# Save result in a variable and continue computing:\ntax = calculate_vat(50000)\ntotal_invoice = 50000 + tax\nprint(f\"Total Invoice: ₦{total_invoice:,.2f}\")\n```\n\nNotice `tax_rate=0.075` has a **default value**! If the caller does not pass a tax rate, Python automatically uses 7.5%."
+                "content": "A very common beginner confusion is the difference between `print()` and `return`:\n\n- `print()`: Just displays text on the human computer screen. The program itself cannot use that text for further calculations!\n- `return`: Hands the calculated result back to the code that called the function so it can be saved in a variable:\n\n```python\ndef calculate_vat(amount, tax_rate=0.075):\n    # Returns the calculated tax number!\n    return round(amount * tax_rate, 2)\n\n# Save result in a variable and continue computing:\ntax = calculate_vat(50000)\ntotal_invoice = 50000 + tax\nprint(f\"Total Invoice: ₦{total_invoice:,.2f}\")\n```\n\nNotice `tax_rate=0.075` has a default value! If the caller does not pass a tax rate, Python automatically uses 7.5%."
               }
             ],
             "_id": "6aed0a9b1bcf73a2815c6ef6"
@@ -6070,7 +6070,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "In modern Python, we document functions using **Docstrings** and **Type Hints**:\n\n```python\ndef convert_usd_to_ngn(usd_amount: float, exchange_rate: float = 1450.0) -> float:\n    \"\"\"\n    Converts USD currency into Nigerian Naira (NGN).\n    \n    :param usd_amount: Total dollars to convert\n    :param exchange_rate: Current market FX rate (default: 1450.0)\n    :return: Total equivalent amount in NGN\n    \"\"\"\n    return usd_amount * exchange_rate\n```\n\nType hints (`: float`, `-> float`) help VS Code give you instant autocomplete and prevent mistakes before you run the code!"
+                "content": "In modern Python, we document functions using Docstrings and Type Hints:\n\n```python\ndef convert_usd_to_ngn(usd_amount: float, exchange_rate: float = 1450.0) -> float:\n    \"\"\"\n    Converts USD currency into Nigerian Naira (NGN).\n    \n    :param usd_amount: Total dollars to convert\n    :param exchange_rate: Current market FX rate (default: 1450.0)\n    :return: Total equivalent amount in NGN\n    \"\"\"\n    return usd_amount * exchange_rate\n```\n\nType hints (`: float`, `-> float`) help VS Code give you instant autocomplete and prevent mistakes before you run the code!"
               }
             ],
             "_id": "6aed0a9b1bcf73a2815c6ef8"
@@ -6118,7 +6118,7 @@
         "order": 1,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:43.973Z",
-        "updatedAt": "2026-11-05T23:00:43.973Z",
+        "updatedAt": "2026-11-08T05:44:06.432Z",
         "__v": 0
       },
       {
@@ -6140,7 +6140,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "So far, each variable has held only a single value.\n\nA **List** is an ordered, changeable collection that holds multiple items inside square brackets:\n\n```python\nstudents = [\"Musa\", \"Ada\", \"Chinelo\", \"Tunde\"]\nscores = [92, 85, 78, 96]\nmixed = [\"Alex\", 25, 45000.50, True] # Lists can hold different types!\n```\n\nLists are **0-indexed**:\n- `students[0]` is `\"Musa\"`\n- `students[1]` is `\"Ada\"`\n- `students[-1]` is `\"Tunde\"` (**Negative indexing** starts counting from the end!)"
+                "content": "So far, each variable has held only a single value.\n\nA List is an ordered, changeable collection that holds multiple items inside square brackets:\n\n```python\nstudents = [\"Musa\", \"Ada\", \"Chinelo\", \"Tunde\"]\nscores = [92, 85, 78, 96]\nmixed = [\"Alex\", 25, 45000.50, True] # Lists can hold different types!\n```\n\nLists are 0-indexed:\n- `students[0]` is `\"Musa\"`\n- `students[1]` is `\"Ada\"`\n- `students[-1]` is `\"Tunde\"` (Negative indexing starts counting from the end!)"
               }
             ],
             "_id": "6aed0a9b1bcf73a2815c6ecf"
@@ -6151,7 +6151,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "You can extract sub-sections (slices) of a list cleanly:\n\n```python\ntools = [\"HTML\", \"CSS\", \"JS\", \"React\", \"Next.js\", \"Python\"]\n\nprint(tools[0:3])    # ['HTML', 'CSS', 'JS'] (indices 0, 1, 2)\nprint(tools[:2])     # ['HTML', 'CSS'] (from start up to 2)\nprint(tools[3:])     # ['React', 'Next.js', 'Python'] (from index 3 to the end)\nprint(tools[::2])    # ['HTML', 'JS', 'Next.js'] (every 2nd item)\nprint(tools[::-1])   # Reverses the entire list!\n```\n\nSlicing creates a **brand-new copy** of the sub-list without altering the original list."
+                "content": "You can extract sub-sections (slices) of a list cleanly:\n\n```python\ntools = [\"HTML\", \"CSS\", \"JS\", \"React\", \"Next.js\", \"Python\"]\n\nprint(tools[0:3])    # ['HTML', 'CSS', 'JS'] (indices 0, 1, 2)\nprint(tools[:2])     # ['HTML', 'CSS'] (from start up to 2)\nprint(tools[3:])     # ['React', 'Next.js', 'Python'] (from index 3 to the end)\nprint(tools[::2])    # ['HTML', 'JS', 'Next.js'] (every 2nd item)\nprint(tools[::-1])   # Reverses the entire list!\n```\n\nSlicing creates a brand-new copy of the sub-list without altering the original list."
               }
             ],
             "_id": "6aed0a9b1bcf73a2815c6ed0"
@@ -6189,7 +6189,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Lists are mutable (you can add, modify, and delete items):\n\n```python\nfruits = [\"Apple\", \"Banana\"]\n\n# 1. Add to end\nfruits.append(\"Orange\")       # ['Apple', 'Banana', 'Orange']\n\n# 2. Insert at specific position\nfruits.insert(1, \"Mango\")      # ['Apple', 'Mango', 'Banana', 'Orange']\n\n# 3. Remove by value\nfruits.remove(\"Banana\")       # Removes 'Banana'\n\n# 4. Remove and return by index\npopped_item = fruits.pop()    # Removes and returns 'Orange'\n\n# 5. Sort list in-place\nfruits.sort()                 # Alphabetical order\n```\n\n**Pro Tip:** `fruits.sort()` modifies the list directly. If you want a new sorted copy without modifying the original, use `sorted(fruits)`."
+                "content": "Lists are mutable (you can add, modify, and delete items):\n\n```python\nfruits = [\"Apple\", \"Banana\"]\n\n# 1. Add to end\nfruits.append(\"Orange\")       # ['Apple', 'Banana', 'Orange']\n\n# 2. Insert at specific position\nfruits.insert(1, \"Mango\")      # ['Apple', 'Mango', 'Banana', 'Orange']\n\n# 3. Remove by value\nfruits.remove(\"Banana\")       # Removes 'Banana'\n\n# 4. Remove and return by index\npopped_item = fruits.pop()    # Removes and returns 'Orange'\n\n# 5. Sort list in-place\nfruits.sort()                 # Alphabetical order\n```\n\nPro Tip: `fruits.sort()` modifies the list directly. If you want a new sorted copy without modifying the original, use `sorted(fruits)`."
               }
             ],
             "_id": "6aed0a9b1bcf73a2815c6ed2"
@@ -6237,7 +6237,7 @@
         "order": 1,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:43.149Z",
-        "updatedAt": "2026-11-05T23:00:43.149Z",
+        "updatedAt": "2026-11-08T05:44:05.744Z",
         "__v": 0
       },
       {
@@ -6259,7 +6259,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "To write Python effectively, you need two tools:\n1. **The Python 3 Engine**: Downloads the interpreter and the standard library from [python.org](https://www.python.org).\n2. **A Code Editor**: The industry standard editor is **Visual Studio Code (VS Code)**.\n\n### Installing the Python Extension in VS Code\n1. Open VS Code.\n2. Click on the **Extensions** icon on the left sidebar (or press `Ctrl+Shift+X` / `Cmd+Shift+X`).\n3. Search for **\"Python\"** (by Microsoft) and click **Install**.\n\nThis extension gives you syntax highlighting, autocomplete (IntelliSense), error detection, and an integrated play button to run scripts with one click!"
+                "content": "To write Python effectively, you need two tools:\n1. The Python 3 Engine: Downloads the interpreter and the standard library from [python.org](https://www.python.org).\n2. A Code Editor: The industry standard editor is Visual Studio Code (VS Code).\n\nInstalling the Python Extension in VS Code\n1. Open VS Code.\n2. Click on the Extensions icon on the left sidebar (or press `Ctrl+Shift+X` / `Cmd+Shift+X`).\n3. Search for \"Python\" (by Microsoft) and click Install.\n\nThis extension gives you syntax highlighting, autocomplete (IntelliSense), error detection, and an integrated play button to run scripts with one click!"
               }
             ],
             "_id": "6aed0a981bcf73a2815c6e63"
@@ -6270,7 +6270,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Python comes with an interactive sandbox called the **REPL** (**R**ead-**E**val-**P**rint **L**oop).\n\nTo launch it, open your terminal and type:\n```bash\npython3\n```\n\nYou will see the Python prompt: `>>> `.\nTry typing simple math and print statements:\n\n```python\n>>> 20 + 22\n42\n>>> \"Python is \" + \"awesome!\"\n'Python is awesome!'\n>>> print(\"Hello from the REPL!\")\nHello from the REPL!\n```\n\nTo exit the REPL and return to your normal terminal, type `exit()` or press `Ctrl+D` (macOS/Linux) or `Ctrl+Z + Enter` (Windows).\n\nThe REPL is perfect for quickly testing a function or trying out a formula before putting it in your project!"
+                "content": "Python comes with an interactive sandbox called the REPL (Read-Eval-Print Loop).\n\nTo launch it, open your terminal and type:\n```bash\npython3\n```\n\nYou will see the Python prompt: `>>> `.\nTry typing simple math and print statements:\n\n```python\n>>> 20 + 22\n42\n>>> \"Python is \" + \"awesome!\"\n'Python is awesome!'\n>>> print(\"Hello from the REPL!\")\nHello from the REPL!\n```\n\nTo exit the REPL and return to your normal terminal, type `exit()` or press `Ctrl+D` (macOS/Linux) or `Ctrl+Z + Enter` (Windows).\n\nThe REPL is perfect for quickly testing a function or trying out a formula before putting it in your project!"
               }
             ],
             "_id": "6aed0a981bcf73a2815c6e64"
@@ -6356,7 +6356,7 @@
         "order": 2,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:40.184Z",
-        "updatedAt": "2026-11-05T23:00:40.184Z",
+        "updatedAt": "2026-11-08T05:44:03.825Z",
         "__v": 0
       },
       {
@@ -6378,7 +6378,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Professional developers build **Command-Line Interface (CLI)** tools to automate workflows, manage servers, and process data:\n\n```bash\n# Examples of CLI tools you use daily:\ngit commit -m \"My update\"\nnpm run build\npython3 script.py --input data.csv --output report.pdf\n```\n\nWith Python's **`argparse`** module, you can build production CLI tools with flags, options, and automatic `--help` screens!"
+                "content": "Professional developers build Command-Line Interface (CLI) tools to automate workflows, manage servers, and process data:\n\n```bash\n# Examples of CLI tools you use daily:\ngit commit -m \"My update\"\nnpm run build\npython3 script.py --input data.csv --output report.pdf\n```\n\nWith Python's `argparse` module, you can build production CLI tools with flags, options, and automatic `--help` screens!"
               }
             ],
             "_id": "6aed0a9e1bcf73a2815c6f6a"
@@ -6437,7 +6437,7 @@
         "order": 2,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:46.817Z",
-        "updatedAt": "2026-11-05T23:00:46.817Z",
+        "updatedAt": "2026-11-08T05:44:08.726Z",
         "__v": 0
       },
       {
@@ -6459,7 +6459,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Imagine you have a base **`BankAccount`** class.\n\nNow you want to create a **`SavingsAccount`** (which earns interest) and a **`CheckingAccount`** (which has an overdraft limit).\n\nInstead of copying and pasting the 50 lines of deposit and withdrawal code:\nYou create a **Child Class (Subclass)** that **inherits** all features from the **Parent Class (Superclass)**, and adds only its unique behaviors!\n\n```python\n# Base Parent Class:\nclass BankAccount:\n    def __init__(self, owner: str, balance: float):\n        self.owner = owner\n        self.balance = balance\n\n    def deposit(self, amount: float):\n        self.balance += amount\n\n    def withdraw(self, amount: float):\n        if amount <= self.balance:\n            self.balance -= amount\n            return True\n        return False\n```"
+                "content": "Imagine you have a base `BankAccount` class.\n\nNow you want to create a `SavingsAccount` (which earns interest) and a `CheckingAccount` (which has an overdraft limit).\n\nInstead of copying and pasting the 50 lines of deposit and withdrawal code:\nYou create a Child Class (Subclass) that inherits all features from the Parent Class (Superclass), and adds only its unique behaviors!\n\n```python\n# Base Parent Class:\nclass BankAccount:\n    def __init__(self, owner: str, balance: float):\n        self.owner = owner\n        self.balance = balance\n\n    def deposit(self, amount: float):\n        self.balance += amount\n\n    def withdraw(self, amount: float):\n        if amount <= self.balance:\n            self.balance -= amount\n            return True\n        return False\n```"
               }
             ],
             "_id": "6aed0a9d1bcf73a2815c6f44"
@@ -6508,7 +6508,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "A child class can **override** (replace) a method from its parent class:\n\n```python\nclass PremiumAccount(BankAccount):\n    # Override withdraw to allow overdraft up to ₦50,000!\n    def withdraw(self, amount: float):\n        overdraft_limit = 50000\n        if amount <= (self.balance + overdraft_limit):\n            self.balance -= amount\n            print(f\"Withdrew ₦{amount:,.2f}. Balance is now ₦{self.balance:,.2f}\")\n            return True\n        else:\n            print(\"Transaction declined: Exceeds overdraft limit!\")\n            return False\n```\n\nPolymorphism in action: different accounts handle `withdraw()` in their own specialized way!"
+                "content": "A child class can override (replace) a method from its parent class:\n\n```python\nclass PremiumAccount(BankAccount):\n    # Override withdraw to allow overdraft up to ₦50,000!\n    def withdraw(self, amount: float):\n        overdraft_limit = 50000\n        if amount <= (self.balance + overdraft_limit):\n            self.balance -= amount\n            print(f\"Withdrew ₦{amount:,.2f}. Balance is now ₦{self.balance:,.2f}\")\n            return True\n        else:\n            print(\"Transaction declined: Exceeds overdraft limit!\")\n            return False\n```\n\nPolymorphism in action: different accounts handle `withdraw()` in their own specialized way!"
               }
             ],
             "_id": "6aed0a9d1bcf73a2815c6f47"
@@ -6556,7 +6556,7 @@
         "order": 2,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:45.978Z",
-        "updatedAt": "2026-11-05T23:00:45.978Z",
+        "updatedAt": "2026-11-08T05:44:08.096Z",
         "__v": 0
       },
       {
@@ -6578,7 +6578,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "**JSON** (JavaScript Object Notation) is the universal format for storing data and communicating with web APIs.\n\nPython's built-in **`json`** module maps JSON directly to Python dictionaries and lists:\n\n```python\nimport json\n\nuser_data = {\n    \"name\": \"Musa Kannike\",\n    \"role\": \"Lead Architect\",\n    \"skills\": [\"Python\", \"Next.js\", \"ROS2\"],\n    \"is_active\": True\n}\n\n# 1. Write dictionary to a JSON file (Serialization)\nwith open(\"user.json\", \"w\", encoding=\"utf-8\") as f:\n    json.dump(user_data, f, indent=2)\n\n# 2. Read JSON file back into a Python dictionary (Deserialization)\nwith open(\"user.json\", \"r\", encoding=\"utf-8\") as f:\n    loaded_data = json.load(f)\n\nprint(\"Decoded Name:\", loaded_data[\"name\"])\nprint(\"First Skill:\", loaded_data[\"skills\"][0])\n```\n\nNotice `indent=2`. It formats the file with beautiful 2-space indentation so humans can read it!"
+                "content": "JSON (JavaScript Object Notation) is the universal format for storing data and communicating with web APIs.\n\nPython's built-in `json` module maps JSON directly to Python dictionaries and lists:\n\n```python\nimport json\n\nuser_data = {\n    \"name\": \"Musa Kannike\",\n    \"role\": \"Lead Architect\",\n    \"skills\": [\"Python\", \"Next.js\", \"ROS2\"],\n    \"is_active\": True\n}\n\n# 1. Write dictionary to a JSON file (Serialization)\nwith open(\"user.json\", \"w\", encoding=\"utf-8\") as f:\n    json.dump(user_data, f, indent=2)\n\n# 2. Read JSON file back into a Python dictionary (Deserialization)\nwith open(\"user.json\", \"r\", encoding=\"utf-8\") as f:\n    loaded_data = json.load(f)\n\nprint(\"Decoded Name:\", loaded_data[\"name\"])\nprint(\"First Skill:\", loaded_data[\"skills\"][0])\n```\n\nNotice `indent=2`. It formats the file with beautiful 2-space indentation so humans can read it!"
               }
             ],
             "_id": "6aed0a9d1bcf73a2815c6f20"
@@ -6589,7 +6589,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "For tabular business data, spreadsheets use **CSV** (Comma-Separated Values).\n\nPython includes the **`csv`** module with `DictWriter` and `DictReader`:\n\n```python\nimport csv\n\ntransactions = [\n    {\"date\": \"2026-11-01\", \"item\": \"Cloud Server\", \"cost\": 45.00},\n    {\"date\": \"2026-11-02\", \"item\": \"Domain Renewal\", \"cost\": 12.50},\n]\n\n# Write CSV with headers:\nwith open(\"expenses.csv\", \"w\", newline=\"\", encoding=\"utf-8\") as f:\n    fields = [\"date\", \"item\", \"cost\"]\n    writer = csv.DictWriter(f, fieldnames=fields)\n    \n    writer.writeheader()\n    writer.writerows(transactions)\n\n# Read CSV into dictionaries:\nwith open(\"expenses.csv\", \"r\", encoding=\"utf-8\") as f:\n    reader = csv.DictReader(f)\n    for row in reader:\n        print(f\"{row['date']} | {row['item']} | ${row['cost']}\")\n```"
+                "content": "For tabular business data, spreadsheets use CSV (Comma-Separated Values).\n\nPython includes the `csv` module with `DictWriter` and `DictReader`:\n\n```python\nimport csv\n\ntransactions = [\n    {\"date\": \"2026-11-01\", \"item\": \"Cloud Server\", \"cost\": 45.00},\n    {\"date\": \"2026-11-02\", \"item\": \"Domain Renewal\", \"cost\": 12.50},\n]\n\n# Write CSV with headers:\nwith open(\"expenses.csv\", \"w\", newline=\"\", encoding=\"utf-8\") as f:\n    fields = [\"date\", \"item\", \"cost\"]\n    writer = csv.DictWriter(f, fieldnames=fields)\n    \n    writer.writeheader()\n    writer.writerows(transactions)\n\n# Read CSV into dictionaries:\nwith open(\"expenses.csv\", \"r\", encoding=\"utf-8\") as f:\n    reader = csv.DictReader(f)\n    for row in reader:\n        print(f\"{row['date']} | {row['item']} | ${row['cost']}\")\n```"
               }
             ],
             "_id": "6aed0a9d1bcf73a2815c6f21"
@@ -6637,7 +6637,7 @@
         "order": 2,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:45.051Z",
-        "updatedAt": "2026-11-05T23:00:45.051Z",
+        "updatedAt": "2026-11-08T05:44:07.472Z",
         "__v": 0
       },
       {
@@ -6659,7 +6659,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "What if you want to write a function that calculates the sum of numbers, but you don't know whether the user will pass 2 numbers, 5 numbers, or 100 numbers?\n\nUse **`*args`** (the asterisk packs arguments into a **tuple**):\n\n```python\ndef calculate_total(*args):\n    # args is a tuple containing all passed arguments!\n    print(\"Received tuple:\", args)\n    return sum(args)\n\nprint(calculate_total(10, 20))         # 30\nprint(calculate_total(5, 10, 15, 20))  # 50\nprint(calculate_total(1, 2, 3, 4, 5))  # 15\n```\n\nYou can pass as many arguments as you want!"
+                "content": "What if you want to write a function that calculates the sum of numbers, but you don't know whether the user will pass 2 numbers, 5 numbers, or 100 numbers?\n\nUse `*args` (the asterisk packs arguments into a tuple):\n\n```python\ndef calculate_total(*args):\n    # args is a tuple containing all passed arguments!\n    print(\"Received tuple:\", args)\n    return sum(args)\n\nprint(calculate_total(10, 20))         # 30\nprint(calculate_total(5, 10, 15, 20))  # 50\nprint(calculate_total(1, 2, 3, 4, 5))  # 15\n```\n\nYou can pass as many arguments as you want!"
               }
             ],
             "_id": "6aed0a9c1bcf73a2815c6efc"
@@ -6670,7 +6670,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "What if you want to accept arbitrary named options (e.g. `color=\"blue\"`, `size=\"XL\"`, `in_stock=True`)?\n\nUse **`**kwargs`** (double asterisks pack named arguments into a **dictionary**):\n\n```python\ndef build_user_profile(user_id, name, **kwargs):\n    profile = {\n        \"id\": user_id,\n        \"name\": name,\n        **kwargs # Spreads extra key-value pairs!\n    }\n    return profile\n\nuser = build_user_profile(\n    \"USR-1\", \n    \"Ada Lovelace\", \n    role=\"Mathematician\", \n    verified=True, \n    country=\"UK\"\n)\n\nprint(user)\n```\n\nOutput:\n```text\n{'id': 'USR-1', 'name': 'Ada Lovelace', 'role': 'Mathematician', 'verified': True, 'country': 'UK'}\n```\n\n`*args` and `**kwargs` are heavily used in libraries like Django, FastAPI, and PyTorch for flexible configuration."
+                "content": "What if you want to accept arbitrary named options (e.g. `color=\"blue\"`, `size=\"XL\"`, `in_stock=True`)?\n\nUse `**kwargs` (double asterisks pack named arguments into a dictionary):\n\n```python\ndef build_user_profile(user_id, name, **kwargs):\n    profile = {\n        \"id\": user_id,\n        \"name\": name,\n        **kwargs # Spreads extra key-value pairs!\n    }\n    return profile\n\nuser = build_user_profile(\n    \"USR-1\", \n    \"Ada Lovelace\", \n    role=\"Mathematician\", \n    verified=True, \n    country=\"UK\"\n)\n\nprint(user)\n```\n\nOutput:\n```text\n{'id': 'USR-1', 'name': 'Ada Lovelace', 'role': 'Mathematician', 'verified': True, 'country': 'UK'}\n```\n\n`*args` and `**kwargs` are heavily used in libraries like Django, FastAPI, and PyTorch for flexible configuration."
               }
             ],
             "_id": "6aed0a9c1bcf73a2815c6efd"
@@ -6718,7 +6718,7 @@
         "order": 2,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:44.171Z",
-        "updatedAt": "2026-11-05T23:00:44.171Z",
+        "updatedAt": "2026-11-08T05:44:06.579Z",
         "__v": 0
       },
       {
@@ -6740,7 +6740,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "A **Tuple** is an ordered collection written with parentheses:\n\n```python\n# Creating a tuple:\ncoordinates = (6.5244, 3.3792) # Latitude, Longitude of Lagos\nrgb_white = (255, 255, 255)\n```\n\n### Why use a Tuple instead of a List?\nTuples are **immutable** (they cannot be changed after creation):\n- `coordinates[0] = 7.0` -> **CRASH! TypeError: 'tuple' object does not support item assignment.**\n- **Safety**: Protects data that should never change (geographic coords, RGB colors, database ports).\n- **Speed**: Tuples use less memory and execute faster than lists."
+                "content": "A Tuple is an ordered collection written with parentheses:\n\n```python\n# Creating a tuple:\ncoordinates = (6.5244, 3.3792) # Latitude, Longitude of Lagos\nrgb_white = (255, 255, 255)\n```\n\nWhy use a Tuple instead of a List?\nTuples are immutable (they cannot be changed after creation):\n- `coordinates[0] = 7.0` -> CRASH! TypeError: 'tuple' object does not support item assignment.\n- Safety: Protects data that should never change (geographic coords, RGB colors, database ports).\n- Speed: Tuples use less memory and execute faster than lists."
               }
             ],
             "_id": "6aed0a9b1bcf73a2815c6ed6"
@@ -6789,7 +6789,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "A **Set** is an unordered collection of **unique** elements written with curly braces:\n\n```python\nskills = {\"Python\", \"Git\", \"Docker\", \"Python\", \"Git\"}\nprint(skills) # Output: {'Docker', 'Git', 'Python'} (Duplicates removed automatically!)\n```\n\n### Common Set Operations:\n```python\nfrontend = {\"HTML\", \"CSS\", \"JavaScript\", \"React\"}\nbackend = {\"Python\", \"JavaScript\", \"SQL\", \"Docker\"}\n\n# Union (all unique items across both sets):\nprint(frontend | backend)\n\n# Intersection (items present in BOTH sets):\nprint(frontend & backend) # {'JavaScript'}\n\n# Difference (in frontend but NOT in backend):\nprint(frontend - backend) # {'HTML', 'CSS', 'React'}\n```\n\nSets give you mathematical set theory operations in single-character syntax!"
+                "content": "A Set is an unordered collection of unique elements written with curly braces:\n\n```python\nskills = {\"Python\", \"Git\", \"Docker\", \"Python\", \"Git\"}\nprint(skills) # Output: {'Docker', 'Git', 'Python'} (Duplicates removed automatically!)\n```\n\nCommon Set Operations:\n```python\nfrontend = {\"HTML\", \"CSS\", \"JavaScript\", \"React\"}\nbackend = {\"Python\", \"JavaScript\", \"SQL\", \"Docker\"}\n\n# Union (all unique items across both sets):\nprint(frontend | backend)\n\n# Intersection (items present in BOTH sets):\nprint(frontend & backend) # {'JavaScript'}\n\n# Difference (in frontend but NOT in backend):\nprint(frontend - backend) # {'HTML', 'CSS', 'React'}\n```\n\nSets give you mathematical set theory operations in single-character syntax!"
               }
             ],
             "_id": "6aed0a9b1bcf73a2815c6ed9"
@@ -6837,7 +6837,7 @@
         "order": 2,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:43.310Z",
-        "updatedAt": "2026-11-05T23:00:43.310Z",
+        "updatedAt": "2026-11-08T05:44:05.920Z",
         "__v": 0
       },
       {
@@ -6859,7 +6859,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Almost every Python program relies on these 4 foundational types:\n\n1. **`str` (String)**: Text wrapped in single (`'...`) or double (`\"...\"`) quotes.\n   `message = \"Hello, SabiLearn!\"`\n2. **`int` (Integer)**: Whole numbers without decimals (positive or negative).\n   `items_count = 42`, `temperature = -5`\n3. **`float` (Floating-Point Number)**: Numbers with decimal points.\n   `exchange_rate = 1450.75`, `pi = 3.14159`\n4. **`bool` (Boolean)**: Logical truth values, exactly **`True`** or **`False`** (note the capital T and F!).\n   `is_authenticated = True`, `has_discount = False`"
+                "content": "Almost every Python program relies on these 4 foundational types:\n\n1. `str` (String): Text wrapped in single (`'...`) or double (`\"...\"`) quotes.\n   `message = \"Hello, SabiLearn!\"`\n2. `int` (Integer): Whole numbers without decimals (positive or negative).\n   `items_count = 42`, `temperature = -5`\n3. `float` (Floating-Point Number): Numbers with decimal points.\n   `exchange_rate = 1450.75`, `pi = 3.14159`\n4. `bool` (Boolean): Logical truth values, exactly `True` or `False` (note the capital T and F!).\n   `is_authenticated = True`, `has_discount = False`"
               }
             ],
             "_id": "6aed0a991bcf73a2815c6e8a"
@@ -6870,7 +6870,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Python makes mathematical operations straightforward:\n\n| Operator | Name | Example | Result |\n| :--- | :--- | :--- | :--- |\n| **`+`** | Addition | `10 + 5` | `15` |\n| **`-`** | Subtraction | `10 - 5` | `5` |\n| **`*`** | Multiplication | `10 * 5` | `50` |\n| **`/`** | True Division (Always returns a float!) | `10 / 4` | `2.5` |\n| **`//`** | Floor Division (Drops decimal remainder) | `10 // 4` | `2` |\n| **`%`** | Modulo (Returns remainder of division) | `10 % 3` | `1` |\n| **`**`** | Exponentiation (Power) | `2 ** 4` | `16` |\n\nNotice **`/`** always returns a float! Even `10 / 2` returns `5.0`. If you want a whole number integer, use **`//`** (floor division)."
+                "content": "Python makes mathematical operations straightforward:\n\n| Operator | Name | Example | Result |\n| :--- | :--- | :--- | :--- |\n| `+` | Addition | `10 + 5` | `15` |\n| `-` | Subtraction | `10 - 5` | `5` |\n| `*` | Multiplication | `10 * 5` | `50` |\n| `/` | True Division (Always returns a float!) | `10 / 4` | `2.5` |\n| `//` | Floor Division (Drops decimal remainder) | `10 // 4` | `2` |\n| `%` | Modulo (Returns remainder of division) | `10 % 3` | `1` |\n| `**` | Exponentiation (Power) | `2 ** 4` | `16` |\n\nNotice `/` always returns a float! Even `10 / 2` returns `5.0`. If you want a whole number integer, use `//` (floor division)."
               }
             ],
             "_id": "6aed0a991bcf73a2815c6e8b"
@@ -6908,7 +6908,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Strings have powerful built-in methods:\n\n```python\ngreeting = \"python programming\"\n\nprint(greeting.upper())       # \"PYTHON PROGRAMMING\"\nprint(greeting.capitalize())  # \"Python programming\"\nprint(greeting.replace(\"python\", \"Fullstack\")) # \"Fullstack programming\"\nprint(len(greeting))          # Length of string: 18 characters\n\n# String repetition and concatenation:\nline = \"-\" * 30               # \"------------------------------\"\nfull = \"Hello \" + \"World\"     # \"Hello World\"\n```\n\nStrings are indexed starting from **0**. You can slice pieces: `greeting[0:6]` returns `\"python\"`!"
+                "content": "Strings have powerful built-in methods:\n\n```python\ngreeting = \"python programming\"\n\nprint(greeting.upper())       # \"PYTHON PROGRAMMING\"\nprint(greeting.capitalize())  # \"Python programming\"\nprint(greeting.replace(\"python\", \"Fullstack\")) # \"Fullstack programming\"\nprint(len(greeting))          # Length of string: 18 characters\n\n# String repetition and concatenation:\nline = \"-\" * 30               # \"------------------------------\"\nfull = \"Hello \" + \"World\"     # \"Hello World\"\n```\n\nStrings are indexed starting from 0. You can slice pieces: `greeting[0:6]` returns `\"python\"`!"
               }
             ],
             "_id": "6aed0a991bcf73a2815c6e8d"
@@ -6956,7 +6956,7 @@
         "order": 2,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:41.157Z",
-        "updatedAt": "2026-11-05T23:00:41.157Z",
+        "updatedAt": "2026-11-08T05:44:04.506Z",
         "__v": 0
       },
       {
@@ -6978,7 +6978,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "While a `while` loop is condition-based, a **`for` loop** is designed for **iterating over a sequence** (like counting with numbers, going through every character in a word, or reading items from a list).\n\n```python\n# Iterating through every letter in a string:\nfor char in \"PYTHON\":\n    print(f\"Letter: {char}\")\n```\n\nPython's `for` loop reads like plain English: *\"For each letter in 'PYTHON', do this!\"*"
+                "content": "While a `while` loop is condition-based, a `for` loop is designed for iterating over a sequence (like counting with numbers, going through every character in a word, or reading items from a list).\n\n```python\n# Iterating through every letter in a string:\nfor char in \"PYTHON\":\n    print(f\"Letter: {char}\")\n```\n\nPython's `for` loop reads like plain English: *\"For each letter in 'PYTHON', do this!\"*"
               }
             ],
             "_id": "6aed0a9a1bcf73a2815c6eb1"
@@ -6989,7 +6989,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "The built-in **`range()`** function produces an arithmetic sequence of numbers:\n\n### 1. Single Argument: `range(stop)`\nStarts at 0 and counts up to, but not including, stop:\n```python\nfor i in range(5):\n    print(i) # Prints: 0, 1, 2, 3, 4\n```\n\n### 2. Two Arguments: `range(start, stop)`\n```python\nfor i in range(1, 6):\n    print(i) # Prints: 1, 2, 3, 4, 5\n```\n\n### 3. Three Arguments: `range(start, stop, step)`\n```python\n# Even numbers between 2 and 10:\nfor i in range(2, 11, 2):\n    print(i) # Prints: 2, 4, 6, 8, 10\n\n# Counting down backwards:\nfor i in range(5, 0, -1):\n    print(i) # Prints: 5, 4, 3, 2, 1\n```\n\n**Remember:** `range()` is lazy. It does not store millions of numbers in memory; it generates each number on the fly as the loop asks for it!"
+                "content": "The built-in `range()` function produces an arithmetic sequence of numbers:\n\n1. Single Argument: `range(stop)`\nStarts at 0 and counts up to, but not including, stop:\n```python\nfor i in range(5):\n    print(i) # Prints: 0, 1, 2, 3, 4\n```\n\n2. Two Arguments: `range(start, stop)`\n```python\nfor i in range(1, 6):\n    print(i) # Prints: 1, 2, 3, 4, 5\n```\n\n3. Three Arguments: `range(start, stop, step)`\n```python\n# Even numbers between 2 and 10:\nfor i in range(2, 11, 2):\n    print(i) # Prints: 2, 4, 6, 8, 10\n\n# Counting down backwards:\nfor i in range(5, 0, -1):\n    print(i) # Prints: 5, 4, 3, 2, 1\n```\n\nRemember: `range()` is lazy. It does not store millions of numbers in memory; it generates each number on the fly as the loop asks for it!"
               }
             ],
             "_id": "6aed0a9a1bcf73a2815c6eb2"
@@ -7027,7 +7027,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "If you want to know both the **position number** and the **item**, use **`enumerate()`**:\n\n```python\nlanguages = [\"Python\", \"TypeScript\", \"C++\", \"Rust\"]\n\nfor index, lang in enumerate(languages, start=1):\n    print(f\"Rank #{index}: {lang}\")\n```\n\nOutput:\n```text\nRank #1: Python\nRank #2: TypeScript\nRank #3: C++\nRank #4: Rust\n```\n\nNever write `for i in range(len(languages)):` when `enumerate()` exists!"
+                "content": "If you want to know both the position number and the item, use `enumerate()`:\n\n```python\nlanguages = [\"Python\", \"TypeScript\", \"C++\", \"Rust\"]\n\nfor index, lang in enumerate(languages, start=1):\n    print(f\"Rank #{index}: {lang}\")\n```\n\nOutput:\n```text\nRank #1: Python\nRank #2: TypeScript\nRank #3: C++\nRank #4: Rust\n```\n\nNever write `for i in range(len(languages)):` when `enumerate()` exists!"
               }
             ],
             "_id": "6aed0a9a1bcf73a2815c6eb4"
@@ -7075,7 +7075,7 @@
         "order": 2,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:42.221Z",
-        "updatedAt": "2026-11-05T23:00:42.221Z",
+        "updatedAt": "2026-11-08T05:44:05.249Z",
         "__v": 0
       },
       {
@@ -7097,7 +7097,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "In real life, a physical dictionary maps a word to its definition.\n\nIn Python, a **Dictionary (`dict`)** maps a unique **Key** to a **Value**:\n\n```python\ndeveloper = {\n    \"name\": \"Musa Musa Kannike\",\n    \"role\": \"Lead Curriculum Architect\",\n    \"track\": \"Fullstack & Robotics\",\n    \"experience_years\": 8,\n    \"is_certified\": True\n}\n\n# Accessing values by key:\nprint(developer[\"name\"])  # \"Musa Musa Kannike\"\nprint(developer[\"track\"]) # \"Fullstack & Robotics\"\n```\n\nDictionaries provide instant lookup speed regardless of whether your dictionary has 5 keys or 5,000,000 keys!"
+                "content": "In real life, a physical dictionary maps a word to its definition.\n\nIn Python, a Dictionary (`dict`) maps a unique Key to a Value:\n\n```python\ndeveloper = {\n    \"name\": \"Musa Musa Kannike\",\n    \"role\": \"Lead Curriculum Architect\",\n    \"track\": \"Fullstack & Robotics\",\n    \"experience_years\": 8,\n    \"is_certified\": True\n}\n\n# Accessing values by key:\nprint(developer[\"name\"])  # \"Musa Musa Kannike\"\nprint(developer[\"track\"]) # \"Fullstack & Robotics\"\n```\n\nDictionaries provide instant lookup speed regardless of whether your dictionary has 5 keys or 5,000,000 keys!"
               }
             ],
             "_id": "6aed0a9b1bcf73a2815c6edd"
@@ -7108,7 +7108,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "If you try to read a key that does not exist using square brackets:\n`developer[\"github_username\"]` -> **CRASH! KeyError: 'github_username'**\n\nTo avoid crashes, use the **`.get()`** method:\n\n```python\n# Safe: Returns None or your specified fallback default!\nusername = developer.get(\"github_username\", \"Not Specified\")\nprint(username) # Output: \"Not Specified\"\n\n# Modifying and adding keys:\ndeveloper[\"github_username\"] = \"musakannike\" # Adds new key\ndeveloper[\"experience_years\"] = 9            # Updates existing key\n```\n\nAlways use `.get()` when querying external data or user-provided keys!"
+                "content": "If you try to read a key that does not exist using square brackets:\n`developer[\"github_username\"]` -> CRASH! KeyError: 'github_username'\n\nTo avoid crashes, use the `.get()` method:\n\n```python\n# Safe: Returns None or your specified fallback default!\nusername = developer.get(\"github_username\", \"Not Specified\")\nprint(username) # Output: \"Not Specified\"\n\n# Modifying and adding keys:\ndeveloper[\"github_username\"] = \"musakannike\" # Adds new key\ndeveloper[\"experience_years\"] = 9            # Updates existing key\n```\n\nAlways use `.get()` when querying external data or user-provided keys!"
               }
             ],
             "_id": "6aed0a9b1bcf73a2815c6ede"
@@ -7194,7 +7194,7 @@
         "order": 3,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:43.466Z",
-        "updatedAt": "2026-11-05T23:00:43.466Z",
+        "updatedAt": "2026-11-08T05:44:06.112Z",
         "__v": 0
       },
       {
@@ -7216,7 +7216,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "How do you know your code works after making a change?\n- Testing by hand: Clicking through 20 menus and re-typing 10 inputs on every edit takes hours!\n- **Automated Tests**: Write code that tests your code in **0.2 seconds** before every release.\n\nIf you break something, the test turns red immediately and tells you exactly which line failed."
+                "content": "How do you know your code works after making a change?\n- Testing by hand: Clicking through 20 menus and re-typing 10 inputs on every edit takes hours!\n- Automated Tests: Write code that tests your code in 0.2 seconds before every release.\n\nIf you break something, the test turns red immediately and tells you exactly which line failed."
               }
             ],
             "_id": "6aed0a9e1bcf73a2815c6f6f"
@@ -7275,7 +7275,7 @@
         "order": 3,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:46.982Z",
-        "updatedAt": "2026-11-05T23:00:46.982Z",
+        "updatedAt": "2026-11-08T05:44:08.882Z",
         "__v": 0
       },
       {
@@ -7297,7 +7297,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Typing in the REPL is great for quick tests, but your real code belongs in a permanent **`.py`** file.\n\nCreate a file named `hello.py` in VS Code:\n\n```python\n# hello.py - My very first Python program\nprint(\"================================\")\nprint(\"Welcome to Python on SabiLearn!\")\nprint(\"================================\")\n```\n\nTo run this file from your terminal, navigate to the folder and type:\n```bash\npython3 hello.py\n```\n\nThe Python interpreter reads the file from top to bottom, executes each line, and prints the result to your terminal!"
+                "content": "Typing in the REPL is great for quick tests, but your real code belongs in a permanent `.py` file.\n\nCreate a file named `hello.py` in VS Code:\n\n```python\n# hello.py - My very first Python program\nprint(\"================================\")\nprint(\"Welcome to Python on SabiLearn!\")\nprint(\"================================\")\n```\n\nTo run this file from your terminal, navigate to the folder and type:\n```bash\npython3 hello.py\n```\n\nThe Python interpreter reads the file from top to bottom, executes each line, and prints the result to your terminal!"
               }
             ],
             "_id": "6aed0a981bcf73a2815c6e6a"
@@ -7308,7 +7308,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Code is read far more often than it is written. **Comments** allow you to leave notes explaining *why* your code does something.\n\n### 1. Single-Line Comments\nStart with the hash symbol (`#`):\n```python\n# Calculate shipping cost including 7.5% VAT tax\nprice = 4500\ntax = price * 0.075 # Inline comment\n```\n\n### 2. Multi-Line Strings / Docstrings\nWrap text in triple quotes (`\"\"\"` or `'''`):\n```python\n\"\"\"\nProgram: Salary Calculator\nAuthor: Musa Musa Kannike\nDescription: Calculates net monthly earnings after tax deductions.\n\"\"\"\n```\n\nPython completely ignores comments during execution. They exist solely for humans!"
+                "content": "Code is read far more often than it is written. Comments allow you to leave notes explaining *why* your code does something.\n\n1. Single-Line Comments\nStart with the hash symbol (`#`):\n```python\n# Calculate shipping cost including 7.5% VAT tax\nprice = 4500\ntax = price * 0.075 # Inline comment\n```\n\n2. Multi-Line Strings / Docstrings\nWrap text in triple quotes (`\"\"\"` or `'''`):\n```python\n\"\"\"\nProgram: Salary Calculator\nAuthor: Musa Musa Kannike\nDescription: Calculates net monthly earnings after tax deductions.\n\"\"\"\n```\n\nPython completely ignores comments during execution. They exist solely for humans!"
               }
             ],
             "_id": "6aed0a981bcf73a2815c6e6b"
@@ -7346,7 +7346,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "In languages like C++ or JavaScript, you use curly braces `{ ... }` to group blocks of code:\n\n```javascript\n// JavaScript uses curly braces:\nif (isLoggedIn) {\n    console.log(\"Welcome!\");\n}\n```\n\nIn Python, **indentation (whitespace) IS the syntax**:\n\n```python\n# Python uses indentation (4 spaces):\nif is_logged_in:\n    print(\"Welcome!\")\n    print(\"Dashboard loaded.\")\nprint(\"This line runs outside the if statement.\")\n```\n\nIf you mix tabs and spaces or forget to indent, Python will immediately throw an **`IndentationError`**.\n\n**Standard Python Convention:** Always indent using **4 spaces** (pressing the `Tab` key in modern editors automatically inserts 4 spaces)."
+                "content": "In languages like C++ or JavaScript, you use curly braces `{ ... }` to group blocks of code:\n\n```javascript\n// JavaScript uses curly braces:\nif (isLoggedIn) {\n    console.log(\"Welcome!\");\n}\n```\n\nIn Python, indentation (whitespace) IS the syntax:\n\n```python\n# Python uses indentation (4 spaces):\nif is_logged_in:\n    print(\"Welcome!\")\n    print(\"Dashboard loaded.\")\nprint(\"This line runs outside the if statement.\")\n```\n\nIf you mix tabs and spaces or forget to indent, Python will immediately throw an `IndentationError`.\n\nStandard Python Convention: Always indent using 4 spaces (pressing the `Tab` key in modern editors automatically inserts 4 spaces)."
               }
             ],
             "_id": "6aed0a981bcf73a2815c6e6d"
@@ -7394,7 +7394,7 @@
         "order": 3,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:40.351Z",
-        "updatedAt": "2026-11-05T23:00:40.351Z",
+        "updatedAt": "2026-11-08T05:44:03.992Z",
         "__v": 0
       },
       {
@@ -7416,7 +7416,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Imagine anyone could do this:\n`account.balance = -99999999`\n\nDirectly modifying internal attributes from outside bypasses business rules and introduces critical bugs!\n\n**Encapsulation** means:\n1. Hiding internal data behind a protective wall.\n2. Providing controlled getter and setter methods to inspect and update that data safely."
+                "content": "Imagine anyone could do this:\n`account.balance = -99999999`\n\nDirectly modifying internal attributes from outside bypasses business rules and introduces critical bugs!\n\nEncapsulation means:\n1. Hiding internal data behind a protective wall.\n2. Providing controlled getter and setter methods to inspect and update that data safely."
               }
             ],
             "_id": "6aed0a9e1bcf73a2815c6f4b"
@@ -7427,7 +7427,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Python provides the elegant **`@property`** decorator to create getters and setters with clean attribute syntax:\n\n```python\nclass BankAccount:\n    def __init__(self, owner: str, balance: float):\n        self.owner = owner\n        self._balance = balance # Leading underscore signals internal attribute!\n\n    # 1. Getter property: accessed as account.balance (no parentheses!)\n    @property\n    def balance(self) -> float:\n        return self._balance\n\n    # 2. Setter property: controls updates with validation!\n    @balance.setter\n    def balance(self, new_balance: float):\n        if new_balance < 0:\n            raise ValueError(\"Balance cannot be set to a negative number!\")\n        self._balance = new_balance\n\nacc = BankAccount(\"Ada\", 1000)\nprint(acc.balance) # 1000 (Calls the getter!)\n\nacc.balance = 1500 # Calls the setter validation!\n# acc.balance = -500 # RAISES ValueError: Balance cannot be set to a negative number!\n```\n\nYou get full validation safety with the clean syntax of normal variables!"
+                "content": "Python provides the elegant `@property` decorator to create getters and setters with clean attribute syntax:\n\n```python\nclass BankAccount:\n    def __init__(self, owner: str, balance: float):\n        self.owner = owner\n        self._balance = balance # Leading underscore signals internal attribute!\n\n    # 1. Getter property: accessed as account.balance (no parentheses!)\n    @property\n    def balance(self) -> float:\n        return self._balance\n\n    # 2. Setter property: controls updates with validation!\n    @balance.setter\n    def balance(self, new_balance: float):\n        if new_balance < 0:\n            raise ValueError(\"Balance cannot be set to a negative number!\")\n        self._balance = new_balance\n\nacc = BankAccount(\"Ada\", 1000)\nprint(acc.balance) # 1000 (Calls the getter!)\n\nacc.balance = 1500 # Calls the setter validation!\n# acc.balance = -500 # RAISES ValueError: Balance cannot be set to a negative number!\n```\n\nYou get full validation safety with the clean syntax of normal variables!"
               }
             ],
             "_id": "6aed0a9e1bcf73a2815c6f4c"
@@ -7465,7 +7465,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Writing `__init__`, `__repr__`, and `__eq__` for simple data-holding classes takes 20 lines of repetitive boilerplate.\n\nPython 3.7+ introduced **`@dataclass`**:\n\n```python\nfrom dataclasses import dataclass\n\n@dataclass\nclass Product:\n    id: str\n    name: str\n    price: float\n    category: str\n    in_stock: bool = True\n\n# Python automatically generates __init__, __repr__, and __eq__!\np1 = Product(\"P101\", \"Mechanical Keyboard\", 89.99, \"Hardware\")\np2 = Product(\"P101\", \"Mechanical Keyboard\", 89.99, \"Hardware\")\n\nprint(p1) # Output: Product(id='P101', name='Mechanical Keyboard', price=89.99, category='Hardware', in_stock=True)\nprint(p1 == p2) # True! Automatic structural equality!\n```\n\nWith 3 lines of code, you get a complete, robust model!"
+                "content": "Writing `__init__`, `__repr__`, and `__eq__` for simple data-holding classes takes 20 lines of repetitive boilerplate.\n\nPython 3.7+ introduced `@dataclass`:\n\n```python\nfrom dataclasses import dataclass\n\n@dataclass\nclass Product:\n    id: str\n    name: str\n    price: float\n    category: str\n    in_stock: bool = True\n\n# Python automatically generates __init__, __repr__, and __eq__!\np1 = Product(\"P101\", \"Mechanical Keyboard\", 89.99, \"Hardware\")\np2 = Product(\"P101\", \"Mechanical Keyboard\", 89.99, \"Hardware\")\n\nprint(p1) # Output: Product(id='P101', name='Mechanical Keyboard', price=89.99, category='Hardware', in_stock=True)\nprint(p1 == p2) # True! Automatic structural equality!\n```\n\nWith 3 lines of code, you get a complete, robust model!"
               }
             ],
             "_id": "6aed0a9e1bcf73a2815c6f4e"
@@ -7513,7 +7513,7 @@
         "order": 3,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:46.134Z",
-        "updatedAt": "2026-11-05T23:00:46.134Z",
+        "updatedAt": "2026-11-08T05:44:08.248Z",
         "__v": 0
       },
       {
@@ -7535,7 +7535,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "To make programs interactive, we ask the user questions using **`input()`**:\n\n```python\nuser_name = input(\"What is your name? \")\nprint(\"Nice to meet you, \" + user_name + \"!\")\n```\n\nWhen this line executes, Python **pauses execution**, displays the prompt, and waits for the user to type something on their keyboard and press Enter.\n\n**Crucial Rule:** `input()` **ALWAYS returns a string (`str`)**!\nEven if the user types `42`, Python receives it as the text `\"42\"`, not the number `42`!"
+                "content": "To make programs interactive, we ask the user questions using `input()`:\n\n```python\nuser_name = input(\"What is your name? \")\nprint(\"Nice to meet you, \" + user_name + \"!\")\n```\n\nWhen this line executes, Python pauses execution, displays the prompt, and waits for the user to type something on their keyboard and press Enter.\n\nCrucial Rule: `input()` ALWAYS returns a string (`str`)!\nEven if the user types `42`, Python receives it as the text `\"42\"`, not the number `42`!"
               }
             ],
             "_id": "6aed0a991bcf73a2815c6e91"
@@ -7546,7 +7546,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "If you try this:\n```python\n# THIS CAUSES A CRASH!\nage = input(\"Enter your age: \") # User types 20 -> age is \"20\"\nnext_year = age + 1             # CRASH! TypeError: cannot concatenate 'str' and 'int'\n```\n\nTo fix this, you must explicitly **cast (convert)** the string into an integer or float:\n\n```python\n# Correct: Convert input with int() or float()\nage = int(input(\"Enter your age: \"))\nnext_year = age + 1\nprint(\"Next year you will be:\", next_year)\n```\n\nCommon Type Casting Functions:\n- `int(\"100\")` -> integer `100`\n- `float(\"49.99\")` -> float `49.99`\n- `str(42)` -> string `\"42\"`\n- `bool(1)` -> boolean `True`"
+                "content": "If you try this:\n```python\n# THIS CAUSES A CRASH!\nage = input(\"Enter your age: \") # User types 20 -> age is \"20\"\nnext_year = age + 1             # CRASH! TypeError: cannot concatenate 'str' and 'int'\n```\n\nTo fix this, you must explicitly cast (convert) the string into an integer or float:\n\n```python\n# Correct: Convert input with int() or float()\nage = int(input(\"Enter your age: \"))\nnext_year = age + 1\nprint(\"Next year you will be:\", next_year)\n```\n\nCommon Type Casting Functions:\n- `int(\"100\")` -> integer `100`\n- `float(\"49.99\")` -> float `49.99`\n- `str(42)` -> string `\"42\"`\n- `bool(1)` -> boolean `True`"
               }
             ],
             "_id": "6aed0a991bcf73a2815c6e92"
@@ -7584,7 +7584,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "In older Python versions, combining text and variables was messy:\n`\"Hello, \" + name + \"! You have \" + str(count) + \" items.\"`\n\nIn modern Python 3.6+, we use **f-strings** (formatted string literals):\n\n```python\nname = \"Musa\"\nsalary = 850000\ntax_rate = 0.075\n\n# Put an 'f' before the quotes and place variables inside {curly braces}!\nprint(f\"Employee: {name}\")\nprint(f\"Gross Salary: ₦{salary:,}\") # Commas for thousands!\nprint(f\"Tax Amount: ₦{salary * tax_rate:,.2f}\") # Formatted to 2 decimal places!\n```\n\nNotice the formatting tricks:\n- `:, ` automatically formats thousands with commas (`850,000`).\n- `:.2f` rounds floating decimals to 2 places (`63,750.00`).\n\nF-strings are fast, readable, and used universally in professional Python code."
+                "content": "In older Python versions, combining text and variables was messy:\n`\"Hello, \" + name + \"! You have \" + str(count) + \" items.\"`\n\nIn modern Python 3.6+, we use f-strings (formatted string literals):\n\n```python\nname = \"Musa\"\nsalary = 850000\ntax_rate = 0.075\n\n# Put an 'f' before the quotes and place variables inside {curly braces}!\nprint(f\"Employee: {name}\")\nprint(f\"Gross Salary: ₦{salary:,}\") # Commas for thousands!\nprint(f\"Tax Amount: ₦{salary * tax_rate:,.2f}\") # Formatted to 2 decimal places!\n```\n\nNotice the formatting tricks:\n- `:, ` automatically formats thousands with commas (`850,000`).\n- `:.2f` rounds floating decimals to 2 places (`63,750.00`).\n\nF-strings are fast, readable, and used universally in professional Python code."
               }
             ],
             "_id": "6aed0a991bcf73a2815c6e94"
@@ -7622,7 +7622,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Let's write an interactive bill-splitting calculator.\n\n### Step 1: Create `tip_calculator.py`\n```python\n# tip_calculator.py\nprint(\"=== Restaurant Bill Splitter ===\")\n\ntotal_bill = float(input(\"What was the total food bill? ₦\"))\ntip_percent = int(input(\"What percentage tip would you like to give? (e.g. 10, 15, 20): \"))\npeople_count = int(input(\"How many people are splitting the bill? \"))\n\n# Calculations\ntip_amount = total_bill * (tip_percent / 100)\nfinal_total = total_bill + tip_amount\ncost_per_person = final_total / people_count\n\nprint(\"-\" * 35)\nprint(f\"Subtotal:       ₦{total_bill:,.2f}\")\nprint(f\"Tip ({tip_percent}%):       ₦{tip_amount:,.2f}\")\nprint(f\"Grand Total:    ₦{final_total:,.2f}\")\nprint(f\"Each Person:    ₦{cost_per_person:,.2f}\")\nprint(\"-\" * 35)\n```\n\n### Step 2: Verification\nRun `python3 tip_calculator.py`. Enter a bill of 25000, tip of 10, and 4 people. Notice how cleanly the numbers calculate and format!"
+                "content": "Let's write an interactive bill-splitting calculator.\n\nStep 1: Create `tip_calculator.py`\n```python\n# tip_calculator.py\nprint(\"=== Restaurant Bill Splitter ===\")\n\ntotal_bill = float(input(\"What was the total food bill? ₦\"))\ntip_percent = int(input(\"What percentage tip would you like to give? (e.g. 10, 15, 20): \"))\npeople_count = int(input(\"How many people are splitting the bill? \"))\n\n# Calculations\ntip_amount = total_bill * (tip_percent / 100)\nfinal_total = total_bill + tip_amount\ncost_per_person = final_total / people_count\n\nprint(\"-\" * 35)\nprint(f\"Subtotal:       ₦{total_bill:,.2f}\")\nprint(f\"Tip ({tip_percent}%):       ₦{tip_amount:,.2f}\")\nprint(f\"Grand Total:    ₦{final_total:,.2f}\")\nprint(f\"Each Person:    ₦{cost_per_person:,.2f}\")\nprint(\"-\" * 35)\n```\n\nStep 2: Verification\nRun `python3 tip_calculator.py`. Enter a bill of 25000, tip of 10, and 4 people. Notice how cleanly the numbers calculate and format!"
               }
             ],
             "_id": "6aed0a991bcf73a2815c6e96"
@@ -7632,7 +7632,7 @@
         "order": 3,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:41.321Z",
-        "updatedAt": "2026-11-05T23:00:41.321Z",
+        "updatedAt": "2026-11-08T05:44:04.672Z",
         "__v": 0
       },
       {
@@ -7654,7 +7654,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "In the real world, things go wrong:\n- A user enters text when a number was expected.\n- A network cable is unplugged.\n- A requested file does not exist on disk.\n- Division by zero occurs.\n\nIn Python, these runtime errors are called **Exceptions**.\n\nIf you do not handle an exception, Python terminates your program immediately with an ugly stack trace.\nWith **`try / except`**, you catch the error gracefully and recover!"
+                "content": "In the real world, things go wrong:\n- A user enters text when a number was expected.\n- A network cable is unplugged.\n- A requested file does not exist on disk.\n- Division by zero occurs.\n\nIn Python, these runtime errors are called Exceptions.\n\nIf you do not handle an exception, Python terminates your program immediately with an ugly stack trace.\nWith `try / except`, you catch the error gracefully and recover!"
               }
             ],
             "_id": "6aed0a9d1bcf73a2815c6f25"
@@ -7751,7 +7751,7 @@
         "order": 3,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:45.234Z",
-        "updatedAt": "2026-11-05T23:00:45.234Z",
+        "updatedAt": "2026-11-08T05:44:07.638Z",
         "__v": 0
       },
       {
@@ -7773,7 +7773,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Variables created **inside** a function only exist while that function is running. They are called **Local Variables**:\n\n```python\ndef test_scope():\n    secret_code = \"ABC-123\" # Local variable!\n    print(\"Inside:\", secret_code)\n\ntest_scope()\n# OUTSIDE THE FUNCTION:\nprint(secret_code) # CRASH! NameError: name 'secret_code' is not defined\n```\n\nVariables created **outside** all functions are **Global Variables**:\n\n```python\napp_name = \"SabiLearn\" # Global variable!\n\ndef display_app():\n    # Functions CAN read global variables:\n    print(\"Welcome to:\", app_name)\n```\n\n**Rule:** Keep variables local whenever possible to prevent functions from accidentally interfering with each other."
+                "content": "Variables created inside a function only exist while that function is running. They are called Local Variables:\n\n```python\ndef test_scope():\n    secret_code = \"ABC-123\" # Local variable!\n    print(\"Inside:\", secret_code)\n\ntest_scope()\n# OUTSIDE THE FUNCTION:\nprint(secret_code) # CRASH! NameError: name 'secret_code' is not defined\n```\n\nVariables created outside all functions are Global Variables:\n\n```python\napp_name = \"SabiLearn\" # Global variable!\n\ndef display_app():\n    # Functions CAN read global variables:\n    print(\"Welcome to:\", app_name)\n```\n\nRule: Keep variables local whenever possible to prevent functions from accidentally interfering with each other."
               }
             ],
             "_id": "6aed0a9c1bcf73a2815c6f01"
@@ -7784,7 +7784,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "When you reference a variable name, Python searches 4 scopes in this exact order:\n\n1. **L (Local)**: Inside the current function.\n2. **E (Enclosing)**: Inside any outer enclosing functions (closures).\n3. **G (Global)**: At the top level of the current file/module.\n4. **B (Built-in)**: Python's built-in namespace (like `len`, `range`, `print`).\n\nIf Python searches all 4 scopes and cannot find the name, it raises a **`NameError`**!"
+                "content": "When you reference a variable name, Python searches 4 scopes in this exact order:\n\n1. L (Local): Inside the current function.\n2. E (Enclosing): Inside any outer enclosing functions (closures).\n3. G (Global): At the top level of the current file/module.\n4. B (Built-in): Python's built-in namespace (like `len`, `range`, `print`).\n\nIf Python searches all 4 scopes and cannot find the name, it raises a `NameError`!"
               }
             ],
             "_id": "6aed0a9c1bcf73a2815c6f02"
@@ -7822,7 +7822,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Sometimes you need a tiny throwaway function for a quick calculation or sorting key.\n\nA **Lambda Function** is a one-line anonymous function:\n\n```python\n# Normal function:\ndef square(x):\n    return x * x\n\n# Equivalent lambda function:\nsquare_lambda = lambda x: x * x\n\nprint(square_lambda(6)) # 36\n```\n\nLambdas shine when sorting complex collections:\n\n```python\nstudents = [(\"Musa\", 95), (\"Ada\", 99), (\"Chinelo\", 88)]\n\n# Sort by score (the second item in each tuple):\nstudents.sort(key=lambda item: item[1], reverse=True)\nprint(students) # [('Ada', 99), ('Musa', 95), ('Chinelo', 88)]\n```"
+                "content": "Sometimes you need a tiny throwaway function for a quick calculation or sorting key.\n\nA Lambda Function is a one-line anonymous function:\n\n```python\n# Normal function:\ndef square(x):\n    return x * x\n\n# Equivalent lambda function:\nsquare_lambda = lambda x: x * x\n\nprint(square_lambda(6)) # 36\n```\n\nLambdas shine when sorting complex collections:\n\n```python\nstudents = [(\"Musa\", 95), (\"Ada\", 99), (\"Chinelo\", 88)]\n\n# Sort by score (the second item in each tuple):\nstudents.sort(key=lambda item: item[1], reverse=True)\nprint(students) # [('Ada', 99), ('Musa', 95), ('Chinelo', 88)]\n```"
               }
             ],
             "_id": "6aed0a9c1bcf73a2815c6f04"
@@ -7870,7 +7870,7 @@
         "order": 3,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:44.362Z",
-        "updatedAt": "2026-11-05T23:00:44.362Z",
+        "updatedAt": "2026-11-08T05:44:06.761Z",
         "__v": 0
       },
       {
@@ -7892,7 +7892,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Sometimes you want to alter the natural progression of a loop midway through:\n\n### 1. `break` (The Emergency Eject)\nStops the loop completely and jumps out:\n\n```python\nfor num in range(1, 100):\n    if num == 5:\n        print(\"Target reached. Breaking out!\")\n        break\n    print(num) # Prints 1, 2, 3, 4\n```\n\n### 2. `continue` (Skip to Next Cycle)\nSkips the rest of the current iteration and moves to the next number:\n\n```python\n# Print only odd numbers by skipping evens:\nfor num in range(1, 10):\n    if num % 2 == 0:\n        continue # Skip even numbers!\n    print(f\"Odd number: {num}\")\n```\n\nWhen `continue` runs, Python immediately jumps to the next cycle without executing any lines below it!"
+                "content": "Sometimes you want to alter the natural progression of a loop midway through:\n\n1. `break` (The Emergency Eject)\nStops the loop completely and jumps out:\n\n```python\nfor num in range(1, 100):\n    if num == 5:\n        print(\"Target reached. Breaking out!\")\n        break\n    print(num) # Prints 1, 2, 3, 4\n```\n\n2. `continue` (Skip to Next Cycle)\nSkips the rest of the current iteration and moves to the next number:\n\n```python\n# Print only odd numbers by skipping evens:\nfor num in range(1, 10):\n    if num % 2 == 0:\n        continue # Skip even numbers!\n    print(f\"Odd number: {num}\")\n```\n\nWhen `continue` runs, Python immediately jumps to the next cycle without executing any lines below it!"
               }
             ],
             "_id": "6aed0a9a1bcf73a2815c6eb8"
@@ -7941,7 +7941,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Python has a unique feature: loops can have an **`else`** block!\n\nThe `else` block runs **only if the loop finished naturally without hitting a `break`**:\n\n```python\n# Searching for a prime number divisor:\ntarget = 13\n\nfor i in range(2, target):\n    if target % i == 0:\n        print(f\"{target} is divisible by {i}, not prime!\")\n        break\nelse:\n    # Runs only if NO break occurred!\n    print(f\"{target} is a PRIME NUMBER! ✨\")\n```\n\nThis eliminates the need for manual boolean flag variables like `found = False`!"
+                "content": "Python has a unique feature: loops can have an `else` block!\n\nThe `else` block runs only if the loop finished naturally without hitting a `break`:\n\n```python\n# Searching for a prime number divisor:\ntarget = 13\n\nfor i in range(2, target):\n    if target % i == 0:\n        print(f\"{target} is divisible by {i}, not prime!\")\n        break\nelse:\n    # Runs only if NO break occurred!\n    print(f\"{target} is a PRIME NUMBER! ✨\")\n```\n\nThis eliminates the need for manual boolean flag variables like `found = False`!"
               }
             ],
             "_id": "6aed0a9a1bcf73a2815c6ebb"
@@ -7989,7 +7989,7 @@
         "order": 3,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:42.613Z",
-        "updatedAt": "2026-11-05T23:00:42.613Z",
+        "updatedAt": "2026-11-08T05:44:05.402Z",
         "__v": 0
       },
       {
@@ -8011,7 +8011,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Programs become intelligent when they can make decisions based on data.\n\nIn Python, we use **if**, **elif** (else-if), and **else**:\n\n```python\nscore = 85\n\nif score >= 90:\n    grade = \"A (Distinction)\"\nelif score >= 75:\n    grade = \"B (Credit)\"\nelif score >= 60:\n    grade = \"C (Pass)\"\nelse:\n    grade = \"F (Needs Improvement)\"\n\nprint(f\"Final Grade: {grade}\")\n```\n\nPython evaluates conditions from top to bottom. As soon as one condition evaluates to `True`, its indented block runs, and Python skips the rest of the chain!"
+                "content": "Programs become intelligent when they can make decisions based on data.\n\nIn Python, we use if, elif (else-if), and else:\n\n```python\nscore = 85\n\nif score >= 90:\n    grade = \"A (Distinction)\"\nelif score >= 75:\n    grade = \"B (Credit)\"\nelif score >= 60:\n    grade = \"C (Pass)\"\nelse:\n    grade = \"F (Needs Improvement)\"\n\nprint(f\"Final Grade: {grade}\")\n```\n\nPython evaluates conditions from top to bottom. As soon as one condition evaluates to `True`, its indented block runs, and Python skips the rest of the chain!"
               }
             ],
             "_id": "6aed0a991bcf73a2815c6e98"
@@ -8022,7 +8022,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "You can combine multiple conditions using plain English logical operators:\n\n- **`and`**: Returns `True` only if **both** sides are true.\n  `if age >= 18 and has_id:`\n- **`or`**: Returns `True` if **at least one** side is true.\n  `if is_weekend or is_holiday:`\n- **`not`**: Inverts the boolean value.\n  `if not is_subscribed:`\n\nNo confusing `&&` or `||` symbols needed!"
+                "content": "You can combine multiple conditions using plain English logical operators:\n\n- `and`: Returns `True` only if both sides are true.\n  `if age >= 18 and has_id:`\n- `or`: Returns `True` if at least one side is true.\n  `if is_weekend or is_holiday:`\n- `not`: Inverts the boolean value.\n  `if not is_subscribed:`\n\nNo confusing `&&` or `||` symbols needed!"
               }
             ],
             "_id": "6aed0a991bcf73a2815c6e99"
@@ -8060,7 +8060,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Now let's build **Project 1: The Smart Salary, Tax & Personal Budget Calculator**!\n\nOur program will:\n1. Greet the user and ask for their monthly gross income.\n2. Determine their tax bracket dynamically:\n   - Earnings up to ₦100,000: 5% tax bracket.\n   - ₦100,001 to ₦500,000: 10% tax bracket.\n   - ₦500,001 to ₦1,500,000: 15% tax bracket.\n   - Above ₦1,500,000: 20% tax bracket.\n3. Calculate Net Take-Home Pay.\n4. Ask for monthly fixed expenses (Rent, Food, Transport, Utilities).\n5. Implement the classic **50/30/20 Financial Health Rule**:\n   - Needs: 50%\n   - Wants: 30%\n   - Savings / Investments: 20%\n6. Output a formatted diagnostic report indicating if the user is living within their means or overspending!"
+                "content": "Now let's build Project 1: The Smart Salary, Tax & Personal Budget Calculator!\n\nOur program will:\n1. Greet the user and ask for their monthly gross income.\n2. Determine their tax bracket dynamically:\n   - Earnings up to ₦100,000: 5% tax bracket.\n   - ₦100,001 to ₦500,000: 10% tax bracket.\n   - ₦500,001 to ₦1,500,000: 15% tax bracket.\n   - Above ₦1,500,000: 20% tax bracket.\n3. Calculate Net Take-Home Pay.\n4. Ask for monthly fixed expenses (Rent, Food, Transport, Utilities).\n5. Implement the classic 50/30/20 Financial Health Rule:\n   - Needs: 50%\n   - Wants: 30%\n   - Savings / Investments: 20%\n6. Output a formatted diagnostic report indicating if the user is living within their means or overspending!"
               }
             ],
             "_id": "6aed0a991bcf73a2815c6e9b"
@@ -8071,7 +8071,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "### Create `budget_calculator.py`\n```python\n# budget_calculator.py\n# Project 1: Smart Salary, Tax & Personal Budget Calculator\n# Author: SabiLearn Fullstack Engineer\n\nprint(\"=\" * 50)\nprint(\"     SMART PERSONAL BUDGET & TAX ANALYZER     \")\nprint(\"=\" * 50)\n\n# 1. Capture Financial Inputs\nuser_name = input(\"Enter your full name: \").strip()\ngross_salary = float(input(\"Enter your monthly gross salary (₦): \"))\n\nprint(\"\n--- Enter Monthly Living Expenses ---\")\nrent = float(input(\"Rent / Housing (₦): \"))\nfood = float(input(\"Groceries & Food (₦): \"))\ntransport = float(input(\"Transportation / Fuel (₦): \"))\nutilities = float(input(\"Utilities, Internet & Power (₦): \"))\n\n# 2. Dynamic Progressive Tax Calculation\nif gross_salary <= 100000:\n    tax_rate = 0.05\n    bracket_name = \"Low Income (5%)\"\nelif gross_salary <= 500000:\n    tax_rate = 0.10\n    bracket_name = \"Middle Income (10%)\"\nelif gross_salary <= 1500000:\n    tax_rate = 0.15\n    bracket_name = \"Upper Middle Income (15%)\"\nelse:\n    tax_rate = 0.20\n    bracket_name = \"High Earner (20%)\"\n\ntax_deduction = gross_salary * tax_rate\nnet_salary = gross_salary - tax_deduction\ntotal_expenses = rent + food + transport + utilities\nremaining_balance = net_salary - total_expenses\n\n# 3. 50/30/20 Financial Rule Benchmarks\nrecommended_needs = net_salary * 0.50\nrecommended_savings = net_salary * 0.20\n\n# 4. Generate Financial Health Status\nif total_expenses > net_salary:\n    health_status = \"⚠️ CRITICAL DEFICIT: Expenses exceed your net income!\"\n    health_advice = \"Urgent: Cut discretionary spending or look for secondary revenue streams.\"\nelif total_expenses <= recommended_needs:\n    health_status = \"🌟 EXCELLENT: Essential expenses are under 50% of net pay.\"\n    health_advice = \"Great discipline! Channel surplus funds into high-yield investments.\"\nelse:\n    health_status = \"🟡 MODERATE: Expenses are between 50% and 100% of income.\"\n    health_advice = \"Monitor lifestyle inflation to maximize your emergency savings buffer.\"\n\n# 5. Output Diagnostic Summary\nprint(\"\n\" + \"=\" * 50)\nprint(f\"       FINANCIAL STATEMENT: {user_name.upper()}       \")\nprint(\"=\" * 50)\nprint(f\"Gross Income:             ₦{gross_salary:>14,.2f}\")\nprint(f\"Tax Bracket:              {bracket_name:>14}\")\nprint(f\"Tax Withholding:         -₦{tax_deduction:>14,.2f}\")\nprint(\"-\" * 50)\nprint(f\"Net Take-Home Salary:     ₦{net_salary:>14,.2f}\")\nprint(f\"Total Fixed Expenses:    -₦{total_expenses:>14,.2f}\")\nprint(\"-\" * 50)\nprint(f\"Surplus / Remaining:      ₦{remaining_balance:>14,.2f}\")\nprint(\"=\" * 50)\n\nprint(f\"\nDiagnostic: {health_status}\")\nprint(f\"Recommendation: {health_advice}\n\")\n```\n\n### Verification Steps:\n1. Run `python3 budget_calculator.py`.\n2. Test Case A (Balanced):\n   - Salary: 600,000 (15% tax bracket).\n   - Expenses: Rent 120,000, Food 50,000, Transport 30,000, Utilities 20,000.\n   - Result: 🌟 EXCELLENT status!\n3. Test Case B (Deficit):\n   - Salary: 200,000.\n   - Expenses: Rent 150,000, Food 40,000, Transport 30,000, Utilities 10,000.\n   - Result: ⚠️ CRITICAL DEFICIT status!\n4. The program responds dynamically and accurately to every scenario."
+                "content": "Create `budget_calculator.py`\n```python\n# budget_calculator.py\n# Project 1: Smart Salary, Tax & Personal Budget Calculator\n# Author: SabiLearn Fullstack Engineer\n\nprint(\"=\" * 50)\nprint(\"     SMART PERSONAL BUDGET & TAX ANALYZER     \")\nprint(\"=\" * 50)\n\n# 1. Capture Financial Inputs\nuser_name = input(\"Enter your full name: \").strip()\ngross_salary = float(input(\"Enter your monthly gross salary (₦): \"))\n\nprint(\"\n--- Enter Monthly Living Expenses ---\")\nrent = float(input(\"Rent / Housing (₦): \"))\nfood = float(input(\"Groceries & Food (₦): \"))\ntransport = float(input(\"Transportation / Fuel (₦): \"))\nutilities = float(input(\"Utilities, Internet & Power (₦): \"))\n\n# 2. Dynamic Progressive Tax Calculation\nif gross_salary <= 100000:\n    tax_rate = 0.05\n    bracket_name = \"Low Income (5%)\"\nelif gross_salary <= 500000:\n    tax_rate = 0.10\n    bracket_name = \"Middle Income (10%)\"\nelif gross_salary <= 1500000:\n    tax_rate = 0.15\n    bracket_name = \"Upper Middle Income (15%)\"\nelse:\n    tax_rate = 0.20\n    bracket_name = \"High Earner (20%)\"\n\ntax_deduction = gross_salary * tax_rate\nnet_salary = gross_salary - tax_deduction\ntotal_expenses = rent + food + transport + utilities\nremaining_balance = net_salary - total_expenses\n\n# 3. 50/30/20 Financial Rule Benchmarks\nrecommended_needs = net_salary * 0.50\nrecommended_savings = net_salary * 0.20\n\n# 4. Generate Financial Health Status\nif total_expenses > net_salary:\n    health_status = \"⚠️ CRITICAL DEFICIT: Expenses exceed your net income!\"\n    health_advice = \"Urgent: Cut discretionary spending or look for secondary revenue streams.\"\nelif total_expenses <= recommended_needs:\n    health_status = \"🌟 EXCELLENT: Essential expenses are under 50% of net pay.\"\n    health_advice = \"Great discipline! Channel surplus funds into high-yield investments.\"\nelse:\n    health_status = \"🟡 MODERATE: Expenses are between 50% and 100% of income.\"\n    health_advice = \"Monitor lifestyle inflation to maximize your emergency savings buffer.\"\n\n# 5. Output Diagnostic Summary\nprint(\"\n\" + \"=\" * 50)\nprint(f\"       FINANCIAL STATEMENT: {user_name.upper()}       \")\nprint(\"=\" * 50)\nprint(f\"Gross Income:             ₦{gross_salary:>14,.2f}\")\nprint(f\"Tax Bracket:              {bracket_name:>14}\")\nprint(f\"Tax Withholding:         -₦{tax_deduction:>14,.2f}\")\nprint(\"-\" * 50)\nprint(f\"Net Take-Home Salary:     ₦{net_salary:>14,.2f}\")\nprint(f\"Total Fixed Expenses:    -₦{total_expenses:>14,.2f}\")\nprint(\"-\" * 50)\nprint(f\"Surplus / Remaining:      ₦{remaining_balance:>14,.2f}\")\nprint(\"=\" * 50)\n\nprint(f\"\nDiagnostic: {health_status}\")\nprint(f\"Recommendation: {health_advice}\n\")\n```\n\nVerification Steps:\n1. Run `python3 budget_calculator.py`.\n2. Test Case A (Balanced):\n   - Salary: 600,000 (15% tax bracket).\n   - Expenses: Rent 120,000, Food 50,000, Transport 30,000, Utilities 20,000.\n   - Result: 🌟 EXCELLENT status!\n3. Test Case B (Deficit):\n   - Salary: 200,000.\n   - Expenses: Rent 150,000, Food 40,000, Transport 30,000, Utilities 10,000.\n   - Result: ⚠️ CRITICAL DEFICIT status!\n4. The program responds dynamically and accurately to every scenario."
               }
             ],
             "_id": "6aed0a991bcf73a2815c6e9c"
@@ -8108,7 +8108,7 @@
         "order": 4,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:41.517Z",
-        "updatedAt": "2026-11-05T23:00:41.517Z",
+        "updatedAt": "2026-11-08T05:44:04.848Z",
         "__v": 0
       },
       {
@@ -8130,7 +8130,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Welcome to **Project 4: The Persistent Expense Tracker & Receipt Ledger**!\n\nIn this project, you will combine:\n1. **File Persistence with JSON**: Expenses survive program restarts.\n2. **Context Managers (`with open`)**: For safe, automatic file closure.\n3. **Defensive Error Handling**: Uses `try / except (FileNotFoundError, json.JSONDecodeError, ValueError)` to handle corrupted or missing data gracefully.\n4. **Expense Categories**: Housing, Food, Transport, Utilities, Entertainment.\n5. **CSV Export Feature**: Automatically exports spending records to a standard spreadsheet file!"
+                "content": "Welcome to Project 4: The Persistent Expense Tracker & Receipt Ledger!\n\nIn this project, you will combine:\n1. File Persistence with JSON: Expenses survive program restarts.\n2. Context Managers (`with open`): For safe, automatic file closure.\n3. Defensive Error Handling: Uses `try / except (FileNotFoundError, json.JSONDecodeError, ValueError)` to handle corrupted or missing data gracefully.\n4. Expense Categories: Housing, Food, Transport, Utilities, Entertainment.\n5. CSV Export Feature: Automatically exports spending records to a standard spreadsheet file!"
               }
             ],
             "_id": "6aed0a9d1bcf73a2815c6f2c"
@@ -8179,7 +8179,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "### Create `expense_app.py`\n```python\n# expense_app.py\n# Project 4: Persistent Expense Tracker & Ledger\n# Author: SabiLearn Fullstack Engineer\n\nimport json\nimport csv\nimport os\nfrom datetime import datetime\n\nDATA_FILE = \"ledger.json\"\nCSV_EXPORT_FILE = \"ledger_export.csv\"\n\ndef load_expenses() -> list:\n    \"\"\"Safely loads expenses from JSON file with error recovery.\"\"\"\n    if not os.path.exists(DATA_FILE):\n        return []\n    \n    try:\n        with open(DATA_FILE, \"r\", encoding=\"utf-8\") as f:\n            return json.load(f)\n    except (json.JSONDecodeError, IOError) as err:\n        print(f\"Warning: Corrupted data file detected ({err}). Initializing fresh ledger.\")\n        return []\n\ndef save_expenses(expenses: list) -> bool:\n    \"\"\"Saves expenses to persistent JSON file.\"\"\"\n    try:\n        with open(DATA_FILE, \"w\", encoding=\"utf-8\") as f:\n            json.dump(expenses, f, indent=2)\n        return True\n    except IOError as err:\n        print(f\"Error saving to disk: {err}\")\n        return False\n\ndef export_to_csv(expenses: list) -> bool:\n    \"\"\"Exports all ledger entries to a CSV spreadsheet.\"\"\"\n    if not expenses:\n        print(\"No expenses to export.\")\n        return False\n        \n    try:\n        with open(CSV_EXPORT_FILE, \"w\", newline=\"\", encoding=\"utf-8\") as f:\n            fields = [\"id\", \"date\", \"description\", \"category\", \"amount\"]\n            writer = csv.DictWriter(f, fieldnames=fields)\n            writer.writeheader()\n            writer.writerows(expenses)\n        print(f\"✅ Successfully exported {len(expenses)} records to '{CSV_EXPORT_FILE}'!\")\n        return True\n    except IOError as err:\n        print(f\"Export failed: {err}\")\n        return False\n\ndef main():\n    expenses = load_expenses()\n    print(\"=\" * 50)\n    print(\"     PERSISTENT EXPENSE LEDGER & ANALYZER     \")\n    print(\"=\" * 50)\n    print(f\"Loaded {len(expenses)} persistent records from disk.\")\n\n    categories = [\"Housing\", \"Food\", \"Transport\", \"Utilities\", \"Entertainment\", \"Other\"]\n\n    while True:\n        print(\"\n1. Record New Expense\")\n        print(\"2. View All Expenses\")\n        print(\"3. Spending Summary by Category\")\n        print(\"4. Export to CSV Spreadsheet\")\n        print(\"5. Exit\")\n        \n        choice = input(\"\nEnter choice (1-5): \").strip()\n\n        # 1. Add\n        if choice == \"1\":\n            desc = input(\"Expense description: \").strip()\n            if not desc:\n                print(\"Description cannot be empty.\")\n                continue\n\n            print(\"Categories:\", \", \".join(categories))\n            cat = input(\"Category: \").capitalize().strip()\n            if cat not in categories:\n                cat = \"Other\"\n\n            try:\n                amt = float(input(\"Amount (₦): \"))\n                if amt <= 0:\n                    raise ValueError(\"Amount must be positive.\")\n            except ValueError as err:\n                print(f\"Invalid amount: {err}\")\n                continue\n\n            new_record = {\n                \"id\": len(expenses) + 1,\n                \"date\": datetime.now().strftime(\"%Y-%m-%d %H:%M\"),\n                \"description\": desc,\n                \"category\": cat,\n                \"amount\": round(amt, 2)\n            }\n\n            expenses.append(new_record)\n            if save_expenses(expenses):\n                print(f\"✅ Saved: {desc} (₦{amt:,.2f}) under {cat}!\")\n\n        # 2. View All\n        elif choice == \"2\":\n            if not expenses:\n                print(\"Ledger is currently empty.\")\n            else:\n                print(\"\n\" + \"-\" * 65)\n                print(f\"{'ID':<4} | {'Date':<16} | {'Description':<20} | {'Category':<12} | {'Amount':>8}\")\n                print(\"-\" * 65)\n                for e in expenses:\n                    print(f\"{e['id']:<4} | {e['date']:<16} | {e['description'][:18]:<20} | {e['category']:<12} | ₦{e['amount']:>8,.2f}\")\n                print(\"-\" * 65)\n                total = sum(e[\"amount\"] for e in expenses)\n                print(f\"TOTAL SPENT: ₦{total:,.2f}\")\n\n        # 3. Category Breakdown\n        elif choice == \"3\":\n            if not expenses:\n                print(\"No data available.\")\n            else:\n                totals_by_cat = {}\n                for e in expenses:\n                    c = e[\"category\"]\n                    totals_by_cat[c] = totals_by_cat.get(c, 0.0) + e[\"amount\"]\n\n                grand_total = sum(totals_by_cat.values())\n                print(\"\n--- Category Spending Breakdown ---\")\n                for cat, total in sorted(totals_by_cat.items(), key=lambda x: x[1], reverse=True):\n                    pct = (total / grand_total) * 100\n                    print(f\"{cat:<15}: ₦{total:>10,.2f} ({pct:5.1f}%)\")\n\n        # 4. CSV Export\n        elif choice == \"4\":\n            export_to_csv(expenses)\n\n        # 5. Exit\n        elif choice == \"5\":\n            print(\"Session saved to disk. Goodbye!\")\n            break\n        else:\n            print(\"Invalid option. Please choose 1-5.\")\n\nif __name__ == \"__main__\":\n    main()\n```\n\n### Verification Steps:\n1. Run `python3 expense_app.py`.\n2. Add an expense: Description \"Groceries\", Category \"Food\", Amount 15000.\n3. Add an expense: Description \"Gas refill\", Category \"Utilities\", Amount 12000.\n4. Exit the application (Option 5).\n5. Run `python3 expense_app.py` again: notice it outputs *\"Loaded 2 persistent records from disk\"*!\n6. Select Option 4: `ledger_export.csv` is generated on disk! Open it and verify."
+                "content": "Create `expense_app.py`\n```python\n# expense_app.py\n# Project 4: Persistent Expense Tracker & Ledger\n# Author: SabiLearn Fullstack Engineer\n\nimport json\nimport csv\nimport os\nfrom datetime import datetime\n\nDATA_FILE = \"ledger.json\"\nCSV_EXPORT_FILE = \"ledger_export.csv\"\n\ndef load_expenses() -> list:\n    \"\"\"Safely loads expenses from JSON file with error recovery.\"\"\"\n    if not os.path.exists(DATA_FILE):\n        return []\n    \n    try:\n        with open(DATA_FILE, \"r\", encoding=\"utf-8\") as f:\n            return json.load(f)\n    except (json.JSONDecodeError, IOError) as err:\n        print(f\"Warning: Corrupted data file detected ({err}). Initializing fresh ledger.\")\n        return []\n\ndef save_expenses(expenses: list) -> bool:\n    \"\"\"Saves expenses to persistent JSON file.\"\"\"\n    try:\n        with open(DATA_FILE, \"w\", encoding=\"utf-8\") as f:\n            json.dump(expenses, f, indent=2)\n        return True\n    except IOError as err:\n        print(f\"Error saving to disk: {err}\")\n        return False\n\ndef export_to_csv(expenses: list) -> bool:\n    \"\"\"Exports all ledger entries to a CSV spreadsheet.\"\"\"\n    if not expenses:\n        print(\"No expenses to export.\")\n        return False\n        \n    try:\n        with open(CSV_EXPORT_FILE, \"w\", newline=\"\", encoding=\"utf-8\") as f:\n            fields = [\"id\", \"date\", \"description\", \"category\", \"amount\"]\n            writer = csv.DictWriter(f, fieldnames=fields)\n            writer.writeheader()\n            writer.writerows(expenses)\n        print(f\"✅ Successfully exported {len(expenses)} records to '{CSV_EXPORT_FILE}'!\")\n        return True\n    except IOError as err:\n        print(f\"Export failed: {err}\")\n        return False\n\ndef main():\n    expenses = load_expenses()\n    print(\"=\" * 50)\n    print(\"     PERSISTENT EXPENSE LEDGER & ANALYZER     \")\n    print(\"=\" * 50)\n    print(f\"Loaded {len(expenses)} persistent records from disk.\")\n\n    categories = [\"Housing\", \"Food\", \"Transport\", \"Utilities\", \"Entertainment\", \"Other\"]\n\n    while True:\n        print(\"\n1. Record New Expense\")\n        print(\"2. View All Expenses\")\n        print(\"3. Spending Summary by Category\")\n        print(\"4. Export to CSV Spreadsheet\")\n        print(\"5. Exit\")\n        \n        choice = input(\"\nEnter choice (1-5): \").strip()\n\n        # 1. Add\n        if choice == \"1\":\n            desc = input(\"Expense description: \").strip()\n            if not desc:\n                print(\"Description cannot be empty.\")\n                continue\n\n            print(\"Categories:\", \", \".join(categories))\n            cat = input(\"Category: \").capitalize().strip()\n            if cat not in categories:\n                cat = \"Other\"\n\n            try:\n                amt = float(input(\"Amount (₦): \"))\n                if amt <= 0:\n                    raise ValueError(\"Amount must be positive.\")\n            except ValueError as err:\n                print(f\"Invalid amount: {err}\")\n                continue\n\n            new_record = {\n                \"id\": len(expenses) + 1,\n                \"date\": datetime.now().strftime(\"%Y-%m-%d %H:%M\"),\n                \"description\": desc,\n                \"category\": cat,\n                \"amount\": round(amt, 2)\n            }\n\n            expenses.append(new_record)\n            if save_expenses(expenses):\n                print(f\"✅ Saved: {desc} (₦{amt:,.2f}) under {cat}!\")\n\n        # 2. View All\n        elif choice == \"2\":\n            if not expenses:\n                print(\"Ledger is currently empty.\")\n            else:\n                print(\"\n\" + \"-\" * 65)\n                print(f\"{'ID':<4} | {'Date':<16} | {'Description':<20} | {'Category':<12} | {'Amount':>8}\")\n                print(\"-\" * 65)\n                for e in expenses:\n                    print(f\"{e['id']:<4} | {e['date']:<16} | {e['description'][:18]:<20} | {e['category']:<12} | ₦{e['amount']:>8,.2f}\")\n                print(\"-\" * 65)\n                total = sum(e[\"amount\"] for e in expenses)\n                print(f\"TOTAL SPENT: ₦{total:,.2f}\")\n\n        # 3. Category Breakdown\n        elif choice == \"3\":\n            if not expenses:\n                print(\"No data available.\")\n            else:\n                totals_by_cat = {}\n                for e in expenses:\n                    c = e[\"category\"]\n                    totals_by_cat[c] = totals_by_cat.get(c, 0.0) + e[\"amount\"]\n\n                grand_total = sum(totals_by_cat.values())\n                print(\"\n--- Category Spending Breakdown ---\")\n                for cat, total in sorted(totals_by_cat.items(), key=lambda x: x[1], reverse=True):\n                    pct = (total / grand_total) * 100\n                    print(f\"{cat:<15}: ₦{total:>10,.2f} ({pct:5.1f}%)\")\n\n        # 4. CSV Export\n        elif choice == \"4\":\n            export_to_csv(expenses)\n\n        # 5. Exit\n        elif choice == \"5\":\n            print(\"Session saved to disk. Goodbye!\")\n            break\n        else:\n            print(\"Invalid option. Please choose 1-5.\")\n\nif __name__ == \"__main__\":\n    main()\n```\n\nVerification Steps:\n1. Run `python3 expense_app.py`.\n2. Add an expense: Description \"Groceries\", Category \"Food\", Amount 15000.\n3. Add an expense: Description \"Gas refill\", Category \"Utilities\", Amount 12000.\n4. Exit the application (Option 5).\n5. Run `python3 expense_app.py` again: notice it outputs *\"Loaded 2 persistent records from disk\"*!\n6. Select Option 4: `ledger_export.csv` is generated on disk! Open it and verify."
               }
             ],
             "_id": "6aed0a9d1bcf73a2815c6f2f"
@@ -8216,7 +8216,7 @@
         "order": 4,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:45.411Z",
-        "updatedAt": "2026-11-05T23:00:45.411Z",
+        "updatedAt": "2026-11-08T05:44:07.784Z",
         "__v": 0
       },
       {
@@ -8238,7 +8238,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Welcome to **Project 3: The Modular Password Generator & Security Analyzer**!\n\nIn this project, you will:\n1. Break code into modular, reusable functions with type hints and docstrings.\n2. Utilize Python standard library modules: **`random`** and **`string`**.\n3. Generate cryptographically strong random passwords of custom length.\n4. Analyze password security strength based on 5 cybersecurity criteria:\n   - Length (minimum 12 characters).\n   - Uppercase letters.\n   - Lowercase letters.\n   - Digits (0-9).\n   - Special symbols (`!@#$%^&*`).\n5. Protect execution using the `if __name__ == \"__main__\":` module guard."
+                "content": "Welcome to Project 3: The Modular Password Generator & Security Analyzer!\n\nIn this project, you will:\n1. Break code into modular, reusable functions with type hints and docstrings.\n2. Utilize Python standard library modules: `random` and `string`.\n3. Generate cryptographically strong random passwords of custom length.\n4. Analyze password security strength based on 5 cybersecurity criteria:\n   - Length (minimum 12 characters).\n   - Uppercase letters.\n   - Lowercase letters.\n   - Digits (0-9).\n   - Special symbols (`!@#$%^&*`).\n5. Protect execution using the `if __name__ == \"__main__\":` module guard."
               }
             ],
             "_id": "6aed0a9c1bcf73a2815c6f08"
@@ -8287,7 +8287,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "### Create `password_tool.py`\n```python\n# password_tool.py\n# Project 3: Modular Password Generator & Security Analyzer\n# Author: SabiLearn Fullstack Engineer\n\nimport random\nimport string\n\ndef generate_password(\n    length: int = 14, \n    use_upper: bool = True, \n    use_digits: bool = True, \n    use_symbols: bool = True\n) -> str:\n    \"\"\"\n    Generates a cryptographically strong pseudo-random password.\n    \n    :param length: Total password length (default: 14)\n    :param use_upper: Include uppercase letters (A-Z)\n    :param use_digits: Include numeric digits (0-9)\n    :param use_symbols: Include special characters (!@#$...)\n    :return: A randomly generated password string\n    \"\"\"\n    chars = list(string.ascii_lowercase)\n    guaranteed = [random.choice(string.ascii_lowercase)]\n\n    if use_upper:\n        chars.extend(string.ascii_uppercase)\n        guaranteed.append(random.choice(string.ascii_uppercase))\n    if use_digits:\n        chars.extend(string.digits)\n        guaranteed.append(random.choice(string.digits))\n    if use_symbols:\n        chars.extend(\"!@#$%^&*()-_=+[]{}\")\n        guaranteed.append(random.choice(\"!@#$%^&*()-_=+[]{}\"))\n\n    # Fill remaining characters\n    remaining_length = length - len(guaranteed)\n    for _ in range(remaining_length):\n        guaranteed.append(random.choice(chars))\n\n    # Shuffle so guaranteed characters aren't in predictable positions\n    random.shuffle(guaranteed)\n    return \"\".join(guaranteed)\n\ndef evaluate_strength(password: str) -> dict:\n    \"\"\"\n    Analyzes password strength against cybersecurity benchmarks.\n    \n    :param password: Password string to evaluate\n    :return: Dictionary containing score (0-100), rating, and suggestions\n    \"\"\"\n    score = 0\n    feedback = []\n\n    # Criteria 1: Length\n    if len(password) >= 14:\n        score += 35\n    elif len(password) >= 10:\n        score += 20\n    else:\n        feedback.append(\"Length is under 10 characters (too short).\")\n\n    # Criteria 2: Lowercase\n    if any(c.islower() for c in password):\n        score += 15\n    else:\n        feedback.append(\"Missing lowercase letters.\")\n\n    # Criteria 3: Uppercase\n    if any(c.isupper() for c in password):\n        score += 20\n    else:\n        feedback.append(\"Missing uppercase letters.\")\n\n    # Criteria 4: Digits\n    if any(c.isdigit() for c in password):\n        score += 15\n    else:\n        feedback.append(\"Missing numeric digits.\")\n\n    # Criteria 5: Symbols\n    special_chars = set(\"!@#$%^&*()-_=+[]{}|;:,.<>?\")\n    if any(c in special_chars for c in password):\n        score += 15\n    else:\n        feedback.append(\"Missing special symbols (!@#$...).\")\n\n    # Final Classification\n    if score >= 85:\n        rating = \"VERY STRONG (Grade A+)\"\n    elif score >= 65:\n        rating = \"STRONG (Grade B)\"\n    elif score >= 45:\n        rating = \"MODERATE (Grade C)\"\n    else:\n        rating = \"WEAK / VULNERABLE (Grade F)\"\n\n    return {\n        \"score\": score,\n        \"rating\": rating,\n        \"suggestions\": feedback\n    }\n\ndef main():\n    print(\"=\" * 50)\n    print(\"   CYBERSECURITY PASSWORD GENERATOR & ANALYZER    \")\n    print(\"=\" * 50)\n\n    while True:\n        print(\"\n1. Generate Secure Password\")\n        print(\"2. Check Strength of an Existing Password\")\n        print(\"3. Exit\")\n        \n        choice = input(\"Enter choice (1-3): \").strip()\n\n        if choice == \"1\":\n            try:\n                length = int(input(\"Desired length (minimum 8, default 14): \") or 14)\n                if length < 8:\n                    print(\"Enforcing minimum length of 8 for security.\")\n                    length = 8\n            except ValueError:\n                length = 14\n\n            pwd = generate_password(length)\n            eval_result = evaluate_strength(pwd)\n\n            print(\"\n\" + \"-\" * 40)\n            print(f\"Generated Password: {pwd}\")\n            print(f\"Security Rating:    {eval_result['rating']} ({eval_result['score']}/100)\")\n            print(\"-\" * 40)\n\n        elif choice == \"2\":\n            user_pwd = input(\"Enter password to test: \").strip()\n            eval_result = evaluate_strength(user_pwd)\n\n            print(\"\n\" + \"-\" * 40)\n            print(f\"Rating: {eval_result['rating']} (Score: {eval_result['score']}/100)\")\n            if eval_result[\"suggestions\"]:\n                print(\"Recommendations:\")\n                for s in eval_result[\"suggestions\"]:\n                    print(f\"  • {s}\")\n            else:\n                print(\"✨ Excellent: Satisfies all cybersecurity criteria!\")\n            print(\"-\" * 40)\n\n        elif choice == \"3\":\n            print(\"Exiting tool. Stay secure online!\")\n            break\n        else:\n            print(\"Invalid choice! Choose 1, 2, or 3.\")\n\nif __name__ == \"__main__\":\n    main()\n```\n\n### Verification Steps:\n1. Run `python3 password_tool.py`.\n2. Option 1: Generate password of length 16 -> Generates a Grade A+ password with uppercase, lowercase, numbers, and symbols.\n3. Option 2: Test `\"password123\"` -> Identifies missing uppercase, symbols, and rates it WEAK!\n4. Option 2: Test `\"Tr0ub4dor&3#Alpha\"` -> Rates it VERY STRONG!"
+                "content": "Create `password_tool.py`\n```python\n# password_tool.py\n# Project 3: Modular Password Generator & Security Analyzer\n# Author: SabiLearn Fullstack Engineer\n\nimport random\nimport string\n\ndef generate_password(\n    length: int = 14, \n    use_upper: bool = True, \n    use_digits: bool = True, \n    use_symbols: bool = True\n) -> str:\n    \"\"\"\n    Generates a cryptographically strong pseudo-random password.\n    \n    :param length: Total password length (default: 14)\n    :param use_upper: Include uppercase letters (A-Z)\n    :param use_digits: Include numeric digits (0-9)\n    :param use_symbols: Include special characters (!@#$...)\n    :return: A randomly generated password string\n    \"\"\"\n    chars = list(string.ascii_lowercase)\n    guaranteed = [random.choice(string.ascii_lowercase)]\n\n    if use_upper:\n        chars.extend(string.ascii_uppercase)\n        guaranteed.append(random.choice(string.ascii_uppercase))\n    if use_digits:\n        chars.extend(string.digits)\n        guaranteed.append(random.choice(string.digits))\n    if use_symbols:\n        chars.extend(\"!@#$%^&*()-_=+[]{}\")\n        guaranteed.append(random.choice(\"!@#$%^&*()-_=+[]{}\"))\n\n    # Fill remaining characters\n    remaining_length = length - len(guaranteed)\n    for _ in range(remaining_length):\n        guaranteed.append(random.choice(chars))\n\n    # Shuffle so guaranteed characters aren't in predictable positions\n    random.shuffle(guaranteed)\n    return \"\".join(guaranteed)\n\ndef evaluate_strength(password: str) -> dict:\n    \"\"\"\n    Analyzes password strength against cybersecurity benchmarks.\n    \n    :param password: Password string to evaluate\n    :return: Dictionary containing score (0-100), rating, and suggestions\n    \"\"\"\n    score = 0\n    feedback = []\n\n    # Criteria 1: Length\n    if len(password) >= 14:\n        score += 35\n    elif len(password) >= 10:\n        score += 20\n    else:\n        feedback.append(\"Length is under 10 characters (too short).\")\n\n    # Criteria 2: Lowercase\n    if any(c.islower() for c in password):\n        score += 15\n    else:\n        feedback.append(\"Missing lowercase letters.\")\n\n    # Criteria 3: Uppercase\n    if any(c.isupper() for c in password):\n        score += 20\n    else:\n        feedback.append(\"Missing uppercase letters.\")\n\n    # Criteria 4: Digits\n    if any(c.isdigit() for c in password):\n        score += 15\n    else:\n        feedback.append(\"Missing numeric digits.\")\n\n    # Criteria 5: Symbols\n    special_chars = set(\"!@#$%^&*()-_=+[]{}|;:,.<>?\")\n    if any(c in special_chars for c in password):\n        score += 15\n    else:\n        feedback.append(\"Missing special symbols (!@#$...).\")\n\n    # Final Classification\n    if score >= 85:\n        rating = \"VERY STRONG (Grade A+)\"\n    elif score >= 65:\n        rating = \"STRONG (Grade B)\"\n    elif score >= 45:\n        rating = \"MODERATE (Grade C)\"\n    else:\n        rating = \"WEAK / VULNERABLE (Grade F)\"\n\n    return {\n        \"score\": score,\n        \"rating\": rating,\n        \"suggestions\": feedback\n    }\n\ndef main():\n    print(\"=\" * 50)\n    print(\"   CYBERSECURITY PASSWORD GENERATOR & ANALYZER    \")\n    print(\"=\" * 50)\n\n    while True:\n        print(\"\n1. Generate Secure Password\")\n        print(\"2. Check Strength of an Existing Password\")\n        print(\"3. Exit\")\n        \n        choice = input(\"Enter choice (1-3): \").strip()\n\n        if choice == \"1\":\n            try:\n                length = int(input(\"Desired length (minimum 8, default 14): \") or 14)\n                if length < 8:\n                    print(\"Enforcing minimum length of 8 for security.\")\n                    length = 8\n            except ValueError:\n                length = 14\n\n            pwd = generate_password(length)\n            eval_result = evaluate_strength(pwd)\n\n            print(\"\n\" + \"-\" * 40)\n            print(f\"Generated Password: {pwd}\")\n            print(f\"Security Rating:    {eval_result['rating']} ({eval_result['score']}/100)\")\n            print(\"-\" * 40)\n\n        elif choice == \"2\":\n            user_pwd = input(\"Enter password to test: \").strip()\n            eval_result = evaluate_strength(user_pwd)\n\n            print(\"\n\" + \"-\" * 40)\n            print(f\"Rating: {eval_result['rating']} (Score: {eval_result['score']}/100)\")\n            if eval_result[\"suggestions\"]:\n                print(\"Recommendations:\")\n                for s in eval_result[\"suggestions\"]:\n                    print(f\"  • {s}\")\n            else:\n                print(\"✨ Excellent: Satisfies all cybersecurity criteria!\")\n            print(\"-\" * 40)\n\n        elif choice == \"3\":\n            print(\"Exiting tool. Stay secure online!\")\n            break\n        else:\n            print(\"Invalid choice! Choose 1, 2, or 3.\")\n\nif __name__ == \"__main__\":\n    main()\n```\n\nVerification Steps:\n1. Run `python3 password_tool.py`.\n2. Option 1: Generate password of length 16 -> Generates a Grade A+ password with uppercase, lowercase, numbers, and symbols.\n3. Option 2: Test `\"password123\"` -> Identifies missing uppercase, symbols, and rates it WEAK!\n4. Option 2: Test `\"Tr0ub4dor&3#Alpha\"` -> Rates it VERY STRONG!"
               }
             ],
             "_id": "6aed0a9c1bcf73a2815c6f0b"
@@ -8324,7 +8324,7 @@
         "order": 4,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:44.537Z",
-        "updatedAt": "2026-11-05T23:00:44.537Z",
+        "updatedAt": "2026-11-08T05:44:06.972Z",
         "__v": 0
       },
       {
@@ -8346,7 +8346,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Welcome to the grand capstone: **Project 5: The Object-Oriented Banking System & Live Web API Engine**!\n\nIn this project, you will bring together every single skill from across the entire course:\n1. **Full OOP Hierarchy**:\n   - `Account` (Base Class with properties and transaction history).\n   - `SavingsAccount` (Inherits and applies compound interest).\n   - `CurrentAccount` (Inherits with overdraft protection).\n2. **Dataclasses**: `Transaction` record modeling with timestamps.\n3. **Live REST Web API Integration**: Calls the real-world **Exchange Rate API** (`https://open.er-api.com/v6/latest/USD`) using the `requests` library to convert account balances into live foreign currencies (EUR, GBP, USD).\n4. **File Persistence**: Saves all banking state to persistent JSON files.\n5. **Robust Error Handling**: Handles network drops and account overdrafts."
+                "content": "Welcome to the grand capstone: Project 5: The Object-Oriented Banking System & Live Web API Engine!\n\nIn this project, you will bring together every single skill from across the entire course:\n1. Full OOP Hierarchy:\n   - `Account` (Base Class with properties and transaction history).\n   - `SavingsAccount` (Inherits and applies compound interest).\n   - `CurrentAccount` (Inherits with overdraft protection).\n2. Dataclasses: `Transaction` record modeling with timestamps.\n3. Live REST Web API Integration: Calls the real-world Exchange Rate API (`https://open.er-api.com/v6/latest/USD`) using the `requests` library to convert account balances into live foreign currencies (EUR, GBP, USD).\n4. File Persistence: Saves all banking state to persistent JSON files.\n5. Robust Error Handling: Handles network drops and account overdrafts."
               }
             ],
             "_id": "6aed0a9e1bcf73a2815c6f52"
@@ -8395,7 +8395,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "### Create `banking_engine.py`\n```python\n# banking_engine.py\n# Project 5 Flagship Capstone: OOP Banking Engine with Live FX Web API\n# Author: SabiLearn Fullstack Engineer\n\nimport json\nimport os\nimport urllib.request\nfrom datetime import datetime\nfrom dataclasses import dataclass, asdict\n\n# 1. Model: Transaction Dataclass\n@dataclass\nclass Transaction:\n    timestamp: str\n    type: str # 'Deposit', 'Withdrawal', 'Interest'\n    amount: float\n    resulting_balance: float\n\n# 2. Base Class: Account\nclass Account:\n    def __init__(self, account_number: str, owner: str, initial_balance: float = 0.0):\n        self.account_number = account_number\n        self.owner = owner\n        self._balance = initial_balance\n        self.history: list[Transaction] = []\n\n    @property\n    def balance(self) -> float:\n        return self._balance\n\n    def deposit(self, amount: float) -> bool:\n        if amount <= 0:\n            print(\"Deposit amount must be positive.\")\n            return False\n\n        self._balance += amount\n        self._record_transaction(\"Deposit\", amount)\n        print(f\"✅ Deposited ₦{amount:,.2f}. New Balance: ₦{self._balance:,.2f}\")\n        return True\n\n    def withdraw(self, amount: float) -> bool:\n        if amount <= 0:\n            print(\"Withdrawal amount must be positive.\")\n            return False\n\n        if amount > self._balance:\n            print(f\"❌ Transaction Declined: Insufficient funds (Balance: ₦{self._balance:,.2f})\")\n            return False\n\n        self._balance -= amount\n        self._record_transaction(\"Withdrawal\", amount)\n        print(f\"✅ Withdrew ₦{amount:,.2f}. Remaining Balance: ₦{self._balance:,.2f}\")\n        return True\n\n    def _record_transaction(self, tx_type: str, amount: float):\n        tx = Transaction(\n            timestamp=datetime.now().strftime(\"%Y-%m-%d %H:%M:%S\"),\n            type=tx_type,\n            amount=amount,\n            resulting_balance=self._balance\n        )\n        self.history.append(tx)\n\n    def to_dict(self) -> dict:\n        return {\n            \"account_number\": self.account_number,\n            \"owner\": self.owner,\n            \"balance\": self._balance,\n            \"account_type\": self.__class__.__name__,\n            \"history\": [asdict(tx) for tx in self.history]\n        }\n\n# 3. Inherited Subclasses\nclass SavingsAccount(Account):\n    def __init__(self, account_number: str, owner: str, initial_balance: float = 0.0, interest_rate: float = 0.06):\n        super().__init__(account_number, owner, initial_balance)\n        self.interest_rate = interest_rate\n\n    def apply_interest(self):\n        interest = self._balance * self.interest_rate\n        self._balance += interest\n        self._record_transaction(\"Interest\", interest)\n        print(f\"🌟 Applied {self.interest_rate*100}% Interest: +₦{interest:,.2f}. Balance: ₦{self._balance:,.2f}\")\n\nclass CurrentAccount(Account):\n    def __init__(self, account_number: str, owner: str, initial_balance: float = 0.0, overdraft_limit: float = 50000.0):\n        super().__init__(account_number, owner, initial_balance)\n        self.overdraft_limit = overdraft_limit\n\n    # Overridden withdraw method\n    def withdraw(self, amount: float) -> bool:\n        if amount <= 0:\n            return False\n\n        max_available = self._balance + self.overdraft_limit\n        if amount > max_available:\n            print(f\"❌ Overdraft Limit Exceeded! Max available: ₦{max_available:,.2f}\")\n            return False\n\n        self._balance -= amount\n        self._record_transaction(\"Withdrawal\", amount)\n        print(f\"✅ Withdrew ₦{amount:,.2f} (Overdraft active). Balance: ₦{self._balance:,.2f}\")\n        return True\n\n# 4. Web API FX Rates Engine\ndef fetch_live_fx_rates() -> dict:\n    \"\"\"Fetches real-time foreign exchange conversion rates.\"\"\"\n    url = \"https://open.er-api.com/v6/latest/USD\"\n    try:\n        req = urllib.request.Request(url, headers={\"User-Agent\": \"Mozilla/5.0\"})\n        with urllib.request.urlopen(req, timeout=5) as response:\n            data = json.loads(response.read().decode())\n            return data.get(\"rates\", {})\n    except Exception as e:\n        print(f\"Warning: Could not reach live FX API ({e}). Using offline estimates.\")\n        return {\"NGN\": 1450.0, \"EUR\": 0.92, \"GBP\": 0.78, \"USD\": 1.0}\n\n# 5. Interactive Banking Application\ndef main():\n    print(\"=\" * 60)\n    print(\"      SABIBANK OOP ENGINE & LIVE WEB API PLATFORM      \")\n    print(\"=\" * 60)\n\n    # Initialize accounts\n    accounts: dict[str, Account] = {\n        \"SAV-101\": SavingsAccount(\"SAV-101\", \"Ada Lovelace\", 250000.0, 0.08),\n        \"CUR-202\": CurrentAccount(\"CUR-202\", \"Musa Kannike\", 50000.0, 100000.0)\n    }\n\n    while True:\n        print(\"\n--- Main Banking Menu ---\")\n        print(\"1. View All Accounts & Balances\")\n        print(\"2. Deposit Funds\")\n        print(\"3. Withdraw Funds\")\n        print(\"4. Apply Savings Interest\")\n        print(\"5. View Account Statement & History\")\n        print(\"6. Live Foreign Currency Valuation (Web API)\")\n        print(\"7. Exit & Save Ledger\")\n\n        choice = input(\"Select an option (1-7): \").strip()\n\n        # 1. View\n        if choice == \"1\":\n            print(\"\n\" + \"-\" * 55)\n            for acc in accounts.values():\n                print(f\"[{acc.account_number}] {acc.owner:<16} | Type: {acc.__class__.__name__:<15} | ₦{acc.balance:>12,.2f}\")\n            print(\"-\" * 55)\n\n        # 2. Deposit\n        elif choice == \"2\":\n            acc_num = input(\"Account Number (e.g. SAV-101): \").strip().upper()\n            if acc_num in accounts:\n                try:\n                    amt = float(input(\"Deposit Amount (₦): \"))\n                    accounts[acc_num].deposit(amt)\n                except ValueError:\n                    print(\"Invalid amount.\")\n            else:\n                print(\"Account not found.\")\n\n        # 3. Withdraw\n        elif choice == \"3\":\n            acc_num = input(\"Account Number: \").strip().upper()\n            if acc_num in accounts:\n                try:\n                    amt = float(input(\"Withdrawal Amount (₦): \"))\n                    accounts[acc_num].withdraw(amt)\n                except ValueError:\n                    print(\"Invalid amount.\")\n            else:\n                print(\"Account not found.\")\n\n        # 4. Interest\n        elif choice == \"4\":\n            acc_num = input(\"Account Number: \").strip().upper()\n            acc = accounts.get(acc_num)\n            if isinstance(acc, SavingsAccount):\n                acc.apply_interest()\n            else:\n                print(\"Interest only applies to SavingsAccount instances.\")\n\n        # 5. History\n        elif choice == \"5\":\n            acc_num = input(\"Account Number: \").strip().upper()\n            acc = accounts.get(acc_num)\n            if acc:\n                print(f\"\n--- Statement for {acc.owner} ({acc.account_number}) ---\")\n                if not acc.history:\n                    print(\"No transactions recorded yet.\")\n                for tx in acc.history:\n                    print(f\"{tx.timestamp} | {tx.type:<10} | ₦{tx.amount:>10,.2f} | Balance: ₦{tx.resulting_balance:,.2f}\")\n            else:\n                print(\"Account not found.\")\n\n        # 6. Live FX Web API\n        elif choice == \"6\":\n            acc_num = input(\"Account Number: \").strip().upper()\n            acc = accounts.get(acc_num)\n            if acc:\n                print(\"\nContacting international exchange rate Web API...\")\n                rates = fetch_live_fx_rates()\n                ngn_rate = rates.get(\"NGN\", 1450.0)\n\n                # Convert balance in NGN to USD base\n                balance_in_usd = acc.balance / ngn_rate\n                balance_in_eur = balance_in_usd * rates.get(\"EUR\", 0.92)\n                balance_in_gbp = balance_in_usd * rates.get(\"GBP\", 0.78)\n\n                print(\"\n\" + \"=\" * 45)\n                print(f\"  LIVE GLOBAL VALUATION: {acc.owner.upper()}  \")\n                print(\"=\" * 45)\n                print(f\"Domestic (NGN):     ₦{acc.balance:>12,.2f}\")\n                print(f\"US Dollars (USD):   ${balance_in_usd:>12,.2f}\")\n                print(f\"Euros (EUR):        €{balance_in_eur:>12,.2f}\")\n                print(f\"British Pound (GBP): £{balance_in_gbp:>12,.2f}\")\n                print(\"=\" * 45)\n            else:\n                print(\"Account not found.\")\n\n        # 7. Exit\n        elif choice == \"7\":\n            # Save ledger to JSON\n            serialized = {k: v.to_dict() for k, v in accounts.items()}\n            with open(\"bank_vault.json\", \"w\", encoding=\"utf-8\") as f:\n                json.dump(serialized, f, indent=2)\n            print(\"✅ All banking ledgers encrypted and written to bank_vault.json. Goodbye!\")\n            break\n        else:\n            print(\"Invalid selection (1-7).\")\n\nif __name__ == \"__main__\":\n    main()\n```\n\n### Verification Steps:\n1. Run `python3 banking_engine.py`.\n2. Select Option 1: Both Ada's SavingsAccount and Musa's CurrentAccount display with formatted balances.\n3. Select Option 4: Apply interest to `SAV-101` -> 8% interest compounds into the balance!\n4. Select Option 3: Withdraw ₦80,000 from `CUR-202` (starting balance was 50k) -> Overdraft activates and transaction succeeds!\n5. Select Option 6: Choose `SAV-101` -> Real-time exchange rate API converts balance to USD, EUR, and GBP with live values!\n6. Select Option 7: Bank state persists to `bank_vault.json` on disk cleanly."
+                "content": "Create `banking_engine.py`\n```python\n# banking_engine.py\n# Project 5 Flagship Capstone: OOP Banking Engine with Live FX Web API\n# Author: SabiLearn Fullstack Engineer\n\nimport json\nimport os\nimport urllib.request\nfrom datetime import datetime\nfrom dataclasses import dataclass, asdict\n\n# 1. Model: Transaction Dataclass\n@dataclass\nclass Transaction:\n    timestamp: str\n    type: str # 'Deposit', 'Withdrawal', 'Interest'\n    amount: float\n    resulting_balance: float\n\n# 2. Base Class: Account\nclass Account:\n    def __init__(self, account_number: str, owner: str, initial_balance: float = 0.0):\n        self.account_number = account_number\n        self.owner = owner\n        self._balance = initial_balance\n        self.history: list[Transaction] = []\n\n    @property\n    def balance(self) -> float:\n        return self._balance\n\n    def deposit(self, amount: float) -> bool:\n        if amount <= 0:\n            print(\"Deposit amount must be positive.\")\n            return False\n\n        self._balance += amount\n        self._record_transaction(\"Deposit\", amount)\n        print(f\"✅ Deposited ₦{amount:,.2f}. New Balance: ₦{self._balance:,.2f}\")\n        return True\n\n    def withdraw(self, amount: float) -> bool:\n        if amount <= 0:\n            print(\"Withdrawal amount must be positive.\")\n            return False\n\n        if amount > self._balance:\n            print(f\"❌ Transaction Declined: Insufficient funds (Balance: ₦{self._balance:,.2f})\")\n            return False\n\n        self._balance -= amount\n        self._record_transaction(\"Withdrawal\", amount)\n        print(f\"✅ Withdrew ₦{amount:,.2f}. Remaining Balance: ₦{self._balance:,.2f}\")\n        return True\n\n    def _record_transaction(self, tx_type: str, amount: float):\n        tx = Transaction(\n            timestamp=datetime.now().strftime(\"%Y-%m-%d %H:%M:%S\"),\n            type=tx_type,\n            amount=amount,\n            resulting_balance=self._balance\n        )\n        self.history.append(tx)\n\n    def to_dict(self) -> dict:\n        return {\n            \"account_number\": self.account_number,\n            \"owner\": self.owner,\n            \"balance\": self._balance,\n            \"account_type\": self.__class__.__name__,\n            \"history\": [asdict(tx) for tx in self.history]\n        }\n\n# 3. Inherited Subclasses\nclass SavingsAccount(Account):\n    def __init__(self, account_number: str, owner: str, initial_balance: float = 0.0, interest_rate: float = 0.06):\n        super().__init__(account_number, owner, initial_balance)\n        self.interest_rate = interest_rate\n\n    def apply_interest(self):\n        interest = self._balance * self.interest_rate\n        self._balance += interest\n        self._record_transaction(\"Interest\", interest)\n        print(f\"🌟 Applied {self.interest_rate*100}% Interest: +₦{interest:,.2f}. Balance: ₦{self._balance:,.2f}\")\n\nclass CurrentAccount(Account):\n    def __init__(self, account_number: str, owner: str, initial_balance: float = 0.0, overdraft_limit: float = 50000.0):\n        super().__init__(account_number, owner, initial_balance)\n        self.overdraft_limit = overdraft_limit\n\n    # Overridden withdraw method\n    def withdraw(self, amount: float) -> bool:\n        if amount <= 0:\n            return False\n\n        max_available = self._balance + self.overdraft_limit\n        if amount > max_available:\n            print(f\"❌ Overdraft Limit Exceeded! Max available: ₦{max_available:,.2f}\")\n            return False\n\n        self._balance -= amount\n        self._record_transaction(\"Withdrawal\", amount)\n        print(f\"✅ Withdrew ₦{amount:,.2f} (Overdraft active). Balance: ₦{self._balance:,.2f}\")\n        return True\n\n# 4. Web API FX Rates Engine\ndef fetch_live_fx_rates() -> dict:\n    \"\"\"Fetches real-time foreign exchange conversion rates.\"\"\"\n    url = \"https://open.er-api.com/v6/latest/USD\"\n    try:\n        req = urllib.request.Request(url, headers={\"User-Agent\": \"Mozilla/5.0\"})\n        with urllib.request.urlopen(req, timeout=5) as response:\n            data = json.loads(response.read().decode())\n            return data.get(\"rates\", {})\n    except Exception as e:\n        print(f\"Warning: Could not reach live FX API ({e}). Using offline estimates.\")\n        return {\"NGN\": 1450.0, \"EUR\": 0.92, \"GBP\": 0.78, \"USD\": 1.0}\n\n# 5. Interactive Banking Application\ndef main():\n    print(\"=\" * 60)\n    print(\"      SABIBANK OOP ENGINE & LIVE WEB API PLATFORM      \")\n    print(\"=\" * 60)\n\n    # Initialize accounts\n    accounts: dict[str, Account] = {\n        \"SAV-101\": SavingsAccount(\"SAV-101\", \"Ada Lovelace\", 250000.0, 0.08),\n        \"CUR-202\": CurrentAccount(\"CUR-202\", \"Musa Kannike\", 50000.0, 100000.0)\n    }\n\n    while True:\n        print(\"\n--- Main Banking Menu ---\")\n        print(\"1. View All Accounts & Balances\")\n        print(\"2. Deposit Funds\")\n        print(\"3. Withdraw Funds\")\n        print(\"4. Apply Savings Interest\")\n        print(\"5. View Account Statement & History\")\n        print(\"6. Live Foreign Currency Valuation (Web API)\")\n        print(\"7. Exit & Save Ledger\")\n\n        choice = input(\"Select an option (1-7): \").strip()\n\n        # 1. View\n        if choice == \"1\":\n            print(\"\n\" + \"-\" * 55)\n            for acc in accounts.values():\n                print(f\"[{acc.account_number}] {acc.owner:<16} | Type: {acc.__class__.__name__:<15} | ₦{acc.balance:>12,.2f}\")\n            print(\"-\" * 55)\n\n        # 2. Deposit\n        elif choice == \"2\":\n            acc_num = input(\"Account Number (e.g. SAV-101): \").strip().upper()\n            if acc_num in accounts:\n                try:\n                    amt = float(input(\"Deposit Amount (₦): \"))\n                    accounts[acc_num].deposit(amt)\n                except ValueError:\n                    print(\"Invalid amount.\")\n            else:\n                print(\"Account not found.\")\n\n        # 3. Withdraw\n        elif choice == \"3\":\n            acc_num = input(\"Account Number: \").strip().upper()\n            if acc_num in accounts:\n                try:\n                    amt = float(input(\"Withdrawal Amount (₦): \"))\n                    accounts[acc_num].withdraw(amt)\n                except ValueError:\n                    print(\"Invalid amount.\")\n            else:\n                print(\"Account not found.\")\n\n        # 4. Interest\n        elif choice == \"4\":\n            acc_num = input(\"Account Number: \").strip().upper()\n            acc = accounts.get(acc_num)\n            if isinstance(acc, SavingsAccount):\n                acc.apply_interest()\n            else:\n                print(\"Interest only applies to SavingsAccount instances.\")\n\n        # 5. History\n        elif choice == \"5\":\n            acc_num = input(\"Account Number: \").strip().upper()\n            acc = accounts.get(acc_num)\n            if acc:\n                print(f\"\n--- Statement for {acc.owner} ({acc.account_number}) ---\")\n                if not acc.history:\n                    print(\"No transactions recorded yet.\")\n                for tx in acc.history:\n                    print(f\"{tx.timestamp} | {tx.type:<10} | ₦{tx.amount:>10,.2f} | Balance: ₦{tx.resulting_balance:,.2f}\")\n            else:\n                print(\"Account not found.\")\n\n        # 6. Live FX Web API\n        elif choice == \"6\":\n            acc_num = input(\"Account Number: \").strip().upper()\n            acc = accounts.get(acc_num)\n            if acc:\n                print(\"\nContacting international exchange rate Web API...\")\n                rates = fetch_live_fx_rates()\n                ngn_rate = rates.get(\"NGN\", 1450.0)\n\n                # Convert balance in NGN to USD base\n                balance_in_usd = acc.balance / ngn_rate\n                balance_in_eur = balance_in_usd * rates.get(\"EUR\", 0.92)\n                balance_in_gbp = balance_in_usd * rates.get(\"GBP\", 0.78)\n\n                print(\"\n\" + \"=\" * 45)\n                print(f\"  LIVE GLOBAL VALUATION: {acc.owner.upper()}  \")\n                print(\"=\" * 45)\n                print(f\"Domestic (NGN):     ₦{acc.balance:>12,.2f}\")\n                print(f\"US Dollars (USD):   ${balance_in_usd:>12,.2f}\")\n                print(f\"Euros (EUR):        €{balance_in_eur:>12,.2f}\")\n                print(f\"British Pound (GBP): £{balance_in_gbp:>12,.2f}\")\n                print(\"=\" * 45)\n            else:\n                print(\"Account not found.\")\n\n        # 7. Exit\n        elif choice == \"7\":\n            # Save ledger to JSON\n            serialized = {k: v.to_dict() for k, v in accounts.items()}\n            with open(\"bank_vault.json\", \"w\", encoding=\"utf-8\") as f:\n                json.dump(serialized, f, indent=2)\n            print(\"✅ All banking ledgers encrypted and written to bank_vault.json. Goodbye!\")\n            break\n        else:\n            print(\"Invalid selection (1-7).\")\n\nif __name__ == \"__main__\":\n    main()\n```\n\nVerification Steps:\n1. Run `python3 banking_engine.py`.\n2. Select Option 1: Both Ada's SavingsAccount and Musa's CurrentAccount display with formatted balances.\n3. Select Option 4: Apply interest to `SAV-101` -> 8% interest compounds into the balance!\n4. Select Option 3: Withdraw ₦80,000 from `CUR-202` (starting balance was 50k) -> Overdraft activates and transaction succeeds!\n5. Select Option 6: Choose `SAV-101` -> Real-time exchange rate API converts balance to USD, EUR, and GBP with live values!\n6. Select Option 7: Bank state persists to `bank_vault.json` on disk cleanly."
               }
             ],
             "_id": "6aed0a9e1bcf73a2815c6f55"
@@ -8432,7 +8432,7 @@
         "order": 4,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:46.288Z",
-        "updatedAt": "2026-11-05T23:00:46.288Z",
+        "updatedAt": "2026-11-08T05:44:08.405Z",
         "__v": 0
       },
       {
@@ -8454,7 +8454,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Imagine you are working on two projects on your laptop:\n- **Project A** (built 2 years ago) requires `requests version 2.20`.\n- **Project B** (built today) requires `requests version 2.31`.\n\nIf you install packages globally on your computer, upgrading `requests` for Project B will **break Project A**!\n\nTo prevent this nightmare, Python uses **Virtual Environments**:\nA virtual environment is a clean, self-contained folder that holds a private copy of the Python interpreter and only the packages needed for that specific project.\n\nEvery professional Python developer creates a virtual environment for every project!"
+                "content": "Imagine you are working on two projects on your laptop:\n- Project A (built 2 years ago) requires `requests version 2.20`.\n- Project B (built today) requires `requests version 2.31`.\n\nIf you install packages globally on your computer, upgrading `requests` for Project B will break Project A!\n\nTo prevent this nightmare, Python uses Virtual Environments:\nA virtual environment is a clean, self-contained folder that holds a private copy of the Python interpreter and only the packages needed for that specific project.\n\nEvery professional Python developer creates a virtual environment for every project!"
               }
             ],
             "_id": "6aed0a981bcf73a2815c6e71"
@@ -8465,7 +8465,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "### Step 1: Create the Virtual Environment\nOpen your project folder in the terminal and run:\n```bash\n# Creates an isolated environment folder named .venv\npython3 -m venv .venv\n```\n\n### Step 2: Activate the Virtual Environment\n- **On macOS / Linux**:\n  ```bash\n  source .venv/bin/activate\n  ```\n- **On Windows (PowerShell)**:\n  ```powershell\n  .venv\\Scripts\\Activate.ps1\n  ```\n\nOnce activated, your terminal prompt will show **`(.venv)`** at the beginning! This confirms you are safely working inside your private environment.\n\n### Step 3: Deactivate when finished\nWhen you are done working on the project, simply type:\n```bash\ndeactivate\n```\nThis returns you to your normal system terminal."
+                "content": "Step 1: Create the Virtual Environment\nOpen your project folder in the terminal and run:\n```bash\n# Creates an isolated environment folder named .venv\npython3 -m venv .venv\n```\n\nStep 2: Activate the Virtual Environment\n- On macOS / Linux:\n  ```bash\n  source .venv/bin/activate\n  ```\n- On Windows (PowerShell):\n  ```powershell\n  .venv\\Scripts\\Activate.ps1\n  ```\n\nOnce activated, your terminal prompt will show `(.venv)` at the beginning! This confirms you are safely working inside your private environment.\n\nStep 3: Deactivate when finished\nWhen you are done working on the project, simply type:\n```bash\ndeactivate\n```\nThis returns you to your normal system terminal."
               }
             ],
             "_id": "6aed0a981bcf73a2815c6e72"
@@ -8503,7 +8503,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "When you need a third-party package (like `requests` to call web APIs):\n\n```bash\n# 1. Install a package into your virtual environment\npip install requests\n\n# 2. Save your project dependencies to a file\npip freeze > requirements.txt\n```\n\nLook at `requirements.txt`. It lists every installed library and exact version:\n```text\nrequests==2.31.0\nurllib3==2.2.1\n```\n\nWhen a team member or colleague clones your project, they can install all dependencies with **one single command**:\n```bash\npip install -r requirements.txt\n```\n\nThis guarantees your code runs identically on every computer and cloud server in the world!"
+                "content": "When you need a third-party package (like `requests` to call web APIs):\n\n```bash\n# 1. Install a package into your virtual environment\npip install requests\n\n# 2. Save your project dependencies to a file\npip freeze > requirements.txt\n```\n\nLook at `requirements.txt`. It lists every installed library and exact version:\n```text\nrequests==2.31.0\nurllib3==2.2.1\n```\n\nWhen a team member or colleague clones your project, they can install all dependencies with one single command:\n```bash\npip install -r requirements.txt\n```\n\nThis guarantees your code runs identically on every computer and cloud server in the world!"
               }
             ],
             "_id": "6aed0a981bcf73a2815c6e74"
@@ -8541,7 +8541,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Let's practice the complete venv setup in your project folder.\n\n### Step 1: Create the venv\n```bash\npython3 -m venv .venv\n```\n\n### Step 2: Activate it\n```bash\nsource .venv/bin/activate\n```\n*(Windows: `.venv\\Scripts\\activate`)*\n\nNotice `(.venv)` appears in your prompt!\n\n### Step 3: Install a small library and freeze\n```bash\npip install rich\npip freeze > requirements.txt\ncat requirements.txt\n```\n\n### Step 4: Deactivate\n```bash\ndeactivate\n```\nCongratulations! You now have the exact professional workflow used by Python software engineers at Google, Meta, and Netflix."
+                "content": "Let's practice the complete venv setup in your project folder.\n\nStep 1: Create the venv\n```bash\npython3 -m venv .venv\n```\n\nStep 2: Activate it\n```bash\nsource .venv/bin/activate\n```\n*(Windows: `.venv\\Scripts\\activate`)*\n\nNotice `(.venv)` appears in your prompt!\n\nStep 3: Install a small library and freeze\n```bash\npip install rich\npip freeze > requirements.txt\ncat requirements.txt\n```\n\nStep 4: Deactivate\n```bash\ndeactivate\n```\nCongratulations! You now have the exact professional workflow used by Python software engineers at Google, Meta, and Netflix."
               }
             ],
             "_id": "6aed0a981bcf73a2815c6e76"
@@ -8551,7 +8551,7 @@
         "order": 4,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:40.658Z",
-        "updatedAt": "2026-11-05T23:00:40.658Z",
+        "updatedAt": "2026-11-08T05:44:04.190Z",
         "__v": 0
       },
       {
@@ -8573,7 +8573,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "A **Nested Loop** is simply a loop inside another loop:\n\n```python\nfor outer in range(1, 4):\n    for inner in [\"A\", \"B\"]:\n        print(f\"Row {outer} - Column {inner}\")\n```\n\nFor every single step of the outer loop, the inner loop completes all its steps!\n\nNested loops are used for:\n- 2D coordinate grids (rows and columns).\n- Matrices and spreadsheets.\n- Comparing pairs of items."
+                "content": "A Nested Loop is simply a loop inside another loop:\n\n```python\nfor outer in range(1, 4):\n    for inner in [\"A\", \"B\"]:\n        print(f\"Row {outer} - Column {inner}\")\n```\n\nFor every single step of the outer loop, the inner loop completes all its steps!\n\nNested loops are used for:\n- 2D coordinate grids (rows and columns).\n- Matrices and spreadsheets.\n- Comparing pairs of items."
               }
             ],
             "_id": "6aed0a9a1bcf73a2815c6ebf"
@@ -8632,7 +8632,7 @@
         "order": 4,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:42.833Z",
-        "updatedAt": "2026-11-05T23:00:42.833Z",
+        "updatedAt": "2026-11-08T05:44:05.572Z",
         "__v": 0
       },
       {
@@ -8654,7 +8654,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "Welcome to **Project 2: The Interactive Contact Book & Student Grade Tracker**!\n\nIn this project, you will combine:\n1. **Lists of Dictionaries** to model multi-attribute real-world records.\n2. **Interactive CLI Menu Loop** with options to Add, View, Search, Calculate Stats, and Delete.\n3. **List Comprehensions** for fast search filtering and score calculations.\n4. **Defensive Programming with `.get()`** to prevent KeyError crashes."
+                "content": "Welcome to Project 2: The Interactive Contact Book & Student Grade Tracker!\n\nIn this project, you will combine:\n1. Lists of Dictionaries to model multi-attribute real-world records.\n2. Interactive CLI Menu Loop with options to Add, View, Search, Calculate Stats, and Delete.\n3. List Comprehensions for fast search filtering and score calculations.\n4. Defensive Programming with `.get()` to prevent KeyError crashes."
               }
             ],
             "_id": "6aed0a9b1bcf73a2815c6ee4"
@@ -8703,7 +8703,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "### Create `grade_tracker.py`\n```python\n# grade_tracker.py\n# Project 2: Student Grade Tracker & Contact Book\n# Author: SabiLearn Fullstack Engineer\n\nstudents = [\n    {\n        \"id\": \"S101\",\n        \"name\": \"Ada Lovelace\",\n        \"email\": \"ada@analytical.org\",\n        \"scores\": [94, 98, 92],\n        \"track\": \"Systems Engineering\"\n    },\n    {\n        \"id\": \"S102\",\n        \"name\": \"Alan Turing\",\n        \"email\": \"alan@enigma.ac.uk\",\n        \"scores\": [88, 91, 95],\n        \"track\": \"Cryptography\"\n    },\n    {\n        \"id\": \"S103\",\n        \"name\": \"Grace Hopper\",\n        \"email\": \"grace@compiler.mil\",\n        \"scores\": [96, 92, 99],\n        \"track\": \"Compilers & Architecture\"\n    }\n]\n\ndef calculate_avg(score_list):\n    if not score_list:\n        return 0.0\n    return sum(score_list) / len(score_list)\n\nwhile True:\n    print(\"\n\" + \"=\" * 45)\n    print(\"      STUDENT GRADE & DIRECTORY SYSTEM       \")\n    print(\"=\" * 45)\n    print(\"1. View All Students\")\n    print(\"2. Search Student by Name\")\n    print(\"3. Register New Student\")\n    print(\"4. Add Test Score to Student\")\n    print(\"5. Class Analytics & Top Performer\")\n    print(\"6. Exit\")\n    \n    choice = input(\"\nEnter choice (1-6): \").strip()\n\n    # 1. View All\n    if choice == \"1\":\n        print(\"\n--- Student Directory ---\")\n        for s in students:\n            avg = calculate_avg(s[\"scores\"])\n            print(f\"[{s['id']}] {s['name']:<18} | Track: {s['track']:<15} | Avg: {avg:5.1f}%\")\n\n    # 2. Search\n    elif choice == \"2\":\n        query = input(\"Enter search term: \").lower().strip()\n        matches = [s for s in students if query in s[\"name\"].lower() or query in s[\"email\"].lower()]\n        \n        if not matches:\n            print(\"No matching students found.\")\n        else:\n            for s in matches:\n                print(f\"Match: {s['name']} ({s['email']}) - Scores: {s['scores']}\")\n\n    # 3. Add Student\n    elif choice == \"3\":\n        sid = f\"S{len(students) + 101}\"\n        name = input(\"Student Full Name: \").strip()\n        email = input(\"Email: \").strip()\n        track = input(\"Specialization Track: \").strip()\n        \n        students.append({\n            \"id\": sid,\n            \"name\": name,\n            \"email\": email,\n            \"scores\": [],\n            \"track\": track\n        })\n        print(f\"✅ Successfully registered {name} with ID {sid}!\")\n\n    # 4. Add Score\n    elif choice == \"4\":\n        sid = input(\"Enter Student ID (e.g. S101): \").strip().upper()\n        found = False\n        for s in students:\n            if s[\"id\"] == sid:\n                score = float(input(f\"Enter score for {s['name']} (0-100): \"))\n                s[\"scores\"].append(score)\n                print(f\"Score {score} recorded! New average: {calculate_avg(s['scores']):.1f}%\")\n                found = True\n                break\n        if not found:\n            print(f\"Student ID {sid} not found.\")\n\n    # 5. Class Analytics\n    elif choice == \"5\":\n        if not students:\n            print(\"No student records available.\")\n        else:\n            all_averages = [calculate_avg(s[\"scores\"]) for s in students if s[\"scores\"]]\n            class_avg = sum(all_averages) / len(all_averages) if all_averages else 0\n            \n            # Find top performer\n            top_student = max(students, key=lambda s: calculate_avg(s[\"scores\"]))\n            \n            print(\"\n--- Academic Analytics ---\")\n            print(f\"Total Enrolled Students: {len(students)}\")\n            print(f\"Class Overall Average:   {class_avg:.1f}%\")\n            print(f\"🏆 Top Performer:        {top_student['name']} ({calculate_avg(top_student['scores']):.1f}%)\")\n\n    # 6. Exit\n    elif choice == \"6\":\n        print(\"Saving session data. Goodbye!\")\n        break\n    else:\n        print(\"Invalid choice! Please select 1 through 6.\")\n```\n\n### Verification Steps:\n1. Run `python3 grade_tracker.py`.\n2. Option 1: View all 3 students with formatted averages.\n3. Option 2: Search \"grace\" -> Grace Hopper appears.\n4. Option 3: Add \"Musa Kannike\".\n5. Option 4: Add score of 98 to Musa.\n6. Option 5: View class analytics -> Top performer displays with trophy!"
+                "content": "Create `grade_tracker.py`\n```python\n# grade_tracker.py\n# Project 2: Student Grade Tracker & Contact Book\n# Author: SabiLearn Fullstack Engineer\n\nstudents = [\n    {\n        \"id\": \"S101\",\n        \"name\": \"Ada Lovelace\",\n        \"email\": \"ada@analytical.org\",\n        \"scores\": [94, 98, 92],\n        \"track\": \"Systems Engineering\"\n    },\n    {\n        \"id\": \"S102\",\n        \"name\": \"Alan Turing\",\n        \"email\": \"alan@enigma.ac.uk\",\n        \"scores\": [88, 91, 95],\n        \"track\": \"Cryptography\"\n    },\n    {\n        \"id\": \"S103\",\n        \"name\": \"Grace Hopper\",\n        \"email\": \"grace@compiler.mil\",\n        \"scores\": [96, 92, 99],\n        \"track\": \"Compilers & Architecture\"\n    }\n]\n\ndef calculate_avg(score_list):\n    if not score_list:\n        return 0.0\n    return sum(score_list) / len(score_list)\n\nwhile True:\n    print(\"\n\" + \"=\" * 45)\n    print(\"      STUDENT GRADE & DIRECTORY SYSTEM       \")\n    print(\"=\" * 45)\n    print(\"1. View All Students\")\n    print(\"2. Search Student by Name\")\n    print(\"3. Register New Student\")\n    print(\"4. Add Test Score to Student\")\n    print(\"5. Class Analytics & Top Performer\")\n    print(\"6. Exit\")\n    \n    choice = input(\"\nEnter choice (1-6): \").strip()\n\n    # 1. View All\n    if choice == \"1\":\n        print(\"\n--- Student Directory ---\")\n        for s in students:\n            avg = calculate_avg(s[\"scores\"])\n            print(f\"[{s['id']}] {s['name']:<18} | Track: {s['track']:<15} | Avg: {avg:5.1f}%\")\n\n    # 2. Search\n    elif choice == \"2\":\n        query = input(\"Enter search term: \").lower().strip()\n        matches = [s for s in students if query in s[\"name\"].lower() or query in s[\"email\"].lower()]\n        \n        if not matches:\n            print(\"No matching students found.\")\n        else:\n            for s in matches:\n                print(f\"Match: {s['name']} ({s['email']}) - Scores: {s['scores']}\")\n\n    # 3. Add Student\n    elif choice == \"3\":\n        sid = f\"S{len(students) + 101}\"\n        name = input(\"Student Full Name: \").strip()\n        email = input(\"Email: \").strip()\n        track = input(\"Specialization Track: \").strip()\n        \n        students.append({\n            \"id\": sid,\n            \"name\": name,\n            \"email\": email,\n            \"scores\": [],\n            \"track\": track\n        })\n        print(f\"✅ Successfully registered {name} with ID {sid}!\")\n\n    # 4. Add Score\n    elif choice == \"4\":\n        sid = input(\"Enter Student ID (e.g. S101): \").strip().upper()\n        found = False\n        for s in students:\n            if s[\"id\"] == sid:\n                score = float(input(f\"Enter score for {s['name']} (0-100): \"))\n                s[\"scores\"].append(score)\n                print(f\"Score {score} recorded! New average: {calculate_avg(s['scores']):.1f}%\")\n                found = True\n                break\n        if not found:\n            print(f\"Student ID {sid} not found.\")\n\n    # 5. Class Analytics\n    elif choice == \"5\":\n        if not students:\n            print(\"No student records available.\")\n        else:\n            all_averages = [calculate_avg(s[\"scores\"]) for s in students if s[\"scores\"]]\n            class_avg = sum(all_averages) / len(all_averages) if all_averages else 0\n            \n            # Find top performer\n            top_student = max(students, key=lambda s: calculate_avg(s[\"scores\"]))\n            \n            print(\"\n--- Academic Analytics ---\")\n            print(f\"Total Enrolled Students: {len(students)}\")\n            print(f\"Class Overall Average:   {class_avg:.1f}%\")\n            print(f\"🏆 Top Performer:        {top_student['name']} ({calculate_avg(top_student['scores']):.1f}%)\")\n\n    # 6. Exit\n    elif choice == \"6\":\n        print(\"Saving session data. Goodbye!\")\n        break\n    else:\n        print(\"Invalid choice! Please select 1 through 6.\")\n```\n\nVerification Steps:\n1. Run `python3 grade_tracker.py`.\n2. Option 1: View all 3 students with formatted averages.\n3. Option 2: Search \"grace\" -> Grace Hopper appears.\n4. Option 3: Add \"Musa Kannike\".\n5. Option 4: Add score of 98 to Musa.\n6. Option 5: View class analytics -> Top performer displays with trophy!"
               }
             ],
             "_id": "6aed0a9b1bcf73a2815c6ee7"
@@ -8740,7 +8740,7 @@
         "order": 4,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:43.639Z",
-        "updatedAt": "2026-11-05T23:00:43.639Z",
+        "updatedAt": "2026-11-08T05:44:06.266Z",
         "__v": 0
       },
       {
@@ -8762,7 +8762,7 @@
             "blocks": [
               {
                 "type": "text",
-                "content": "🎓 **Congratulations on completing Python Programming for Beginners!**\n\nLook at the extraordinary journey you have completed:\n1. **Chapter 0**: Interpreted execution, REPL, VS Code, and virtual environments (`venv`).\n2. **Chapter 1**: Variables, dynamic typing, f-strings, conditionals, and built **Project 1: Smart Personal Budget & Tax Calculator**.\n3. **Chapter 2**: Iteration, `while` loops, `for` loops, `range()`, and interactive CLI menu systems.\n4. **Chapter 3**: Lists, slicing, tuples, sets, dictionaries, and built **Project 2: Student Grade Tracker & Directory**.\n5. **Chapter 4**: Function design, `*args`, `**kwargs`, lambda functions, and built **Project 3: Password Generator & Security Analyzer**.\n6. **Chapter 5**: File handling with context managers, CSV/JSON, exceptions (`try/except`), and built **Project 4: Persistent Expense Ledger**.\n7. **Chapter 6**: Object-Oriented Programming (OOP), classes, inheritance, encapsulation, and modern `@dataclass`.\n8. **Chapter 7**: Standard library tools, CLI argument parsing, automated testing with `pytest`, and built **Project 5 Flagship: OOP Banking Engine with Live Web API FX Valuation**!\n\nYou now possess the foundational programming and software engineering skills required to build real applications in Python. Go build the future!"
+                "content": "🎓 Congratulations on completing Python Programming for Beginners!\n\nLook at the extraordinary journey you have completed:\n1. Chapter 0: Interpreted execution, REPL, VS Code, and virtual environments (`venv`).\n2. Chapter 1: Variables, dynamic typing, f-strings, conditionals, and built Project 1: Smart Personal Budget & Tax Calculator.\n3. Chapter 2: Iteration, `while` loops, `for` loops, `range()`, and interactive CLI menu systems.\n4. Chapter 3: Lists, slicing, tuples, sets, dictionaries, and built Project 2: Student Grade Tracker & Directory.\n5. Chapter 4: Function design, `*args`, `**kwargs`, lambda functions, and built Project 3: Password Generator & Security Analyzer.\n6. Chapter 5: File handling with context managers, CSV/JSON, exceptions (`try/except`), and built Project 4: Persistent Expense Ledger.\n7. Chapter 6: Object-Oriented Programming (OOP), classes, inheritance, encapsulation, and modern `@dataclass`.\n8. Chapter 7: Standard library tools, CLI argument parsing, automated testing with `pytest`, and built Project 5 Flagship: OOP Banking Engine with Live Web API FX Valuation!\n\nYou now possess the foundational programming and software engineering skills required to build real applications in Python. Go build the future!"
               }
             ],
             "_id": "6aed0a9f1bcf73a2815c6f74"
@@ -8810,10 +8810,10 @@
         "order": 4,
         "isPublished": true,
         "createdAt": "2026-11-05T23:00:47.256Z",
-        "updatedAt": "2026-11-05T23:00:47.256Z",
+        "updatedAt": "2026-11-08T05:44:09.044Z",
         "__v": 0
       }
     ],
-    "exportedAt": "2026-11-08T04:14:28.731Z"
+    "exportedAt": "2026-11-08T05:45:00.645Z"
   }
 }

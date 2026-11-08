@@ -16,6 +16,8 @@
     "migrate:users": "tsx src/utils/migrateOldUsers.util.ts",
     "migrate": "tsx src/utils/migrate.util.ts",
     "db:cleanup-courses": "tsx src/utils/cleanupLegacyCourses.util.ts",
+    "db:cleanup-markdown": "tsx src/utils/cleanupLatestCoursesMarkdown.util.ts",
+    "export:offline": "tsx src/utils/exportOfflineCourses.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
