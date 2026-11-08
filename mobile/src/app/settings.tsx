@@ -9,8 +9,6 @@ import { useAuthStore, DEFAULT_SETTINGS } from '@/store/auth.store';
 import { ReminderTime } from '@/store/onboarding.store';
 import OnboardingTimePickerModal from '@/components/auth/OnboardingTimePickerModal';
 import { scheduleLocalDailyReminder, cancelLocalDailyReminder, registerForPushNotifications, requestNotificationPermission } from '@/lib/notifications';
-import { useAppReview } from '@/hooks/useAppReview';
-import { InReview, ReviewGuard } from '@/components/common/ReviewGuard';
 import { fontFamilies, spacing } from '@/theme';
 import { ACCENT, INK, MUTED, TINT_GLASS } from '@/theme/brand';
 import GlassSurface from '@/components/ui/GlassSurface';
@@ -22,7 +20,6 @@ import * as haptics from '@/lib/haptics';
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const { user, uploadAvatar, updateProfile, updateSettings, deleteAccount } = useAuthStore();
-  const { inReview, os, refresh } = useAppReview();
   const [firstName, setFirstName] = useState(user?.firstName ?? '');
   const [lastName, setLastName] = useState(user?.lastName ?? '');
   const [isSaving, setIsSaving] = useState(false);
@@ -338,45 +335,6 @@ function SettingRow({
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FFFFFF' },
   scroll: { paddingHorizontal: spacing.lg, paddingBottom: spacing['4xl'] },
-  reviewBanner: {
-    borderRadius: 18,
-    padding: spacing.base,
-    marginBottom: spacing.lg,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255,138,30,0.3)',
-    gap: spacing.xs,
-  },
-  reviewHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  reviewBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    backgroundColor: 'rgba(255,138,30,0.14)',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 8,
-  },
-  reviewBadgeText: {
-    fontSize: 10,
-    fontFamily: fontFamilies.sansBold,
-    color: '#D97706',
-    letterSpacing: 0.5,
-  },
-  reviewRefreshText: {
-    fontSize: 11,
-    fontFamily: fontFamilies.sansSemiBold,
-    color: ACCENT,
-  },
-  reviewBodyText: {
-    fontSize: 12,
-    fontFamily: fontFamilies.sans,
-    color: INK,
-    lineHeight: 16,
-  },
   avatarWrap: { alignSelf: 'center', marginBottom: spacing.xl },
   avatar: { width: 88, height: 88, borderRadius: 44 },
   avatarFallback: {

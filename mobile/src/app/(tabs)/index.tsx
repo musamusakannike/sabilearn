@@ -26,8 +26,6 @@ import ProgressBar from '@/components/ui/ProgressBar';
 import EmptyState from '@/components/ui/EmptyState';
 import AIToolDialog, { AIToolKind } from '@/components/ai/AIToolDialogs';
 import OfflineBanner from '@/components/common/OfflineBanner';
-import { NotInReview } from '@/components/common/ReviewGuard';
-import { useAppReview } from '@/hooks/useAppReview';
 import OnboardingSpeechBubble from '@/components/auth/OnboardingSpeechBubble';
 import GlassSurface, { GlassCluster } from '@/components/ui/GlassSurface';
 import HomeBackdrop from '@/components/home/HomeBackdrop';
@@ -51,7 +49,6 @@ export default function DashboardHome() {
   const insets = useSafeAreaInsets();
   const { isTablet, isDesktop } = useResponsive();
   const { user, fetchMe } = useAuthStore();
-  const { inReview } = useAppReview();
   const { dashboard, isLoading, fetchDashboard } = useProgressStore();
   const [popularCourses, setPopularCourses] = useState<Course[]>([]);
   const [isLoadingPopular, setIsLoadingPopular] = useState(true);
@@ -107,12 +104,8 @@ export default function DashboardHome() {
 
   const isDashboardInitialLoad = isLoading && !dashboard;
 
-  const continueStudying = (dashboard?.continueStudying || []).filter((progress) => {
-    if (!inReview) return true;
-    const course = typeof progress.course === 'object' ? (progress.course as Course) : null;
-    return !course || course.isFree;
-  });
-  const visiblePopular = inReview ? popularCourses.filter((c) => c.isFree) : popularCourses;
+  const continueStudying = dashboard?.continueStudying || [];
+  const visiblePopular = popularCourses;
   const firstName = user?.firstName?.trim();
   const hour = new Date().getHours();
   const streak = dashboard?.streak ?? user?.currentStreak ?? 0;
@@ -147,23 +140,22 @@ export default function DashboardHome() {
       well: 'rgba(91,79,232,0.12)',
       tint: 'rgba(91,79,232,0.14)',
     },
-    inReview
-      ? {
-          kind: 'flashcards' as const,
-          title: 'Flashcards',
-          description: 'Build flashcards from any topic',
-          icon: <IconCards size={22} color="#5B4FE8" />,
-          well: 'rgba(91,79,232,0.12)',
-          tint: 'rgba(91,79,232,0.14)',
-        }
-      : {
-          kind: 'generate-course' as const,
-          title: 'Generate course',
-          description: 'Turn notes or a prompt into a full course',
-          icon: <IconBooks size={22} color="#5B4FE8" />,
-          well: 'rgba(91,79,232,0.12)',
-          tint: 'rgba(91,79,232,0.14)',
-        },
+    {
+      kind: 'flashcards',
+      title: 'Flashcards',
+      description: 'Build flashcards from any topic',
+      icon: <IconCards size={22} color="#5B4FE8" />,
+      well: 'rgba(91,79,232,0.12)',
+      tint: 'rgba(91,79,232,0.14)',
+    },
+    {
+      kind: 'generate-course',
+      title: 'Generate course',
+      description: 'Turn notes or a prompt into a full course',
+      icon: <IconBooks size={22} color="#5B4FE8" />,
+      well: 'rgba(91,79,232,0.12)',
+      tint: 'rgba(91,79,232,0.14)',
+    },
     {
       kind: 'qa',
       title: 'Q&A AI',
@@ -263,33 +255,31 @@ export default function DashboardHome() {
             </GlassCluster>
           </ScrollView>
 
-          <NotInReview>
-            <Pressable
-              onPress={() => {
-                haptics.light();
-                router.push('/playground' as any);
-              }}
-              style={({ pressed }) => [pressed && styles.pressed]}
+          <Pressable
+            onPress={() => {
+              haptics.light();
+              router.push('/playground' as any);
+            }}
+            style={({ pressed }) => [pressed && styles.pressed]}
+          >
+            <GlassSurface
+              style={styles.playgroundCard}
+              tintColor="rgba(255,138,30,0.22)"
+              isInteractive
+              fallbackStyle={styles.playgroundFallback}
             >
-              <GlassSurface
-                style={styles.playgroundCard}
-                tintColor="rgba(255,138,30,0.22)"
-                isInteractive
-                fallbackStyle={styles.playgroundFallback}
-              >
-                <View style={styles.playgroundIcon}>
-                  <IconCode size={22} color={INK} />
-                </View>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.cardTitle}>Code Playground</Text>
-                  <Text style={styles.cardSubtitle}>Write and run HTML, CSS, JavaScript and Python</Text>
-                </View>
-                <View style={styles.openPill}>
-                  <Text style={styles.openPillText}>Open</Text>
-                </View>
-              </GlassSurface>
-            </Pressable>
-          </NotInReview>
+              <View style={styles.playgroundIcon}>
+                <IconCode size={22} color={INK} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.cardTitle}>Code Playground</Text>
+                <Text style={styles.cardSubtitle}>Write and run HTML, CSS, JavaScript and Python</Text>
+              </View>
+              <View style={styles.openPill}>
+                <Text style={styles.openPillText}>Open</Text>
+              </View>
+            </GlassSurface>
+          </Pressable>
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>AI tools</Text>

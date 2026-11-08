@@ -376,28 +376,6 @@ export interface AiHistoryItem {
   updatedAt: string;
 }
 
-export type SupportedOS = 'ios' | 'android';
-
-export interface AppReviewConfig {
-  _id?: string;
-  os: SupportedOS;
-  inReview: boolean;
-  reviewVersion?: string;
-  minVersion?: string;
-  notes?: string;
-  hiddenComponents: string[];
-  customFlags: Record<string, boolean>;
-  updatedAt?: string;
-}
-
-export interface AppReviewStatusResponse {
-  os: string;
-  inReview: boolean;
-  reviewVersion?: string;
-  hiddenComponents: string[];
-  customFlags: Record<string, boolean>;
-  all: Record<SupportedOS, AppReviewConfig>;
-}
 
 export type PlaygroundKind = 'web' | 'python';
 

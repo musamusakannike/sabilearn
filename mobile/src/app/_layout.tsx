@@ -14,7 +14,6 @@ import {
 import NetInfo from '@react-native-community/netinfo';
 import { useAuthStore } from '@/store/auth.store';
 import { useOnboardingStore } from '@/store/onboarding.store';
-import { useAppReviewStore } from '@/store/appReview.store';
 import { ThemeProvider, useTheme } from '@/theme';
 import {
   registerForPushNotifications,
@@ -46,15 +45,13 @@ function AppContent() {
 
   const { user, isAuthenticated, isInitialized, initialize } = useAuthStore();
   const { hasOnboarded, isInitialized: onboardingInitialized, initialize: initOnboarding } = useOnboardingStore();
-  const initAppReview = useAppReviewStore((s) => s.initialize);
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
     initialize();
     initOnboarding();
-    initAppReview();
-  }, [initialize, initOnboarding, initAppReview]);
+  }, [initialize, initOnboarding]);
 
   useEffect(() => {
     if (!hasOnboarded) {
