@@ -9,6 +9,7 @@ import RichMathText from '@/components/ui/RichMathText';
 import CodeRenderer from '@/components/ui/CodeRenderer';
 import YouTubePlayer from '@/components/ui/YouTubePlayer';
 import * as haptics from '@/lib/haptics';
+import { LessonTable, parseTextAndTables } from './LessonTable';
 
 function FullscreenLessonImage({ uri, title }: { uri: string; title?: string }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -168,14 +169,20 @@ export default function InfoStepBlock({ content }: { content: TopicContent }) {
     default:
       return (
         <View style={styles.textContainer}>
-          {content.content
-            .split(/\n\n+/)
-            .filter((p) => p.trim().length > 0)
-            .map((paragraph, pIdx) => (
-              <View key={pIdx} style={styles.paragraphWrap}>
-                <FormattedParagraph text={paragraph} colors={colors} />
+          {parseTextAndTables(content.content).map((chunk, cIdx) => {
+            if (chunk.type === 'table') {
+              return (
+                <View key={cIdx} style={styles.tableWrap}>
+                  <LessonTable table={chunk.table} colors={colors} />
+                </View>
+              );
+            }
+            return (
+              <View key={cIdx} style={styles.paragraphWrap}>
+                <FormattedParagraph text={chunk.text} colors={colors} />
               </View>
-            ))}
+            );
+          })}
         </View>
       );
   }
@@ -187,6 +194,10 @@ const styles = StyleSheet.create({
   },
   paragraphWrap: {
     marginBottom: spacing.xs,
+  },
+  tableWrap: {
+    width: '100%',
+    marginVertical: spacing.xs,
   },
   paragraph: {
     fontSize: fontSizes.lg,

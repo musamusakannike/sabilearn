@@ -494,11 +494,12 @@ export default function StepPlayer({
   }
 
   const isTakeaway =
-    step?.title?.trim().toLowerCase() === "takeaway" ||
-    (step?.type === "text" &&
-      step.content.length < 120 &&
-      isLastStep &&
-      !step.title);
+    (step?.title?.trim().toLowerCase() === "takeaway" ||
+      (step?.type === "text" &&
+        step.content.length < 120 &&
+        isLastStep &&
+        !step.title)) &&
+    !step?.content?.includes("|");
 
   const displayTitle = step?.title || topic.title;
 

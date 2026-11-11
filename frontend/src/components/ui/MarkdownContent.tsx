@@ -207,12 +207,12 @@ export default function MarkdownContent({ content, isStreaming }: MarkdownConten
           ),
           th: ({ children }) => (
             <th className="bg-[var(--surface-sunken)] px-3 py-1.5 text-left font-semibold text-[var(--ink-900)]">
-              {children}
+              {processChildrenWithMath(children)}
             </th>
           ),
           td: ({ children }) => (
             <td className="px-3 py-1.5 text-[var(--text-body)] border-t border-[var(--line)]">
-              {children}
+              {processChildrenWithMath(children)}
             </td>
           ),
         }}
