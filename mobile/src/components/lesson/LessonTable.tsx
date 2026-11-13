@@ -176,6 +176,7 @@ function escapeCellHtml(str: string): string {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
+    .replace(/`([^`]+?)`/g, '<code>$1</code>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: #0084FE; font-weight: 700;">$1</a>');
 }
@@ -245,6 +246,13 @@ function buildTableHtml(table: ParsedTable, colors: any): string {
   .align-left { text-align: left; }
   .align-center { text-align: center; }
   .align-right { text-align: right; }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9em;
+    background: rgba(128, 128, 128, 0.14);
+    padding: 0.1em 0.35em;
+    border-radius: 5px;
+  }
   .katex { font-size: 1.05em; }
   .katex-display { margin: 0.3em 0; overflow-x: auto; overflow-y: hidden; }
 </style>

@@ -1,11 +1,12 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Text, View, StyleSheet, TextStyle, StyleProp } from 'react-native';
+import { Text, View, StyleSheet, TextStyle, StyleProp, Platform } from 'react-native';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 
 const KATEX_VERSION = '0.16.11';
 
 function hasMath(text: string): boolean {
-  return /\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\\]|\$[^$\n]+?\$|\\\([\s\S]+?\\\)/.test(text);
+  const withoutCode = text.replace(/`[^`]+?`/g, '');
+  return /\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\\]|\$[^$\n]+?\$|\\\([\s\S]+?\\\)/.test(withoutCode);
 }
 
 function buildHtml(text: string, color: string, fontSize: number): string {
@@ -13,6 +14,7 @@ function buildHtml(text: string, color: string, fontSize: number): string {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
+    .replace(/`([^`]+?)`/g, '<code>$1</code>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\n/g, '<br/>');
   return `<!DOCTYPE html>
@@ -31,6 +33,13 @@ function buildHtml(text: string, color: string, fontSize: number): string {
     font-size: ${fontSize}px;
     line-height: 1.45;
     font-weight: 600;
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9em;
+    background: rgba(128, 128, 128, 0.14);
+    padding: 0.1em 0.35em;
+    border-radius: 5px;
   }
   .katex { font-size: 1.05em; }
   .katex-display { margin: 0.4em 0; overflow-x: auto; overflow-y: hidden; }
@@ -62,7 +71,7 @@ function buildHtml(text: string, color: string, fontSize: number): string {
 }
 
 /**
- * Renders plain text, or a KaTeX webview when the string contains $...$ / $$...$$.
+ * Renders plain text (with `inline code` in monospace), or a KaTeX webview when the string contains $...$ / $$...$$.
  */
 export default function RichMathText({
   text,
@@ -87,6 +96,24 @@ export default function RichMathText({
   }, []);
 
   if (!math) {
+    if (/`[^`]+?`/.test(text)) {
+      const parts = text.split(/(`[^`]+?`)/g);
+      return (
+        <Text style={style}>
+          {parts.map((part, idx) => {
+            const codeMatch = part.match(/^`([^`]+?)`$/);
+            if (codeMatch) {
+              return (
+                <Text key={idx} style={styles.inlineCode}>
+                  {codeMatch[1]}
+                </Text>
+              );
+            }
+            return <Text key={idx}>{part}</Text>;
+          })}
+        </Text>
+      );
+    }
     return <Text style={style}>{text}</Text>;
   }
 
@@ -107,4 +134,8 @@ export default function RichMathText({
 
 const styles = StyleSheet.create({
   web: { width: '100%', backgroundColor: 'transparent' },
+  inlineCode: {
+    fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
+    backgroundColor: 'rgba(128, 128, 128, 0.14)',
+  },
 });

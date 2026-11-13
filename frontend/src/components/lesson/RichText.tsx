@@ -37,28 +37,74 @@ type Segment =
   | { kind: 'math'; value: string; display: boolean };
 
 function parseSegments(text: string): Segment[] {
-  const re = /\$\$([\s\S]+?)\$\$|\\\[([\s\S]+?)\\\]|\$([^$\n]+?)\$|\\\(([\s\S]+?)\\\)/g;
+  const re = /`[^`]+?`|\$\$([\s\S]+?)\$\$|\\\[([\s\S]+?)\\\]|\$([^$\n]+?)\$|\\\(([\s\S]+?)\\\)/g;
   const segments: Segment[] = [];
   let last = 0;
   let match: RegExpExecArray | null;
+  const pushText = (val: string) => {
+    if (!val) return;
+    const prev = segments[segments.length - 1];
+    if (prev && prev.kind === 'text') {
+      prev.value += val;
+    } else {
+      segments.push({ kind: 'text', value: val });
+    }
+  };
   while ((match = re.exec(text))) {
     if (match.index > last) {
-      segments.push({ kind: 'text', value: text.slice(last, match.index) });
+      pushText(text.slice(last, match.index));
     }
-    const display = match[1] != null || match[2] != null;
-    const value = match[1] ?? match[2] ?? match[3] ?? match[4] ?? '';
-    segments.push({ kind: 'math', value, display });
+    if (match[0].startsWith('`')) {
+      pushText(match[0]);
+    } else {
+      const display = match[1] != null || match[2] != null;
+      const value = match[1] ?? match[2] ?? match[3] ?? match[4] ?? '';
+      segments.push({ kind: 'math', value, display });
+    }
     last = match.index + match[0].length;
   }
-  if (last < text.length) segments.push({ kind: 'text', value: text.slice(last) });
+  if (last < text.length) pushText(text.slice(last));
   return segments;
 }
 
-function InlinePiece({ value }: { value: string }) {
-  const parts = value.split(/(\[.*?\]\(.*?\)|\*\*.*?\*\*)/g);
+function InlineCodeText({ value }: { value: string }) {
+  const parts = value.split(/(`[^`]+?`)/g);
   return (
     <>
       {parts.map((part, i) => {
+        const codeMatch = part.match(/^`([^`]+?)`$/);
+        if (codeMatch) {
+          return (
+            <code
+              key={i}
+              className="rounded bg-[var(--surface-sunken)] px-1.5 py-0.5 font-mono text-[0.9em] text-[var(--ink-900)] border border-[var(--line)]"
+            >
+              {codeMatch[1]}
+            </code>
+          );
+        }
+        return <React.Fragment key={i}>{part}</React.Fragment>;
+      })}
+    </>
+  );
+}
+
+function InlinePiece({ value }: { value: string }) {
+  const parts = value.split(/(`[^`]+?`|\[.*?\]\(.*?\)|\*\*.*?\*\*)/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        const codeMatch = part.match(/^`([^`]+?)`$/);
+        if (codeMatch) {
+          return (
+            <code
+              key={i}
+              className="rounded bg-[var(--surface-sunken)] px-1.5 py-0.5 font-mono text-[0.9em] text-[var(--ink-900)] border border-[var(--line)]"
+            >
+              {codeMatch[1]}
+            </code>
+          );
+        }
         const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
         if (linkMatch) {
           return (
@@ -69,7 +115,7 @@ function InlinePiece({ value }: { value: string }) {
               rel="noopener noreferrer"
               className="font-bold text-[#0084FE] hover:underline"
             >
-              {linkMatch[1]}
+              <InlineCodeText value={linkMatch[1]} />
             </a>
           );
         }
@@ -77,7 +123,7 @@ function InlinePiece({ value }: { value: string }) {
         if (boldMatch) {
           return (
             <strong key={i} className="font-bold text-[#0084FE]">
-              {boldMatch[1]}
+              <InlineCodeText value={boldMatch[1]} />
             </strong>
           );
         }
@@ -88,7 +134,7 @@ function InlinePiece({ value }: { value: string }) {
 }
 
 /**
- * Prose that may mix plain text, **bold**, links, and inline or display LaTeX
+ * Prose that may mix plain text, `inline code`, **bold**, links, and inline or display LaTeX
  * (`$...$`, `$$...$$`, `\(...\)`, `\[...\]`).
  */
 export function RichText({ text, className }: { text: string; className?: string }) {

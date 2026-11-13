@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, Image, StyleSheet, Linking, Pressable, Modal, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, Linking, Pressable, Modal, ScrollView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { IconMaximize, IconX } from '@tabler/icons-react-native';
 import { useTheme, fontFamilies, fontSizes, radii, spacing } from '@/theme';
@@ -87,8 +87,30 @@ function FullscreenLessonImage({ uri, title }: { uri: string; title?: string }) 
   );
 }
 
+function renderInlineCode(value: string, colors: any) {
+  const codeParts = value.split(/(`[^`]+?`)/g);
+  return codeParts.map((cp, idx) => {
+    const codeMatch = cp.match(/^`([^`]+?)`$/);
+    if (codeMatch) {
+      return (
+        <Text
+          key={idx}
+          style={[
+            styles.inlineCode,
+            { backgroundColor: colors.surfaceSunken, color: colors.textPrimary },
+          ]}
+        >
+          {codeMatch[1]}
+        </Text>
+      );
+    }
+    return cp;
+  });
+}
+
 function FormattedParagraph({ text, colors }: { text: string; colors: any }) {
-  if (/\$\$[\s\S]+?\$\$|\$[^$\n]+?\$/.test(text)) {
+  const textWithoutCode = text.replace(/`[^`]+?`/g, '');
+  if (/\$\$[\s\S]+?\$\$|\$[^$\n]+?\$|\\\[[\s\S]+?\\\]|\\\([\s\S]+?\\\)/.test(textWithoutCode)) {
     return (
       <RichMathText
         text={text}
@@ -98,12 +120,26 @@ function FormattedParagraph({ text, colors }: { text: string; colors: any }) {
       />
     );
   }
-  // Support [text](url), **bold/highlight**, and plain text
-  const parts = text.split(/(\[.*?\]\(.*?\)|\*\*.*?\*\*)/g);
+  // Support `inline code`, [text](url), **bold/highlight**, and plain text
+  const parts = text.split(/(`[^`]+?`|\[.*?\]\(.*?\)|\*\*.*?\*\*)/g);
 
   return (
     <Text style={[styles.paragraph, { color: colors.textPrimary }]}>
       {parts.map((part, pIdx) => {
+        const codeMatch = part.match(/^`([^`]+?)`$/);
+        if (codeMatch) {
+          return (
+            <Text
+              key={pIdx}
+              style={[
+                styles.inlineCode,
+                { backgroundColor: colors.surfaceSunken, color: colors.textPrimary },
+              ]}
+            >
+              {codeMatch[1]}
+            </Text>
+          );
+        }
         const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
         if (linkMatch) {
           return (
@@ -112,7 +148,7 @@ function FormattedParagraph({ text, colors }: { text: string; colors: any }) {
               onPress={() => Linking.openURL(linkMatch[2]).catch(() => {})}
               style={[styles.linkText, { color: '#0084FE' }]}
             >
-              {linkMatch[1]}
+              {renderInlineCode(linkMatch[1], colors)}
             </Text>
           );
         }
@@ -120,7 +156,7 @@ function FormattedParagraph({ text, colors }: { text: string; colors: any }) {
         if (boldMatch) {
           return (
             <Text key={pIdx} style={[styles.boldHighlight, { color: '#0084FE' }]}>
-              {boldMatch[1]}
+              {renderInlineCode(boldMatch[1], colors)}
             </Text>
           );
         }
@@ -203,6 +239,11 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.lg,
     fontFamily: fontFamilies.sans,
     lineHeight: fontSizes.lg * 1.6,
+  },
+  inlineCode: {
+    fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
+    fontSize: fontSizes.lg * 0.88,
+    borderRadius: 4,
   },
   boldHighlight: {
     fontFamily: fontFamilies.sansBold || fontFamilies.sansMedium,
