@@ -5,6 +5,7 @@ import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Copy, Check, Maximize2, X, ExternalLink } from 'lucide-react';
 import { TopicContent } from '@/lib/types';
 import { MathBlock, RichText } from '@/components/lesson/RichText';
+import { LessonTable, parseTextAndTables } from '@/components/lesson/LessonTable';
 
 function getYouTubeId(url: string) {
   const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
@@ -173,12 +174,12 @@ export default function InfoStepBlock({ content, index = 0, topicTitle = '' }: {
     <div className="space-y-4">
       {content.type === 'text' && (
         <div className="space-y-4">
-          {content.content
-            .split(/\n\n+/)
-            .filter((p) => p.trim().length > 0)
-            .map((paragraph, pIdx) => (
-              <FormattedParagraph key={pIdx} text={paragraph} />
-            ))}
+          {parseTextAndTables(content.content).map((chunk, cIdx) => {
+            if (chunk.type === 'table') {
+              return <LessonTable key={cIdx} table={chunk.table} />;
+            }
+            return <FormattedParagraph key={cIdx} text={chunk.text} />;
+          })}
         </div>
       )}
 

@@ -8,12 +8,16 @@ import {
   PartyPopper,
   Award,
   ChevronLeft,
+  ChevronRight,
   Flag,
   Check,
   ChevronDown,
+  Maximize2,
+  Minimize2,
 } from "lucide-react";
 import { Topic } from "@/lib/types";
 import { useProgressStore } from "@/store/progress.store";
+import { useLessonViewStore } from "@/store/lesson-view.store";
 import { progressApi } from "@/lib/api";
 import { emitProgressUpdated } from "@/lib/progress-events";
 import InfoStepBlock from "./InfoStepBlock";
@@ -43,7 +47,42 @@ export default function StepPlayer({
   const lastAdvancedFromIndexRef = useRef<number>(-1);
 
   const { saveContentPosition, fetchTopicProgress } = useProgressStore();
+  const { isFullscreen, setIsFullscreen, syncFromStorage } = useLessonViewStore();
   const total = steps.length;
+
+  // Sync preference on mount
+  useEffect(() => {
+    syncFromStorage();
+  }, [syncFromStorage]);
+
+  const enterFullscreen = useCallback(async () => {
+    setIsFullscreen(true);
+    try {
+      if (typeof document !== "undefined" && !document.fullscreenElement && document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch {
+      // In-app fullscreen continues without error
+    }
+  }, [setIsFullscreen]);
+
+  const exitFullscreen = useCallback(async () => {
+    setIsFullscreen(false);
+    try {
+      if (typeof document !== "undefined" && document.fullscreenElement && document.exitFullscreen) {
+        await document.exitFullscreen();
+      }
+    } catch {
+      // ignore
+    }
+  }, [setIsFullscreen]);
+
+  const handleCloseLesson = useCallback(() => {
+    if (typeof document !== "undefined" && document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {});
+    }
+    onClose();
+  }, [onClose]);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -220,7 +259,7 @@ export default function StepPlayer({
     }
   };
 
-  const handleNext = async () => {
+  const handleNext = useCallback(async () => {
     if ((isQuizStep && !quizAnswered) || isSubmittingCompletion || lastAdvancedFromIndexRef.current === index) return;
     lastAdvancedFromIndexRef.current = index;
     if (isLastStep) {
@@ -230,15 +269,62 @@ export default function StepPlayer({
     }
     setQuizAnswered(false);
     setIndex((i) => i + 1);
-  };
+  }, [isQuizStep, quizAnswered, isSubmittingCompletion, index, isLastStep]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (index > 0) {
       lastAdvancedFromIndexRef.current = -1;
       setQuizAnswered(true);
       setIndex((i) => i - 1);
     }
-  };
+  }, [index]);
+
+  // Keyboard navigation & fullscreen shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      const isInput =
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable ||
+          Boolean(target.closest(".monaco-editor")));
+      if (isInput) return;
+
+      if (e.key === "f" || e.key === "F") {
+        e.preventDefault();
+        if (isFullscreen) {
+          exitFullscreen();
+        } else {
+          enterFullscreen();
+        }
+      } else if (e.key === "Escape" && isFullscreen) {
+        e.preventDefault();
+        exitFullscreen();
+      } else if ((e.key === "ArrowRight" || (e.key === "Enter" && !e.shiftKey)) && isFullscreen) {
+        if ((!isQuizStep || quizAnswered) && !isSubmittingCompletion) {
+          e.preventDefault();
+          handleNext();
+        }
+      } else if (e.key === "ArrowLeft" && isFullscreen && index > 0) {
+        e.preventDefault();
+        handlePrev();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [
+    isFullscreen,
+    index,
+    isQuizStep,
+    quizAnswered,
+    isSubmittingCompletion,
+    handleNext,
+    handlePrev,
+    enterFullscreen,
+    exitFullscreen,
+  ]);
 
   if (total === 0) {
     return (
@@ -247,7 +333,7 @@ export default function StepPlayer({
           This topic has no lesson steps yet.
         </p>
         <button
-          onClick={onClose}
+          onClick={handleCloseLesson}
           className="cursor-pointer rounded-2xl bg-[#FF8A00] px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-[#F07D00] transition-colors"
         >
           Go back to course
@@ -264,14 +350,24 @@ export default function StepPlayer({
     return (
       <div className="min-h-screen w-full flex flex-col justify-between bg-[var(--surface-page)] text-[var(--ink-900)]">
         {/* Top bar */}
-        <div className="flex items-center justify-between px-6 py-5 max-w-xl mx-auto w-full">
+        <div className="flex items-center justify-between px-6 py-5 max-w-2xl lg:max-w-3xl mx-auto w-full">
           <button
-            onClick={onClose}
+            onClick={handleCloseLesson}
             aria-label="Close"
             className="cursor-pointer p-2 rounded-full hover:bg-[var(--surface-sunken)] transition-colors text-[var(--ink-900)]"
           >
             <X className="size-6" />
           </button>
+          {isFullscreen && (
+            <button
+              onClick={exitFullscreen}
+              aria-label="Close fullscreen view (Esc or F)"
+              title="Close fullscreen view (Esc or F)"
+              className="cursor-pointer flex size-9 sm:size-10 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface-card)] text-[var(--ink-900)] shadow-xs hover:bg-[var(--surface-sunken)] hover:scale-105 active:scale-95 transition-all"
+            >
+              <Minimize2 className="size-4 sm:size-4.5 stroke-[2.2]" />
+            </button>
+          )}
         </div>
 
         {/* Course Completion Body */}
@@ -305,9 +401,9 @@ export default function StepPlayer({
         </div>
 
         {/* Bottom Continue Button */}
-        <div className="w-full max-w-xl mx-auto p-6 pb-8">
+        <div className="w-full max-w-2xl lg:max-w-3xl mx-auto p-6 pb-8">
           <button
-            onClick={onClose}
+            onClick={handleCloseLesson}
             className="w-full flex items-center justify-center py-4 px-8 rounded-2xl bg-[#FF8A00] hover:bg-[#F07D00] active:scale-[0.98] text-white text-lg font-bold tracking-wide shadow-lg shadow-orange-500/25 transition-all cursor-pointer"
           >
             Back to Course
@@ -324,14 +420,24 @@ export default function StepPlayer({
     return (
       <div className="min-h-screen w-full flex flex-col justify-between bg-[var(--surface-page)] text-[var(--ink-900)]">
         {/* Top bar with close button */}
-        <div className="flex items-center justify-between px-6 py-5 max-w-xl mx-auto w-full">
+        <div className="flex items-center justify-between px-6 py-5 max-w-2xl lg:max-w-3xl mx-auto w-full">
           <button
-            onClick={onClose}
+            onClick={handleCloseLesson}
             aria-label="Close"
             className="cursor-pointer p-2 rounded-full hover:bg-[var(--surface-sunken)] transition-colors text-[var(--ink-900)]"
           >
             <X className="size-6" />
           </button>
+          {isFullscreen && (
+            <button
+              onClick={exitFullscreen}
+              aria-label="Close fullscreen view (Esc or F)"
+              title="Close fullscreen view (Esc or F)"
+              className="cursor-pointer flex size-9 sm:size-10 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface-card)] text-[var(--ink-900)] shadow-xs hover:bg-[var(--surface-sunken)] hover:scale-105 active:scale-95 transition-all"
+            >
+              <Minimize2 className="size-4 sm:size-4.5 stroke-[2.2]" />
+            </button>
+          )}
         </div>
 
         {/* Celebration Body */}
@@ -369,9 +475,15 @@ export default function StepPlayer({
         </div>
 
         {/* Bottom Continue Button */}
-        <div className="w-full max-w-xl mx-auto p-6 pb-8">
+        <div className="w-full max-w-2xl lg:max-w-3xl mx-auto p-6 pb-8">
           <button
-            onClick={onContinue || onClose}
+            onClick={() => {
+              if (onContinue) {
+                onContinue();
+              } else {
+                handleCloseLesson();
+              }
+            }}
             className="w-full flex items-center justify-center py-4 px-8 rounded-2xl bg-[#FF8A00] hover:bg-[#F07D00] active:scale-[0.98] text-white text-lg font-bold tracking-wide shadow-lg shadow-orange-500/25 transition-all cursor-pointer"
           >
             Continue
@@ -382,31 +494,33 @@ export default function StepPlayer({
   }
 
   const isTakeaway =
-    step?.title?.trim().toLowerCase() === "takeaway" ||
-    (step?.type === "text" &&
-      step.content.length < 120 &&
-      isLastStep &&
-      !step.title);
+    (step?.title?.trim().toLowerCase() === "takeaway" ||
+      (step?.type === "text" &&
+        step.content.length < 120 &&
+        isLastStep &&
+        !step.title)) &&
+    !step?.content?.includes("|");
 
   const displayTitle = step?.title || topic.title;
 
   return (
     <div className="min-h-screen w-full flex flex-col justify-between bg-[var(--surface-page)] text-[var(--ink-900)]">
       {/* Top Header Bar */}
-      <header className="sticky top-0 z-20 bg-[var(--surface-page)]/95 backdrop-blur-xs px-4 sm:px-6 py-4 border-b border-[var(--line)]/50">
-        <div className="max-w-xl mx-auto flex items-center justify-between gap-3">
-          {/* Close 'X' button */}
+      <header className="sticky top-0 z-20 bg-[var(--surface-page)]/95 backdrop-blur-xs px-4 sm:px-6 py-3.5 sm:py-4 border-b border-[var(--line)]/50">
+        <div className="max-w-2xl lg:max-w-3xl mx-auto flex items-center justify-between gap-3">
+          {/* Close 'X' button to return to course */}
           <button
-            onClick={onClose}
+            onClick={handleCloseLesson}
             aria-label="Close lesson"
-            className="cursor-pointer p-1.5 -ml-1.5 rounded-full hover:bg-[var(--surface-sunken)] transition-colors text-[var(--ink-900)]"
+            title="Back to course"
+            className="cursor-pointer p-1.5 -ml-1.5 rounded-full hover:bg-[var(--surface-sunken)] transition-colors text-[var(--ink-900)] shrink-0"
           >
-            <X className="size-6 stroke-[2.5]" />
+            <X className="size-5 sm:size-6 stroke-[2.5]" />
           </button>
 
           {/* Segmented Pill Progress Bar */}
           <div
-            className="flex items-center gap-1.5 flex-1 max-w-xs sm:max-w-sm mx-2"
+            className="flex items-center gap-1.5 flex-1 max-w-xs sm:max-w-md mx-2 sm:mx-4"
             aria-label={`Step ${index + 1} of ${total}`}
           >
             {steps.map((_, i) => {
@@ -415,7 +529,7 @@ export default function StepPlayer({
               return (
                 <div
                   key={i}
-                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                  className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 ${
                     isActive
                       ? "flex-[2.5] bg-[#22C55E]"
                       : isCompleted
@@ -428,27 +542,52 @@ export default function StepPlayer({
           </div>
           <span className="sr-only">Step {index + 1} of {total}</span>
 
-          {/* Hearts / Lives Counter (In-Lesson AI Tutor Dropdown) */}
-          {step && (
-            <InLessonAiTutor
-              topicTitle={topic.title}
-              stepTitle={displayTitle}
-              stepContent={
-                step.type === "quiz" && step.quiz
-                  ? `Quiz Question: ${step.quiz.question}\nOptions: ${step.quiz.options?.map((o, i) => `${i + 1}. ${o.text}`).join(", ") || ""}\nExplanation: ${step.quiz.explanation || ""}`
-                  : step.type === "exercise" && step.exercise
-                    ? `Exercise: ${step.exercise.instructions || ""}\nStarter Code:\n${step.exercise.starterCode || ""}`
-                    : step.type === "group" && step.blocks
-                      ? step.blocks.map((b) => b.content || "").join("\n\n")
-                      : step.content || topic.description || ""
-              }
-            />
-          )}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Hearts / Lives Counter (In-Lesson AI Tutor Dropdown) */}
+            {step && (
+              <InLessonAiTutor
+                topicTitle={topic.title}
+                stepTitle={displayTitle}
+                stepContent={
+                  step.type === "quiz" && step.quiz
+                    ? `Quiz Question: ${step.quiz.question}\nOptions: ${step.quiz.options?.map((o, i) => `${i + 1}. ${o.text}`).join(", ") || ""}\nExplanation: ${step.quiz.explanation || ""}`
+                    : step.type === "exercise" && step.exercise
+                      ? `Exercise: ${step.exercise.instructions || ""}\nStarter Code:\n${step.exercise.starterCode || ""}`
+                      : step.type === "group" && step.blocks
+                        ? step.blocks.map((b) => b.content || "").join("\n\n")
+                        : step.content || topic.description || ""
+                }
+              />
+            )}
+
+            {/* Close / Enter Fullscreen FAB icon in header */}
+            {isFullscreen ? (
+              <button
+                onClick={exitFullscreen}
+                type="button"
+                aria-label="Close fullscreen view (Esc or F)"
+                title="Close fullscreen view (Esc or F)"
+                className="cursor-pointer flex size-8 sm:size-9 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface-card)] text-[var(--ink-900)] shadow-xs hover:bg-[var(--surface-sunken)] hover:scale-105 active:scale-95 transition-all"
+              >
+                <Minimize2 className="size-3.5 sm:size-4 stroke-[2.2]" />
+              </button>
+            ) : (
+              <button
+                onClick={enterFullscreen}
+                type="button"
+                aria-label="Enter fullscreen view (F)"
+                title="Enter fullscreen view (F)"
+                className="cursor-pointer flex size-8 sm:size-9 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface-card)] text-[var(--ink-900)] shadow-xs hover:bg-[var(--surface-sunken)] hover:scale-105 active:scale-95 transition-all"
+              >
+                <Maximize2 className="size-3.5 sm:size-4 stroke-[2.2]" />
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-xl mx-auto px-6 py-6 pb-28 sm:py-8 sm:pb-32 flex flex-col justify-start">
+      <main className="flex-1 w-full max-w-2xl lg:max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28 sm:py-8 sm:pb-32 flex flex-col justify-start">
         {/* Step Title Row with 3-dots Menu */}
         <div className="relative mb-6 flex items-start justify-between gap-4">
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--ink-900)]">
@@ -467,6 +606,29 @@ export default function StepPlayer({
 
             {menuOpen && (
               <div className="absolute right-0 top-10 z-30 w-48 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] p-1.5 shadow-xl animate-in fade-in zoom-in-95 duration-150">
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    if (isFullscreen) {
+                      exitFullscreen();
+                    } else {
+                      enterFullscreen();
+                    }
+                  }}
+                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-[var(--ink-900)] hover:bg-[var(--surface-sunken)] transition-colors text-left"
+                >
+                  {isFullscreen ? (
+                    <>
+                      <Minimize2 className="size-4 text-[var(--text-muted)]" />
+                      <span>Exit fullscreen</span>
+                    </>
+                  ) : (
+                    <>
+                      <Maximize2 className="size-4 text-[var(--text-muted)]" />
+                      <span>Fullscreen view</span>
+                    </>
+                  )}
+                </button>
                 <button
                   onClick={() => {
                     setMenuOpen(false);
@@ -514,31 +676,70 @@ export default function StepPlayer({
         )}
       </main>
 
-      {/* Fixed / Sticky Bottom Action Bar */}
-      <footer className="sticky bottom-0 z-20 bg-[var(--surface-page)]/95 backdrop-blur-xs border-t border-[var(--line)]/50 px-6 py-4 pb-6 sm:pb-6">
-        <div className="max-w-xl mx-auto flex items-center gap-3">
+      {/* Floating Action Controls in Fullscreen Mode */}
+      {isFullscreen && (
+        <aside
+          aria-label="Fullscreen lesson navigation"
+          className="fixed bottom-5 right-5 sm:bottom-6 sm:right-8 z-30 flex items-center gap-2 sm:gap-2.5 select-none"
+        >
           {index > 0 && (
             <button
               onClick={handlePrev}
+              type="button"
               aria-label="Previous step"
-              className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] text-[var(--ink-900)] shadow-xs transition-all hover:bg-[var(--surface-sunken)] active:scale-95 cursor-pointer"
+              title="Previous step (Left Arrow)"
+              className="cursor-pointer flex size-10 sm:size-11 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface-card)]/95 backdrop-blur-md text-[var(--ink-900)] shadow-lg shadow-black/5 dark:shadow-black/20 hover:bg-[var(--surface-sunken)] hover:scale-105 active:scale-95 transition-all"
             >
-              <ChevronLeft className="size-6 stroke-[2.5]" />
+              <ChevronLeft className="size-5 stroke-[2.5]" />
             </button>
           )}
 
           {(!isQuizStep || quizAnswered) && (
-          <button
+            <button
               onClick={handleNext}
+              type="button"
               disabled={isSubmittingCompletion}
-              aria-label={isLastStep ? 'Finish lesson' : 'Continue to next step'}
-              className="flex-1 flex items-center justify-center py-4 px-8 rounded-2xl bg-[#FF8A00] hover:bg-[#F07D00] active:scale-[0.98] text-white text-lg font-bold tracking-wide shadow-lg shadow-orange-500/20 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
+              aria-label={isLastStep ? "Finish lesson" : "Continue to next step"}
+              title={isLastStep ? "Finish lesson (Enter)" : "Continue (Right Arrow or Enter)"}
+              className="cursor-pointer flex size-10 sm:size-11 items-center justify-center rounded-full bg-[#FF8A00] hover:bg-[#F07D00] text-white shadow-lg shadow-orange-500/30 hover:scale-105 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:active:scale-100"
             >
-              <span>{isLastStep ? "Finish" : "Continue"}</span>
+              {isLastStep ? (
+                <Check className="size-5 stroke-[2.5]" />
+              ) : (
+                <ChevronRight className="size-5 stroke-[2.5]" />
+              )}
             </button>
           )}
-        </div>
-      </footer>
+        </aside>
+      )}
+
+      {/* Standard Sticky Bottom Action Bar when not in fullscreen mode */}
+      {!isFullscreen && (
+        <footer className="sticky bottom-0 z-20 bg-[var(--surface-page)]/95 backdrop-blur-xs border-t border-[var(--line)]/50 px-6 py-4 pb-6 sm:pb-6">
+          <div className="max-w-2xl lg:max-w-3xl mx-auto flex items-center gap-3">
+            {index > 0 && (
+              <button
+                onClick={handlePrev}
+                aria-label="Previous step"
+                className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface-card)] text-[var(--ink-900)] shadow-xs transition-all hover:bg-[var(--surface-sunken)] active:scale-95 cursor-pointer"
+              >
+                <ChevronLeft className="size-6 stroke-[2.5]" />
+              </button>
+            )}
+
+            {(!isQuizStep || quizAnswered) && (
+              <button
+                onClick={handleNext}
+                disabled={isSubmittingCompletion}
+                aria-label={isLastStep ? "Finish lesson" : "Continue to next step"}
+                className="flex-1 flex items-center justify-center py-4 px-8 rounded-2xl bg-[#FF8A00] hover:bg-[#F07D00] active:scale-[0.98] text-white text-lg font-bold tracking-wide shadow-lg shadow-orange-500/20 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
+              >
+                <span>{isLastStep ? "Finish" : "Continue"}</span>
+              </button>
+            )}
+          </div>
+        </footer>
+      )}
     </div>
   );
 }
