@@ -6,3 +6,6 @@ secrets/
 dist/
 build/
 *.log
+extracted_diagrams/
+__pycache__/
+*.py[cod]

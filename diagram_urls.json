@@ -1,0 +1,102 @@
+{
+  "functional_units": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566926016-functional_units.png",
+    "label": "Basic Functional Units of a Computer",
+    "filename": "img-000.png"
+  },
+  "processor_memory_bus": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566926698-processor_memory_bus.png",
+    "label": "Processor and Main Memory Bus Interconnection",
+    "filename": "img-003.png"
+  },
+  "von_neumann_architecture": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566927228-von_neumann_architecture.png",
+    "label": "Von Neumann Architecture Organization",
+    "filename": "img-004.png"
+  },
+  "signed_number_rep": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566928262-signed_number_rep.png",
+    "label": "Signed Number Binary Representations",
+    "filename": "img-009.png"
+  },
+  "ripple_carry_adder": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566929055-ripple_carry_adder.png",
+    "label": "4-Bit Ripple Carry Adder Circuit",
+    "filename": "img-026.png"
+  },
+  "carry_lookahead_adder": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566929856-carry_lookahead_adder.png",
+    "label": "Carry Look-Ahead Adder Logic Circuit",
+    "filename": "img-027.png"
+  },
+  "shift_add_multiplication": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566930402-shift_add_multiplication.png",
+    "label": "Shift-and-Add Multiplication Datapath",
+    "filename": "img-031.png"
+  },
+  "booths_algorithm_flowchart": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566931623-booths_algorithm_flowchart.png",
+    "label": "Booth Multiplication Algorithm Flowchart",
+    "filename": "img-032.png"
+  },
+  "register_organization_8086": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566932917-register_organization_8086.png",
+    "label": "CPU Internal Register Organization",
+    "filename": "img-042.png"
+  },
+  "instruction_cycle_flowchart": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566933553-instruction_cycle_flowchart.png",
+    "label": "Instruction Execution Cycle Flowchart",
+    "filename": "img-049.png"
+  },
+  "hardwired_control_unit": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566934109-hardwired_control_unit.png",
+    "label": "Hardwired Control Unit State Machine Architecture",
+    "filename": "img-055.png"
+  },
+  "microprogrammed_control_unit": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566935367-microprogrammed_control_unit.png",
+    "label": "Microprogrammed Control Unit Design",
+    "filename": "img-061.png"
+  },
+  "virtual_memory_paging": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566936004-virtual_memory_paging.png",
+    "label": "Virtual Memory Address Translation & Paging",
+    "filename": "img-072.png"
+  },
+  "memory_hierarchy": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566936518-memory_hierarchy.png",
+    "label": "The Computer Memory Hierarchy Pyramid",
+    "filename": "img-078.png"
+  },
+  "memory_interleaving": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566936993-memory_interleaving.png",
+    "label": "Multiple Module Memory Interleaving Organization",
+    "filename": "img-079.png"
+  },
+  "cache_memory_placement": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566937480-cache_memory_placement.png",
+    "label": "Placement and Operation of Cache Memory",
+    "filename": "img-080.png"
+  },
+  "io_bus_connection": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566938116-io_bus_connection.png",
+    "label": "I/O Bus Interface and Peripheral Connections",
+    "filename": "img-081.png"
+  },
+  "dma_controller_transfer": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566938643-dma_controller_transfer.png",
+    "label": "Direct Memory Access (DMA) Transfer Scheme",
+    "filename": "img-092.png"
+  },
+  "instruction_pipeline": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566939089-instruction_pipeline.png",
+    "label": "Instruction Pipeline Stages and Inter-Segment Registers",
+    "filename": "img-095.png"
+  },
+  "uma_multiprocessor": {
+    "url": "https://pub-25cf731b17e245559cf292c270f8e8a1.r2.dev/topics/images/1794566939546-uma_multiprocessor.png",
+    "label": "Uniform Memory Access (UMA) Shared Memory Multiprocessor",
+    "filename": "img-100.png"
+  }
+}
