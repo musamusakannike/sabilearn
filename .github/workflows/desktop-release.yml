@@ -84,7 +84,7 @@ jobs:
         with:
           projectPath: desktop
           tagName: ${{ github.event_name == 'workflow_dispatch' && inputs.tag_name || github.ref_name }}
-          releaseName: 'SabiLearn Desktop ${{ github.event_name == 'workflow_dispatch' && inputs.tag_name || github.ref_name }}'
+          releaseName: "SabiLearn Desktop ${{ github.event_name == 'workflow_dispatch' && inputs.tag_name || github.ref_name }}"
           releaseBody: |
             ## SabiLearn Desktop Release
 
