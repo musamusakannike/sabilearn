@@ -1,0 +1,372 @@
+export interface IUserSettings {
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  weeklyProgress: boolean;
+  language: string;
+  studyReminders?: boolean;
+  streakAlerts?: boolean;
+  reminderHour?: number;
+  reminderMinute?: number;
+  timezoneOffset?: number;
+  dailyGoalMinutes?: number;
+  preferredTrack?: 'tech' | 'academic';
+}
+
+export interface User {
+  id: string;
+  _id?: string;
+  email: string;
+  name: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  bio?: string;
+  avatar?: string;
+  level: 'beginner' | 'intermediate' | 'advanced';
+  activeTrack?: 'tech' | 'academic';
+  role: 'user' | 'admin';
+  totalXp?: number;
+  currentStreak?: number;
+  longestStreak?: number;
+  firebaseUid?: string;
+  settings?: IUserSettings;
+}
+
+export type TopicContentType =
+  | 'text'
+  | 'latex'
+  | 'youtube'
+  | 'image'
+  | 'video'
+  | 'audio'
+  | 'code'
+  | 'quiz'
+  | 'exercise'
+  | 'group';
+
+export interface TopicQuizOption {
+  text: string;
+  isCorrect: boolean;
+}
+
+export interface TopicQuiz {
+  question: string;
+  options: TopicQuizOption[];
+  explanation?: string;
+}
+
+export interface TopicExercise {
+  instructions: string;
+  starterCode: string;
+  language: string;
+  expectedOutput?: string;
+  solution?: string;
+}
+
+export interface Question {
+  _id?: string;
+  type: 'mcq' | 'fill_in_blank' | 'code_execution';
+  question: string;
+  options?: string[];
+  correctAnswer: string;
+  explanation?: string;
+  starterCode?: string;
+  expectedOutput?: string;
+  language?: string;
+  xp: number;
+}
+
+export interface Exercise {
+  title?: string;
+  instructions?: string;
+  questions: Question[];
+}
+
+export interface TopicContent {
+  _id?: string;
+  type: TopicContentType;
+  content: string;
+  language?: string;
+  title?: string;
+  quiz?: TopicQuiz;
+  exercise?: TopicExercise;
+  blocks?: TopicContent[];
+}
+
+export type TopicFlow = 'flat' | 'guided';
+
+export interface Topic {
+  _id: string;
+  course: string;
+  chapter?: string;
+  title: string;
+  description: string;
+  subConcepts?: string[];
+  hasCodingTask?: boolean;
+  practiceTaskSummary?: string;
+  isGenerated?: boolean;
+  contents: TopicContent[];
+  exercise?: Exercise;
+  xp?: number;
+  order: number;
+  isPublished: boolean;
+  defaultFlow?: TopicFlow;
+  flashcardCount?: number;
+  mcqCount?: number;
+  isUnlocked?: boolean;
+  isCompleted?: boolean;
+  inProgress?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Chapter {
+  _id: string;
+  course: string;
+  title: string;
+  description: string;
+  order: number;
+  capstoneGoal?: string;
+  capstoneDifficulty?: 'medium' | 'hard';
+  exercise?: Exercise;
+  status?: 'completed' | 'inprogress' | 'locked';
+  progressPercent?: number;
+  isAssessmentPassed?: boolean;
+  topics?: Topic[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CourseAuthor {
+  name: string;
+  avatar: string;
+  role?: string;
+  bio?: string;
+}
+
+export interface AcademicMeta {
+  courseCode?: string;
+  faculty?: string;
+  department?: string;
+  level?: '100L' | '200L' | '300L' | '400L' | '500L' | 'postgraduate';
+  semester?: 'first' | 'second';
+  creditUnits?: number;
+}
+
+export interface Course {
+  _id: string;
+  title: string;
+  description: string;
+  longDescription: string;
+  banner: string;
+  category: string;
+  tags?: string[];
+  track?: 'tech' | 'academic';
+  academicMeta?: AcademicMeta;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  authors?: CourseAuthor[];
+  whatYouWillLearn: string[];
+  prerequisites?: string[];
+  isPublished: boolean;
+  order: number;
+  isFree: boolean;
+  /** Price in kobo (NGN smallest unit). Ignored when isFree is true. */
+  price: number;
+  topicCount?: number;
+  registeredUsersCount?: number;
+  lessonCount?: number;
+  totalObtainableXp?: number;
+  isAiGenerated?: boolean;
+  creator?:
+    | string
+    | { _id: string; name?: string; firstName?: string; lastName?: string; avatar?: string };
+  visibility?: 'public' | 'unlisted' | 'private';
+  shareSlug?: string;
+  sourceSummary?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CourseArchitectQuota {
+  usedToday: number;
+  remaining: number;
+  dailyLimit: number;
+  isSubscribed: boolean;
+}
+
+export interface GeneratedCourseResult {
+  courseId?: string;
+  jobId?: string;
+  title?: string;
+  shareSlug?: string;
+  visibility?: 'public' | 'unlisted' | 'private';
+  stats?: {
+    chapters: number;
+    topics: number;
+  };
+}
+
+export type SubscriptionStatus = 'active' | 'cancelled' | 'past_due' | 'none' | 'expired';
+export type SubscriptionBillingType = 'recurring' | 'manual' | 'iap';
+
+export interface PaymentStatus {
+  subscription: {
+    status: SubscriptionStatus;
+    billingType?: SubscriptionBillingType;
+    currentPeriodEnd?: string;
+    store?: 'app_store' | 'play_store' | 'web';
+  };
+  purchasedCourseIds: string[];
+}
+
+export interface CheckoutInitResponse {
+  authorizationUrl?: string;
+  accessCode?: string;
+  reference: string;
+  amount?: number;
+}
+
+export type TransactionStatus = 'pending' | 'success' | 'failed';
+
+export interface VerifyResponse {
+  status: TransactionStatus;
+  type: 'course_purchase' | 'subscription';
+}
+
+export interface Flashcard {
+  _id: string;
+  topic: string;
+  question: string;
+  answer: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MCQOption {
+  text: string;
+  isCorrect: boolean;
+}
+
+export interface MCQ {
+  _id: string;
+  topic: string;
+  question: string;
+  options: MCQOption[];
+  explanation: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UserProgress {
+  _id: string;
+  user: string;
+  course: Course | string;
+  topic?: Topic | string;
+  lastChapter?: Chapter | string;
+  lastTopic?: Topic | string;
+  lastContentIndex?: number;
+  completedTopics?: string[];
+  completedChapters?: string[];
+  passedExercises?: string[];
+  percentCompleted?: number;
+  isCompleted: boolean;
+  flashcardsStudied?: number;
+  flashcardsTotal?: number;
+  mcqsAttempted?: number;
+  mcqsCorrect?: number;
+  accuracy?: number;
+  lastStudiedAt: string;
+}
+
+export interface LeaderboardUser {
+  _id: string;
+  periodXp: number;
+  totalXp: number;
+  name: string;
+  firstName?: string;
+  lastName?: string;
+  avatar?: string;
+  level?: string;
+  currentStreak?: number;
+}
+
+export interface NotificationItem {
+  _id: string;
+  user: string | null;
+  type: 'info' | 'success' | 'warning' | 'announcement';
+  title: string;
+  message: string;
+  isRead: boolean;
+  actionUrl?: string;
+  createdAt: string;
+}
+
+export interface DashboardData {
+  continueStudying: UserProgress[];
+  streak?: number;
+  longestStreak?: number;
+  totalXp?: number;
+  quickStats?: {
+    totalSessions: number;
+    totalFlashcards: number;
+    avgAccuracy: number;
+  };
+}
+
+export interface ProgressStats {
+  streak: number;
+  longestStreak: number;
+  totalXp?: number;
+  todayStudyTime: number;
+  totalSessions: number;
+  totalFlashcards: number;
+  avgAccuracy: number;
+  dailyGoal: {
+    minutes: number;
+    studiedMinutes: number;
+    progress: number;
+    met: boolean;
+  };
+}
+
+export interface AiQuizQuestion {
+  question: string;
+  options: Array<{ text: string; isCorrect: boolean }>;
+  explanation: string;
+}
+
+export interface AiFlashcard {
+  front: string;
+  back: string;
+}
+
+export interface AiHistoryItem {
+  _id: string;
+  user: string;
+  type: 'summarize' | 'quiz' | 'flashcards' | 'qa' | 'course_quiz' | 'topic_quiz';
+  title: string;
+  prompt: string;
+  metadata?: Record<string, unknown>;
+  result: AiQuizQuestion[] | string | unknown;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type PlaygroundKind = 'web' | 'python';
+
+export interface PlaygroundProject {
+  id?: string;
+  localId: string;
+  name: string;
+  kind: PlaygroundKind;
+  files: Record<string, string>;
+  deletedAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  syncState?: 'synced' | 'pending' | 'local';
+}
+
+export interface GlobalSearchResult {
+  courses?: Course[];
+  topics?: Array<Topic & { course?: Course | string }>;
+}

@@ -1,0 +1,32 @@
+name: Desktop CI
+
+on:
+  pull_request:
+    paths:
+      - 'desktop/**'
+      - '.github/workflows/desktop-ci.yml'
+  push:
+    branches: ['main']
+    paths:
+      - 'desktop/**'
+      - '.github/workflows/desktop-ci.yml'
+
+jobs:
+  check:
+    name: Typecheck, Lint, Test & Web Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: desktop/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run build
