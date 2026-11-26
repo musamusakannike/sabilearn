@@ -46,7 +46,7 @@
       }
     },
     "updater": {
-      "pubkey": "REPLACE_WITH_ED25519_PUBLIC_KEY_FROM_TAURI_SIGNER",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDhFQ0Y0QjU0OUFGN0M2MkQKUldRdHh2ZWFWRXZQanZQemIwQjQyM0JHYlpZK1RiUzFFSER3V3FJOVRJSUszWVNDTFlEc0xTZEwK",
       "endpoints": [
         "https://github.com/musamusakannike/sabilearn/releases/latest/download/latest.json"
       ]
