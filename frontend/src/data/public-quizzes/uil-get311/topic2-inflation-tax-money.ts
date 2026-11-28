@@ -16,10 +16,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'In layman’s terms, what does **Inflation** do to the purchasing power of money?',
       options: [
-        { id: 'a', text: 'It increases the amount of goods a fixed sum of money can buy.' },
-        { id: 'b', text: 'It reduces purchasing power so the money at hand buys fewer goods and services than before.' },
-        { id: 'c', text: 'It keeps purchasing power constant while increasing interest rates.' },
-        { id: 'd', text: 'It only affects imported luxury goods.' },
+        { id: 'a', text: 'It increases purchasing power so the same sum of money buys more goods than before.' },
+        { id: 'b', text: 'It reduces purchasing power so the same money buys fewer goods.' },
+        { id: 'c', text: 'It keeps purchasing power constant while automatically lowering all bank interest rates.' },
+        { id: 'd', text: 'It only alters the prices of imported luxury goods while leaving local staples unchanged.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -49,9 +49,9 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
         'If the Consumer Price Index (CPI) rises from $125$ in Year 1 to $150$ in Year 2, what is the annual inflation rate?',
       options: [
         { id: 'a', text: '$16.67\\%$' },
-        { id: 'b', text: '$20\\%$' },
-        { id: 'c', text: '$25\\%$' },
-        { id: 'd', text: '$12\\%$' },
+        { id: 'b', text: '$20.00\\%$' },
+        { id: 'c', text: '$25.00\\%$' },
+        { id: 'd', text: '$12.50\\%$' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -67,7 +67,7 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
         { id: 'a', text: 'Demand-pull inflation' },
         { id: 'b', text: 'Cost-push inflation' },
         { id: 'c', text: 'Hyperinflation' },
-        { id: 'd', text: 'Deflation' },
+        { id: 'd', text: 'Monetary deflation' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -83,7 +83,7 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
         { id: 'a', text: 'Creeping inflation' },
         { id: 'b', text: 'Cost-push inflation' },
         { id: 'c', text: 'Hyperinflation' },
-        { id: 'd', text: 'Stagflation' },
+        { id: 'd', text: 'Mild stagflation' },
       ],
       correctAnswer: 'c',
       explanation:
@@ -112,10 +112,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'According to the UIL-GET 311 notes on Nigerian tax exemptions (2026), which small business qualifies for full company tax exemption?',
       options: [
-        { id: 'a', text: 'Gross annual turnover $\\le \\text{₦}100\\text{ million}$ and total assets $\\le \\text{₦}250\\text{ million}$' },
-        { id: 'b', text: 'Gross annual turnover $\\le \\text{₦}500\\text{ million}$ regardless of assets' },
-        { id: 'c', text: 'Any company with fewer than 500 employees' },
-        { id: 'd', text: 'Only foreign companies operating remotely' },
+        { id: 'a', text: 'Turnover $\\le \\text{₦}100\\text{M}$ and total assets $\\le \\text{₦}250\\text{M}$' },
+        { id: 'b', text: 'Gross annual turnover $\\le \\text{₦}500\\text{ million}$ regardless of total asset value' },
+        { id: 'c', text: 'Any private company employing fewer than 500 full-time staff in Nigeria' },
+        { id: 'd', text: 'Foreign-owned engineering firms operating with a fixed base in Nigeria' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -128,10 +128,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'Which individual income thresholds are listed under **Tax Exemption Situations** in the GET 311 notes?',
       options: [
-        { id: 'a', text: 'Minimum wage earners ($\\le \\text{₦}70,000$/month) and low-income earners ($\\le \\text{₦}100,000$/month)' },
-        { id: 'b', text: 'Only earners below ₦18,000/month' },
-        { id: 'c', text: 'All private sector employees regardless of salary' },
-        { id: 'd', text: 'Earners making up to ₦500,000/month' },
+        { id: 'a', text: 'Minimum wage ($\\le \\text{₦}70,000$/mo) and low income ($\\le \\text{₦}100,000$/mo)' },
+        { id: 'b', text: 'Only workers earning $\\le \\text{₦}18,000$/month under old federal wage rules' },
+        { id: 'c', text: 'All private sector employees regardless of monthly salary or annual bonuses' },
+        { id: 'd', text: 'All residents earning up to $\\text{₦}500,000$/month from business or employment' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -144,10 +144,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'Which group was proposed for Personal Income Tax (PIT) exemption in the 2025 tax reform bill approved by the Nigerian House of Representatives?',
       options: [
-        { id: 'a', text: 'Commercial bank executives' },
-        { id: 'b', text: 'Military personnel (Army, Navy, and Air Force)' },
-        { id: 'c', text: 'Oil and gas multinational directors' },
-        { id: 'd', text: 'Real estate developers' },
+        { id: 'a', text: 'Commercial bank directors and executives' },
+        { id: 'b', text: 'Military personnel (Army, Navy, Air Force)' },
+        { id: 'c', text: 'Multinational oil and gas refinery contractors' },
+        { id: 'd', text: 'Private commercial real estate developers' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -160,10 +160,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'What is the key difference between a **Direct Tax** and an **Indirect Tax**?',
       options: [
-        { id: 'a', text: 'Direct tax burden is borne directly by the payer (e.g., PIT, CIT); indirect tax is levied on goods/services and its burden is transferred to others (e.g., VAT, excise duties).' },
-        { id: 'b', text: 'Direct tax is optional; indirect tax is mandatory.' },
-        { id: 'c', text: 'Direct tax is paid only by companies; indirect tax is paid only by individuals.' },
-        { id: 'd', text: 'Indirect taxes are always progressive, while direct taxes are regressive.' },
+        { id: 'a', text: 'Direct tax burden stays on the payer (PIT, CIT); indirect tax burden is shifted to buyers (VAT).' },
+        { id: 'b', text: 'Direct taxes are voluntary contributions paid by firms; indirect taxes are mandatory levies collected exclusively from salaried workers.' },
+        { id: 'c', text: 'Direct taxes are levied solely on imported goods at ports; indirect taxes are charged on corporate profits and personal real estate.' },
+        { id: 'd', text: 'Indirect taxes are always progressive across income brackets, while direct taxes are always regressive on low-income households.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -176,9 +176,9 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'According to the lecture notes, what are the standard **Company Income Tax (CIT)** and **Value Added Tax (VAT)** rates in Nigeria?',
       options: [
-        { id: 'a', text: 'CIT = $20\\%$, VAT = $5\\%$' },
+        { id: 'a', text: 'CIT = $20\\%$, VAT = $5.0\\%$' },
         { id: 'b', text: 'CIT = $30\\%$, VAT = $7.5\\%$' },
-        { id: 'c', text: 'CIT = $15\\%$, VAT = $10\\%$' },
+        { id: 'c', text: 'CIT = $15\\%$, VAT = $10.0\\%$' },
         { id: 'd', text: 'CIT = $35\\%$, VAT = $7.5\\%$' },
       ],
       correctAnswer: 'b',
@@ -192,10 +192,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'An engineering contractor is awarded a consultancy contract of $\\text{₦}2,000,000$. If $10\\%$ Withholding Tax (WHT) is deducted at source, how much is remitted to the tax authority and how much is paid directly to the contractor?',
       options: [
-        { id: 'a', text: '₦200,000 remitted to tax authority; ₦1,800,000 paid to contractor' },
-        { id: 'b', text: '₦100,000 remitted to tax authority; ₦1,900,000 paid to contractor' },
-        { id: 'c', text: '₦200,000 extra added so contractor receives ₦2,200,000' },
-        { id: 'd', text: '₦150,000 remitted to tax authority; ₦1,850,000 paid to contractor' },
+        { id: 'a', text: '₦200,000 remitted; ₦1,800,000 paid to contractor' },
+        { id: 'b', text: '₦100,000 remitted; ₦1,900,000 paid to contractor' },
+        { id: 'c', text: '₦200,000 added; ₦2,200,000 paid to contractor' },
+        { id: 'd', text: '₦150,000 remitted; ₦1,850,000 paid to contractor' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -224,10 +224,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'Which statement about **Withholding Tax (WHT)** and **PAYE (Pay As You Earn)** is TRUE?',
       options: [
-        { id: 'a', text: 'WHT is an extra separate tax paid on top of full income tax.' },
-        { id: 'b', text: 'WHT is an advance prepayment of income tax deducted at source, and PAYE is a form of WHT spreading annual PIT into monthly deductions.' },
-        { id: 'c', text: 'PAYE applies only to imported goods at seaports.' },
-        { id: 'd', text: 'WHT is remitted by the contractor rather than the payer.' },
+        { id: 'a', text: 'WHT is an extra penalty tax charged separately on top of a contractor’s full annual income tax liability.' },
+        { id: 'b', text: 'WHT is an advance tax deducted at source; PAYE spreads annual PIT monthly.' },
+        { id: 'c', text: 'PAYE applies exclusively to imported industrial machinery and goods cleared at Nigerian seaports.' },
+        { id: 'd', text: 'WHT must always be collected and remitted by the contractor rather than by the payer of the contract.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -258,7 +258,7 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       options: [
         { id: 'a', text: 'Simplicity' },
         { id: 'b', text: 'Convenience' },
-        { id: 'c', text: 'Productivity (Productive)' },
+        { id: 'c', text: 'Productive' },
         { id: 'd', text: 'Flexibility' },
       ],
       correctAnswer: 'c',
@@ -272,10 +272,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'Taxes levied on profits realized from the sale of capital assets such as stocks, bonds, or properties are called:',
       options: [
-        { id: 'a', text: 'Stamp Duties' },
+        { id: 'a', text: 'Legal Stamp Duties' },
         { id: 'b', text: 'Capital Gains Tax' },
-        { id: 'c', text: 'Excise Duties' },
-        { id: 'd', text: 'Education Tax' },
+        { id: 'c', text: 'Local Excise Duties' },
+        { id: 'd', text: 'Corporate Education Tax' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -355,7 +355,7 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
         { id: 'a', text: 'Store of value' },
         { id: 'b', text: 'Unit of account' },
         { id: 'c', text: 'Medium of exchange' },
-        { id: 'd', text: 'Source of depreciation' },
+        { id: 'd', text: 'Asset depreciation' },
       ],
       correctAnswer: 'd',
       explanation:
@@ -371,7 +371,7 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
         { id: 'a', text: 'Transactional motive' },
         { id: 'b', text: 'Precautionary motive' },
         { id: 'c', text: 'Speculative motive' },
-        { id: 'd', text: 'Fiscal motive' },
+        { id: 'd', text: 'Fiscal reserve motive' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -384,10 +384,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'In an **Insurance Policy**, who are the First Party, Second Party, and Third Party respectively?',
       options: [
-        { id: 'a', text: 'Insurer, Insured, and Government' },
-        { id: 'b', text: 'Insured (subscriber), Insurer (insurance company), and Third Party (an outsider entitled to file a claim against the insurer)' },
-        { id: 'c', text: 'Broker, Bank, and Insured' },
-        { id: 'd', text: 'Claimant, Lawyer, and Insurer' },
+        { id: 'a', text: 'Insurer (company), Insured (subscriber), and Government regulator' },
+        { id: 'b', text: 'Insured (subscriber), Insurer (company), and Third Party (outside claimant)' },
+        { id: 'c', text: 'Insurance broker, Commercial bank lender, and Policy subscriber' },
+        { id: 'd', text: 'External claimant, Legal counsel representing court, and Insurance company' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -400,10 +400,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'In insurance terminology, what is a **Deductible**?',
       options: [
-        { id: 'a', text: 'The regular fee paid monthly to keep the policy active' },
-        { id: 'b', text: 'The out-of-pocket amount required of the insured by the contract to balance covered expenses' },
-        { id: 'c', text: 'A legal suit filed against an insurance company' },
-        { id: 'd', text: 'The fee paid by an insurer to an intermediary' },
+        { id: 'a', text: 'The regular monthly or annual fee paid by the subscriber to keep the contract active' },
+        { id: 'b', text: 'The out-of-pocket share paid by the insured toward covered expenses' },
+        { id: 'c', text: 'A formal legal claim or lawsuit filed against an insurer to demand loss settlement' },
+        { id: 'd', text: 'The commission fee paid by an insurance firm to an intermediary managing its expenses' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -416,10 +416,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'What is **Capitation** in insurance as defined in the GET 311 class notes?',
       options: [
-        { id: 'a', text: 'A moral obligation to act with reasonable caution to avoid a loss' },
-        { id: 'b', text: 'The amount an insurance company pays to an intermediary who pays expenses from the total premium on behalf of the insurer' },
-        { id: 'c', text: 'The maximum payout limit on a life insurance policy' },
-        { id: 'd', text: 'Tax deducted from insurance payouts' },
+        { id: 'a', text: 'A moral obligation on the insured to act with reasonable caution to avoid preventable losses' },
+        { id: 'b', text: 'Amount an insurer pays an intermediary to settle expenses from premiums' },
+        { id: 'c', text: 'The maximum cumulative payout ceiling allowed on a life or business insurance contract' },
+        { id: 'd', text: 'The mandatory withholding tax deducted by government from insurance claim settlements' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -432,10 +432,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'How do **Stock** and **Shares** differ according to the GET 311 notes?',
       options: [
-        { id: 'a', text: 'Stock is ownership in a company; Shares are the individual units of ownership in a company.' },
-        { id: 'b', text: 'Stock is a government loan; Shares are non-repayable grants.' },
-        { id: 'c', text: 'Shares are always short-term; Stock is always tax-free.' },
-        { id: 'd', text: 'Stock is physical inventory only; Shares are bank cheques.' },
+        { id: 'a', text: 'Stock is ownership in a company; Shares are the units of ownership.' },
+        { id: 'b', text: 'Stock is a repayable government loan instrument; Shares are non-repayable business grants.' },
+        { id: 'c', text: 'Shares are short-term discounted securities; Stock is always tax-exempt municipal debt.' },
+        { id: 'd', text: 'Stock represents physical warehouse inventory only; Shares represent commercial bank cheques.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -448,10 +448,10 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       question:
         'How do **Loans** differ from **Grants**?',
       options: [
-        { id: 'a', text: 'Loans are non-repayable; Grants must be repaid with interest.' },
-        { id: 'b', text: 'Loans are borrowed money repaid with interest; Grants are financial support from organizations/government given without intent of repayment or interest.' },
-        { id: 'c', text: 'Both loans and grants carry mandatory compound interest.' },
-        { id: 'd', text: 'Grants are issued only by commercial banks.' },
+        { id: 'a', text: 'Loans are non-repayable government awards; Grants must be repaid periodically with compound interest.' },
+        { id: 'b', text: 'Loans are repaid with interest; Grants require no repayment or interest.' },
+        { id: 'c', text: 'Both loans and grants carry mandatory annual interest charges set by the Central Bank.' },
+        { id: 'd', text: 'Grants are issued exclusively by commercial banks, whereas loans come only from charities.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -466,8 +466,8 @@ export const topic2InflationTaxMoney: PublicQuizTopic = {
       options: [
         { id: 'a', text: 'Corporate Shares' },
         { id: 'b', text: 'Treasury Bills' },
-        { id: 'c', text: 'Grants' },
-        { id: 'd', text: 'Deductibles' },
+        { id: 'c', text: 'Research Grants' },
+        { id: 'd', text: 'Policy Deductibles' },
       ],
       correctAnswer: 'b',
       explanation:

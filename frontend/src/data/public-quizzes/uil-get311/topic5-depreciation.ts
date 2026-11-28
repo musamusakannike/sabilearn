@@ -16,10 +16,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'How is **Depreciation** defined in the UIL-GET 311 Depreciation slides?',
       options: [
-        { id: 'a', text: 'A cash payment made annually to the Central Bank.' },
-        { id: 'b', text: 'The decrease in the value of a physical property or asset with the passage of time due to causes such as wear and tear and obsolescence.' },
-        { id: 'c', text: 'An increase in market value of land over time.' },
-        { id: 'd', text: 'The interest earned on a bank deposit.' },
+        { id: 'a', text: 'A mandatory annual cash payment remitted to the Central Bank by manufacturing firms.' },
+        { id: 'b', text: 'Decrease in a physical asset’s value over time.' },
+        { id: 'c', text: 'The steady appreciation in market value of undeveloped industrial land over time.' },
+        { id: 'd', text: 'The compound interest earned on a sinking-fund deposit held in a commercial bank.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -32,10 +32,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'Why is depreciation described as a **non-cash cost** that provides a tax benefit?',
       options: [
-        { id: 'a', text: 'Because no cash changes hands each year during depreciation, yet depreciation deductions reduce taxable income and therefore reduce income tax paid.' },
-        { id: 'b', text: 'Because businesses never pay for depreciated assets.' },
-        { id: 'c', text: 'Because depreciation is paid using foreign currency.' },
-        { id: 'd', text: 'Because government refunds 100% of the asset’s purchase price in Year 1.' },
+        { id: 'a', text: 'No cash leaves yearly, yet deductions lower taxable income and tax paid.' },
+        { id: 'b', text: 'Businesses acquire depreciated machinery on credit without ever paying the initial purchase price.' },
+        { id: 'c', text: 'Depreciation charges are settled exclusively in foreign currency rather than domestic Naira cash.' },
+        { id: 'd', text: 'Government tax authorities refund 100% of the asset’s purchase price in cash during Year 1.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -48,10 +48,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'Which of the following is NOT one of the three main **Purposes of Depreciation** listed in the slides?',
       options: [
-        { id: 'a', text: 'Permits realistic evaluation of profit earned by a company' },
-        { id: 'b', text: 'Provides income tax benefit on profit earned' },
-        { id: 'c', text: 'Sets aside a fund regularly to provide recovery of invested capital' },
-        { id: 'd', text: 'Eliminates the need for equipment maintenance' },
+        { id: 'a', text: 'Permits realistic evaluation of company profit' },
+        { id: 'b', text: 'Provides income tax benefit on earned profit' },
+        { id: 'c', text: 'Sets aside a fund for capital recovery' },
+        { id: 'd', text: 'Eliminates physical equipment maintenance' },
       ],
       correctAnswer: 'd',
       explanation:
@@ -64,10 +64,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'How is **Physical Depreciation** distinguished from **Functional Depreciation**?',
       options: [
-        { id: 'a', text: 'Physical depreciation stems from physical changes (wear & tear, corrosion, accident, age deterioration); functional depreciation stems from obsolescence, demand shifts, inadequate capacity, or regulatory changes.' },
-        { id: 'b', text: 'Functional depreciation is easier to evaluate than physical depreciation.' },
-        { id: 'c', text: 'Physical depreciation applies only to land; functional applies only to cash.' },
-        { id: 'd', text: 'Functional depreciation is caused exclusively by rust and corrosion.' },
+        { id: 'a', text: 'Physical comes from wear, corrosion, or accidents; functional comes from obsolescence or demand shifts.' },
+        { id: 'b', text: 'Functional depreciation is always easier to measure accurately than physical depreciation in practice.' },
+        { id: 'c', text: 'Physical depreciation applies exclusively to undeveloped land; functional applies only to liquid cash.' },
+        { id: 'd', text: 'Functional depreciation is caused purely by rust and mechanical wear, while physical comes from new patents.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -80,10 +80,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'Which external cause of depreciation must be **ignored** when calculating depreciation if it is only temporary?',
       options: [
-        { id: 'a', text: 'Temporary shrinkage in market value (only permanent fall in market value is considered)' },
-        { id: 'b', text: 'Obsolescence due to new inventions' },
-        { id: 'c', text: 'Expiry of leasehold property or patents' },
-        { id: 'd', text: 'Damage from fire or flood' },
+        { id: 'a', text: 'Temporary fall in market value' },
+        { id: 'b', text: 'Technological obsolescence from new inventions' },
+        { id: 'c', text: 'Expiry of leasehold property or registered patents' },
+        { id: 'd', text: 'Accidental destruction from fire, flood, or storms' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -131,7 +131,7 @@ export const topic5Depreciation: PublicQuizTopic = {
         { id: 'a', text: 'Office buildings' },
         { id: 'b', text: 'Warehouses' },
         { id: 'c', text: 'Land itself' },
-        { id: 'd', text: 'Manufacturing structures' },
+        { id: 'd', text: 'Factory structures' },
       ],
       correctAnswer: 'c',
       explanation:
@@ -144,10 +144,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'How is **Salvage Value** distinguished from **Scrap (Junk) Value**?',
       options: [
-        { id: 'a', text: 'Salvage value is the net amount obtainable when the property can still be sold as a useful unit; scrap/junk value is the profit when it cannot be used as a unit and must be dismantled and sold as junk/raw material.' },
-        { id: 'b', text: 'Scrap value is always larger than first cost.' },
-        { id: 'c', text: 'Salvage value can never be negative, whereas scrap value is always negative.' },
-        { id: 'd', text: 'They are completely unrelated to end-of-life disposal.' },
+        { id: 'a', text: 'Salvage is resale as a usable unit; scrap is dismantling for junk/raw material.' },
+        { id: 'b', text: 'Scrap value is always larger than the original installed first cost of the machine.' },
+        { id: 'c', text: 'Salvage value can never be negative, whereas scrap value is always a negative disposal charge.' },
+        { id: 'd', text: 'Both terms refer solely to upfront installation costs and are unrelated to end-of-life value.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -160,10 +160,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'What is **Book Value** (also called **Unamortized Cost**)?',
       options: [
-        { id: 'a', text: 'The open-market resale price of an asset in good condition.' },
-        { id: 'b', text: 'The difference between the original cost of a property and all depreciation charges made to date.' },
-        { id: 'c', text: 'The cost to buy a brand-new replacement machine today.' },
-        { id: 'd', text: 'The scrap metal weight multiplied by market price.' },
+        { id: 'a', text: 'The current open-market resale price of an asset in good working condition.' },
+        { id: 'b', text: 'Original cost minus cumulative depreciation to date.' },
+        { id: 'c', text: 'The price required to purchase a brand-new equally capable replacement machine.' },
+        { id: 'd', text: 'The total dismantled scrap metal weight multiplied by current market scrap price.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -176,10 +176,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'Which list gives the **five Methods of Depreciation** covered in the UIL-GET 311 Depreciation slides?',
       options: [
-        { id: 'a', text: 'Straight-Line, Declining Balance, Sum-of-the-Years’-Digits, Sinking-Fund, and Service Output' },
-        { id: 'b', text: 'NPV, IRR, Payback, Break-Even, and BCR' },
-        { id: 'c', text: 'Simple Interest, Compound Interest, Continuous Interest, Annuity, and Gradient' },
-        { id: 'd', text: 'Direct, Indirect, Progressive, Regressive, and Proportional' },
+        { id: 'a', text: 'Straight-Line, Declining Balance, SOYD, Sinking-Fund, Service Output' },
+        { id: 'b', text: 'Net Present Value, IRR, Payback Period, Break-Even, Benefit-Cost Ratio' },
+        { id: 'c', text: 'Simple Interest, Compound Interest, Continuous Interest, Annuity, Gradient' },
+        { id: 'd', text: 'Direct Tax, Indirect Tax, Progressive Tax, Regressive Tax, Proportional Tax' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -192,10 +192,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'In the **Straight-Line Method** of depreciation, what are the formulas for annual depreciation $D_t$ and book value $B_t$ at the end of year $t$?',
       options: [
-        { id: 'a', text: '$D_t = \\dfrac{P - F}{n}$ and $B_t = P - t\\left(\\dfrac{P - F}{n}\\right)$' },
+        { id: 'a', text: '$D_t = \\dfrac{P - F}{n}$ and $B_t = P - tD_t$' },
         { id: 'b', text: '$D_t = K(1 - K)^{t-1}P$ and $B_t = (1 - K)^t P$' },
-        { id: 'c', text: '$D_t = \\dfrac{P + F}{n}$ and $B_t = P + tD_t$' },
-        { id: 'd', text: '$D_t = \\dfrac{P - F}{X}x$ and $B_t = P - F$' },
+        { id: 'c', text: '$D_t = \\dfrac{P + F}{n}$ and $B_t = P + t\\left(\\dfrac{P + F}{n}\\right)$' },
+        { id: 'd', text: '$D_t = \\dfrac{P - F}{X}x$ and $B_t = P - \\dfrac{P - F}{X}t$' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -211,7 +211,7 @@ export const topic5Depreciation: PublicQuizTopic = {
         { id: 'a', text: '$D_5 = 10,000$, $B_5 = 50,000$' },
         { id: 'b', text: '$D_5 = 12,500$, $B_5 = 37,500$' },
         { id: 'c', text: '$D_5 = 10,000$, $B_5 = 40,000$' },
-        { id: 'd', text: '$D_5 = 8,000$, $B_5 = 60,000$' },
+        { id: 'd', text: '$D_5 = 18,000$, $B_5 = 60,000$' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -240,10 +240,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'What is a **major limitation** of the **Declining Balance Method** of depreciation?',
       options: [
-        { id: 'a', text: 'It charges equal depreciation every year.' },
-        { id: 'b', text: 'The book value at the end of the asset’s life may not exactly equal the estimated salvage value.' },
-        { id: 'c', text: 'It cannot be used for machinery.' },
-        { id: 'd', text: 'It requires knowing the total kilometres or units produced.' },
+        { id: 'a', text: 'It charges an identical fixed depreciation amount every single year.' },
+        { id: 'b', text: 'Ending book value may not equal salvage value.' },
+        { id: 'c', text: 'It is legally prohibited for manufacturing equipment and vehicles.' },
+        { id: 'd', text: 'It requires metering the exact kilometres or units produced every year.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -256,10 +256,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'When the Declining Balance rate $K$ is set to its maximum tax-allowed rate of $K = \\dfrac{2}{n}$, what is the method called?',
       options: [
-        { id: 'a', text: 'Double Declining Balance (DDB) method' },
+        { id: 'a', text: 'Double Declining Balance' },
         { id: 'b', text: 'Sum-of-the-Years’-Digits method' },
-        { id: 'c', text: 'Sinking-Fund method' },
-        { id: 'd', text: 'Straight-Line method' },
+        { id: 'c', text: 'Compound Sinking-Fund method' },
+        { id: 'd', text: 'Accelerated Straight-Line method' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -288,8 +288,8 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'For the same asset ($P = 100,000$, $n = 8\\text{ years}$, $K = 0.2$), compute the **Declining Balance** depreciation $D_5$ and book value $B_5$ for **Year 5**.',
       options: [
-        { id: 'a', text: '$D_5 = 8,192$, $B_5 = 32,768$' },
-        { id: 'b', text: '$D_5 = 10,240$, $B_5 = 40,960$' },
+        { id: 'a', text: '$D_5 = 8,192.00$, $B_5 = 32,768.00$' },
+        { id: 'b', text: '$D_5 = 10,240.00$, $B_5 = 40,960.00$' },
         { id: 'c', text: '$D_5 = 6,553.60$, $B_5 = 26,214.40$' },
         { id: 'd', text: '$D_5 = 8,888.89$, $B_5 = 33,333.33$' },
       ],
@@ -355,7 +355,7 @@ export const topic5Depreciation: PublicQuizTopic = {
         { id: 'a', text: '₦2,000,000' },
         { id: 'b', text: '₦1,600,000' },
         { id: 'c', text: '₦1,200,000' },
-        { id: 'd', text: '₦800,000' },
+        { id: 'd', text: '₦1,800,000' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -368,10 +368,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'How does the **book value decrease** over time under the **Sinking-Fund Method** compared to the **SOYD / Declining Balance** methods?',
       options: [
-        { id: 'a', text: 'Under Sinking-Fund, book value decreases at an INCREASING rate (annual net depreciation grows with time); under SOYD/DB, book value decreases at a DECREASING rate.' },
-        { id: 'b', text: 'Under Sinking-Fund, book value decreases at a constant linear rate.' },
-        { id: 'c', text: 'Under Sinking-Fund, annual depreciation is highest in Year 1 and drops every year.' },
-        { id: 'd', text: 'Both Sinking-Fund and SOYD produce identical annual depreciation.' },
+        { id: 'a', text: 'Sinking-Fund decreases at an increasing rate; SOYD/DB at a decreasing rate.' },
+        { id: 'b', text: 'Sinking-Fund decreases at a perfectly constant linear rate across every year of service.' },
+        { id: 'c', text: 'Sinking-Fund charges its highest depreciation in Year 1 and declines steadily each year.' },
+        { id: 'd', text: 'Both Sinking-Fund and SOYD generate identical annual depreciation schedules at all rates.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -401,9 +401,9 @@ export const topic5Depreciation: PublicQuizTopic = {
         'Continuing the Sinking-Fund example ($P = 100,000$, $F = 20,000$, $n = 8$, $i = 12\\%$, $(A/F, 12\\%, 8) = 0.0813$, $(F/P, 12\\%, 4) = 1.574$), what is the net depreciation in Year 5 ($D_5$)?',
       options: [
         { id: 'a', text: '$10,237.30$' },
-        { id: 'b', text: '$6,504.00$' },
+        { id: 'b', text: '$16,504.00$' },
         { id: 'c', text: '$12,837.74$' },
-        { id: 'd', text: '$8,158.62$' },
+        { id: 'd', text: '$11,158.62$' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -432,10 +432,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'When is the **Service Output Method** of depreciation preferred over time-based methods?',
       options: [
-        { id: 'a', text: 'When asset wear is driven by actual usage or service rendered (e.g., km of road laid, hours run, units produced) rather than calendar time.' },
-        { id: 'b', text: 'When the asset is land.' },
-        { id: 'c', text: 'When interest rates exceed 20%.' },
-        { id: 'd', text: 'When salvage value equals first cost.' },
+        { id: 'a', text: 'When wear depends on actual usage or output rather than calendar time.' },
+        { id: 'b', text: 'When the depreciable asset is undeveloped industrial real estate or land.' },
+        { id: 'c', text: 'When benchmark Central Bank interest rates exceed $20\\%$ per annum.' },
+        { id: 'd', text: 'When the estimated salvage value equals or exceeds the original first cost.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -480,10 +480,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'What is the difference between **Service Life** and **Depreciable Life (Recovery Period)**?',
       options: [
-        { id: 'a', text: 'Service life (economic/useful life) is the period during which using the property is economically feasible; depreciable life (recovery period) is the number of years over which the asset is depreciated by the chosen method, and the two may differ.' },
-        { id: 'b', text: 'Service life is always 10 years, while recovery period is always 5 years.' },
-        { id: 'c', text: 'Depreciable life ignores the depreciation method completely.' },
-        { id: 'd', text: 'They are always legally required to be identical.' },
+        { id: 'a', text: 'Service life is economically feasible use; depreciable life is the recovery period set by the method.' },
+        { id: 'b', text: 'Service life is fixed at 10 years for all machinery, whereas recovery period is fixed at 5 years.' },
+        { id: 'c', text: 'Depreciable life ignores the chosen depreciation method and depends solely on resale market prices.' },
+        { id: 'd', text: 'Service life and recovery period are legally mandated to be identical for every industrial asset.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -496,10 +496,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'In depreciation terminology, what is included in the **First Cost ($P$)** of an asset?',
       options: [
-        { id: 'a', text: 'Only the factory list price before shipping.' },
-        { id: 'b', text: 'Purchase price plus delivery, installation, commissioning fees, and other depreciable direct costs incurred to prepare the asset for use.' },
-        { id: 'c', text: 'Only annual fuel and operator wages.' },
-        { id: 'd', text: 'The resale price at the end of Year 10.' },
+        { id: 'a', text: 'Only the base factory catalog price before freight, duties, or installation.' },
+        { id: 'b', text: 'Purchase price plus delivery, installation, and commissioning costs.' },
+        { id: 'c', text: 'Only recurring annual fuel, electricity, and direct operator labour wages.' },
+        { id: 'd', text: 'The estimated open-market resale price expected at the end of Year 10.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -512,10 +512,10 @@ export const topic5Depreciation: PublicQuizTopic = {
       question:
         'For an equipment with $P = 100,000$, $F = 20,000$, $n = 8\\text{ years}$, which method gives the **highest Year 1 depreciation** among Straight-Line, Declining Balance ($K = 0.2$), and SOYD?',
       options: [
-        { id: 'a', text: 'Straight-Line ($10,000$)' },
-        { id: 'b', text: 'Declining Balance with $K = 0.2$ ($20,000$)' },
-        { id: 'c', text: 'SOYD ($17,777.78$)' },
-        { id: 'd', text: 'All three give the exact same Year 1 depreciation.' },
+        { id: 'a', text: 'Straight-Line ($10,000.00$)' },
+        { id: 'b', text: 'Declining Balance ($20,000.00$)' },
+        { id: 'c', text: 'Sum-of-the-Years’-Digits ($17,777.78$)' },
+        { id: 'd', text: 'All three produce identical Year 1 charges' },
       ],
       correctAnswer: 'b',
       explanation:

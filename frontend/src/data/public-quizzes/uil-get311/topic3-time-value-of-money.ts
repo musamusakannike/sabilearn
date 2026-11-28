@@ -16,10 +16,10 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
       question:
         'On a standard **Cash Flow Diagram**, how are revenues (cash inflows) and disbursements (cash outflows) represented?',
       options: [
-        { id: 'a', text: 'Revenues with downward arrows; disbursements with upward arrows.' },
-        { id: 'b', text: 'Revenues with upward-pointing arrows on the positive axis; disbursements with downward-pointing arrows on the negative axis.' },
-        { id: 'c', text: 'Both revenues and disbursements with horizontal arrows.' },
-        { id: 'd', text: 'Revenues with dashed circles; disbursements with solid squares.' },
+        { id: 'a', text: 'Revenues with downward arrows on the negative axis; disbursements with upward arrows on the positive axis.' },
+        { id: 'b', text: 'Revenues with upward arrows; disbursements with downward arrows.' },
+        { id: 'c', text: 'Both revenues and disbursements with horizontal arrows scaled to the interest rate.' },
+        { id: 'd', text: 'Revenues with dashed circles above the line; disbursements with solid squares below the line.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -32,10 +32,10 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
       question:
         'How should **Sunk Costs** (expenses incurred before time $t = 0$) be treated in an engineering cash flow analysis?',
       options: [
-        { id: 'a', text: 'Added to the initial capital investment at $t = 0$.' },
-        { id: 'b', text: 'Ignored (treated as value $= 0$) because they occurred before the analysis period and cannot be altered by the decision.' },
-        { id: 'c', text: 'Subtracted from salvage value at the end of the project.' },
-        { id: 'd', text: 'Compounded forward to the end of the project life.' },
+        { id: 'a', text: 'Added directly to the initial capital outlay at time $t = 0$ on the diagram.' },
+        { id: 'b', text: 'Ignored (value $= 0$) since past costs cannot be changed.' },
+        { id: 'c', text: 'Subtracted from the estimated salvage value at the end of the project life.' },
+        { id: 'd', text: 'Compounded forward at the MARR to the end of the project horizon.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -49,9 +49,9 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
         'How does the growth curve of **Compound Interest** compare to that of **Simple Interest** over time?',
       options: [
         { id: 'a', text: 'Simple interest increases exponentially while compound interest increases linearly.' },
-        { id: 'b', text: 'Compound interest increases exponentially while simple interest increases linearly.' },
-        { id: 'c', text: 'Both increase linearly at the exact same slope.' },
-        { id: 'd', text: 'Compound interest decreases over time while simple interest remains flat.' },
+        { id: 'b', text: 'Compound interest grows exponentially; simple interest grows linearly.' },
+        { id: 'c', text: 'Both curves increase linearly at the exact same constant slope over all periods.' },
+        { id: 'd', text: 'Compound interest decreases exponentially while simple interest remains constant.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -144,10 +144,10 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
       question:
         'What are the three methods of computing Compound Interest listed in the GET 311 handwritten class notes?',
       options: [
-        { id: 'a', text: 'Straight-line, Declining balance, and Sinking fund' },
-        { id: 'b', text: 'Conventional (year-by-year) method, Single payment formula method, and Standard table values method' },
-        { id: 'c', text: 'NPV, IRR, and Payback period' },
-        { id: 'd', text: 'Direct, Indirect, and Proportional methods' },
+        { id: 'a', text: 'Straight-line, Declining balance, and Sinking-fund methods' },
+        { id: 'b', text: 'Conventional, Single payment, and Standard table methods' },
+        { id: 'c', text: 'Net Present Value, Internal Rate of Return, and Payback period' },
+        { id: 'd', text: 'Direct taxation, Indirect taxation, and Proportional discounting' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -162,8 +162,8 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
       options: [
         { id: 'a', text: '$A = P\\left[\\dfrac{i(1+i)^n}{(1+i)^n - 1}\\right]$' },
         { id: 'b', text: '$A = P\\left[\\dfrac{(1+i)^n - 1}{i(1+i)^n}\\right]$' },
-        { id: 'c', text: '$A = F\\left[\\dfrac{i}{(1+i)^n - 1}\\right]$' },
-        { id: 'd', text: '$A = P(1+i)^n$' },
+        { id: 'c', text: '$A = F\\left[\\dfrac{i(1+i)^n}{(1+i)^n + 1}\\right]$' },
+        { id: 'd', text: '$A = P\\left[\\dfrac{(1+i)^n + 1}{i(1+i)^n}\\right]$' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -178,8 +178,8 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
       options: [
         { id: 'a', text: '$P = A\\left[\\dfrac{(1+i)^n - 1}{i}\\right]$' },
         { id: 'b', text: '$P = A\\left[\\dfrac{(1+i)^n - 1}{i(1+i)^n}\\right]$' },
-        { id: 'c', text: '$P = A\\left[\\dfrac{i}{(1+i)^n - 1}\\right]$' },
-        { id: 'd', text: '$P = \\dfrac{A}{(1+i)^n}$' },
+        { id: 'c', text: '$P = A\\left[\\dfrac{i(1+i)^n}{(1+i)^n - 1}\\right]$' },
+        { id: 'd', text: '$P = A\\left[\\dfrac{(1+i)^n + 1}{i(1+i)^n}\\right]$' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -194,8 +194,8 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
       options: [
         { id: 'a', text: '$A = F\\left[\\dfrac{i}{(1+i)^n - 1}\\right]$' },
         { id: 'b', text: '$A = F\\left[\\dfrac{(1+i)^n - 1}{i}\\right]$' },
-        { id: 'c', text: '$A = F(1+i)^n$' },
-        { id: 'd', text: '$A = \\dfrac{F}{(1+i)^n}$' },
+        { id: 'c', text: '$A = F\\left[\\dfrac{i(1+i)^n}{(1+i)^n - 1}\\right]$' },
+        { id: 'd', text: '$A = F\\left[\\dfrac{(1+i)^n - 1}{i(1+i)^n}\\right]$' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -211,7 +211,7 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
         { id: 'a', text: '$F = A\\left[\\dfrac{(1+i)^n - 1}{i}\\right]$' },
         { id: 'b', text: '$F = A\\left[\\dfrac{i(1+i)^n}{(1+i)^n - 1}\\right]$' },
         { id: 'c', text: '$F = A\\left[\\dfrac{(1+i)^n - 1}{i(1+i)^n}\\right]$' },
-        { id: 'd', text: '$F = A(1+i)^n$' },
+        { id: 'd', text: '$F = A\\left[\\dfrac{i}{(1+i)^n - 1}\\right]$' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -225,13 +225,13 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
         'A factory manager earned $\\text{₦}20,000$ in 2004 at an annual interest rate of $15\\%$. In 2024 ($20\\text{ years}$ later), a newly hired manager earns $\\text{₦}200,000$. What is the equivalent future value of the first manager’s salary in 2024?',
       options: [
         { id: 'a', text: '₦200,000' },
-        { id: 'b', text: '₦327,331 (approx. ₦327,330)' },
+        { id: 'b', text: '₦327,330' },
         { id: 'c', text: '₦127,330' },
-        { id: 'd', text: '₦80,000' },
+        { id: 'd', text: '₦280,450' },
       ],
       correctAnswer: 'b',
       explanation:
-        'With $P = \\text{₦}20,000$, $i = 0.15$, $n = 2024 - 2004 = 20$: $$F_{20} = 20,000(1 + 0.15)^{20} = 20,000 \\times 16.3665 \\approx \\text{₦}327,331$$',
+        'With $P = \\text{₦}20,000$, $i = 0.15$, $n = 2024 - 2004 = 20$: $$F_{20} = 20,000(1 + 0.15)^{20} = 20,000 \\times 16.3665 \\approx \\text{₦}327,330$$',
     },
     {
       id: 't3-q15',
@@ -240,10 +240,10 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
       question:
         'In the factory manager problem above ($F_{20} \\approx \\text{₦}327,330$ vs. second manager’s $\\text{₦}200,000$), what is the salary differential in 2024 and who had the better salary?',
       options: [
-        { id: 'a', text: 'Differential = ₦127,330; the first manager had the better salary.' },
-        { id: 'b', text: 'Differential = ₦180,000; the second manager had the better salary.' },
-        { id: 'c', text: 'Differential = ₦0; both salaries are economically identical.' },
-        { id: 'd', text: 'Differential = ₦127,330; the second manager had the better salary.' },
+        { id: 'a', text: '₦127,330; first manager had the better salary' },
+        { id: 'b', text: '₦180,000; second manager had the better salary' },
+        { id: 'c', text: '₦0; both salaries are economically identical' },
+        { id: 'd', text: '₦127,330; second manager had the better salary' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -400,7 +400,7 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
       question:
         'If $\\text{₦}100,000$ is invested at $10\\%$ interest for $2\\text{ years}$, what is the difference between **compound interest** and **simple interest** earned?',
       options: [
-        { id: 'a', text: '₦0' },
+        { id: 'a', text: '₦500' },
         { id: 'b', text: '₦1,000' },
         { id: 'c', text: '₦2,000' },
         { id: 'd', text: '₦10,000' },
@@ -419,7 +419,7 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
         { id: 'a', text: 'Federal Inland Revenue Service (FIRS)' },
         { id: 'b', text: 'Central Bank of Nigeria (CBN)' },
         { id: 'c', text: 'Nigerian Society of Engineers (NSE)' },
-        { id: 'd', text: 'Ministry of Works' },
+        { id: 'd', text: 'Federal Ministry of Works & Housing' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -432,10 +432,10 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
       question:
         'What does the standard interest factor notation $(F/P, i\\%, n)$ mean?',
       options: [
-        { id: 'a', text: 'Find Present Worth $P$ given Future Worth $F$' },
-        { id: 'b', text: 'Find Future Worth $F$ given Present Worth $P$ at interest rate $i\\%$ for $n$ periods' },
-        { id: 'c', text: 'Divide Future Worth by Annual Worth' },
-        { id: 'd', text: 'Find the interest rate $i$ given $P$ and $n$' },
+        { id: 'a', text: 'Find Present Worth $P$ given Future Worth $F$ at interest rate $i\\%$ for $n$ periods' },
+        { id: 'b', text: 'Find Future Worth $F$ given Present Worth $P$' },
+        { id: 'c', text: 'Divide Future Worth $F$ by Annual Worth $A$ across $n$ compounding years' },
+        { id: 'd', text: 'Find the unknown interest rate $i\\%$ given Present Worth $P$ and period $n$' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -448,10 +448,10 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
       question:
         'Using the Rule of Compound Interest, approximately how many years does it take for an investment to **double** at $10\\%$ compounded annually?',
       options: [
-        { id: 'a', text: '$5.0\\text{ years}$' },
+        { id: 'a', text: '$5.00\\text{ years}$' },
         { id: 'b', text: '$7.27\\text{ years}$' },
-        { id: 'c', text: '$10.0\\text{ years}$' },
-        { id: 'd', text: '$6.0\\text{ years}$' },
+        { id: 'c', text: '$10.00\\text{ years}$' },
+        { id: 'd', text: '$6.15\\text{ years}$' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -480,10 +480,10 @@ export const topic3TimeValueOfMoney: PublicQuizTopic = {
       question:
         'Which of the following is NOT listed as a factor affecting the **purchasing power of money** in the GET 311 lecture notes?',
       options: [
-        { id: 'a', text: 'Inflation' },
-        { id: 'b', text: 'Government policies' },
-        { id: 'c', text: 'Exchange rate of currencies' },
-        { id: 'd', text: 'Physical weight of the coins' },
+        { id: 'a', text: 'General price inflation' },
+        { id: 'b', text: 'Government fiscal policies' },
+        { id: 'c', text: 'Foreign currency exchange rate' },
+        { id: 'd', text: 'Physical coin weight' },
       ],
       correctAnswer: 'd',
       explanation:

@@ -16,10 +16,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'According to the UIL-GET 311 lecture notes, how is the relationship between engineering and technology best described?',
       options: [
-        { id: 'a', text: 'Engineering is the foundation of technology, and technology is the outcome of successful engineering activities.' },
-        { id: 'b', text: 'Technology is the foundation of science, while engineering only manages finished products.' },
-        { id: 'c', text: 'Engineering and technology are completely independent disciplines with no overlap.' },
-        { id: 'd', text: 'Technology precedes science and replaces engineering design.' },
+        { id: 'a', text: 'Engineering is the foundation of technology, and technology is its outcome.' },
+        { id: 'b', text: 'Technology is the foundation of science, while engineering only manages finished goods and logistics.' },
+        { id: 'c', text: 'Engineering and technology are independent fields that never build upon each other in practice.' },
+        { id: 'd', text: 'Technology precedes both science and engineering and replaces engineering design in industry.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -32,10 +32,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'In economics, the classic definition describes it as a social science studying human behaviour as a relationship between "ends" and "scarce means" which have alternative uses. What do "ends" refer to?',
       options: [
-        { id: 'a', text: 'Natural resources and capital equipment' },
-        { id: 'b', text: 'Human wants (desires/luxuries) and needs (necessities for survival)' },
-        { id: 'c', text: 'Government fiscal and monetary policies' },
-        { id: 'd', text: 'Final disposal costs of an engineering asset' },
+        { id: 'a', text: 'Natural resources, industrial raw materials, and capital machinery used in production' },
+        { id: 'b', text: 'Human wants (desires) and needs (survival necessities)' },
+        { id: 'c', text: 'Government fiscal spending, central bank monetary tools, and national budgets' },
+        { id: 'd', text: 'Final decommissioning and disposal costs incurred at the end of an asset life' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -64,10 +64,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'Which of the following falls squarely within the scope of **Macroeconomics**?',
       options: [
-        { id: 'a', text: 'Pricing strategy of a single bakery in Ilorin' },
-        { id: 'b', text: 'Hiring decisions of one civil engineering consultancy' },
-        { id: 'c', text: 'Impact of fiscal policy, nationwide inflation, unemployment, and global trading patterns' },
-        { id: 'd', text: 'A student choosing between buying a textbook or a calculator' },
+        { id: 'a', text: 'Pricing strategy and daily bread output of a single neighborhood bakery in Ilorin' },
+        { id: 'b', text: 'Hiring decisions and monthly salary negotiation of one private civil engineering firm' },
+        { id: 'c', text: 'Fiscal policy, nationwide inflation, unemployment, and global trade' },
+        { id: 'd', text: 'A 300-level engineering student deciding between buying a textbook or a scientific calculator' },
       ],
       correctAnswer: 'c',
       explanation:
@@ -80,10 +80,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'How does **Fiscal Policy** differ from **Monetary Policy**?',
       options: [
-        { id: 'a', text: 'Fiscal policy is controlled by the Central Bank; monetary policy is controlled by private firms.' },
-        { id: 'b', text: 'Fiscal policy covers government taxation, spending, and budgeting; monetary policy covers Central Bank actions influencing money supply and credit.' },
-        { id: 'c', text: 'Fiscal policy regulates exchange rates only; monetary policy regulates company income tax.' },
-        { id: 'd', text: 'Both terms mean exactly the same thing in engineering economics.' },
+        { id: 'a', text: 'Fiscal policy is directed by the Central Bank to control money supply; monetary policy is set by private commercial banks to fix loan rates.' },
+        { id: 'b', text: 'Fiscal policy covers government tax, spending, and budgets; monetary policy covers Central Bank control of money and credit.' },
+        { id: 'c', text: 'Fiscal policy regulates foreign exchange rates and import tariffs only; monetary policy sets corporate income tax and personal tax brackets.' },
+        { id: 'd', text: 'Both policies are administered simultaneously by the Ministry of Finance and serve the exact same regulatory function in an economy.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -128,10 +128,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'When making building blocks, purchasing sand automatically requires purchasing cement. Sand and cement are therefore:',
       options: [
-        { id: 'a', text: 'Competitive goods' },
+        { id: 'a', text: 'Competitive goods (substitutes)' },
         { id: 'b', text: 'Complementary goods' },
-        { id: 'c', text: 'Comparative goods' },
-        { id: 'd', text: 'Inferior goods' },
+        { id: 'c', text: 'Comparative advantage goods' },
+        { id: 'd', text: 'Inferior Giffen goods' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -160,10 +160,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'Specialized goods or services that an individual, firm, or country can produce at a relatively lower opportunity cost are known as:',
       options: [
-        { id: 'a', text: 'Comparative goods or services' },
+        { id: 'a', text: 'Comparative goods' },
         { id: 'b', text: 'Complementary goods or services' },
-        { id: 'c', text: 'Consumer goods or services' },
-        { id: 'd', text: 'Fiduciary goods' },
+        { id: 'c', text: 'Direct consumer goods or services' },
+        { id: 'd', text: 'Fiduciary exchange goods' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -176,10 +176,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'How are **Utility** and **Value** distinguished in Engineering Economics?',
       options: [
-        { id: 'a', text: 'Utility is the price in Naira; value is the weight of the product.' },
-        { id: 'b', text: 'Utility is the power of a good or service to satisfy human needs/wants; value is the measure or appraisal of that utility.' },
-        { id: 'c', text: 'Value is the power to satisfy wants; utility is the market tax applied to it.' },
-        { id: 'd', text: 'Utility applies only to services, while value applies only to physical goods.' },
+        { id: 'a', text: 'Utility is the monetary price in Naira on the open market; value is the physical durability and weight of the manufactured product.' },
+        { id: 'b', text: 'Utility is the power to satisfy human needs; value is the appraisal of that utility.' },
+        { id: 'c', text: 'Value is the power of a product to satisfy human wants; utility is the government tax and markup applied during distribution.' },
+        { id: 'd', text: 'Utility applies exclusively to intangible services, whereas value applies only to physical capital equipment and real estate.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -192,10 +192,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'Because human needs and wants are unlimited while resources are scarce, individuals use a **scale of preference** and make choices based on:',
       options: [
-        { id: 'a', text: 'Sunk cost' },
-        { id: 'b', text: 'Opportunity cost (alternative forgone)' },
-        { id: 'c', text: 'Salvage value' },
-        { id: 'd', text: 'Depreciation rate' },
+        { id: 'a', text: 'Unrecoverable sunk cost from past budgets' },
+        { id: 'b', text: 'Opportunity cost' },
+        { id: 'c', text: 'Estimated end-of-life salvage value' },
+        { id: 'd', text: 'Annual straight-line depreciation rate' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -208,10 +208,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'Which statement accurately expresses the **conventional Law of Demand**?',
       options: [
-        { id: 'a', text: 'The higher the price, the higher the quantity demanded.' },
-        { id: 'b', text: 'The higher the price, the lower the quantity demanded, and vice versa (all else equal).' },
-        { id: 'c', text: 'Price has no effect on the quantity consumers are willing and able to buy.' },
-        { id: 'd', text: 'Demand only changes when government alters tax rates.' },
+        { id: 'a', text: 'The higher the market price of a commodity, the higher the quantity consumers are willing to buy.' },
+        { id: 'b', text: 'Higher price leads to lower quantity demanded, and vice versa.' },
+        { id: 'c', text: 'Market price changes have no measurable effect on the quantity consumers are willing and able to buy.' },
+        { id: 'd', text: 'Quantity demanded changes only when the government alters personal income tax or VAT rates.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -224,10 +224,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'What occurs at **Market Equilibrium** on a Demand and Supply curve?',
       options: [
-        { id: 'a', text: 'Demand exceeds supply, causing continuous price inflation.' },
-        { id: 'b', text: 'Supply exceeds demand, forcing producers to shut down.' },
-        { id: 'c', text: 'Demand equals supply, the price is stable, and there is no internal pressure for price to change.' },
-        { id: 'd', text: 'Price drops to zero because goods become free.' },
+        { id: 'a', text: 'Consumer demand permanently exceeds producer supply, causing continuous cost-push price inflation across markets.' },
+        { id: 'b', text: 'Producer supply exceeds consumer demand, forcing engineering firms to shut down and liquidate machinery.' },
+        { id: 'c', text: 'Demand equals supply and price remains stable without internal pressure to change.' },
+        { id: 'd', text: 'Market price falls to zero because goods become abundant enough to satisfy all human wants freely.' },
       ],
       correctAnswer: 'c',
       explanation:
@@ -257,9 +257,9 @@ export const topic1Foundations: PublicQuizTopic = {
         'An **Abnormal Demand Curve** violates the conventional law of demand because:',
       options: [
         { id: 'a', text: 'Higher prices lead to higher quantity demanded.' },
-        { id: 'b', text: 'Supply becomes completely vertical.' },
-        { id: 'c', text: 'Consumers stop buying goods when prices fall.' },
-        { id: 'd', text: 'Government fixes the price below equilibrium.' },
+        { id: 'b', text: 'Producer supply becomes completely vertical regardless of cost.' },
+        { id: 'c', text: 'Consumers stop purchasing essential goods whenever prices fall.' },
+        { id: 'd', text: 'Government regulators fix the retail price permanently below equilibrium.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -274,7 +274,7 @@ export const topic1Foundations: PublicQuizTopic = {
       options: [
         { id: 'a', text: 'Quality perception' },
         { id: 'b', text: 'Anticipatory scarcity' },
-        { id: 'c', text: 'Veblen effect' },
+        { id: 'c', text: 'Veblen prestige effect' },
         { id: 'd', text: 'Ignorance of true cost' },
       ],
       correctAnswer: 'b',
@@ -288,10 +288,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'Luxury jewelry, latest-year branded gadgets, and estates in exclusive districts that wealthy buyers demand more of as prices rise to showcase status are called:',
       options: [
-        { id: 'a', text: 'Giffen goods' },
-        { id: 'b', text: 'Veblen (prestige) goods' },
+        { id: 'a', text: 'Giffen inferior goods' },
+        { id: 'b', text: 'Veblen goods' },
         { id: 'c', text: 'Complementary goods' },
-        { id: 'd', text: 'Producer goods' },
+        { id: 'd', text: 'Capital producer goods' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -322,8 +322,8 @@ export const topic1Foundations: PublicQuizTopic = {
       options: [
         { id: 'a', text: 'Quality perception' },
         { id: 'b', text: 'Anticipatory scarcity' },
-        { id: 'c', text: 'Giffen effect' },
-        { id: 'd', text: 'Marginal utility' },
+        { id: 'c', text: 'Giffen staple effect' },
+        { id: 'd', text: 'Diminishing marginal utility' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -339,7 +339,7 @@ export const topic1Foundations: PublicQuizTopic = {
         { id: 'a', text: 'Land, Labour, Capital, and Entrepreneurship' },
         { id: 'b', text: 'Money, Machines, Markets, and Management' },
         { id: 'c', text: 'Demand, Supply, Inflation, and Taxation' },
-        { id: 'd', text: 'Utility, Value, Price, and Profit' },
+        { id: 'd', text: 'Utility, Value, Equilibrium Price, and Profit' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -368,9 +368,9 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'According to the lecture notes, how do **Graduate Engineers** compare to **COREN Registered Engineers** in the labour hierarchy?',
       options: [
-        { id: 'a', text: 'Graduate Engineers are semi-skilled; COREN Registered Engineers are skilled.' },
+        { id: 'a', text: 'Graduate Engineers are semi-skilled labour; COREN Registered Engineers are skilled labour.' },
         { id: 'b', text: 'Graduate Engineers are skilled labour; COREN Registered Engineers are professional labour.' },
-        { id: 'c', text: 'Both are classified as unskilled labour until they own a firm.' },
+        { id: 'c', text: 'Both groups remain classified as unskilled labour until they establish their own consultancy.' },
         { id: 'd', text: 'Graduate Engineers are professional labour; COREN Registered Engineers are entrepreneurs.' },
       ],
       correctAnswer: 'b',
@@ -384,10 +384,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'Which statement best summarizes the lecture note’s takeaway on **Hard Skills vs. Soft Skills** for engineers?',
       options: [
-        { id: 'a', text: 'Only hard skills matter in engineering workplaces.' },
-        { id: 'b', text: 'Soft skills replace the need for technical engineering knowledge.' },
-        { id: 'c', text: 'Hard skills get you hired or help start an enterprise, while soft skills keep you relevant, earn recommendations, and sustain career growth.' },
-        { id: 'd', text: 'Soft skills are acquired strictly through university laboratory courses.' },
+        { id: 'a', text: 'Only technical hard skills determine hiring, promotion, and long-term survival in engineering workplaces.' },
+        { id: 'b', text: 'Strong soft skills completely replace the need for formal technical engineering training and calculations.' },
+        { id: 'c', text: 'Hard skills get you hired; soft skills keep you relevant and advance your career.' },
+        { id: 'd', text: 'Soft skills are acquired exclusively through accredited university laboratory practicals and exams.' },
       ],
       correctAnswer: 'c',
       explanation:
@@ -417,9 +417,9 @@ export const topic1Foundations: PublicQuizTopic = {
         'Which set lists the five key characteristics of entrepreneurs outlined in the GET 311 notes?',
       options: [
         { id: 'a', text: 'Innovation, Risk-taking, Problem-solving, Resilience, and Vision' },
-        { id: 'b', text: 'Compliance, Caution, Routine, Isolation, and Subsidy' },
-        { id: 'c', text: 'Taxation, Inflation, Depreciation, Depletion, and Amortization' },
-        { id: 'd', text: 'Simplicity, Convenience, Certainty, Equity, and Stability' },
+        { id: 'b', text: 'Strict Compliance, Caution, Routine, Isolation, and Government Subsidy' },
+        { id: 'c', text: 'Taxation, Inflation, Depreciation, Depletion, and Capital Amortization' },
+        { id: 'd', text: 'Simplicity, Convenience, Certainty, Equity, and Fiscal Stability' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -432,10 +432,10 @@ export const topic1Foundations: PublicQuizTopic = {
       question:
         'What is **Engineering Economics**?',
       options: [
-        { id: 'a', text: 'The study of mechanical stress in structures without regard to cost.' },
-        { id: 'b', text: 'The application of economic principles, theories, and concepts to engineering activities to evaluate alternatives and make intelligent decisions.' },
-        { id: 'c', text: 'The drafting of national tax legislation by civil servants.' },
-        { id: 'd', text: 'The exclusive study of stock market trading by banks.' },
+        { id: 'a', text: 'The analysis of mechanical stress and structural failure in materials without considering project cost.' },
+        { id: 'b', text: 'Applying economic principles to evaluate engineering alternatives for decision-making.' },
+        { id: 'c', text: 'The drafting of national fiscal tax legislation and monetary policy by government civil servants.' },
+        { id: 'd', text: 'The exclusive study of stock market trading, treasury bills, and commercial banking operations.' },
       ],
       correctAnswer: 'b',
       explanation:

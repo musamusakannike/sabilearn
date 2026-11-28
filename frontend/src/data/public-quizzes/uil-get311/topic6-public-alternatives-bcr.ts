@@ -16,10 +16,10 @@ export const topic6PublicAlternativesBcr: PublicQuizTopic = {
       question:
         'What is the **main objective** of any **public alternative** (government/public-sector project) according to the UIL-GET 311 slides?',
       options: [
-        { id: 'a', text: 'To maximize private corporate dividends.' },
-        { id: 'b', text: 'To provide goods or services to the public at the minimum cost, undertaken only when equivalent benefits are at least equal to equivalent costs.' },
-        { id: 'c', text: 'To eliminate all operating and maintenance expenses.' },
-        { id: 'd', text: 'To avoid using time-value-of-money conversions.' },
+        { id: 'a', text: 'To maximize annual private corporate shareholder dividends and stock market valuation.' },
+        { id: 'b', text: 'To deliver public goods/services at minimum cost when benefits $\\ge$ costs.' },
+        { id: 'c', text: 'To eliminate all recurring annual operation and maintenance expenses from budgets.' },
+        { id: 'd', text: 'To avoid discounting cash flows across different time periods in public projects.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -33,9 +33,9 @@ export const topic6PublicAlternativesBcr: PublicQuizTopic = {
         'Which expressions correctly represent the **Benefit-Cost (BC) Ratio** on Present Worth, Future Worth, and Annual Equivalent bases?',
       options: [
         { id: 'a', text: '$BC = \\dfrac{B_P}{P + C_P} = \\dfrac{B_F}{P_F + C_F} = \\dfrac{B_A}{P_A + C}$' },
-        { id: 'b', text: '$BC = \\dfrac{P + C_P}{B_P}$' },
-        { id: 'c', text: '$BC = B_P - (P + C_P)$' },
-        { id: 'd', text: '$BC = \\dfrac{P}{B_A}$' },
+        { id: 'b', text: '$BC = \\dfrac{P + C_P}{B_P} = \\dfrac{P_F + C_F}{B_F} = \\dfrac{P_A + C}{B_A}$' },
+        { id: 'c', text: '$BC = B_P - (P + C_P) = B_F - (P_F + C_F) = B_A - (P_A + C)$' },
+        { id: 'd', text: '$BC = \\dfrac{B_P + P}{C_P} = \\dfrac{B_F + P_F}{C_F} = \\dfrac{B_A + P_A}{C}$' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -48,10 +48,10 @@ export const topic6PublicAlternativesBcr: PublicQuizTopic = {
       question:
         'What is the decision criterion for accepting a single public project using the **Benefit-Cost (BC) Ratio**?',
       options: [
-        { id: 'a', text: 'Accept if $BC \\ge 1$; cancel/reject if $BC < 1$.' },
-        { id: 'b', text: 'Accept if $BC < 1$.' },
-        { id: 'c', text: 'Accept only if $BC = 0$.' },
-        { id: 'd', text: 'Accept if $BC > 10$.' },
+        { id: 'a', text: 'Accept if $BC \\ge 1$; reject if $BC < 1$.' },
+        { id: 'b', text: 'Accept if $BC < 1$; reject if $BC \\ge 1$.' },
+        { id: 'c', text: 'Accept only if $BC = 0$; reject otherwise.' },
+        { id: 'd', text: 'Accept only if $BC > 10$; reject if lower.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -96,10 +96,10 @@ export const topic6PublicAlternativesBcr: PublicQuizTopic = {
       question:
         'Finishing the Bridge Construction example: Annual equivalent fuel savings $A = 849,015$, $(P/A, 12\\%, 15) = 6.8109$, and Total Present Worth of Costs $P + C_P = 5,021,635$. What are $B_P$, the **BC Ratio**, and the decision?',
       options: [
-        { id: 'a', text: '$B_P = 5,782,556$, $BC = 1.1515$; project is justified ($BC > 1$).' },
-        { id: 'b', text: '$B_P = 4,500,000$, $BC = 0.896$; reject project.' },
-        { id: 'c', text: '$B_P = 5,782,556$, $BC = 0.868$; reject project.' },
-        { id: 'd', text: '$B_P = 6,810,900$, $BC = 1.356$; project is justified.' },
+        { id: 'a', text: '$B_P = 5,782,556$, $BC = 1.1515$ (Justified)' },
+        { id: 'b', text: '$B_P = 4,500,000$, $BC = 0.8961$ (Rejected)' },
+        { id: 'c', text: '$B_P = 5,782,556$, $BC = 0.8684$ (Rejected)' },
+        { id: 'd', text: '$B_P = 6,810,900$, $BC = 1.3563$ (Justified)' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -128,10 +128,10 @@ export const topic6PublicAlternativesBcr: PublicQuizTopic = {
       question:
         'In the same Hydroelectric project: Initial cost $= 80,000,000$, annual O&M $= 3,000,000$, annual power sales (offsetting cost) $= 6,000,000$, $(P/A, 12\\%, 50) = 8.3045$. What is the **Present Worth of Net Costs** and the resulting **BC Ratio** (given $B_P = 83,045,000$)?',
       options: [
-        { id: 'a', text: 'Net PW of Costs $= 55,086,500$; $BC = 1.508$ (Implement project).' },
-        { id: 'b', text: 'Net PW of Costs $= 104,913,500$; $BC = 0.792$ (Reject project).' },
-        { id: 'c', text: 'Net PW of Costs $= 80,000,000$; $BC = 1.038$ (Implement project).' },
-        { id: 'd', text: 'Net PW of Costs $= 65,000,000$; $BC = 1.278$ (Implement project).' },
+        { id: 'a', text: '$55,086,500$; $BC = 1.508$ (Implement)' },
+        { id: 'b', text: '$104,913,500$; $BC = 0.792$ (Reject)' },
+        { id: 'c', text: '$80,000,000$; $BC = 1.038$ (Implement)' },
+        { id: 'd', text: '$65,000,000$; $BC = 1.278$ (Implement)' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -160,10 +160,10 @@ export const topic6PublicAlternativesBcr: PublicQuizTopic = {
       question:
         'A public drainage upgrade requires a present cost of $\\text{₦}50,000,000$ and present worth of O&M of $\\text{₦}12,500,000$. If the present worth of flood-damage savings is $\\text{₦}56,250,000$, what is the **BC Ratio** and decision?',
       options: [
-        { id: 'a', text: '$BC = 0.90$; Cancel/reject the project ($BC < 1$).' },
-        { id: 'b', text: '$BC = 1.125$; Undertake the project.' },
-        { id: 'c', text: '$BC = 1.11$; Undertake the project.' },
-        { id: 'd', text: '$BC = 0.80$; Cancel the project.' },
+        { id: 'a', text: '$BC = 0.90$ (Reject)' },
+        { id: 'b', text: '$BC = 1.125$ (Accept)' },
+        { id: 'c', text: '$BC = 1.111$ (Accept)' },
+        { id: 'd', text: '$BC = 0.800$ (Reject)' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -288,10 +288,10 @@ export const topic6PublicAlternativesBcr: PublicQuizTopic = {
       question:
         'Two pumps are evaluated over 10 years by **Life Cycle Costing (LCC)**. Pump X: Purchase $\\text{₦}50,000$, Energy $\\text{₦}140,000$, Maintenance $\\text{₦}45,000$, Downtime $\\text{₦}25,000$, Disposal $\\text{₦}5,000$. Pump Y: Purchase $\\text{₦}75,000$, Energy $\\text{₦}105,000$, Maintenance $\\text{₦}20,000$, Downtime $\\text{₦}10,000$, Disposal $\\text{₦}5,000$. How much does selecting the better pump save over 10 years?',
       options: [
-        { id: 'a', text: 'Pump Y saves ₦50,000 ($LCC_Y = \\text{₦}215,000$ vs $LCC_X = \\text{₦}265,000$).' },
-        { id: 'b', text: 'Pump X saves ₦25,000 because its purchase price is lower.' },
-        { id: 'c', text: 'Pump Y saves ₦35,000.' },
-        { id: 'd', text: 'Both pumps have identical LCC.' },
+        { id: 'a', text: 'Pump Y saves ₦50,000' },
+        { id: 'b', text: 'Pump X saves ₦25,000' },
+        { id: 'c', text: 'Pump Y saves ₦35,000' },
+        { id: 'd', text: 'Both pumps have equal LCC' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -304,10 +304,10 @@ export const topic6PublicAlternativesBcr: PublicQuizTopic = {
       question:
         'In the Hydroelectric River Basin BC analysis, how were **annual power sales** treated in the BC ratio equation?',
       options: [
-        { id: 'a', text: 'Added directly to the initial capital cost.' },
-        { id: 'b', text: 'Subtracted from the Present Worth of Costs (acting as a cost-offsetting revenue).' },
-        { id: 'c', text: 'Ignored completely as a sunk cost.' },
-        { id: 'd', text: 'Multiplied by the depreciation rate.' },
+        { id: 'a', text: 'Added directly to the initial capital investment cost in the denominator.' },
+        { id: 'b', text: 'Subtracted from Present Worth of Costs.' },
+        { id: 'c', text: 'Ignored completely in the BC ratio as an unrecoverable past sunk cost.' },
+        { id: 'd', text: 'Multiplied by the straight-line depreciation rate over the 50-year life.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -320,10 +320,10 @@ export const topic6PublicAlternativesBcr: PublicQuizTopic = {
       question:
         'If the **Consumer Price Index (CPI)** increases from $200$ to $236$ in one year, what is the inflation rate, and what happens to the purchasing power of ₦100,000?',
       options: [
-        { id: 'a', text: 'Inflation $= 18\\%$; purchasing power decreases.' },
-        { id: 'b', text: 'Inflation $= 15.25\\%$; purchasing power increases.' },
-        { id: 'c', text: 'Inflation $= 36\\%$; purchasing power stays constant.' },
-        { id: 'd', text: 'Inflation $= 18\\%$; purchasing power increases.' },
+        { id: 'a', text: '$18.0\\%$; purchasing power decreases' },
+        { id: 'b', text: '$15.3\\%$; purchasing power increases' },
+        { id: 'c', text: '$36.0\\%$; purchasing power stays flat' },
+        { id: 'd', text: '$18.0\\%$; purchasing power increases' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -352,10 +352,10 @@ export const topic6PublicAlternativesBcr: PublicQuizTopic = {
       question:
         'Which combination correctly matches **economic concepts** to their **GET 311 definitions**?',
       options: [
-        { id: 'a', text: 'Sunk cost = past cost ignored at $t=0$; Salvage value = end-of-life net resale value; Opportunity cost = value of next best alternative forgone.' },
-        { id: 'b', text: 'Sunk cost = future maintenance; Salvage value = purchase price; Opportunity cost = VAT.' },
-        { id: 'c', text: 'Sunk cost = annual revenue; Salvage value = sunk cost; Opportunity cost = interest rate.' },
-        { id: 'd', text: 'Sunk cost = depreciation; Salvage value = tax; Opportunity cost = inflation.' },
+        { id: 'a', text: 'Sunk = past cost; Salvage = end-of-life value; Opportunity = forgone alternative.' },
+        { id: 'b', text: 'Sunk = future maintenance; Salvage = initial first cost; Opportunity = corporate VAT.' },
+        { id: 'c', text: 'Sunk = annual revenue; Salvage = past sunk cost; Opportunity = benchmark interest rate.' },
+        { id: 'd', text: 'Sunk = annual depreciation; Salvage = withholding tax; Opportunity = consumer inflation.' },
       ],
       correctAnswer: 'a',
       explanation:

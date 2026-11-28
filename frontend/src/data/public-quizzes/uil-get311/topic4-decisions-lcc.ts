@@ -16,8 +16,8 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'Which of the following is NOT one of the three fundamental questions answered when making economic decisions?',
       options: [
-        { id: 'a', text: 'What to produce?' },
-        { id: 'b', text: 'How to produce?' },
+        { id: 'a', text: 'What goods to produce?' },
+        { id: 'b', text: 'How to produce them?' },
         { id: 'c', text: 'For whom to produce?' },
         { id: 'd', text: 'When to depreciate?' },
       ],
@@ -48,10 +48,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'How do **EIA** (Environmental Impact Assessment) and **SIA** (Social Impact Assessment) differ in focus?',
       options: [
-        { id: 'a', text: 'EIA focuses on the biophysical environment (water, air, land, animals); SIA focuses on the human and social consequences of a planned project.' },
-        { id: 'b', text: 'EIA applies only to software projects; SIA applies only to bridges.' },
-        { id: 'c', text: 'SIA measures only corporate taxes; EIA measures only interest rates.' },
-        { id: 'd', text: 'They cannot be combined into a single study.' },
+        { id: 'a', text: 'EIA focuses on the biophysical environment; SIA focuses on human and social impacts.' },
+        { id: 'b', text: 'EIA applies exclusively to digital and software engineering projects; SIA applies only to bridges and dams.' },
+        { id: 'c', text: 'SIA measures corporate income tax liabilities and royalties; EIA measures central bank interest rates.' },
+        { id: 'd', text: 'EIA and SIA are mutually exclusive regulatory studies that can never be combined into an ESIA.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -64,10 +64,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'In the 7-step **Engineering Decision-Making Process**, what is the very first step?',
       options: [
-        { id: 'a', text: 'Documentation' },
-        { id: 'b', text: 'Problem Identification (detecting the gap between actual and desired situations)' },
-        { id: 'c', text: 'Implementation' },
-        { id: 'd', text: 'Review and control' },
+        { id: 'a', text: 'Documentation and record keeping for regulatory traceability' },
+        { id: 'b', text: 'Problem Identification' },
+        { id: 'c', text: 'Implementation of the selected engineering alternative' },
+        { id: 'd', text: 'Review, performance monitoring, and corrective control' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -80,10 +80,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'In Step 2 of Engineering Decision-Making, how does a **Goal** differ from an **Objective**?',
       options: [
-        { id: 'a', text: 'A goal is the broad, long-term desired outcome; objectives break it down into measurable, short-term targets.' },
-        { id: 'b', text: 'Goals are always numerical, while objectives are vague.' },
-        { id: 'c', text: 'Objectives are decided after implementation.' },
-        { id: 'd', text: 'There is no distinction between goals and objectives.' },
+        { id: 'a', text: 'A goal is the broad long-term outcome; objectives are measurable short-term targets.' },
+        { id: 'b', text: 'Goals are always expressed as strict numerical formulas, while objectives remain intentionally vague.' },
+        { id: 'c', text: 'Objectives are only defined after full implementation to evaluate whether the project broke even.' },
+        { id: 'd', text: 'There is no practical distinction between goals and objectives in systematic engineering planning.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -96,10 +96,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'Why is **Documentation** (Step 6 of engineering decision-making) essential in engineering practice?',
       options: [
-        { id: 'a', text: 'It eliminates the need for data analysis.' },
-        { id: 'b', text: 'It aids traceability for quality control, serves as a guide for future similar decisions, supports regulatory compliance, and protects against liability.' },
-        { id: 'c', text: 'It increases the depreciation rate of machines.' },
-        { id: 'd', text: 'It replaces technical standards and SOPs.' },
+        { id: 'a', text: 'It completely eliminates the need for quantitative data collection, modelling, and simulation.' },
+        { id: 'b', text: 'It aids traceability, quality control, future reference, and liability protection.' },
+        { id: 'c', text: 'It legally increases the annual depreciation rate allowed on factory production equipment.' },
+        { id: 'd', text: 'It replaces national engineering design codes, safety limits, and standard operating procedures.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -112,10 +112,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'Which of the following is one of the four **Basic Characteristics of Engineering Decisions**?',
       options: [
-        { id: 'a', text: 'Ignoring legal codes to minimize cost' },
-        { id: 'b', text: 'Adherence to constraints (legal codes, environmental regulations, budget limits, timelines, design standards, SOPs)' },
-        { id: 'c', text: 'Relying solely on guesswork without quantitative data' },
-        { id: 'd', text: 'Avoiding all trade-offs' },
+        { id: 'a', text: 'Bypassing legal codes and safety rules to minimize upfront project cost' },
+        { id: 'b', text: 'Adherence to constraints (codes, regulations, budgets, SOPs)' },
+        { id: 'c', text: 'Relying purely on managerial intuition rather than quantitative calculations' },
+        { id: 'd', text: 'Eliminating all engineering trade-offs before allocating limited resources' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -128,10 +128,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'Which list contains standard **Basic Methods used to Analyze Economic Alternatives** taught in GET 311?',
       options: [
-        { id: 'a', text: 'Annual Worth, Future Worth, Present Worth, IRR, Payback Period, Benefit-Cost Ratio, and Break-Even Analysis' },
-        { id: 'b', text: 'FIFO, LIFO, Weighted Average, and Barter' },
-        { id: 'c', text: 'Demand-pull, Cost-push, Hyperinflation, and CPI' },
-        { id: 'd', text: 'Direct tax, Indirect tax, PAYE, and VAT' },
+        { id: 'a', text: 'AW, FW, PW, IRR, Payback Period, BCR, and Break-Even' },
+        { id: 'b', text: 'FIFO, LIFO, Weighted Average Costing, and Direct Barter Valuation' },
+        { id: 'c', text: 'Demand-pull, Cost-push, Hyperinflation, CPI, and Fiscal Policy' },
+        { id: 'd', text: 'Direct tax, Indirect tax, PAYE, Withholding Tax, and Value Added Tax' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -146,8 +146,8 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       options: [
         { id: 'a', text: 'When $NAW > 0$' },
         { id: 'b', text: 'When $NAW < 0$' },
-        { id: 'c', text: 'Only when initial capital equals zero' },
-        { id: 'd', text: 'When sunk costs exceed salvage value' },
+        { id: 'c', text: 'When initial capital $= 0$' },
+        { id: 'd', text: 'When sunk costs $>$ salvage' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -160,10 +160,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'A machine operation project has initial capital $\\text{₦}10,000$, annual income $\\text{₦}5,000$, annual expenditure $\\text{₦}3,000$, sunk cost $\\text{₦}1,500$, lifespan $5\\text{ years}$, salvage value $20\\%$ of initial capital, and $i = 10\\%$. Using $(P/A, 10\\%, 5) = 3.7908$ and $(P/F, 10\\%, 5) = 0.6209$, what is the exact **Present Worth (PW)**?',
       options: [
-        { id: 'a', text: '$-\\text{₦}1,176.60$ (Reject project)' },
-        { id: 'b', text: '$+\\text{₦}1,176.60$ (Accept project)' },
-        { id: 'c', text: '$-\\text{₦}2,676.60$ (Reject project)' },
-        { id: 'd', text: '$+\\text{₦}2,000.00$ (Accept project)' },
+        { id: 'a', text: '$-\\text{₦}1,176.60$ (Reject)' },
+        { id: 'b', text: '$+\\text{₦}1,176.60$ (Accept)' },
+        { id: 'c', text: '$-\\text{₦}2,676.60$ (Reject)' },
+        { id: 'd', text: '$+\\text{₦}2,000.00$ (Accept)' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -192,10 +192,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'For the same brick-making comparison at $i = 8\\%$, Machine B has $P = \\text{₦}36,000$, $n = 10\\text{ yrs}$, $SV = \\text{₦}3,000$, maint $= \\text{₦}300$/yr, labour $= \\text{₦}7,000$/yr, annual exp $= \\text{₦}2,600$/yr, sunk $= \\text{₦}900$. Given $(A/P, 8\\%, 10) = 0.1490$ and $(A/F, 8\\%, 10) = 0.0690$, what is $NAW_B$ and which machine should be selected?',
       options: [
-        { id: 'a', text: '$NAW_B = -\\text{₦}15,057.00$; select Machine B (less negative NAW / lower annual cost).' },
-        { id: 'b', text: '$NAW_B = -\\text{₦}15,057.00$; select Machine A.' },
-        { id: 'c', text: '$NAW_B = -\\text{₦}19,200.00$; select Machine A.' },
-        { id: 'd', text: '$NAW_B = +\\text{₦}15,057.00$; select Machine B.' },
+        { id: 'a', text: '$-\\text{₦}15,057.00$; select Machine B' },
+        { id: 'b', text: '$-\\text{₦}15,057.00$; select Machine A' },
+        { id: 'c', text: '$-\\text{₦}19,200.00$; select Machine A' },
+        { id: 'd', text: '$+\\text{₦}15,057.00$; select Machine B' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -208,10 +208,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'Why is the **Annual Worth (AW / NAW)** method especially convenient when comparing mutually exclusive machines with **unequal service lives** (e.g., 6 years vs. 10 years)?',
       options: [
-        { id: 'a', text: 'Because it only requires comparing one life cycle of each alternative without needing a Least Common Multiple (LCM) study period.' },
-        { id: 'b', text: 'Because it ignores interest rates completely.' },
-        { id: 'c', text: 'Because it automatically includes sunk costs.' },
-        { id: 'd', text: 'Because it sets salvage value to zero.' },
+        { id: 'a', text: 'It compares one life cycle per asset without needing an LCM horizon.' },
+        { id: 'b', text: 'It completely ignores compound interest rates when evaluating multi-year projects.' },
+        { id: 'c', text: 'It automatically incorporates past sunk costs into the capital recovery calculation.' },
+        { id: 'd', text: 'It forces the salvage value of every competing machine to equal zero at retirement.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -224,9 +224,9 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'A dough mixer for making snacks costs $\\text{₦}100,000$, generates annual income of $\\text{₦}40,000$, incurs annual disbursements of $\\text{₦}22,000$, has salvage value $\\text{₦}20,000$, lifespan $10\\text{ years}$, and MARR $= 13\\%$. Using $(P/A, 13\\%, 10) = 5.4262$ and $(P/F, 13\\%, 10) = 0.2946$, what is the **Net Present Value (NPV)**?',
       options: [
-        { id: 'a', text: '$+\\text{₦}3,563.60$ (Acceptable since $NPV > 0$)' },
+        { id: 'a', text: '$+\\text{₦}3,563.60$ (Accept)' },
         { id: 'b', text: '$-\\text{₦}3,563.60$ (Reject)' },
-        { id: 'c', text: '$+\\text{₦}80,000.00$ (Acceptable)' },
+        { id: 'c', text: '$+\\text{₦}8,000.00$ (Accept)' },
         { id: 'd', text: '$-\\text{₦}2,327.60$ (Reject)' },
       ],
       correctAnswer: 'a',
@@ -240,10 +240,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'What is the **Internal Rate of Return (IRR)** of a project, and when is a single proposal accepted under IRR analysis?',
       options: [
-        { id: 'a', text: 'The interest rate at which $NPV = 0$; accept if $IRR \\ge \\text{MARR}$.' },
-        { id: 'b', text: 'The interest rate at which $NPV$ is maximized; accept if $IRR < \\text{MARR}$.' },
-        { id: 'c', text: 'The ratio of salvage value to first cost; accept if $IRR > 1$.' },
-        { id: 'd', text: 'The inflation rate minus tax rate; accept if positive.' },
+        { id: 'a', text: 'Rate where $NPV = 0$; accept if $IRR \\ge \\text{MARR}$.' },
+        { id: 'b', text: 'Rate where $NPV$ is maximized; accept if $IRR < \\text{MARR}$.' },
+        { id: 'c', text: 'Ratio of salvage value to first cost; accept if $IRR > 1$.' },
+        { id: 'd', text: 'Inflation rate minus corporate tax rate; accept if positive.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -256,9 +256,9 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'An engineering machine requires an initial investment of $\\text{₦}450,000$ and produces uniform net annual savings of $\\text{₦}90,000$. What is its simple **Payback Period (PBP)**?',
       options: [
-        { id: 'a', text: '$4\\text{ years}$' },
-        { id: 'b', text: '$5\\text{ years}$' },
-        { id: 'c', text: '$6\\text{ years}$' },
+        { id: 'a', text: '$4.0\\text{ years}$' },
+        { id: 'b', text: '$5.0\\text{ years}$' },
+        { id: 'c', text: '$6.0\\text{ years}$' },
         { id: 'd', text: '$4.5\\text{ years}$' },
       ],
       correctAnswer: 'b',
@@ -288,10 +288,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'How does **Life Cycle Costing (LCC)** differ from **Total Cost of Ownership (TCO)** according to the UIL-GET 311 lecture notes?',
       options: [
-        { id: 'a', text: 'LCC is mostly used in engineering and asset management focusing on physical asset lifecycle phases (acquire, operate, maintain, dispose); TCO is common in procurement/finance and may include broader costs like supplier management, training overhead, and risk premiums.' },
-        { id: 'b', text: 'LCC ignores operating and maintenance costs, whereas TCO only measures purchase price.' },
-        { id: 'c', text: 'TCO applies only to government bridges, while LCC applies only to software.' },
-        { id: 'd', text: 'LCC is forbidden under ISO standards.' },
+        { id: 'a', text: 'LCC tracks physical asset lifecycle phases; TCO adds broader procurement/overhead costs.' },
+        { id: 'b', text: 'LCC ignores all operating and maintenance expenses, whereas TCO measures only initial factory purchase price.' },
+        { id: 'c', text: 'TCO applies strictly to public bridges and dams, while LCC is restricted solely to enterprise software licenses.' },
+        { id: 'd', text: 'LCC is prohibited under international asset management standards, whereas TCO is legally mandated for all plants.' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -304,10 +304,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'Which international asset management standard series references **Life Cycle Costing (LCC)** as a key optimization technique?',
       options: [
-        { id: 'a', text: 'ISO 9001' },
+        { id: 'a', text: 'ISO 9001 series' },
         { id: 'b', text: 'ISO 55000 series' },
-        { id: 'c', text: 'ISO 14001' },
-        { id: 'd', text: 'IEEE 802.11' },
+        { id: 'c', text: 'ISO 14001 series' },
+        { id: 'd', text: 'IEEE 802.11 series' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -320,10 +320,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'What are the **four primary cost categories** of Life Cycle Costing (LCC) (with an optional fifth category for production assets)?',
       options: [
-        { id: 'a', text: 'Acquisition, Operation, Maintenance, and Disposal (plus Downtime cost as a 5th category)' },
-        { id: 'b', text: 'Taxation, Inflation, Depreciation, and Insurance' },
-        { id: 'c', text: 'Land, Labour, Capital, and Entrepreneurship' },
-        { id: 'd', text: 'Design, Marketing, Advertising, and Sales' },
+        { id: 'a', text: 'Acquisition, Operation, Maintenance, Disposal (+ Downtime)' },
+        { id: 'b', text: 'Taxation, Inflation, Depreciation, Depletion (+ Insurance)' },
+        { id: 'c', text: 'Land, Labour, Capital, Entrepreneurship (+ Management)' },
+        { id: 'd', text: 'Conceptual Design, Marketing, Advertising, Sales (+ Retail)' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -338,8 +338,8 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       options: [
         { id: 'a', text: 'Acquisition: $5\\text{–}15\\%$; Maintenance: $15\\text{–}40\\%$' },
         { id: 'b', text: 'Acquisition: $80\\text{–}90\\%$; Maintenance: $1\\text{–}2\\%$' },
-        { id: 'c', text: 'Acquisition: $50\\%$; Maintenance: $50\\%$' },
-        { id: 'd', text: 'Acquisition: $0\\%$; Maintenance: $5\\%$' },
+        { id: 'c', text: 'Acquisition: $45\\text{–}55\\%$; Maintenance: $45\\text{–}55\\%$' },
+        { id: 'd', text: 'Acquisition: $0\\text{–}5\\%$; Maintenance: $75\\text{–}90\\%$' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -352,10 +352,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'Which single variable within the LCC framework can be directly controlled by engineering teams during asset operation to substantially lower total life cycle cost?',
       options: [
-        { id: 'a', text: 'Historical purchase price' },
-        { id: 'b', text: 'Maintenance approach (e.g., adopting preventive/predictive maintenance)' },
-        { id: 'c', text: 'National inflation rate' },
-        { id: 'd', text: 'Past sunk costs' },
+        { id: 'a', text: 'Original historical purchase price' },
+        { id: 'b', text: 'Maintenance strategy' },
+        { id: 'c', text: 'National consumer inflation rate' },
+        { id: 'd', text: 'Unrecoverable past sunk costs' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -368,10 +368,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'In a **Repair-versus-Replace** decision using LCC, when is replacing an aging asset economically justified?',
       options: [
-        { id: 'a', text: 'Whenever the asset reaches half of its physical life.' },
-        { id: 'b', text: 'When the projected LCC of continued operation exceeds the LCC of replacement from the same point forward.' },
-        { id: 'c', text: 'Whenever the replacement purchase price is higher than the original price.' },
-        { id: 'd', text: 'Only when the asset suffers catastrophic failure.' },
+        { id: 'a', text: 'Whenever the asset reaches the midpoint of its rated physical service life.' },
+        { id: 'b', text: 'When continued operation LCC exceeds replacement LCC.' },
+        { id: 'c', text: 'Whenever the new machine’s purchase price exceeds the original purchase price.' },
+        { id: 'd', text: 'Only after the aging machine experiences a complete catastrophic breakdown.' },
       ],
       correctAnswer: 'b',
       explanation:
@@ -384,10 +384,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'In the GET 311 worked LCC example (20-year metal drilling machines): Machine A has Acquisition $\\text{₦}18,000$, Energy $\\text{₦}62,000$, Scheduled Maint $\\text{₦}24,000$, Unplanned Repairs $\\text{₦}18,000$, Downtime $\\text{₦}22,000$, Disposal $\\text{₦}2,000$. Machine B has Acquisition $\\text{₦}28,000$, Energy $\\text{₦}48,000$, Scheduled Maint $\\text{₦}14,000$, Unplanned Repairs $\\text{₦}6,000$, Downtime $\\text{₦}7,000$, Disposal $\\text{₦}2,000$. What are the total LCCs and which machine wins?',
       options: [
-        { id: 'a', text: '$LCC_A = \\text{₦}146,000$, $LCC_B = \\text{₦}105,000$; select Machine B (saves ₦41,000).' },
-        { id: 'b', text: '$LCC_A = \\text{₦}146,000$, $LCC_B = \\text{₦}105,000$; select Machine A (cheaper purchase price).' },
-        { id: 'c', text: '$LCC_A = \\text{₦}124,000$, $LCC_B = \\text{₦}98,000$; select Machine B.' },
-        { id: 'd', text: '$LCC_A = \\text{₦}146,000$, $LCC_B = \\text{₦}115,000$; select Machine B.' },
+        { id: 'a', text: '$LCC_A = \\text{₦}146,000$, $LCC_B = \\text{₦}105,000$; Machine B' },
+        { id: 'b', text: '$LCC_A = \\text{₦}146,000$, $LCC_B = \\text{₦}105,000$; Machine A' },
+        { id: 'c', text: '$LCC_A = \\text{₦}124,000$, $LCC_B = \\text{₦}98,000$; Machine B' },
+        { id: 'd', text: '$LCC_A = \\text{₦}146,000$, $LCC_B = \\text{₦}115,000$; Machine B' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -400,10 +400,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'In the worked LCC example above ($LCC_A = \\text{₦}146,000$, Acquisition cost of A $= \\text{₦}18,000$), approximately what percentage of Machine A’s total 20-year LCC is its purchase/acquisition price?',
       options: [
-        { id: 'a', text: '$12.3\\%$ (approx. $12\\%$)' },
+        { id: 'a', text: '$12.3\\%$' },
         { id: 'b', text: '$26.7\\%$' },
         { id: 'c', text: '$42.5\\%$' },
-        { id: 'd', text: '$5.0\\%$' },
+        { id: 'd', text: '$15.8\\%$' },
       ],
       correctAnswer: 'a',
       explanation:
@@ -416,10 +416,10 @@ export const topic4DecisionsLcc: PublicQuizTopic = {
       question:
         'In LCC disposal cost estimation, how does a **positive salvage value** affect the net disposal cost?',
       options: [
-        { id: 'a', text: 'It doubles the disposal cost.' },
-        { id: 'b', text: 'It offsets (reduces) the decommissioning and disposal cost.' },
-        { id: 'c', text: 'It has no effect on LCC.' },
-        { id: 'd', text: 'It is added to the acquisition cost.' },
+        { id: 'a', text: 'It doubles the total decommissioning and remediation cost.' },
+        { id: 'b', text: 'It offsets (reduces) disposal cost.' },
+        { id: 'c', text: 'It has zero impact on total life cycle cost calculations.' },
+        { id: 'd', text: 'It is added directly to the upfront acquisition cost.' },
       ],
       correctAnswer: 'b',
       explanation:
