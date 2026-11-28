@@ -6,23 +6,27 @@ import { Shuffle, X } from 'lucide-react';
 import { clearPublicQuizProgress } from '@/utils/publicQuizStorage';
 
 interface RandomQuizModalProps {
+  courseSlug: string;
+  courseCode: string;
   totalAvailable: number;
-  basePath?: string;
+  basePath: string;
   onClose: () => void;
 }
 
 const PRESET_COUNTS = [15, 30, 50, 100];
 
 export default function RandomQuizModal({
+  courseSlug,
+  courseCode,
   totalAvailable,
-  basePath = '/public-quizzes/uil-get311',
+  basePath,
   onClose,
 }: RandomQuizModalProps) {
   const router = useRouter();
   const [count, setCount] = useState<number>(Math.min(50, totalAvailable));
 
   const handleStart = () => {
-    clearPublicQuizProgress(`random_${count}`);
+    clearPublicQuizProgress(courseSlug, `random_${count}`);
     router.push(`${basePath}/random?count=${count}`);
   };
 
@@ -44,7 +48,7 @@ export default function RandomQuizModal({
 
         <h2 className="text-xl font-bold text-[var(--ink-900)]">Random Mix Challenge</h2>
         <p className="mt-1.5 text-sm leading-relaxed text-[var(--ink-700)]">
-          Pull random questions across every UIL-GET 311 topic (conceptual + calculations). Pick how many questions you want:
+          Pull random questions across every {courseCode} topic (conceptual + calculations). Pick how many questions you want:
         </p>
 
         <div className="mt-4 flex flex-wrap gap-2">

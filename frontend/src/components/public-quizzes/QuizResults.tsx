@@ -20,25 +20,29 @@ import {
 import { RecommendedCourse } from '@/types/public-quiz';
 
 interface QuizResultsProps {
+  courseCode: string;
   score: number;
   total: number;
   wrongCount: number;
   skippedCount: number;
   topicTitle: string;
-  recommendedCourse: RecommendedCourse;
-  basePath?: string;
+  confettiThreshold?: number;
+  recommendedCourse?: RecommendedCourse;
+  basePath: string;
   onRestart: () => void;
   onReview: () => void;
 }
 
 export default function QuizResults({
+  courseCode,
   score,
   total,
   wrongCount,
   skippedCount,
   topicTitle,
+  confettiThreshold = 65,
   recommendedCourse,
-  basePath = '/public-quizzes/uil-get311',
+  basePath,
   onRestart,
   onReview,
 }: QuizResultsProps) {
@@ -46,7 +50,7 @@ export default function QuizResults({
   const [displayScore, setDisplayScore] = useState(0);
 
   const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
-  const passedConfettiThreshold = percentage >= 65;
+  const passedConfettiThreshold = percentage >= confettiThreshold;
 
   useEffect(() => {
     if (containerRef.current) {
@@ -57,7 +61,6 @@ export default function QuizResults({
       );
     }
 
-    // Score count-up
     const durationMs = 1100;
     const startTime = Date.now();
     let frameId = 0;
@@ -72,7 +75,6 @@ export default function QuizResults({
     };
     frameId = requestAnimationFrame(animate);
 
-    // Confetti celebration for >= 65%
     let intervalId: ReturnType<typeof setInterval> | null = null;
     if (passedConfettiThreshold) {
       const confettiDuration = 2800;
@@ -114,14 +116,12 @@ export default function QuizResults({
   }, [score, passedConfettiThreshold]);
 
   const feedbackMessage = (() => {
-    if (percentage === 100) return 'Flawless! You mastered UIL-GET 311.';
+    if (percentage === 100) return `Flawless! You mastered ${courseCode}.`;
     if (percentage >= 80) return 'Excellent work! You are exam-ready.';
-    if (percentage >= 65) return 'Solid pass! Keep sharpening those calculations.';
+    if (percentage >= confettiThreshold) return 'Solid pass! Keep sharpening those calculations.';
     if (percentage >= 45) return 'Getting there — review the explanations and try again.';
     return 'Keep practicing! Use Review Answers to study the worked steps.';
   })();
-
-  const courseHref = `/courses/${recommendedCourse.slug}`;
 
   return (
     <div ref={containerRef} className="mx-auto w-full max-w-3xl px-4 py-8 sm:py-12">
@@ -139,7 +139,7 @@ export default function QuizResults({
           </div>
 
           <span className="rounded-full bg-[var(--brand-gold-100)] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[var(--ink-900)]">
-            UIL-GET 311 Quiz Complete
+            {courseCode} Quiz Complete
           </span>
           <h1 className="mt-2.5 text-2xl font-bold text-[var(--ink-900)] sm:text-3xl">
             {topicTitle}
@@ -205,78 +205,82 @@ export default function QuizResults({
               href={basePath}
               className="inline-flex items-center gap-2 rounded-xl border-2 border-[var(--ink-900)] bg-[var(--surface-sunken)] px-5 py-3 text-sm font-bold text-[var(--ink-900)] no-underline transition-colors hover:bg-[var(--line)]"
             >
-              <BookOpen className="h-4 w-4" /> All GET 311 Topics
+              <BookOpen className="h-4 w-4" /> All {courseCode} Topics
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Recommended Course on SabiLearn: Laplace Transforms */}
-      <div className="mt-7 overflow-hidden rounded-3xl border-2 border-[var(--ink-900)] bg-[var(--surface-card)] shadow-[0_6px_0_#5B4FE8]">
-        <div className="flex items-center justify-between border-b border-[var(--line)] bg-[var(--brand-violet-100)] px-6 py-3">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-violet)]">
-            <Sparkles className="h-4 w-4" />
-            Next Up for 300L Engineering on SabiLearn
+      {/* Optional Recommended Course Card */}
+      {recommendedCourse && (
+        <div className="mt-7 overflow-hidden rounded-3xl border-2 border-[var(--ink-900)] bg-[var(--surface-card)] shadow-[0_6px_0_#5B4FE8]">
+          <div className="flex items-center justify-between border-b border-[var(--line)] bg-[var(--brand-violet-100)] px-6 py-3">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-violet)]">
+              <Sparkles className="h-4 w-4" />
+              Recommended Course on SabiLearn
+            </div>
+            <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-800">
+              {recommendedCourse.isFree
+                ? 'Free Course'
+                : `₦${(recommendedCourse.price / 100).toLocaleString()}`}
+            </span>
           </div>
-          <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-800">
-            {recommendedCourse.isFree ? 'Free Course' : `₦${(recommendedCourse.price / 100).toLocaleString()}`}
-          </span>
-        </div>
 
-        <div className="grid gap-5 p-6 sm:grid-cols-[180px_1fr] sm:items-center">
-          {recommendedCourse.banner ? (
-            <Link
-              href={courseHref}
-              className="block overflow-hidden rounded-2xl border-2 border-[var(--ink-900)] bg-[var(--surface-sunken)]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={recommendedCourse.banner}
-                alt={recommendedCourse.title}
-                className="h-36 w-full object-cover transition-transform duration-300 hover:scale-105 sm:h-32"
-              />
-            </Link>
-          ) : (
-            <div className="flex h-32 items-center justify-center rounded-2xl border-2 border-[var(--ink-900)] bg-[var(--brand-violet)] text-white">
-              <GraduationCap className="h-12 w-12" />
-            </div>
-          )}
-
-          <div>
-            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[var(--ink-500)]">
-              <span className="rounded-full bg-[var(--surface-sunken)] px-2.5 py-0.5 text-[var(--ink-700)]">
-                {recommendedCourse.category}
-              </span>
-              {recommendedCourse.difficulty && (
-                <span className="capitalize">{recommendedCourse.difficulty}</span>
-              )}
-              {typeof recommendedCourse.chaptersCount === 'number' &&
-                recommendedCourse.chaptersCount > 0 && (
-                  <span className="inline-flex items-center gap-1">
-                    <Layers className="h-3.5 w-3.5" />
-                    {recommendedCourse.chaptersCount} Chapters
-                  </span>
-                )}
-            </div>
-
-            <h2 className="mt-2 text-lg font-bold leading-snug text-[var(--ink-900)] sm:text-xl">
-              {recommendedCourse.title}
-            </h2>
-            <p className="mt-1.5 text-sm leading-relaxed text-[var(--ink-700)]">
-              {recommendedCourse.description}
-            </p>
-
-            <div className="mt-4">
+          <div className="grid gap-5 p-6 sm:grid-cols-[180px_1fr] sm:items-center">
+            {recommendedCourse.banner ? (
               <Link
-                href={courseHref}
-                className="inline-flex items-center gap-2 rounded-xl border-2 border-[var(--ink-900)] bg-[var(--brand-violet)] px-5 py-2.5 text-sm font-bold text-white shadow-[0_3px_0_#0E0E1A] no-underline transition-all hover:bg-[var(--brand-violet-600)]"
+                href={`/courses/${recommendedCourse.slug}`}
+                className="block overflow-hidden rounded-2xl border-2 border-[var(--ink-900)] bg-[var(--surface-sunken)]"
               >
-                Explore Laplace Theorems Course <ArrowRight className="h-4 w-4" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={recommendedCourse.banner}
+                  alt={recommendedCourse.title}
+                  className="h-36 w-full object-cover transition-transform duration-300 hover:scale-105 sm:h-32"
+                />
               </Link>
+            ) : (
+              <div className="flex h-32 items-center justify-center rounded-2xl border-2 border-[var(--ink-900)] bg-[var(--brand-violet)] text-white">
+                <GraduationCap className="h-12 w-12" />
+              </div>
+            )}
+
+            <div>
+              <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[var(--ink-500)]">
+                <span className="rounded-full bg-[var(--surface-sunken)] px-2.5 py-0.5 text-[var(--ink-700)]">
+                  {recommendedCourse.category}
+                </span>
+                {recommendedCourse.difficulty && (
+                  <span className="capitalize">{recommendedCourse.difficulty}</span>
+                )}
+                {typeof recommendedCourse.chaptersCount === 'number' &&
+                  recommendedCourse.chaptersCount > 0 && (
+                    <span className="inline-flex items-center gap-1">
+                      <Layers className="h-3.5 w-3.5" />
+                      {recommendedCourse.chaptersCount} Chapters
+                    </span>
+                  )}
+              </div>
+
+              <h2 className="mt-2 text-lg font-bold leading-snug text-[var(--ink-900)] sm:text-xl">
+                {recommendedCourse.title}
+              </h2>
+              <p className="mt-1.5 text-sm leading-relaxed text-[var(--ink-700)]">
+                {recommendedCourse.description}
+              </p>
+
+              <div className="mt-4">
+                <Link
+                  href={`/courses/${recommendedCourse.slug}`}
+                  className="inline-flex items-center gap-2 rounded-xl border-2 border-[var(--ink-900)] bg-[var(--brand-violet)] px-5 py-2.5 text-sm font-bold text-white shadow-[0_3px_0_#0E0E1A] no-underline transition-all hover:bg-[var(--brand-violet-600)]"
+                >
+                  Explore Course Details <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

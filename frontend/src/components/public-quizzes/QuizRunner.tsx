@@ -15,13 +15,14 @@ import {
   XCircle,
 } from 'lucide-react';
 import {
-  ALL_UIL_GET311_QUESTIONS,
-  buildAllQuestionsTopic,
-  buildCustomQuizTopic,
-  buildRandomQuizTopic,
-  getTopicById,
-  reconstructQuizTopic,
-} from '@/data/public-quizzes/uil-get311';
+  buildCourseAllQuestionsTopic,
+  buildCourseCustomQuizTopic,
+  buildCourseRandomQuizTopic,
+  getCourseQuestions,
+  getCourseTopicById,
+  getPublicQuizCourse,
+  reconstructCourseQuizTopic,
+} from '@/data/public-quizzes/registry';
 import {
   PublicQuizOption,
   PublicQuizTopic,
@@ -41,19 +42,22 @@ import QuizResults from './QuizResults';
 import ResumeQuizModal from './ResumeQuizModal';
 
 interface QuizRunnerProps {
+  courseSlug: string;
   topicId: string;
-  recommendedCourse: RecommendedCourse;
-  basePath?: string;
+  recommendedCourse?: RecommendedCourse;
 }
 
 export default function QuizRunner({
+  courseSlug,
   topicId,
   recommendedCourse,
-  basePath = '/public-quizzes/uil-get311',
 }: QuizRunnerProps) {
   const searchParams = useSearchParams();
   const topicsParam = searchParams.get('topics') || '';
   const countParam = searchParams.get('count') || '';
+
+  const course = useMemo(() => getPublicQuizCourse(courseSlug), [courseSlug]);
+  const basePath = `/public-quizzes/${courseSlug}`;
 
   const sessionKey = useMemo(() => {
     if (topicId === 'random') {
@@ -91,15 +95,14 @@ export default function QuizRunner({
   const feedbackRef = useRef<HTMLDivElement>(null);
 
   const buildFreshTopic = useCallback((): PublicQuizTopic | undefined => {
+    if (!course) return undefined;
+    const allCount = getCourseQuestions(course).length;
     if (topicId === 'all') {
-      return buildAllQuestionsTopic();
+      return buildCourseAllQuestionsTopic(course);
     }
     if (topicId === 'random') {
-      const count = Math.min(
-        Math.max(1, Number(countParam) || 50),
-        ALL_UIL_GET311_QUESTIONS.length
-      );
-      return buildRandomQuizTopic(count);
+      const count = Math.min(Math.max(1, Number(countParam) || 50), allCount);
+      return buildCourseRandomQuizTopic(course, count);
     }
     if (topicId === 'custom') {
       const ids = topicsParam
@@ -108,16 +111,20 @@ export default function QuizRunner({
         .filter(Boolean);
       const parsedCount =
         countParam === 'all' || !countParam ? 'all' : Math.max(1, Number(countParam) || 30);
-      return buildCustomQuizTopic(ids, parsedCount);
+      return buildCourseCustomQuizTopic(course, ids, parsedCount);
     }
-    return getTopicById(topicId);
-  }, [topicId, topicsParam, countParam]);
+    return getCourseTopicById(course, topicId);
+  }, [course, topicId, topicsParam, countParam]);
 
-  // Load topic & check for saved progress
+  // Load topic & check saved progress
   useEffect(() => {
+    if (!course) {
+      setIsLoading(false);
+      return;
+    }
     setIsMounted(true);
     setIsLoading(true);
-    const saved = getPublicQuizProgress(sessionKey);
+    const saved = getPublicQuizProgress(course.slug, sessionKey);
 
     if (
       (topicId === 'random' || topicId === 'custom' || topicId === 'all') &&
@@ -126,11 +133,11 @@ export default function QuizRunner({
     ) {
       const title =
         topicId === 'all'
-          ? `All UIL-GET 311 Questions (${saved.questionIds.length})`
+          ? `All ${course.code} Questions (${saved.questionIds.length})`
           : topicId === 'random'
             ? `Random Mix (${saved.questionIds.length} Questions)`
-            : `Custom GET 311 Quiz (${saved.questionIds.length} Questions)`;
-      setTopic(reconstructQuizTopic(topicId, title, saved.questionIds));
+            : `Custom ${course.code} Quiz (${saved.questionIds.length} Questions)`;
+      setTopic(reconstructCourseQuizTopic(course, topicId, title, saved.questionIds));
     } else {
       setTopic(buildFreshTopic());
     }
@@ -144,7 +151,7 @@ export default function QuizRunner({
       setShowResumeModal(true);
     }
     setIsLoading(false);
-  }, [sessionKey, topicId, buildFreshTopic]);
+  }, [course, sessionKey, topicId, buildFreshTopic]);
 
   useEffect(() => {
     setMaxReachedIndex((prev) => Math.max(prev, currentQuestionIndex));
@@ -167,7 +174,6 @@ export default function QuizRunner({
   const wrongCount = answeredCount - score;
   const skippedCount = topic ? Math.max(0, topic.questions.length - answeredCount) : 0;
 
-  // Shuffle options for current question once
   useEffect(() => {
     if (topic && currentQuestion && !shuffledOptionsMap[currentQuestionIndex]) {
       setShuffledOptionsMap((prev) => ({
@@ -177,14 +183,14 @@ export default function QuizRunner({
     }
   }, [topic, currentQuestion, currentQuestionIndex, shuffledOptionsMap]);
 
-  // Persist progress
   useEffect(() => {
-    if (isMounted && topic && Object.keys(userAnswers).length > 0 && !isComplete) {
+    if (isMounted && course && topic && Object.keys(userAnswers).length > 0 && !isComplete) {
       const dynamicIds =
         topicId === 'random' || topicId === 'custom' || topicId === 'all'
           ? topic.questions.map((q) => q.id)
           : undefined;
       savePublicQuizProgress(
+        course.slug,
         sessionKey,
         topicId,
         currentQuestionIndex,
@@ -195,6 +201,7 @@ export default function QuizRunner({
     }
   }, [
     isMounted,
+    course,
     topic,
     topicId,
     sessionKey,
@@ -204,7 +211,6 @@ export default function QuizRunner({
     isComplete,
   ]);
 
-  // GSAP question transition
   useEffect(() => {
     if (questionRef.current) {
       gsap.fromTo(
@@ -215,7 +221,6 @@ export default function QuizRunner({
     }
   }, [currentQuestionIndex]);
 
-  // GSAP feedback panel
   useEffect(() => {
     if (selectedAnswer && feedbackRef.current) {
       gsap.fromTo(
@@ -227,7 +232,8 @@ export default function QuizRunner({
   }, [selectedAnswer]);
 
   const handleContinueProgress = useCallback(() => {
-    const saved = getPublicQuizProgress(sessionKey);
+    if (!course) return;
+    const saved = getPublicQuizProgress(course.slug, sessionKey);
     if (saved) {
       setCurrentQuestionIndex(saved.currentQuestionIndex);
       setMaxReachedIndex(saved.currentQuestionIndex);
@@ -235,17 +241,18 @@ export default function QuizRunner({
       setShuffledOptionsMap(saved.shuffledOptionsMap);
     }
     setShowResumeModal(false);
-  }, [sessionKey]);
+  }, [course, sessionKey]);
 
   const handleStartFresh = useCallback(() => {
-    clearPublicQuizProgress(sessionKey);
+    if (!course) return;
+    clearPublicQuizProgress(course.slug, sessionKey);
     setTopic(buildFreshTopic());
     setCurrentQuestionIndex(0);
     setMaxReachedIndex(0);
     setUserAnswers({});
     setShuffledOptionsMap({});
     setShowResumeModal(false);
-  }, [sessionKey, buildFreshTopic]);
+  }, [course, sessionKey, buildFreshTopic]);
 
   const handleSelectAnswer = useCallback(
     (optionId: string) => {
@@ -261,11 +268,11 @@ export default function QuizRunner({
   const handleSubmitQuiz = useCallback(() => {
     setIsComplete(true);
     setIsReviewing(false);
-    clearPublicQuizProgress(sessionKey);
+    if (course) clearPublicQuizProgress(course.slug, sessionKey);
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [sessionKey]);
+  }, [course, sessionKey]);
 
   const handleNext = useCallback(() => {
     if (!topic) return;
@@ -288,7 +295,7 @@ export default function QuizRunner({
   }, []);
 
   const handleRestart = useCallback(() => {
-    clearPublicQuizProgress(sessionKey);
+    if (course) clearPublicQuizProgress(course.slug, sessionKey);
     setTopic(buildFreshTopic());
     setCurrentQuestionIndex(0);
     setMaxReachedIndex(0);
@@ -296,7 +303,7 @@ export default function QuizRunner({
     setShuffledOptionsMap({});
     setIsComplete(false);
     setIsReviewing(false);
-  }, [sessionKey, buildFreshTopic]);
+  }, [course, sessionKey, buildFreshTopic]);
 
   const handleReview = useCallback(() => {
     setIsReviewing(true);
@@ -304,7 +311,6 @@ export default function QuizRunner({
     setCurrentQuestionIndex(0);
   }, []);
 
-  // Keyboard shortcuts
   useEffect(() => {
     if (isComplete || showResumeModal) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -356,13 +362,13 @@ export default function QuizRunner({
       <div className="flex min-h-screen items-center justify-center bg-[var(--surface-page)]">
         <div className="text-center">
           <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-[var(--line)] border-t-[var(--brand-gold)]" />
-          <p className="mt-3 text-sm font-semibold text-[var(--ink-700)]">Loading GET 311 Quiz…</p>
+          <p className="mt-3 text-sm font-semibold text-[var(--ink-700)]">Loading Quiz…</p>
         </div>
       </div>
     );
   }
 
-  if (!topic || !currentQuestion) {
+  if (!course || !topic || !currentQuestion) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-[var(--surface-page)] px-4 text-center">
         <h1 className="text-2xl font-bold text-[var(--ink-900)]">Quiz topic not found</h1>
@@ -370,10 +376,10 @@ export default function QuizRunner({
           The topic you selected does not exist or has no questions.
         </p>
         <Link
-          href={basePath}
+          href={course ? basePath : '/public-quizzes'}
           className="mt-5 inline-flex items-center gap-2 rounded-xl border-2 border-[var(--ink-900)] bg-[var(--brand-gold)] px-5 py-2.5 text-sm font-bold text-[var(--ink-900)] no-underline"
         >
-          <ArrowLeft className="h-4 w-4" /> Back to UIL-GET 311 Topics
+          <ArrowLeft className="h-4 w-4" /> Back to {course ? `${course.code} Topics` : 'Public Quizzes'}
         </Link>
       </div>
     );
@@ -391,16 +397,18 @@ export default function QuizRunner({
               href={basePath}
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--ink-700)] no-underline hover:text-[var(--ink-900)]"
             >
-              <ArrowLeft className="h-4 w-4" /> UIL-GET 311 Hub
+              <ArrowLeft className="h-4 w-4" /> {course.code} Hub
             </Link>
           </div>
         </header>
         <QuizResults
+          courseCode={course.code}
           score={score}
           total={topic.questions.length}
           wrongCount={wrongCount}
           skippedCount={skippedCount}
           topicTitle={topic.title}
+          confettiThreshold={course.confettiThreshold ?? 65}
           recommendedCourse={recommendedCourse}
           basePath={basePath}
           onRestart={handleRestart}
@@ -438,7 +446,7 @@ export default function QuizRunner({
             </Link>
             <div className="min-w-0">
               <p className="truncate text-xs font-bold text-[var(--ink-500)]">
-                Sabi<span className="text-[var(--brand-gold-600)]">Learn</span> · UIL-GET 311
+                Sabi<span className="text-[var(--brand-gold-600)]">Learn</span> · {course.code}
               </p>
               <h1 className="truncate text-sm font-bold text-[var(--ink-900)] sm:text-base">
                 {topic.title}
@@ -479,7 +487,6 @@ export default function QuizRunner({
         )}
 
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
-          {/* Main Quiz Column */}
           <main className="min-w-0 flex-1">
             {isReviewing && (
               <div className="mb-4 flex items-center justify-between rounded-xl border-2 border-[var(--brand-violet)] bg-[var(--brand-violet-100)] px-4 py-2.5 text-xs font-bold text-[var(--brand-violet)]">
@@ -501,7 +508,6 @@ export default function QuizRunner({
               answeredCount={answeredCount}
             />
 
-            {/* Question Card */}
             <div
               ref={questionRef}
               className="mb-5 rounded-2xl border-2 border-[var(--ink-900)] bg-[var(--surface-card)] p-6 shadow-[0_4px_0_#0E0E1A]"
@@ -522,7 +528,6 @@ export default function QuizRunner({
               </div>
             </div>
 
-            {/* Options List */}
             <div className="space-y-3">
               {isMounted &&
                 shuffledOptions.map((option, index) => (
@@ -540,7 +545,6 @@ export default function QuizRunner({
                 ))}
             </div>
 
-            {/* Navigation Row */}
             <div className="mt-6 flex items-center justify-between gap-3">
               <button
                 type="button"
@@ -563,7 +567,6 @@ export default function QuizRunner({
               )}
             </div>
 
-            {/* Instant Feedback & LaTeX Explanation Panel */}
             {(selectedAnswer || isReviewing) && (
               <div
                 ref={feedbackRef}
@@ -615,7 +618,6 @@ export default function QuizRunner({
             )}
           </main>
 
-          {/* Desktop Overview Sidebar */}
           {isMounted && (
             <div className="hidden lg:block">
               <QuizOverview

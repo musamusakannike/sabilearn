@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { fetchBlogPosts, SITE_URL } from '@/lib/blog-server';
 import { fetchPublicCourses } from '@/lib/course-server';
+import { PUBLIC_QUIZ_COURSES } from '@/data/public-quizzes/registry';
 
 // Bump manually when a static page's content meaningfully changes — not on every build.
 const STATIC_CONTENT_UPDATED_AT = new Date('2026-08-09');
@@ -10,7 +11,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'weekly', priority: 1.0 },
     { url: `${SITE_URL}/blog`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'daily', priority: 0.9 },
     { url: `${SITE_URL}/courses`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${SITE_URL}/public-quizzes/uil-get311`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'weekly', priority: 0.85 },
+    { url: `${SITE_URL}/public-quizzes`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'weekly', priority: 0.85 },
+    ...PUBLIC_QUIZ_COURSES.map((quiz) => ({
+      url: `${SITE_URL}/public-quizzes/${quiz.slug}`,
+      lastModified: STATIC_CONTENT_UPDATED_AT,
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    })),
     { url: `${SITE_URL}/privacy`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${SITE_URL}/terms`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${SITE_URL}/delete-account`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'yearly', priority: 0.2 },

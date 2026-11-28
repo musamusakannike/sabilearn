@@ -13,43 +13,52 @@ import {
   SlidersHorizontal,
   Sparkles,
 } from 'lucide-react';
-import { ALL_UIL_GET311_QUESTIONS, UIL_GET311_TOPICS } from '@/data/public-quizzes/uil-get311';
+import { getPublicQuizCourse, getCourseQuestions } from '@/data/public-quizzes/registry';
 import { clearPublicQuizProgress } from '@/utils/publicQuizStorage';
 import TopicCard from './TopicCard';
 import RandomQuizModal from './RandomQuizModal';
 
 const COUNT_OPTIONS = [15, 30, 50, 100];
-const BASE_PATH = '/public-quizzes/uil-get311';
 
-export default function UilGet311Hub() {
+interface PublicQuizHubProps {
+  courseSlug: string;
+}
+
+export default function PublicQuizHub({ courseSlug }: PublicQuizHubProps) {
   const router = useRouter();
+  const course = getPublicQuizCourse(courseSlug);
+
   const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>(() =>
-    UIL_GET311_TOPICS.map((t) => t.id)
+    course ? course.topics.map((t) => t.id) : []
   );
   const [questionCount, setQuestionCount] = useState<number | 'all'>(30);
   const [showCustomBuilder, setShowCustomBuilder] = useState(false);
   const [showRandomModal, setShowRandomModal] = useState(false);
 
-  const totalQuestions = ALL_UIL_GET311_QUESTIONS.length;
+  const allQuestions = useMemo(() => (course ? getCourseQuestions(course) : []), [course]);
+  const totalQuestions = allQuestions.length;
   const totalCalculations = useMemo(
-    () => ALL_UIL_GET311_QUESTIONS.filter((q) => q.difficulty === 'calculation').length,
-    []
+    () => allQuestions.filter((q) => q.difficulty === 'calculation').length,
+    [allQuestions]
   );
 
   const availableInSelection = useMemo(() => {
+    if (!course) return 0;
     const selectedSet = new Set(selectedTopicIds);
-    return UIL_GET311_TOPICS.reduce(
+    return course.topics.reduce(
       (sum, t) => (selectedSet.has(t.id) ? sum + t.questions.length : sum),
       0
     );
-  }, [selectedTopicIds]);
+  }, [course, selectedTopicIds]);
 
+  if (!course) return null;
+
+  const basePath = `/public-quizzes/${course.slug}`;
   const effectiveCount =
     questionCount === 'all'
       ? availableInSelection
       : Math.min(questionCount, availableInSelection);
-
-  const allSelected = selectedTopicIds.length === UIL_GET311_TOPICS.length;
+  const allSelected = selectedTopicIds.length === course.topics.length;
 
   const toggleTopic = (id: string) => {
     setSelectedTopicIds((prev) =>
@@ -58,22 +67,22 @@ export default function UilGet311Hub() {
   };
 
   const toggleAllTopics = () => {
-    setSelectedTopicIds(allSelected ? [] : UIL_GET311_TOPICS.map((t) => t.id));
+    setSelectedTopicIds(allSelected ? [] : course.topics.map((t) => t.id));
   };
 
   const handleStartCustom = () => {
     if (selectedTopicIds.length === 0 || effectiveCount === 0) return;
     if (allSelected && questionCount === 'all') {
-      clearPublicQuizProgress('all');
-      router.push(`${BASE_PATH}/all`);
+      clearPublicQuizProgress(course.slug, 'all');
+      router.push(`${basePath}/all`);
       return;
     }
     const topicsParam = selectedTopicIds.join(',');
     const countParam = questionCount === 'all' ? 'all' : String(effectiveCount);
     const sessionKey = `custom_${topicsParam}_${countParam}`;
-    clearPublicQuizProgress(sessionKey);
+    clearPublicQuizProgress(course.slug, sessionKey);
     router.push(
-      `${BASE_PATH}/custom?topics=${encodeURIComponent(topicsParam)}&count=${encodeURIComponent(countParam)}`
+      `${basePath}/custom?topics=${encodeURIComponent(topicsParam)}&count=${encodeURIComponent(countParam)}`
     );
   };
 
@@ -84,7 +93,7 @@ export default function UilGet311Hub() {
         <section className="rounded-3xl border-2 border-[var(--ink-900)] bg-[var(--surface-card)] p-6 shadow-[0_6px_0_#0E0E1A] sm:p-10">
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-gold-100)] px-3.5 py-1 text-xs font-bold text-[var(--ink-900)]">
-              <GraduationCap className="h-3.5 w-3.5" /> University of Ilorin · 300L Engineering
+              <GraduationCap className="h-3.5 w-3.5" /> {course.institution}
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-violet-100)] px-3.5 py-1 text-xs font-bold text-[var(--brand-violet)]">
               <Sparkles className="h-3.5 w-3.5" /> Free Public Practice Quiz
@@ -92,26 +101,28 @@ export default function UilGet311Hub() {
           </div>
 
           <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-[var(--ink-900)] sm:text-5xl">
-            UIL-GET 311: Engineering Economics
+            {course.code}: {course.title}
           </h1>
           <p className="mt-3 max-w-3xl text-base leading-relaxed text-[var(--ink-700)] sm:text-lg">
-            Practice <strong>{totalQuestions} exam-style MCQs</strong> drawn directly from the UIL-GET 311 lecture notes, Depreciation slides, and class calculations — complete with instant feedback and step-by-step LaTeX explanations.
+            <strong>{totalQuestions} exam-style MCQs</strong> — {course.description}
           </p>
 
           {/* Quick Stats */}
           <div className="mt-5 flex flex-wrap gap-3 text-xs font-bold text-[var(--ink-700)]">
             <span className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)] px-3 py-1.5">
-              <BookOpen className="h-3.5 w-3.5 text-[var(--ink-900)]" /> {UIL_GET311_TOPICS.length} Topics
+              <BookOpen className="h-3.5 w-3.5 text-[var(--ink-900)]" /> {course.topics.length} Topics
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)] px-3 py-1.5">
-              <Calculator className="h-3.5 w-3.5 text-[var(--brand-violet)]" /> {totalCalculations} Worked Calculations
-            </span>
+            {totalCalculations > 0 && (
+              <span className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface-sunken)] px-3 py-1.5">
+                <Calculator className="h-3.5 w-3.5 text-[var(--brand-violet)]" /> {totalCalculations} Worked Calculations
+              </span>
+            )}
           </div>
 
           {/* One-Click Quick Start Actions */}
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link
-              href={`${BASE_PATH}/all`}
+              href={`${basePath}/all`}
               className="inline-flex items-center gap-2 rounded-xl border-2 border-[var(--ink-900)] bg-[var(--brand-gold)] px-5 py-3 text-sm font-bold text-[var(--ink-900)] shadow-[0_3px_0_#0E0E1A] no-underline transition-all hover:bg-[var(--brand-gold-600)]"
             >
               <Play className="h-4 w-4 fill-current" /> Attempt All {totalQuestions} Questions
@@ -144,7 +155,7 @@ export default function UilGet311Hub() {
             <div className="mt-6 rounded-2xl border-2 border-[var(--ink-900)] bg-[var(--surface-page)] p-5">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-base font-bold text-[var(--ink-900)]">
-                  1. Pick Topics ({selectedTopicIds.length}/{UIL_GET311_TOPICS.length})
+                  1. Pick Topics ({selectedTopicIds.length}/{course.topics.length})
                 </h2>
                 <button
                   type="button"
@@ -156,7 +167,7 @@ export default function UilGet311Hub() {
               </div>
 
               <div className="mt-3 flex flex-wrap gap-2">
-                {UIL_GET311_TOPICS.map((topic) => {
+                {course.topics.map((topic) => {
                   const isSelected = selectedTopicIds.includes(topic.id);
                   return (
                     <button
@@ -243,14 +254,14 @@ export default function UilGet311Hub() {
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {UIL_GET311_TOPICS.map((topic, index) => (
-              <TopicCard key={topic.id} topic={topic} index={index} basePath={BASE_PATH} />
+            {course.topics.map((topic, index) => (
+              <TopicCard key={topic.id} topic={topic} index={index} basePath={basePath} />
             ))}
           </div>
         </section>
       </div>
 
-      {/* Floating Random Mix FAB (from quiz-platform-main) */}
+      {/* Floating Random Mix FAB */}
       <button
         type="button"
         onClick={() => setShowRandomModal(true)}
@@ -263,8 +274,10 @@ export default function UilGet311Hub() {
 
       {showRandomModal && (
         <RandomQuizModal
+          courseSlug={course.slug}
+          courseCode={course.code}
           totalAvailable={totalQuestions}
-          basePath={BASE_PATH}
+          basePath={basePath}
           onClose={() => setShowRandomModal(false)}
         />
       )}
