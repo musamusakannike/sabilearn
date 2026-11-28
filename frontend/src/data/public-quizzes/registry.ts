@@ -1,6 +1,7 @@
 import { PublicQuizCourse, PublicQuizQuestion, PublicQuizTopic } from '@/types/public-quiz';
 import { shuffleArray } from '@/utils/shuffleOptions';
 import { uilGet311Course } from './uil-get311';
+import { uilGet305Course } from './uil-get305';
 
 /**
  * Central registry of all public course quizzes.
@@ -11,7 +12,10 @@ import { uilGet311Course } from './uil-get311';
  *
  * Hub page, topic runner, dynamic OG image, metadata, and sitemap update automatically.
  */
-export const PUBLIC_QUIZ_COURSES: PublicQuizCourse[] = [uilGet311Course];
+export const PUBLIC_QUIZ_COURSES: PublicQuizCourse[] = [
+  uilGet311Course,
+  uilGet305Course,
+];
 
 const COURSE_MAP = new Map<string, PublicQuizCourse>(
   PUBLIC_QUIZ_COURSES.map((course) => [course.slug, course])
