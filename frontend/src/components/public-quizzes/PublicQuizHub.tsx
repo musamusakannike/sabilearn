@@ -96,7 +96,7 @@ export default function PublicQuizHub({ courseSlug }: PublicQuizHubProps) {
               <GraduationCap className="h-3.5 w-3.5" /> {course.institution}
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-violet-100)] px-3.5 py-1 text-xs font-bold text-[var(--brand-violet)]">
-              <Sparkles className="h-3.5 w-3.5" /> Free Public Practice Quiz
+              Free Public Practice Quiz
             </span>
           </div>
 

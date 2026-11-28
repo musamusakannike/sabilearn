@@ -24,7 +24,7 @@ export default function PublicQuizzesIndexPage() {
         <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6 sm:pt-14">
           <div className="max-w-2xl">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-gold-100)] px-3.5 py-1 text-xs font-bold text-[var(--ink-900)]">
-              <Sparkles className="h-3.5 w-3.5" /> Free Practice Hub
+              Free Practice Hub
             </span>
             <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--ink-900)] sm:text-5xl">
               Public Course Quizzes
