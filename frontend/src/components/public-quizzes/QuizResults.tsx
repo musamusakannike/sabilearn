@@ -216,7 +216,6 @@ export default function QuizResults({
         <div className="mt-7 overflow-hidden rounded-3xl border-2 border-[var(--ink-900)] bg-[var(--surface-card)] shadow-[0_6px_0_#5B4FE8]">
           <div className="flex items-center justify-between border-b border-[var(--line)] bg-[var(--brand-violet-100)] px-6 py-3">
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-violet)]">
-              <Sparkles className="h-4 w-4" />
               Recommended Course on SabiLearn
             </div>
             <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-800">
