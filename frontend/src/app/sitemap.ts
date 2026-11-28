@@ -10,6 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'weekly', priority: 1.0 },
     { url: `${SITE_URL}/blog`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'daily', priority: 0.9 },
     { url: `${SITE_URL}/courses`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${SITE_URL}/public-quizzes/uil-get311`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'weekly', priority: 0.85 },
     { url: `${SITE_URL}/privacy`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${SITE_URL}/terms`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${SITE_URL}/delete-account`, lastModified: STATIC_CONTENT_UPDATED_AT, changeFrequency: 'yearly', priority: 0.2 },
